@@ -1,0 +1,9 @@
+{
+    "$schema": "http://json.schemastore.org/now",
+    "routes": [
+        {
+            "src": "/(?<a>.*)\\.\\.\\.(?<b>.*)$",
+            "dest": "/diff?a=$a&b=$b"
+        }
+    ]
+}
