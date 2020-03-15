@@ -12,6 +12,8 @@ import { formatLines } from "unidiff";
 import { NextPageContext } from "next";
 
 type Props = {
+    packageA?: string;
+    packageB?: string;
     diff?: string;
     errors?: string;
 };
@@ -19,11 +21,16 @@ type Props = {
 class DiffPage extends React.Component<Props> {
     static getInitialProps = async ({ query }: NextPageContext) => {
         try {
-            const { a, b } = query;
-            console.log({ a, b });
+            const { slugs } = query;
+            const slug = Array.isArray(slugs) ? slugs.join("/") : slugs;
+            const [packageA, packageB] = slug.split("...");
             const [aFile, bFile] = await Promise.all([
-                fetch(Array.isArray(a) ? a[0] : a).then(res => res.text()),
-                fetch(Array.isArray(b) ? b[0] : b).then(res => res.text()),
+                fetch(`https://unpkg.com/${packageA}/package.json`).then(res =>
+                    res.text(),
+                ),
+                fetch(`https://unpkg.com/${packageB}/package.json`).then(res =>
+                    res.text(),
+                ),
             ]);
 
             const changes = diffLines(aFile, bFile);
@@ -31,18 +38,18 @@ class DiffPage extends React.Component<Props> {
                 context: Number.MAX_SAFE_INTEGER,
             });
 
-            return { diff };
+            return { packageA, packageB, diff };
         } catch (err) {
             return { errors: err.message };
         }
     };
 
     render(): JSX.Element {
-        const { errors, diff } = this.props;
+        const { errors, diff, packageA, packageB } = this.props;
 
         if (errors) {
             return (
-                <Layout>
+                <Layout title="Error">
                     <p>
                         <span style={{ color: "red" }}>Error:</span> {errors}
                     </p>
@@ -75,7 +82,7 @@ class DiffPage extends React.Component<Props> {
         };
 
         return (
-            <Layout>
+            <Layout title={`Comparing ${packageA}...${packageB}`}>
                 <div>{files.map(renderFile)}</div>
             </Layout>
         );

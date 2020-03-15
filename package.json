@@ -5,7 +5,7 @@
     "description": "📦🔃 See changes between package versions as a webapp",
     "license": "ISC",
     "scripts": {
-        "dev": "ts-node --project tsconfig.server.json server/index.ts",
+        "dev": "next",
         "build": "next build",
         "start": "next start",
         "type-check": "tsc",
@@ -41,7 +41,6 @@
         "husky": "^4.2.3",
         "lint-staged": "^10.0.8",
         "prettier": "^1.19.1",
-        "ts-node": "^8.6.2",
         "typescript": "3.7.3"
     }
 }

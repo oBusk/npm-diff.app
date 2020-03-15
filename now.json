@@ -1,9 +1,0 @@
-{
-    "trailingSlash": true,
-    "routes": [
-        {
-            "src": "/(?<a>.*)\\.\\.\\.(?<b>.*)$",
-            "dest": "/diff?a=$a&b=$b"
-        }
-    ]
-}

@@ -1,17 +1,15 @@
 import Head from "next/head";
 import * as React from "react";
+import GithubLogo from "./icons/github";
 
 type Props = {
     title?: string;
 };
 
-const Layout: React.FunctionComponent<Props> = ({
-    children,
-    title = "This is the default title",
-}) => (
+const Layout: React.FunctionComponent<Props> = ({ children, title = "" }) => (
     <div>
         <Head>
-            <title>{title}</title>
+            <title>{title ? title + " - " : ""}package-diff 📦🔃</title>
             <meta charSet="utf-8" />
             <meta
                 name="viewport"
@@ -19,13 +17,15 @@ const Layout: React.FunctionComponent<Props> = ({
             />
         </Head>
         <header>
-            <h1>Diff! 📦🔃</h1>
+            <h1>
+                <a href="https://github.com/oBusk/package-diff">
+                    <GithubLogo></GithubLogo>
+                </a>
+                &nbsp;&nbsp;package-diff 📦🔃
+            </h1>
         </header>
         {children}
-        <footer>
-            <hr />
-            <span>I'm here to stay (Footer)</span>
-        </footer>
+        <footer></footer>
     </div>
 );
 
