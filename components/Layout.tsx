@@ -1,6 +1,5 @@
-import * as React from "react";
-import Link from "next/link";
 import Head from "next/head";
+import * as React from "react";
 
 type Props = {
     title?: string;
@@ -20,19 +19,7 @@ const Layout: React.FunctionComponent<Props> = ({
             />
         </Head>
         <header>
-            <nav>
-                <Link href="/">
-                    <a>Home</a>
-                </Link>{" "}
-                |{" "}
-                <Link href="/about">
-                    <a>About</a>
-                </Link>{" "}
-                |{" "}
-                <Link href="/users">
-                    <a>Users List</a>
-                </Link>
-            </nav>
+            <h1>Diff! 📦🔃</h1>
         </header>
         {children}
         <footer>
