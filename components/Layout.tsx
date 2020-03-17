@@ -18,10 +18,13 @@ const Layout: React.FunctionComponent<Props> = ({ children, title = "" }) => (
         </Head>
         <header>
             <h1>
-                <a href="https://github.com/oBusk/package-diff">
-                    <GithubLogo></GithubLogo>
+                <a
+                    href="https://github.com/oBusk/package-diff"
+                    title="package-diff on Github"
+                >
+                    <GithubLogo alt="package-diff on Github"></GithubLogo>
                 </a>
-                &nbsp;&nbsp;package-diff 📦🔃
+                &nbsp;package-diff 📦🔃
             </h1>
         </header>
         {children}

@@ -1,8 +1,24 @@
-const GithubLogo: React.FunctionComponent<{ color?: string; id?: string }> = ({
+import { SVGProps } from "react";
+
+interface Props extends SVGProps<SVGSVGElement> {
+    color?: string;
+    id?: string;
+    alt?: string;
+}
+
+const GithubLogo: React.FunctionComponent<Props> = ({
     color = "#111111",
     id = "githublogo",
+    alt,
+    ...rest
 }): JSX.Element => (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 17 16" fill="none">
+    <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 17 16"
+        fill="none"
+        {...rest}
+    >
+        <title>{alt}</title>
         <g clipPath={`url(${id})`}>
             <path
                 fill={color}
