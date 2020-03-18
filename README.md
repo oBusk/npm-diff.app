@@ -1,5 +1,6 @@
 # package-diff
 
+[![Dependabot Status](https://api.dependabot.com/badges/status?host=github&repo=oBusk/package-diff)](https://dependabot.com)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 > 📦🔃 Inspect changes between npm packages in a webapp
