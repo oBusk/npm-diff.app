@@ -1,8 +1,9 @@
 {
-    "name": "with-typescript",
+    "name": "package-diff",
     "private": true,
-    "version": "1.0.0",
-    "description": "📦🔃 See changes between package versions as a webapp",
+    "version": "0.0.1",
+    "description": "📦🔃 Inspect changes between npm packages in a webapp",
+    "author": "Oscar Busk <oscar.busk@gmail.com>",
     "license": "ISC",
     "scripts": {
         "dev": "next",
