@@ -5,7 +5,7 @@ import { parsePackageString } from "../util/npm-parser";
 import { fetchTarBall } from "../util/npm-api";
 import { getDiff } from "../util/getDiff";
 import Layout from "../components/Layout";
-import { Diff, DiffFile, Hunk, parseDiff } from "react-diff-view";
+import { Diff, DiffFile, Hunk, parseDiff, Decoration } from "react-diff-view";
 
 type Props = {
     diff: string;
@@ -59,6 +59,15 @@ class DiffPage extends React.Component<Props> {
 
         const files = parseDiff(diff);
 
+        console.log(files);
+
+        const renderHunk = (hunk: any) => [
+            <Decoration key={"decoration-" + hunk.content}>
+                {hunk.content}
+            </Decoration>,
+            <Hunk key={"hunk-" + hunk.content} hunk={hunk}></Hunk>,
+        ];
+
         const renderFile = ({
             oldRevision,
             newRevision,
@@ -72,11 +81,7 @@ class DiffPage extends React.Component<Props> {
                     diffType={type}
                     hunks={hunks}
                 >
-                    {(hunks: any): JSX.Element =>
-                        hunks.map((hunk: any) => (
-                            <Hunk key={hunk.content} hunk={hunk} />
-                        ))
-                    }
+                    {(hunks: any[]): JSX.Element[][] => hunks.map(renderHunk)}
                 </Diff>
             );
         };

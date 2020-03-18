@@ -14,7 +14,7 @@ export function getDiff(
         const fileDiff = formatLines(changes, {
             aname: fileName,
             bname: fileName,
-            context: Number.MAX_SAFE_INTEGER,
+            context: 3,
         });
 
         diff += fileDiff;
