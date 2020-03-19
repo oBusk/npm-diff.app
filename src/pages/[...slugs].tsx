@@ -1,14 +1,20 @@
 import { NextPageContext } from "next";
 import * as React from "react";
-import { getPkgDetails } from "../util/getPkgDetails";
-import { parsePackageString } from "../util/npm-parser";
-import { fetchTarBall } from "../util/npm-api";
-import { getDiff } from "../util/getDiff";
+import ReactDiffViewer from "react-diff-viewer";
 import Layout from "../components/Layout";
-import { Diff, DiffFile, Hunk, parseDiff, Decoration } from "react-diff-view";
+import { getPkgDetails } from "../util/getPkgDetails";
+import { fetchTarBall } from "../util/npm-api";
+import { parsePackageString } from "../util/npm-parser";
 
 type Props = {
-    diff: string;
+    p1Result: {
+        files: { [n: string]: string };
+        version: string;
+    };
+    p2Result: {
+        files: { [n: string]: string };
+        version: string;
+    };
 };
 
 function getPackageStrings(queries: string | string[]): [string, string] {
@@ -49,48 +55,31 @@ class DiffPage extends React.Component<Props> {
             version: p2Details.version,
         };
 
-        const diff = getDiff(p1Result.files, p2Result.files);
-
-        return { diff };
+        return { p1Result, p2Result };
     };
 
     render(): JSX.Element {
-        const { diff } = this.props;
+        const { p1Result, p2Result } = this.props;
 
-        const files = parseDiff(diff);
+        const renderFile = (fileName: string): JSX.Element => (
+            <ReactDiffViewer
+                key={fileName}
+                oldValue={p1Result.files[fileName] || ""}
+                leftTitle={fileName + "@" + p1Result.version}
+                newValue={p2Result.files[fileName] || ""}
+                rightTitle={fileName + "@" + p2Result.version}
+                useDarkTheme={true}
+            />
+        );
 
-        console.log(files);
-
-        const renderHunk = (hunk: any) => [
-            <Decoration key={"decoration-" + hunk.content}>
-                {hunk.content}
-            </Decoration>,
-            <Hunk key={"hunk-" + hunk.content} hunk={hunk}></Hunk>,
+        const files = [
+            ...new Set([
+                ...Object.keys(p2Result.files),
+                ...Object.keys(p2Result.files),
+            ]),
         ];
 
-        const renderFile = ({
-            oldRevision,
-            newRevision,
-            type,
-            hunks,
-        }: DiffFile): JSX.Element => {
-            return (
-                <Diff
-                    key={oldRevision + "-" + newRevision}
-                    viewType="split"
-                    diffType={type}
-                    hunks={hunks}
-                >
-                    {(hunks: any[]): JSX.Element[][] => hunks.map(renderHunk)}
-                </Diff>
-            );
-        };
-
-        return (
-            <Layout>
-                <div>{files.map(renderFile)}</div>
-            </Layout>
-        );
+        return <Layout>{files.map((name: string) => renderFile(name))}</Layout>;
     }
 }
 

@@ -1,5 +1,5 @@
 import { AppProps } from "next/app";
-import "react-diff-view/style/index.css";
+import "../styles.css";
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     return <Component {...pageProps} />;
