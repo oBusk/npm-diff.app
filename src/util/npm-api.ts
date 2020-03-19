@@ -69,9 +69,10 @@ export async function fetchTarBall(
         console.log(`Fetching ${tarballUrl}`);
 
         void fetch(tarballUrl).then((response) => {
-            new ReadableWebToNodeStream(response.body)
-                .pipe(createGunzip())
-                .pipe(extract);
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+            response.body.pipe(createGunzip()).pipe(extract);
         });
     });
 }

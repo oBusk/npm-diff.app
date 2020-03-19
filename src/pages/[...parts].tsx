@@ -3,21 +3,20 @@ import { Loading } from "components/Loading";
 import { withTheme } from "emotion-theming";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import * as React from "react";
-import {
-    Decoration,
-    Diff,
-    DiffFile,
-    Hunk,
-    HunkData,
-    parseDiff,
-} from "react-diff-view";
-import { getDiff } from "util/getDiff";
+import ReactDiffViewer from "react-diff-viewer";
 import { getPkgDetails } from "util/getPkgDetails";
 import { fetchTarBall } from "util/npm-api";
 import { parsePackageString } from "util/npm-parser";
 
 type Props = {
-    diff: string;
+    p1Result: {
+        files: { [n: string]: string };
+        version: string;
+    };
+    p2Result: {
+        files: { [n: string]: string };
+        version: string;
+    };
 };
 
 function getPackageStrings(parts: string | string[]): [string, string] {
@@ -65,13 +64,11 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
         version: (await p2DetailsPromise).version,
     };
 
-    const diff = getDiff(p1Result.files, p2Result.files);
-
-    return { props: { diff } };
+    return { props: { p1Result, p2Result } };
 };
 
-const DiffPage: NextPage<Props> = ({ diff }) => {
-    if (!diff) {
+const DiffPage: NextPage<Props> = ({ p1Result, p2Result }) => {
+    if (!p1Result || !p2Result) {
         return (
             <Layout>
                 <Loading />
@@ -79,38 +76,25 @@ const DiffPage: NextPage<Props> = ({ diff }) => {
         );
     }
 
-    const files = parseDiff(diff);
-
-    const renderHunk = (hunk: HunkData) => [
-        <Decoration key={"decoration-" + hunk.content}>
-            {hunk.content}
-        </Decoration>,
-        <Hunk key={"hunk-" + hunk.content} hunk={hunk}></Hunk>,
-    ];
-
-    const renderFile = ({
-        oldRevision,
-        newRevision,
-        type,
-        hunks,
-    }: DiffFile): JSX.Element => {
-        return (
-            <Diff
-                key={oldRevision + "-" + newRevision}
-                viewType="split"
-                diffType={type}
-                hunks={hunks}
-            >
-                {(hunks: HunkData[]): JSX.Element[][] => hunks.map(renderHunk)}
-            </Diff>
-        );
-    };
-
-    return (
-        <Layout>
-            <div>{files.map(renderFile)}</div>
-        </Layout>
+    const renderFile = (fileName: string): JSX.Element => (
+        <ReactDiffViewer
+            key={fileName}
+            oldValue={p1Result.files[fileName] || ""}
+            leftTitle={fileName + "@" + p1Result.version}
+            newValue={p2Result.files[fileName] || ""}
+            rightTitle={fileName + "@" + p2Result.version}
+            useDarkTheme={true}
+        />
     );
+
+    const files = Array.from(
+        new Set([
+            ...Object.keys(p1Result.files),
+            ...Object.keys(p2Result.files),
+        ]),
+    );
+
+    return <Layout>{files.map((name: string) => renderFile(name))}</Layout>;
 };
 
 export default withTheme(DiffPage);
