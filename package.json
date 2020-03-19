@@ -22,7 +22,7 @@
         "gunzip-maybe": "^1.4.1",
         "isomorphic-unfetch": "3.0.0",
         "next": "latest",
-        "react": "^16.13.0",
+        "react": "^16.13.1",
         "react-diff-view": "^2.4.3",
         "react-dom": "^16.13.0",
         "tar-stream": "^2.1.2",
