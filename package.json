@@ -24,7 +24,7 @@
         "next": "latest",
         "react": "^16.13.1",
         "react-diff-view": "^2.4.3",
-        "react-dom": "^16.13.0",
+        "react-dom": "^16.13.1",
         "tar-stream": "^2.1.2",
         "unidiff": "^1.0.2"
     },
