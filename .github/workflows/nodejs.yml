@@ -12,10 +12,10 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-            - name: Use Node.js 13x
+            - name: Use Latest Node.js
               uses: actions/setup-node@v1
               with:
-                  node-version: 13.x
+                  node-version: node
             - name: Get cache dir, Node Version and NPM Version
               id: node-config
               run: |
@@ -46,8 +46,10 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-            - name: Use Node.js
+            - name: Use Latest Node.js
               uses: actions/setup-node@v1
+              with:
+                  node-version: node
             - name: Get cache dir, Node Version and NPM Version
               id: node-config
               run: |
