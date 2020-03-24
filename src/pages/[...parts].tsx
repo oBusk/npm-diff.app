@@ -11,8 +11,8 @@ type Props = {
     diff: string;
 };
 
-function getPackageStrings(queries: string | string[]): [string, string] {
-    const query = typeof queries === "string" ? queries : queries.join("/");
+function getPackageStrings(parts: string | string[]): [string, string] {
+    const query = typeof parts === "string" ? parts : parts.join("/");
 
     const [pkg1, pkg2] = query.split("...");
 
@@ -23,9 +23,9 @@ class DiffPage extends React.Component<Props> {
     static getInitialProps = async ({
         query,
     }: NextPageContext): Promise<Props> => {
-        const { slugs } = query;
+        const { parts } = query;
 
-        const [p1, p2] = getPackageStrings(slugs);
+        const [p1, p2] = getPackageStrings(parts);
 
         const p1StringParse = parsePackageString(p1);
         const p2StringParse = parsePackageString(p2);
