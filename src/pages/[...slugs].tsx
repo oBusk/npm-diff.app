@@ -59,8 +59,6 @@ class DiffPage extends React.Component<Props> {
 
         const files = parseDiff(diff);
 
-        console.log(files);
-
         const renderHunk = (hunk: any) => [
             <Decoration key={"decoration-" + hunk.content}>
                 {hunk.content}
