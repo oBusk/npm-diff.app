@@ -1,7 +1,7 @@
 import fetch from "isomorphic-unfetch";
-import { NpmManifest } from "../interfaces/NpmManifest";
 import tar from "tar-stream";
-import gunzip from "gunzip-maybe";
+import { createGunzip } from "zlib";
+import { NpmManifest } from "../interfaces/NpmManifest";
 
 const { NPM_REGISTRY_URL = "https://registry.npmjs.com" } = process.env;
 
@@ -69,7 +69,7 @@ export async function fetchTarBall(
         console.log(`Fetching ${tarballUrl}`);
 
         fetch(tarballUrl).then((response) => {
-            (response.body as any).pipe(gunzip()).pipe(extract as any);
+            (response.body as any).pipe(createGunzip()).pipe(extract as any);
         });
     });
 }
