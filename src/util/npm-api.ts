@@ -38,11 +38,11 @@ export async function fetchManifest(name: string): Promise<NpmManifest> {
 export async function fetchTarBall(
     tarballUrl: string,
 ): Promise<{ [fileName: string]: string }> {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
         const extract = tar.extract();
         const files: { [fileName: string]: string } = {};
 
-        extract.on("entry", function(header, stream, next) {
+        extract.on("entry", function (header, stream, next) {
             // header is the tar header
             // stream is the content body (might be an empty stream)
             // call next when you are done with this entry
@@ -52,7 +52,7 @@ export async function fetchTarBall(
                 chunks.push(chunk);
             });
 
-            stream.on("end", function() {
+            stream.on("end", function () {
                 files[header.name] = Buffer.concat(chunks).toString();
                 next(); // ready for next entry
             });
@@ -60,7 +60,7 @@ export async function fetchTarBall(
             stream.resume(); // just auto drain the stream
         });
 
-        extract.on("finish", function() {
+        extract.on("finish", function () {
             // all entries read
 
             resolve(files);
@@ -68,7 +68,7 @@ export async function fetchTarBall(
 
         console.log(`Fetching ${tarballUrl}`);
 
-        fetch(tarballUrl).then(response => {
+        fetch(tarballUrl).then((response) => {
             (response.body as any).pipe(gunzip()).pipe(extract as any);
         });
     });
