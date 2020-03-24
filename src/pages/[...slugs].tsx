@@ -12,7 +12,7 @@ type Props = {
 };
 
 function getPackageStrings(queries: string | string[]): [string, string] {
-    const query = typeof queries === "string" ? queries : queries[0];
+    const query = typeof queries === "string" ? queries : queries.join("/");
 
     const [pkg1, pkg2] = query.split("...");
 
