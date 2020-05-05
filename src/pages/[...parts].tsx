@@ -25,7 +25,7 @@ class DiffPage extends React.Component<Props> {
     }: NextPageContext): Promise<Props> => {
         const { parts } = query;
 
-        const [p1, p2] = getPackageStrings(parts);
+        const [p1, p2] = getPackageStrings(parts!);
 
         const p1StringParse = parsePackageString(p1);
         const p2StringParse = parsePackageString(p2);
