@@ -1,6 +1,6 @@
 import router from "next/router";
 import { Component } from "react";
-import Layout from "../components/Layout";
+import Layout from "components/Layout";
 
 class IndexPage extends Component<{}> {
     render(): JSX.Element {

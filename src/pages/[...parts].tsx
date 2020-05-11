@@ -1,11 +1,11 @@
+import Layout from "components/Layout";
 import { NextPageContext } from "next";
 import * as React from "react";
-import { getPkgDetails } from "../util/getPkgDetails";
-import { parsePackageString } from "../util/npm-parser";
-import { fetchTarBall } from "../util/npm-api";
-import { getDiff } from "../util/getDiff";
-import Layout from "../components/Layout";
-import { Diff, DiffFile, Hunk, parseDiff, Decoration } from "react-diff-view";
+import { Decoration, Diff, DiffFile, Hunk, parseDiff } from "react-diff-view";
+import { getDiff } from "util/getDiff";
+import { getPkgDetails } from "util/getPkgDetails";
+import { fetchTarBall } from "util/npm-api";
+import { parsePackageString } from "util/npm-parser";
 
 type Props = {
     diff: string;

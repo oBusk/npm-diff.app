@@ -1,4 +1,4 @@
-import { NpmManifest } from "../interfaces/NpmManifest";
+import { NpmManifest } from "interfaces/NpmManifest";
 import { fetchManifest } from "./npm-api";
 
 export async function getPkgDetails(

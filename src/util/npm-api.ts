@@ -1,7 +1,7 @@
+import { NpmManifest } from "interfaces/NpmManifest";
 import fetch from "isomorphic-unfetch";
 import tar from "tar-stream";
 import { createGunzip } from "zlib";
-import { NpmManifest } from "../interfaces/NpmManifest";
 
 const { NPM_REGISTRY_URL = "https://registry.npmjs.com" } = process.env;
 
