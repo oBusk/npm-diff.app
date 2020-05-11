@@ -1,4 +1,6 @@
 import Layout from "components/Layout";
+import { Loading } from "components/Loading";
+import { withTheme } from "emotion-theming";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import * as React from "react";
 import { Decoration, Diff, DiffFile, Hunk, parseDiff } from "react-diff-view";
@@ -57,7 +59,11 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
 
 const DiffPage: NextPage<Props> = ({ diff }) => {
     if (!diff) {
-        return <h1>LOADING</h1>;
+        return (
+            <Layout>
+                <Loading />
+            </Layout>
+        );
     }
 
     const files = parseDiff(diff);
@@ -94,4 +100,4 @@ const DiffPage: NextPage<Props> = ({ diff }) => {
     );
 };
 
-export default DiffPage;
+export default withTheme(DiffPage);

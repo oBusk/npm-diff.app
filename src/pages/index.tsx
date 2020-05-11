@@ -1,24 +1,29 @@
+import { Button, Input } from "@chakra-ui/core";
+import Hero from "components/Hero";
+import Layout from "components/Layout";
+import { withTheme } from "emotion-theming";
 import router from "next/router";
 import { Component } from "react";
-import Layout from "components/Layout";
 
 class IndexPage extends Component<{}> {
     render(): JSX.Element {
         return (
             <Layout>
-                <form onSubmit={this.handleSubmit}>
-                    <input
+                <Hero as="form" onSubmit={this.handleSubmit}>
+                    <Input
                         type="text"
                         name="a"
                         placeholder="package@version"
-                    ></input>
-                    <input
+                    ></Input>
+                    <Input
                         type="text"
                         name="b"
                         placeholder="version or package@version"
-                    ></input>
-                    <input type="submit" value="Package Diff! 📦🔃" />
-                </form>
+                    ></Input>
+                    <Button width="400px" type="submit">
+                        Package Diff! 📦🔃
+                    </Button>
+                </Hero>
             </Layout>
         );
     }
@@ -31,4 +36,4 @@ class IndexPage extends Component<{}> {
     };
 }
 
-export default IndexPage;
+export default withTheme(IndexPage);
