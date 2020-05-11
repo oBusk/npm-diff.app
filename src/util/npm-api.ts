@@ -1,5 +1,4 @@
 import { NpmManifest } from "interfaces/NpmManifest";
-import fetch from "isomorphic-unfetch";
 import tar from "tar-stream";
 import { createGunzip } from "zlib";
 
