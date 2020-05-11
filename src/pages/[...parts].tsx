@@ -1,5 +1,5 @@
 import Layout from "components/Layout";
-import { NextPageContext } from "next";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import * as React from "react";
 import { Decoration, Diff, DiffFile, Hunk, parseDiff } from "react-diff-view";
 import { getDiff } from "util/getDiff";
@@ -19,77 +19,79 @@ function getPackageStrings(parts: string | string[]): [string, string] {
     return [pkg1, pkg2];
 }
 
-class DiffPage extends React.Component<Props> {
-    static getInitialProps = async ({
-        query,
-    }: NextPageContext): Promise<Props> => {
-        const { parts } = query;
+export const getStaticPaths: GetStaticPaths = async () => {
+    return { paths: [], fallback: true };
+};
 
-        const [p1, p2] = getPackageStrings(parts!);
+export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
+    const { parts = "" } = params ?? {};
 
-        const p1StringParse = parsePackageString(p1);
-        const p2StringParse = parsePackageString(p2);
+    const [p1, p2] = getPackageStrings(parts);
 
-        const [p1Details, p2Details] = await Promise.all([
-            getPkgDetails(p1StringParse.name, p1StringParse.versionOrTag),
-            getPkgDetails(p2StringParse.name, p2StringParse.versionOrTag),
-        ]);
+    const p1StringParse = parsePackageString(p1);
+    const p2StringParse = parsePackageString(p2);
 
-        const [p1Files, p2Files] = await Promise.all([
-            fetchTarBall(p1Details.tarballUrl),
-            fetchTarBall(p2Details.tarballUrl),
-        ]);
+    const [p1Details, p2Details] = await Promise.all([
+        getPkgDetails(p1StringParse.name, p1StringParse.versionOrTag),
+        getPkgDetails(p2StringParse.name, p2StringParse.versionOrTag),
+    ]);
 
-        const p1Result = {
-            files: p1Files,
-            version: p1Details.version,
-        };
-        const p2Result = {
-            files: p2Files,
-            version: p2Details.version,
-        };
+    const [p1Files, p2Files] = await Promise.all([
+        fetchTarBall(p1Details.tarballUrl),
+        fetchTarBall(p2Details.tarballUrl),
+    ]);
 
-        const diff = getDiff(p1Result.files, p2Result.files);
-
-        return { diff };
+    const p1Result = {
+        files: p1Files,
+        version: p1Details.version,
+    };
+    const p2Result = {
+        files: p2Files,
+        version: p2Details.version,
     };
 
-    render(): JSX.Element {
-        const { diff } = this.props;
+    const diff = getDiff(p1Result.files, p2Result.files);
 
-        const files = parseDiff(diff);
+    return { props: { diff } };
+};
 
-        const renderHunk = (hunk: any) => [
-            <Decoration key={"decoration-" + hunk.content}>
-                {hunk.content}
-            </Decoration>,
-            <Hunk key={"hunk-" + hunk.content} hunk={hunk}></Hunk>,
-        ];
-
-        const renderFile = ({
-            oldRevision,
-            newRevision,
-            type,
-            hunks,
-        }: DiffFile): JSX.Element => {
-            return (
-                <Diff
-                    key={oldRevision + "-" + newRevision}
-                    viewType="split"
-                    diffType={type}
-                    hunks={hunks}
-                >
-                    {(hunks: any[]): JSX.Element[][] => hunks.map(renderHunk)}
-                </Diff>
-            );
-        };
-
-        return (
-            <Layout>
-                <div>{files.map(renderFile)}</div>
-            </Layout>
-        );
+const DiffPage: NextPage<Props> = ({ diff }) => {
+    if (!diff) {
+        return <h1>LOADING</h1>;
     }
-}
+
+    const files = parseDiff(diff);
+
+    const renderHunk = (hunk: any) => [
+        <Decoration key={"decoration-" + hunk.content}>
+            {hunk.content}
+        </Decoration>,
+        <Hunk key={"hunk-" + hunk.content} hunk={hunk}></Hunk>,
+    ];
+
+    const renderFile = ({
+        oldRevision,
+        newRevision,
+        type,
+        hunks,
+    }: DiffFile): JSX.Element => {
+        return (
+            <Diff
+                key={oldRevision + "-" + newRevision}
+                viewType="split"
+                diffType={type}
+                hunks={hunks}
+            >
+                {(hunks: any[]): JSX.Element[][] => hunks.map(renderHunk)}
+            </Diff>
+        );
+    };
+
+    return (
+        <Layout>
+            <div>{files.map(renderFile)}</div>
+        </Layout>
+    );
+};
 
 export default DiffPage;
