@@ -22,14 +22,15 @@ const Layout: React.FunctionComponent<Props> = ({
                     content="initial-scale=1.0, width=device-width"
                 />
             </Head>
-            <Header bg="gray.50" />
             <Flex
                 direction="column"
                 alignItems="center"
                 justifyContent="flex-start"
                 bg="gray.50"
+                minHeight="100vh"
                 {...props}
             >
+                <Header bg="gray.50" />
                 {children}
             </Flex>
         </>

@@ -5,7 +5,7 @@ export const Hero: React.FC<FlexProps> = ({ children, ...rest }) => {
         <Flex
             justifyContent="center"
             alignItems="center"
-            height="100vh"
+            flex="1"
             direction="row"
             {...rest}
         >
