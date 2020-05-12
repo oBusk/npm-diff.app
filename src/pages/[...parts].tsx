@@ -33,23 +33,29 @@ export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     const p1StringParse = parsePackageString(p1);
     const p2StringParse = parsePackageString(p2);
 
-    const [p1Details, p2Details] = await Promise.all([
-        getPkgDetails(p1StringParse.name, p1StringParse.versionOrTag),
-        getPkgDetails(p2StringParse.name, p2StringParse.versionOrTag),
-    ]);
+    const p1DetailsPromise = getPkgDetails(
+        p1StringParse.name,
+        p1StringParse.versionOrTag,
+    );
+    const p2DetailsPromise = getPkgDetails(
+        p2StringParse.name,
+        p2StringParse.versionOrTag,
+    );
 
-    const [p1Files, p2Files] = await Promise.all([
-        fetchTarBall(p1Details.tarballUrl),
-        fetchTarBall(p2Details.tarballUrl),
-    ]);
+    const p1FilesPromise = p1DetailsPromise.then(({ tarballUrl }) =>
+        fetchTarBall(tarballUrl),
+    );
+    const p2FilesPromise = p2DetailsPromise.then(({ tarballUrl }) =>
+        fetchTarBall(tarballUrl),
+    );
 
     const p1Result = {
-        files: p1Files,
-        version: p1Details.version,
+        files: await p1FilesPromise,
+        version: (await p1DetailsPromise).version,
     };
     const p2Result = {
-        files: p2Files,
-        version: p2Details.version,
+        files: await p2FilesPromise,
+        version: (await p2DetailsPromise).version,
     };
 
     const diff = getDiff(p1Result.files, p2Result.files);
