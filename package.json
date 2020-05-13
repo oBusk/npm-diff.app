@@ -33,7 +33,7 @@
     },
     "devDependencies": {
         "@types/diff": "^4.0.2",
-        "@types/node": "^13.13.5",
+        "@types/node": "^14.0.0",
         "@types/react": "^16.9.35",
         "@types/react-diff-view": "./types/react-diff-view",
         "@types/react-dom": "^16.9.8",
