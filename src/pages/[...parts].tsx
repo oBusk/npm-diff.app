@@ -3,7 +3,14 @@ import { Loading } from "components/Loading";
 import { withTheme } from "emotion-theming";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import * as React from "react";
-import { Decoration, Diff, DiffFile, Hunk, parseDiff } from "react-diff-view";
+import {
+    Decoration,
+    Diff,
+    DiffFile,
+    Hunk,
+    HunkData,
+    parseDiff,
+} from "react-diff-view";
 import { getDiff } from "util/getDiff";
 import { getPkgDetails } from "util/getPkgDetails";
 import { fetchTarBall } from "util/npm-api";
@@ -74,7 +81,7 @@ const DiffPage: NextPage<Props> = ({ diff }) => {
 
     const files = parseDiff(diff);
 
-    const renderHunk = (hunk: Hunk) => [
+    const renderHunk = (hunk: HunkData) => [
         <Decoration key={"decoration-" + hunk.content}>
             {hunk.content}
         </Decoration>,
@@ -94,7 +101,7 @@ const DiffPage: NextPage<Props> = ({ diff }) => {
                 diffType={type}
                 hunks={hunks}
             >
-                {(hunks: Hunk[]): JSX.Element[][] => hunks.map(renderHunk)}
+                {(hunks: HunkData[]): JSX.Element[][] => hunks.map(renderHunk)}
             </Diff>
         );
     };

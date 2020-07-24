@@ -4,7 +4,7 @@ export interface DiffFile {
     oldRevision: string;
     newRevision: string;
     type: DiffType;
-    hunks: Hunk;
+    hunks: HunkData[];
 }
 
 export declare const parseDiff: (diffText: string) => DiffFile[];
@@ -18,7 +18,7 @@ export type GutterType = "default" | "none" | "anchor";
 export interface DiffProps {
     diffType: DiffType;
     viewType: ViewType;
-    hunks: Hunk[];
+    hunks: HunkData[];
     gutterType?: GutterType;
     generateAnchorID?: function;
     selectedChanges?: string[];
@@ -32,17 +32,16 @@ export interface DiffProps {
 
 export declare const Diff: FunctionComponent<DiffProps>;
 
-export interface DecorationProps {
+export interface DecorationProps extends React.Props {
     className?: string;
     gutterClassName?: string;
     contentClassName?: string;
-    children: JSX.Element[];
 }
 
 export declare const Decoration: FunctionComponent<DecorationProps>;
 
-export interface Hunk {
+export interface HunkData {
     content: string;
 }
 
-export declare const Hunk: Hunk;
+export declare const Hunk: FunctionComponent<{ hunk: HunkData }>;
