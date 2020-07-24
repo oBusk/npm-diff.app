@@ -5,7 +5,7 @@ import { withTheme } from "emotion-theming";
 import router from "next/router";
 import { Component } from "react";
 
-class IndexPage extends Component<{}> {
+class IndexPage extends Component {
     render(): JSX.Element {
         return (
             <Layout>
@@ -28,11 +28,18 @@ class IndexPage extends Component<{}> {
         );
     }
 
-    private handleSubmit = (event: any): void => {
+    private handleSubmit = (event: React.FormEvent): void => {
         event.preventDefault();
-        const a = event.target.a.value;
-        const b = event.target.b.value;
-        router.push(`/${a}...${b}`);
+
+        const target = event.target as typeof event.target & {
+            // Defined named children
+            a: HTMLInputElement;
+            b: HTMLInputElement;
+        };
+        const a = target.a.value;
+        const b = target.b.value;
+
+        void router.push(`/${a}...${b}`);
     };
 }
 

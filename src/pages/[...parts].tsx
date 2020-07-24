@@ -74,7 +74,7 @@ const DiffPage: NextPage<Props> = ({ diff }) => {
 
     const files = parseDiff(diff);
 
-    const renderHunk = (hunk: any) => [
+    const renderHunk = (hunk: Hunk) => [
         <Decoration key={"decoration-" + hunk.content}>
             {hunk.content}
         </Decoration>,
@@ -94,7 +94,7 @@ const DiffPage: NextPage<Props> = ({ diff }) => {
                 diffType={type}
                 hunks={hunks}
             >
-                {(hunks: any[]): JSX.Element[][] => hunks.map(renderHunk)}
+                {(hunks: Hunk[]): JSX.Element[][] => hunks.map(renderHunk)}
             </Diff>
         );
     };

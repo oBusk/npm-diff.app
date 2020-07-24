@@ -1,14 +1,10 @@
 import { FunctionComponent } from "react";
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
-export type HunkType = any;
-
 export interface DiffFile {
     oldRevision: string;
     newRevision: string;
     type: DiffType;
-    hunks: HunkType;
+    hunks: Hunk;
 }
 
 export declare const parseDiff: (diffText: string) => DiffFile[];
@@ -22,7 +18,7 @@ export type GutterType = "default" | "none" | "anchor";
 export interface DiffProps {
     diffType: DiffType;
     viewType: ViewType;
-    hunks: object[];
+    hunks: Hunk[];
     gutterType?: GutterType;
     generateAnchorID?: function;
     selectedChanges?: string[];
@@ -45,4 +41,8 @@ export interface DecorationProps {
 
 export declare const Decoration: FunctionComponent<DecorationProps>;
 
-export declare const Hunk: any;
+export interface Hunk {
+    content: string;
+}
+
+export declare const Hunk: Hunk;

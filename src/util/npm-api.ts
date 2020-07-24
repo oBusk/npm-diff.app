@@ -1,4 +1,5 @@
 import { NpmManifest } from "interfaces/NpmManifest";
+import { ReadableWebToNodeStream } from "readable-web-to-node-stream";
 import tar from "tar-stream";
 import { createGunzip } from "zlib";
 
@@ -20,7 +21,7 @@ function escapePackageName(name: string): string {
 export async function fetchManifest(name: string): Promise<NpmManifest> {
     const encodedPackage = escapePackageName(name);
     const response = await fetch(`${NPM_REGISTRY_URL}/${encodedPackage}`);
-    const manifest: NpmManifest = await response.json();
+    const manifest = (await response.json()) as NpmManifest;
     if (
         response.status === 404 ||
         !manifest ||
@@ -67,8 +68,10 @@ export async function fetchTarBall(
 
         console.log(`Fetching ${tarballUrl}`);
 
-        fetch(tarballUrl).then((response) => {
-            (response.body as any).pipe(createGunzip()).pipe(extract as any);
+        void fetch(tarballUrl).then((response) => {
+            new ReadableWebToNodeStream(response.body)
+                .pipe(createGunzip())
+                .pipe(extract);
         });
     });
 }
