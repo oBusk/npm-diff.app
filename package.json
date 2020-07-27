@@ -23,7 +23,7 @@
         "@emotion/styled": "^10.0.27",
         "diff": "^4.0.2",
         "emotion-theming": "^10.0.27",
-        "next": "^9.4.4",
+        "next": "^9.5.0",
         "react": "^16.13.1",
         "react-diff-view": "^2.4.4",
         "react-dom": "^16.13.1",
