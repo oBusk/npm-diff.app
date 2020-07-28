@@ -10,20 +10,16 @@ jobs:
             CI: true
 
         steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: Use Node.js 14.x
-              uses: actions/setup-node@v2-beta
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2-beta
               with:
                   node-version: 14.x
-            - name: Get cache dir, Node Version and NPM Version
-              id: node-config
+            - id: node-config
               run: |
                   echo "::set-output name=nodev::$(node -v)"
                   echo "::set-output name=npmv::$(npm -v)"
                   echo "::set-output name=dir::$(npm config get cache)"
-            - name: Cache npm cache
-              uses: actions/cache@v2
+            - uses: actions/cache@v2
               with:
                   path: ${{ steps.node-config.outputs.dir }}
                   key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
@@ -31,10 +27,8 @@ jobs:
                       npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
                       npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
                       npm-${{ runner.os }}
-            - name: Install
-              run: npm ci
-            - name: Check Linting
-              run: npm run lint
+            - run: npm ci
+            - run: npm run lint
 
     build:
         runs-on: ubuntu-latest
@@ -43,20 +37,16 @@ jobs:
             CI: true
 
         steps:
-            - name: Checkout
-              uses: actions/checkout@v2
-            - name: Use Node.js 14.x
-              uses: actions/setup-node@v2-beta
+            - uses: actions/checkout@v2
+            - uses: actions/setup-node@v2-beta
               with:
                   node-version: 14.x
-            - name: Get cache dir, Node Version and NPM Version
-              id: node-config
+            - id: node-config
               run: |
                   echo "::set-output name=nodev::$(node -v)"
                   echo "::set-output name=npmv::$(npm -v)"
                   echo "::set-output name=dir::$(npm config get cache)"
-            - name: Cache npm cache
-              uses: actions/cache@v2
+            - uses: actions/cache@v2
               with:
                   path: ${{ steps.node-config.outputs.dir }}
                   key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
@@ -64,8 +54,7 @@ jobs:
                       npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
                       npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
                       npm-${{ runner.os }}
-            - name: Cache next.js build cache
-              uses: actions/cache@v2
+            - uses: actions/cache@v2
               with:
                   path: ${{ github.workspace }}/.next/cache
                   key: nextjs-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
@@ -73,7 +62,5 @@ jobs:
                       nextjs-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
                       nextjs-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
                       nextjs-${{ runner.os }}
-            - name: Install
-              run: npm ci
-            - name: Build
-              run: npm run build
+            - run: npm ci
+            - run: npm run build
