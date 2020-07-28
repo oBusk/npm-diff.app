@@ -26,11 +26,11 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: ${{ steps.node-config.outputs.dir }}
-                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-${{ steps.node-config.outputs.npmv }}-
-                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-
-                      npm-${{ runner.os }}-node-
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
+                      npm-${{ runner.os }}
             - name: Install
               run: npm ci
             - name: Check Linting
@@ -59,16 +59,20 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: ${{ steps.node-config.outputs.dir }}
-                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-${{ steps.node-config.outputs.npmv }}-
-                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-
-                      npm-${{ runner.os }}-node-
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
+                      npm-${{ runner.os }}
             - name: Cache next.js build cache
               uses: actions/cache@v2
               with:
                   path: ${{ github.workspace }}/.next/cache
-                  key: nextjs-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  key: nextjs-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      nextjs-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
+                      nextjs-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
+                      nextjs-${{ runner.os }}
             - name: Install
               run: npm ci
             - name: Build
