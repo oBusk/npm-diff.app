@@ -13,7 +13,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
             - name: Use Node.js 13x
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v2
               with:
                   node-version: 13.x
             - name: Get cache dir, Node Version and NPM Version
@@ -23,7 +23,7 @@ jobs:
                   echo "::set-output name=npmv::$(npm -v)"
                   echo "::set-output name=dir::$(npm config get cache)"
             - name: Cache npm cache
-              uses: actions/cache@v1
+              uses: actions/cache@v2
               with:
                   path: ${{ steps.node-config.outputs.dir }}
                   key: ${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
@@ -47,7 +47,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
             - name: Use Node.js 13x
-              uses: actions/setup-node@v1
+              uses: actions/setup-node@v2
               with:
                   node-version: 13.x
             - name: Get cache dir, Node Version and NPM Version
@@ -57,7 +57,7 @@ jobs:
                   echo "::set-output name=npmv::$(npm -v)"
                   echo "::set-output name=dir::$(npm config get cache)"
             - name: Cache npm cache
-              uses: actions/cache@v1
+              uses: actions/cache@v2
               with:
                   path: ${{ steps.node-config.outputs.dir }}
                   key: ${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
@@ -66,7 +66,7 @@ jobs:
                       ${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-
                       ${{ runner.os }}-node-
             - name: Cache next.js build cache
-              uses: actions/cache@v1
+              uses: actions/cache@v2
               with:
                   path: ${{ github.workspace }}/.next/cache
                   key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
