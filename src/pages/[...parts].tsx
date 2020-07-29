@@ -1,6 +1,7 @@
 import Layout from "components/Layout";
 import { Loading } from "components/Loading";
 import { withTheme } from "emotion-theming";
+import { EXAMPLES } from "examples";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import * as React from "react";
 import ReactDiffViewer from "react-diff-viewer";
@@ -28,7 +29,10 @@ function getPackageStrings(parts: string | string[]): [string, string] {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    return { paths: [], fallback: true };
+    return {
+        paths: EXAMPLES.map((ex) => ({ params: { parts: [ex] } })),
+        fallback: true,
+    };
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {

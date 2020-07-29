@@ -12,10 +12,10 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-            - name: Use Node.js 13x
-              uses: actions/setup-node@v1
+            - name: Use Node.js 14.x
+              uses: actions/setup-node@v2.1.1
               with:
-                  node-version: 13.x
+                  node-version: 14.x
             - name: Get cache dir, Node Version and NPM Version
               id: node-config
               run: |
@@ -23,21 +23,20 @@ jobs:
                   echo "::set-output name=npmv::$(npm -v)"
                   echo "::set-output name=dir::$(npm config get cache)"
             - name: Cache npm cache
-              uses: actions/cache@v1
+              uses: actions/cache@v2
               with:
                   path: ${{ steps.node-config.outputs.dir }}
-                  key: ${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                      ${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-${{ steps.node-config.outputs.npmv }}-
-                      ${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-
-                      ${{ runner.os }}-node-
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
+                      npm-${{ runner.os }}
             - name: Install
               run: npm ci
             - name: Check Linting
               run: npm run lint
 
     build:
-        name: build
         runs-on: ubuntu-latest
         timeout-minutes: 5
         env:
@@ -46,10 +45,10 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
-            - name: Use Node.js 13x
-              uses: actions/setup-node@v1
+            - name: Use Node.js 14.x
+              uses: actions/setup-node@v2.1.1
               with:
-                  node-version: 13.x
+                  node-version: 14.x
             - name: Get cache dir, Node Version and NPM Version
               id: node-config
               run: |
@@ -57,19 +56,23 @@ jobs:
                   echo "::set-output name=npmv::$(npm -v)"
                   echo "::set-output name=dir::$(npm config get cache)"
             - name: Cache npm cache
-              uses: actions/cache@v1
+              uses: actions/cache@v2
               with:
                   path: ${{ steps.node-config.outputs.dir }}
-                  key: ${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                      ${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-${{ steps.node-config.outputs.npmv }}-
-                      ${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-
-                      ${{ runner.os }}-node-
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
+                      npm-${{ runner.os }}
             - name: Cache next.js build cache
-              uses: actions/cache@v1
+              uses: actions/cache@v2
               with:
                   path: ${{ github.workspace }}/.next/cache
-                  key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
+                  key: nextjs-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      nextjs-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
+                      nextjs-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
+                      nextjs-${{ runner.os }}
             - name: Install
               run: npm ci
             - name: Build
