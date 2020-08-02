@@ -1,12 +1,8 @@
-import { Box, PseudoBox, PseudoBoxProps } from "@chakra-ui/core";
-import { AnchorHTMLAttributes } from "react";
+import { Box, Link, LinkProps } from "@chakra-ui/core";
 import { DiGithubBadge } from "react-icons/di";
 
-export type Props = PseudoBoxProps & AnchorHTMLAttributes<Element>;
-
-export const GithubLink: React.FC<Props> = (props) => (
-    <PseudoBox
-        as="a"
+export const GithubLink: React.FC<LinkProps> = (props) => (
+    <Link
         href="https://github.com/oBusk/package-diff"
         rel="noopener noreferrer"
         target="_blank"
@@ -20,5 +16,5 @@ export const GithubLink: React.FC<Props> = (props) => (
         {...props}
     >
         <Box as={DiGithubBadge} size="8" color="current" />
-    </PseudoBox>
+    </Link>
 );

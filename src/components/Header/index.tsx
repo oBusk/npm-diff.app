@@ -1,5 +1,6 @@
 import { Flex, FlexProps, Heading, PseudoBox } from "@chakra-ui/core";
 import Link from "next/link";
+import { APILInk } from "./APILink";
 import { GithubLink } from "./GithubLink";
 
 export type Props = FlexProps;
@@ -29,6 +30,6 @@ export const Header: React.FC<Props> = (props) => (
                 <Heading as="h1">package-diff 📦🔃</Heading>
             </PseudoBox>
         </Link>
-        <div />
+        <APILInk />
     </Flex>
 );
