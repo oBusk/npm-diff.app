@@ -12,8 +12,8 @@
     "author": "Oscar Busk <oscar.busk@gmail.com>",
     "license": "ISC",
     "volta": {
-        "node": "14.6.0",
-        "npm": "6.14.7"
+        "node": "14.10.1",
+        "npm": "6.14.8"
     },
     "scripts": {
         "dev": "next",
