@@ -11,7 +11,7 @@ export async function getPkgDetails(
 
     try {
         manifest = await fetchManifest(name);
-    } catch (e) {
+    } catch (e: unknown) {
         throw new Error(`Package ${name} does not exist in npm`);
     }
 
