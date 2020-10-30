@@ -21,7 +21,7 @@ class IndexPage extends Component {
         return (
             <Layout>
                 {EXAMPLES.map((ex) => (
-                    <Link key={ex} href="/[...parts]" as={`/${ex}`}>
+                    <Link key={ex} href={`/${ex}`}>
                         <a onClick={() => this.clickedExample(ex)}>{ex}</a>
                     </Link>
                 ))}
