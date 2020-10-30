@@ -1,3 +1,4 @@
+import "../styles/main.css";
 import { CSSReset, ThemeProvider } from "@chakra-ui/core";
 import { AppProps } from "next/app";
 import "react-diff-view/style/index.css";
