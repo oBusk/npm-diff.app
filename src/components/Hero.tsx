@@ -1,16 +1,23 @@
-import { Flex, FlexProps } from "@chakra-ui/core";
+import cn from "classnames";
+import { HTMLAttributes } from "react";
 
-export const Hero: React.FC<FlexProps> = ({ children, ...rest }) => {
+export const Hero: React.FC<HTMLAttributes<HTMLDivElement>> = ({
+    children,
+    ...rest
+}) => {
     return (
-        <Flex
-            justifyContent="center"
-            alignItems="center"
-            flex="1"
-            direction="row"
+        <div
+            className={cn(
+                "flex",
+                "flex-row",
+                "flex-1",
+                "justify-center",
+                "items-center",
+            )}
             {...rest}
         >
             {children}
-        </Flex>
+        </div>
     );
 };
 

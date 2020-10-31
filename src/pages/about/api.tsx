@@ -1,8 +1,7 @@
-import { Heading, Stack, Text, Code, Link } from "@chakra-ui/core";
+import cn from "classnames";
 import Layout from "components/Layout";
-import { withTheme } from "emotion-theming";
-import { NextPage } from "next";
 import { EXAMPLES } from "examples";
+import { NextPage } from "next";
 
 const BASE_PATH = "https://package-diff.vercel.app";
 const API_PATH = `${BASE_PATH}/api`;
@@ -23,26 +22,34 @@ const EXAMPLE_DIFF = `
 const ApiPage: NextPage<null> = () => {
     return (
         <Layout>
-            <Stack p={5} shadow="md" borderWidth="1px" spacing={8}>
-                <Heading as="h2" size="lg">
+            <div className={cn(["shadow-md", "p-8"])}>
+                <h2 className={cn(["text-2xl", "font-bold", "mb-5"])}>
                     package-diff API
-                </Heading>
-                <Text>
+                </h2>
+                <p>
                     There is a very simple API to get the difference between two
                     versions of a package
-                </Text>
+                </p>
 
-                <Code>
-                    GET <Link href={EXAMPLE_URL}>{EXAMPLE_URL}</Link>
-                </Code>
-                <Text>
-                    will return a <Text as="i">diff</Text> of the two provided
-                    packages
-                </Text>
-                <Code as="pre">{EXAMPLE_DIFF}</Code>
-            </Stack>
+                <div
+                    className={cn([
+                        "font-mono",
+                        "text-sm",
+                        "mb-7",
+                        "bg-gray-200",
+                    ])}
+                >
+                    GET <a href={EXAMPLE_URL}>{EXAMPLE_URL}</a>
+                </div>
+                <p>
+                    will return a <i>diff</i> of the two provided packages
+                </p>
+                <pre className={cn(["text-sm", "bg-gray-200"])}>
+                    {EXAMPLE_DIFF}
+                </pre>
+            </div>
         </Layout>
     );
 };
 
-export default withTheme(ApiPage);
+export default ApiPage;

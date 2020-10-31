@@ -1,35 +1,41 @@
-import { Flex, FlexProps, Heading, PseudoBox } from "@chakra-ui/core";
+import cn from "classnames";
 import Link from "next/link";
+import { HTMLProps } from "react";
 import { APILInk } from "./APILink";
 import { GithubLink } from "./GithubLink";
 
-export type Props = FlexProps;
+export type Props = HTMLProps<HTMLElement>;
 
-export const Header: React.FC<Props> = (props) => (
-    <Flex
-        as="nav"
-        align="center"
-        justify="space-between"
-        wrap="wrap"
-        padding="1.5rem"
-        position="sticky"
-        top="0"
-        width="100%"
+export const Header: React.FC<Props> = ({ className, ...props }) => (
+    <nav
+        className={cn([
+            className,
+            "flex",
+            "items-center",
+            "justify-between",
+            "flex-wrap",
+            "p-6",
+            "sticky",
+            "top-0",
+            "w-full",
+        ])}
         {...props}
     >
         <GithubLink />
-        <Link href="/" passHref>
-            <PseudoBox
-                as="a"
-                transition="all 0.2s"
-                borderRadius="md"
-                _focus={{
-                    boxShadow: "outline",
-                }}
+        <Link href="/">
+            <a
+                className={cn([
+                    "transition-all",
+                    "duration-200",
+                    "rounded-md",
+                    "focus:shadow-outline",
+                ])}
             >
-                <Heading as="h1">package-diff 📦🔃</Heading>
-            </PseudoBox>
+                <h1 className={cn(["text-4xl", "font-bold", "leading-tight"])}>
+                    package-diff 📦🔃
+                </h1>
+            </a>
         </Link>
         <APILInk />
-    </Flex>
+    </nav>
 );

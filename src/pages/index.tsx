@@ -1,7 +1,5 @@
-import { Button, Input } from "@chakra-ui/core";
-import Hero from "components/Hero";
+import cn from "classnames";
 import Layout from "components/Layout";
-import { withTheme } from "emotion-theming";
 import { EXAMPLES } from "examples";
 import Link from "next/link";
 import router from "next/router";
@@ -25,23 +23,62 @@ class IndexPage extends Component {
                         <a onClick={() => this.clickedExample(ex)}>{ex}</a>
                     </Link>
                 ))}
-                <Hero as="form" onSubmit={this.handleSubmit}>
-                    <Input
+                <form
+                    className={cn(
+                        "flex flex-row",
+                        "flex-1",
+                        "justify-center",
+                        "items-center",
+                    )}
+                    onSubmit={this.handleSubmit}
+                >
+                    <input
+                        className={cn([
+                            "rounded",
+                            "px-4",
+                            "h-10",
+                            "w-64",
+                            "border",
+                            "border-solid",
+                            "border-gray-200",
+                        ])}
                         type="text"
                         name="a"
                         placeholder="package@version"
                         ref={this.a}
-                    ></Input>
-                    <Input
+                    ></input>
+                    <input
+                        className={cn([
+                            "rounded",
+                            "px-4",
+                            "h-10",
+                            "w-64",
+                            "border",
+                            "border-solid",
+                            "border-gray-200",
+                        ])}
                         type="text"
                         name="b"
                         placeholder="version or package@version"
                         ref={this.b}
-                    ></Input>
-                    <Button width="400px" type="submit">
+                    ></input>
+                    <button
+                        className={cn([
+                            "flex",
+                            "h-10",
+                            "px-4",
+                            "items-center",
+                            "whitespace-no-wrap",
+                            "bg-gray-200",
+                            "hover:bg-gray-300",
+                            "font-semibold",
+                            "rounded",
+                        ])}
+                        type="submit"
+                    >
                         Package Diff! 📦🔃
-                    </Button>
-                </Hero>
+                    </button>
+                </form>
             </Layout>
         );
     }
@@ -67,4 +104,4 @@ class IndexPage extends Component {
     };
 }
 
-export default withTheme(IndexPage);
+export default IndexPage;

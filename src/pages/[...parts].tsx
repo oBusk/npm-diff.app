@@ -1,6 +1,5 @@
 import Layout from "components/Layout";
 import { Loading } from "components/Loading";
-import { withTheme } from "emotion-theming";
 import { EXAMPLES } from "examples";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import { queryToDiff } from "util/query-to-diff";
@@ -76,4 +75,4 @@ const DiffPage: NextPage<Props> = ({ diff }) => {
     );
 };
 
-export default withTheme(DiffPage);
+export default DiffPage;
