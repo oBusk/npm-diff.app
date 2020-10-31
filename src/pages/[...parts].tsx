@@ -1,19 +1,12 @@
+import DiffFiles from "components/Diff/DiffFiles";
 import Layout from "components/Layout";
 import { Loading } from "components/Loading";
 import { withTheme } from "emotion-theming";
 import { EXAMPLES } from "examples";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { queryToDiff } from "util/query-to-diff";
 import * as React from "react";
-import {
-    Decoration,
-    Diff,
-    DiffFile,
-    Hunk,
-    HunkData,
-    parseDiff,
-} from "react-diff-view";
-import "react-diff-view/style/index.css";
+import { parseDiff } from "react-diff-view";
+import { queryToDiff } from "util/query-to-diff";
 
 type Props = {
     diff: string;
@@ -41,40 +34,15 @@ const DiffPage: NextPage<Props> = ({ diff }) => {
                 <Loading />
             </Layout>
         );
-    }
+    } else {
+        const files = parseDiff(diff);
 
-    const files = parseDiff(diff);
-
-    const renderHunk = (hunk: HunkData) => [
-        <Decoration key={"decoration-" + hunk.content}>
-            {hunk.content}
-        </Decoration>,
-        <Hunk key={"hunk-" + hunk.content} hunk={hunk}></Hunk>,
-    ];
-
-    const renderFile = ({
-        oldRevision,
-        newRevision,
-        type,
-        hunks,
-    }: DiffFile): JSX.Element => {
         return (
-            <Diff
-                key={oldRevision + "-" + newRevision}
-                viewType="split"
-                diffType={type}
-                hunks={hunks}
-            >
-                {(hunks: HunkData[]): JSX.Element[][] => hunks.map(renderHunk)}
-            </Diff>
+            <Layout>
+                <DiffFiles files={files} />
+            </Layout>
         );
-    };
-
-    return (
-        <Layout>
-            <div>{files.map(renderFile)}</div>
-        </Layout>
-    );
+    }
 };
 
 export default withTheme(DiffPage);
