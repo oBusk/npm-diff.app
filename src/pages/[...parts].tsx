@@ -13,6 +13,7 @@ import {
     HunkData,
     parseDiff,
 } from "react-diff-view";
+import "react-diff-view/style/index.css";
 
 type Props = {
     diff: string;
