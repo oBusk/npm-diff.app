@@ -29,7 +29,7 @@
     },
     "dependencies": {
         "@chakra-ui/core": "^0.8.0",
-        "@emotion/core": "^10.0.35",
+        "@emotion/core": "^10.1.0",
         "@emotion/styled": "^10.0.27",
         "diff": "^4.0.2",
         "emotion-theming": "^10.0.27",
