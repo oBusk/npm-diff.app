@@ -1,8 +1,8 @@
-import { Heading, Stack, Text, Code, Link } from "@chakra-ui/core";
+import { Code, Heading, Link, Stack, Text } from "@chakra-ui/react";
+import { withTheme } from "@emotion/react";
 import Layout from "components/Layout";
-import { withTheme } from "emotion-theming";
-import { NextPage } from "next";
 import { EXAMPLES } from "examples";
+import { NextPage } from "next";
 
 const BASE_PATH = "https://package-diff.vercel.app";
 const API_PATH = `${BASE_PATH}/api`;

@@ -1,4 +1,4 @@
-import { Flex } from "@chakra-ui/core";
+import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import * as React from "react";
 import { Header } from "./Header";

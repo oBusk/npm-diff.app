@@ -1,5 +1,5 @@
+import { Heading } from "@chakra-ui/react";
 import Hero from "./Hero";
-import { Heading } from "@chakra-ui/core";
 
 export const Loading: React.FC = ({ ...props }) => {
     return (

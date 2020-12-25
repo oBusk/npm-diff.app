@@ -1,4 +1,4 @@
-import { Box, Link, LinkProps } from "@chakra-ui/core";
+import { Box, Link, LinkProps } from "@chakra-ui/react";
 import { DiGithubBadge } from "react-icons/di";
 
 export const GithubLink: React.FC<LinkProps> = (props) => (
@@ -15,6 +15,6 @@ export const GithubLink: React.FC<LinkProps> = (props) => (
         }}
         {...props}
     >
-        <Box as={DiGithubBadge} size="8" color="current" />
+        <Box as={DiGithubBadge} boxSize="8" color="current" />
     </Link>
 );

@@ -1,7 +1,7 @@
+import { withTheme } from "@emotion/react";
 import DiffFiles from "components/Diff/DiffFiles";
 import Layout from "components/Layout";
 import { Loading } from "components/Loading";
-import { withTheme } from "emotion-theming";
 import { EXAMPLES } from "examples";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import * as React from "react";
