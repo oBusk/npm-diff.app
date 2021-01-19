@@ -49,7 +49,7 @@
         "@types/react-dom": "^16.0.0",
         "@types/tar-stream": "^2.1.0",
         "@types/unidiff": "./types/unidiff",
-        "@typescript-eslint/eslint-plugin": "~4.11.0",
+        "@typescript-eslint/eslint-plugin": "~4.14.0",
         "@typescript-eslint/parser": "~4.11.0",
         "eslint": "^7.16.0",
         "eslint-config-prettier": "^7.1.0",
