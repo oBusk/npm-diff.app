@@ -23,7 +23,7 @@ jobs:
                   echo "::set-output name=npmv::$(npm -v)"
                   echo "::set-output name=dir::$(npm config get cache)"
             - name: Cache npm cache
-              uses: actions/cache@v2
+              uses: actions/cache@v2.1.4
               with:
                   path: ${{ steps.node-config.outputs.dir }}
                   key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
@@ -56,7 +56,7 @@ jobs:
                   echo "::set-output name=npmv::$(npm -v)"
                   echo "::set-output name=dir::$(npm config get cache)"
             - name: Cache npm cache
-              uses: actions/cache@v2
+              uses: actions/cache@v2.1.4
               with:
                   path: ${{ steps.node-config.outputs.dir }}
                   key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
@@ -65,7 +65,7 @@ jobs:
                       npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
                       npm-${{ runner.os }}
             - name: Cache next.js build cache
-              uses: actions/cache@v2
+              uses: actions/cache@v2.1.4
               with:
                   path: ${{ github.workspace }}/.next/cache
                   key: nextjs-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
