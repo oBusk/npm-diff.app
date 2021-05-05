@@ -52,7 +52,7 @@
     "devDependencies": {
         "@types/diff": "^5.0.0",
         "@types/node": "^14.14.22",
-        "@types/react": "^17.0.4",
+        "@types/react": "^17.0.5",
         "@types/react-diff-view": "./types/react-diff-view",
         "@types/react-dom": "^17.0.3",
         "@types/tar-stream": "^2.2.0",
