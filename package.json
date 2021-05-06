@@ -36,7 +36,7 @@
         "lint-staged": "lint-staged"
     },
     "dependencies": {
-        "@chakra-ui/react": "^1.6.0",
+        "@chakra-ui/react": "^1.6.1",
         "@emotion/react": "^11.1.5",
         "@emotion/styled": "^11.3.0",
         "diff": "^5.0.0",
