@@ -1,6 +1,4 @@
-export function parsePackageString(
-    packageString: string,
-): {
+export function parsePackageString(packageString: string): {
     name: string;
     versionOrTag: string | null;
     scoped: boolean;
