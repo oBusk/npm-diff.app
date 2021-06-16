@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { queryToDiff } from "util/query-to-diff";
 
-export default async (
+const apiEndpoint = async (
     req: NextApiRequest,
     res: NextApiResponse,
 ): Promise<void> => {
@@ -11,3 +11,5 @@ export default async (
 
     res.status(200).send(diff);
 };
+
+export default apiEndpoint;
