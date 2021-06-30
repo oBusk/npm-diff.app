@@ -6,7 +6,6 @@ export async function getPkgDetails(
     version: string | null,
 ): Promise<{ version: string; tarballUrl: string }> {
     let manifest: NpmManifest;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     let isLatest = false;
 
     try {
