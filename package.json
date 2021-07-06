@@ -12,7 +12,7 @@
     "author": "Oscar Busk <oscar.busk@gmail.com>",
     "license": "ISC",
     "volta": {
-        "node": "14.17.2",
+        "node": "14.17.3",
         "npm": "7.19.1"
     },
     "engines": {
