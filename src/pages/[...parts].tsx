@@ -3,10 +3,11 @@ import DiffFiles from "components/Diff/DiffFiles";
 import Layout from "components/Layout";
 import { Loading } from "components/Loading";
 import { EXAMPLES } from "examples";
+import { npmDiff } from "lib/npm-diff";
+import { partsToSpecs } from "lib/parts-to-specs";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import * as React from "react";
 import { parseDiff } from "react-diff-view";
-import { queryToDiff } from "util/query-to-diff";
 
 type Props = {
     diff: string;
@@ -20,9 +21,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-    const { parts = "" } = params ?? {};
+    const { parts } = params ?? {};
 
-    const diff = await queryToDiff(parts);
+    const specs = partsToSpecs(parts);
+    const diff = await npmDiff(specs);
 
     return { props: { diff } };
 };

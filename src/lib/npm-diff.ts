@@ -2,7 +2,12 @@ import semver from "semver";
 import npa from "npm-package-arg";
 import libnpmdiff from "libnpmdiff";
 
-// https://github.com/npm/cli/blob/v7.19.1/lib/diff.js#L235-L264
+/**
+ * Converts two inputs matching what `npm diff --diff=` expects and returns
+ * specs such as `package-name@version`.
+ *
+ * > Based on: https://github.com/npm/cli/blob/v7.19.1/lib/diff.js#L235-L264
+ */
 function convertVersionsToSpecs([a, b]: [string, string]): [string, string] {
     const semverA = semver.validRange(a);
     const semverB = semver.validRange(b);
@@ -22,23 +27,20 @@ function convertVersionsToSpecs([a, b]: [string, string]): [string, string] {
     return [a, b];
 }
 
-// https://github.com/npm/cli/blob/v7.19.1/lib/diff.js#L57-L89
-async function diff(specs: [string, string]) {
-    const [a, b] = convertVersionsToSpecs(specs);
+/**
+ * Takes input matching what `npm diff --diff=` expects and returns
+ * a diff as text.
+ *
+ * > Based on: https://github.com/npm/cli/blob/v7.19.1/lib/diff.js#L57-L89
+ */
+export function npmDiff(input: [string, string]) {
+    const [a, b] = convertVersionsToSpecs(input);
 
-    const res = await libnpmdiff([a, b], {
+    console.log({ a, b });
+
+    return libnpmdiff([a, b], {
         // ...this.npm.flatOptions,
         // diffFiles: args,
         // where: this.top,
     });
-
-    return res;
-}
-
-export async function queryToDiff(parts: string | string[]): Promise<string> {
-    const query = typeof parts === "string" ? parts : parts.join("/");
-
-    const [q1, q2] = query.split("...");
-
-    return diff([q1, q2]);
 }
