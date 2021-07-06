@@ -1,5 +1,5 @@
 {
-    "name": "package-diff",
+    "name": "@obusk/package-diff",
     "private": true,
     "version": "0.0.1",
     "description": "📦🔃 Inspect changes between npm packages in a webapp",
