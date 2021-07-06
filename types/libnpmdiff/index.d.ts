@@ -5,10 +5,11 @@
 export type Specs = [string, string];
 
 export interface Config {
-    diffFiles: string[];
-    where: string;
+    diffFiles?: string[];
+    where?: string;
 }
 
-type Diff = (specs: Specs, config: Config) => Promise<string>;
+type Diff = (specs: Specs, config?: Config) => Promise<string>;
 
-export = Diff;
+declare var diff: Diff;
+export = diff;

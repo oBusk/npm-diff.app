@@ -1,42 +1,44 @@
-import { getDiff } from "./getDiff";
-import { getPkgDetails } from "./getPkgDetails";
-import { fetchTarBall } from "./npm-api";
-import { parsePackageString } from "./npm-parser";
+import semver from "semver";
+import npa from "npm-package-arg";
+import libnpmdiff from "libnpmdiff";
+
+// https://github.com/npm/cli/blob/v7.19.1/lib/diff.js#L235-L264
+function convertVersionsToSpecs([a, b]: [string, string]): [string, string] {
+    const semverA = semver.validRange(a);
+    const semverB = semver.validRange(b);
+
+    // both specs are semver versions, assume current project dir name
+    if (semverA && semverB) {
+        throw new Error("One of the specs must contain package name");
+    }
+
+    // otherwise uses the name from the other arg to
+    // figure out the spec.name of what to compare
+    if (!semverA && semverB) return [a, `${npa(a).name}@${b}`];
+
+    if (semverA && !semverB) return [`${npa(b).name}@${a}`, b];
+
+    // no valid semver ranges used
+    return [a, b];
+}
+
+// https://github.com/npm/cli/blob/v7.19.1/lib/diff.js#L57-L89
+async function diff(specs: [string, string]) {
+    const [a, b] = convertVersionsToSpecs(specs);
+
+    const res = await libnpmdiff([a, b], {
+        // ...this.npm.flatOptions,
+        // diffFiles: args,
+        // where: this.top,
+    });
+
+    return res;
+}
 
 export async function queryToDiff(parts: string | string[]): Promise<string> {
     const query = typeof parts === "string" ? parts : parts.join("/");
 
-    const [p1, p2] = query.split("...");
+    const [q1, q2] = query.split("...");
 
-    const p1StringParse = parsePackageString(p1);
-    const p2StringParse = parsePackageString(p2);
-
-    const p1DetailsPromise = getPkgDetails(
-        p1StringParse.name,
-        p1StringParse.versionOrTag,
-    );
-    const p2DetailsPromise = getPkgDetails(
-        p2StringParse.name,
-        p2StringParse.versionOrTag,
-    );
-
-    const p1FilesPromise = p1DetailsPromise.then(({ tarballUrl }) =>
-        fetchTarBall(tarballUrl),
-    );
-    const p2FilesPromise = p2DetailsPromise.then(({ tarballUrl }) =>
-        fetchTarBall(tarballUrl),
-    );
-
-    const p1Result = {
-        files: await p1FilesPromise,
-        version: (await p1DetailsPromise).version,
-    };
-    const p2Result = {
-        files: await p2FilesPromise,
-        version: (await p2DetailsPromise).version,
-    };
-
-    const diff = getDiff(p1Result.files, p2Result.files);
-
-    return diff;
+    return diff([q1, q2]);
 }
