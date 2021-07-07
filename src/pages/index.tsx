@@ -11,7 +11,7 @@ class IndexPage extends Component {
     a: RefObject<HTMLInputElement>;
     b: RefObject<HTMLInputElement>;
 
-    constructor(props) {
+    constructor(props: {}) {
         super(props);
         this.a = createRef();
         this.b = createRef();
@@ -48,8 +48,13 @@ class IndexPage extends Component {
 
     private clickedExample = (ex: string) => {
         const [a, b] = ex.split("...");
-        this.a.current.value = a;
-        this.b.current.value = b;
+
+        if (!this.a.current || !this.b.current) {
+            throw new Error("No input elements");
+        }
+
+        this.a.current.value = a ?? "";
+        this.b.current.value = b ?? "";
     };
 
     private handleSubmit = (event: React.FormEvent): void => {

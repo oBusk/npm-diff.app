@@ -20,7 +20,7 @@ const EXAMPLE_DIFF = `
  DocumentCloud and Investigative Reporters & Editors <http://underscorejs.org/>--- package/_baseClone.js
  `;
 
-const ApiPage: NextPage<null> = () => {
+const ApiPage: NextPage<{}> = () => {
     return (
         <Layout>
             <Stack p={5} shadow="md" borderWidth="1px" spacing={8}>

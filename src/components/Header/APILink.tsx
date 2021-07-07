@@ -10,7 +10,7 @@ export const APILInk: FunctionComponent<LinkProps> = (props) => {
         <NextLink href="/about/api" passHref>
             <Link
                 {...props}
-                opacity={router.pathname == "/about/api" ? 0.4 : null}
+                opacity={router.pathname == "/about/api" ? 0.4 : undefined}
                 transition="all 0.2s"
                 borderRadius="md"
                 _focus={{
