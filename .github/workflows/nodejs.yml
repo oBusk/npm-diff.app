@@ -73,10 +73,5 @@ jobs:
               run: npm ci
             - name: Build
               run: npm run build
-            - name: Check if there are changes
-              id: changes
-              uses: UnicornGlobal/has-changes-action@v1.0.11
-              # You can now access a variable indicating if there have been changes
-            - name: There was changes after building
-              if: steps.changes.outputs.changed == 1
-              run: exit 1
+            - name: Check uncommitted changes
+              uses: mskri/check-uncommitted-changes-action@v1.0.1
