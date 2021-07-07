@@ -77,5 +77,6 @@ jobs:
               id: changes
               uses: UnicornGlobal/has-changes-action@v1.0.11
               # You can now access a variable indicating if there have been changes
-            - if: steps.changes.outputs.changed == 1
+            - name: There was changes after building
+              if: steps.changes.outputs.changed == 1
               run: exit 1
