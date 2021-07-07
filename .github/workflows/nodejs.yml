@@ -73,5 +73,9 @@ jobs:
               run: npm ci
             - name: Build
               run: npm run build
-            - name: Check uncommitted changes
+            - name: Check for uncommitted changes
+              id: check-changes
               uses: mskri/check-uncommitted-changes-action@v1.0.1
+            - name: Evaluate if there are changes
+              if: steps.check-changes.outputs.outcome == failure()
+              run: echo "There are uncommitted changes" && exit 1
