@@ -73,5 +73,5 @@ jobs:
               run: npm ci
             - name: Build
               run: npm run build
-            - name: Check uncommitted changes
-              uses: mskri/check-uncommitted-changes-action@v1.0.1
+            - name: Has Changes
+              uses: UnicornGlobal/has-changes-action@v1.0.11
