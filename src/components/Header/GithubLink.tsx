@@ -3,10 +3,10 @@ import { DiGithubBadge } from "react-icons/di";
 
 export const GithubLink: React.FC<LinkProps> = (props) => (
     <Link
-        href="https://github.com/oBusk/package-diff"
+        href="https://github.com/oBusk/npm-diff.app"
         rel="noopener noreferrer"
         target="_blank"
-        aria-label="Go to package-diff's Github Repo"
+        aria-label="Go to npm-diff.app's Github Repo"
         outline="0"
         transition="all 0.2s"
         borderRadius="md"

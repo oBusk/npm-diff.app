@@ -4,7 +4,7 @@ import Layout from "components/Layout";
 import { EXAMPLES } from "examples";
 import { NextPage } from "next";
 
-const BASE_PATH = "https://package-diff.vercel.app";
+const BASE_PATH = "https://npm-diff.app.vercel.app";
 const API_PATH = `${BASE_PATH}/api`;
 const EXAMPLE_QUERY = EXAMPLES[0];
 const EXAMPLE_URL = `${API_PATH}/${EXAMPLE_QUERY}`;
@@ -25,7 +25,7 @@ const ApiPage: NextPage<{}> = () => {
         <Layout>
             <Stack p={5} shadow="md" borderWidth="1px" spacing={8}>
                 <Heading as="h2" size="lg">
-                    package-diff API
+                    npm-diff.app API
                 </Heading>
                 <Text>
                     There is a very simple API to get the difference between two

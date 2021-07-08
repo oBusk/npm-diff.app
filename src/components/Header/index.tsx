@@ -27,7 +27,7 @@ export const Header: React.FC<Props> = (props) => (
                     boxShadow: "outline",
                 }}
             >
-                <Heading as="h1">package-diff 📦🔃</Heading>
+                <Heading as="h1">npm-diff.app 📦🔃</Heading>
             </Box>
         </Link>
         <APILInk />
