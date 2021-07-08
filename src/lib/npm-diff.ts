@@ -1,6 +1,6 @@
 import semver from "semver";
 import npa from "npm-package-arg";
-import libnpmdiff from "libnpmdiff";
+import libnpmdiff, { Options, Specs } from "libnpmdiff";
 
 /**
  * Converts two inputs matching what `npm diff --diff=` expects and returns
@@ -33,14 +33,10 @@ function convertVersionsToSpecs([a, b]: [string, string]): [string, string] {
  *
  * > Based on: https://github.com/npm/cli/blob/v7.19.1/lib/diff.js#L57-L89
  */
-export function npmDiff(input: [string, string]) {
+export function npmDiff(input: Specs, options: Options = {}) {
     const [a, b] = convertVersionsToSpecs(input);
 
     console.log({ a, b });
 
-    return libnpmdiff([a, b], {
-        // ...this.npm.flatOptions,
-        // diffFiles: args,
-        // where: this.top,
-    });
+    return libnpmdiff([a, b], options);
 }
