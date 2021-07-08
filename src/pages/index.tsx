@@ -39,7 +39,7 @@ class IndexPage extends Component {
                         ref={this.b}
                     ></Input>
                     <Button width="400px" type="submit">
-                        Package Diff! 📦🔃
+                        npm diff! 📦🔃
                     </Button>
                 </Hero>
             </Layout>
