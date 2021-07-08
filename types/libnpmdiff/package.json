@@ -1,3 +1,6 @@
 {
-    "types": "index.d.ts"
+    "types": "index.d.ts",
+    "dependencies": {
+        "@types/pacote": "^11.1.1"
+    }
 }
