@@ -4,7 +4,7 @@ import Layout from "components/Layout";
 import { EXAMPLES } from "examples";
 import { NextPage } from "next";
 
-const BASE_PATH = "https://npm-diff.app.vercel.app";
+const BASE_PATH = "https://npm-diff.app";
 const API_PATH = `${BASE_PATH}/api`;
 const EXAMPLE_QUERY = EXAMPLES[0];
 const EXAMPLE_URL = `${API_PATH}/${EXAMPLE_QUERY}`;
