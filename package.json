@@ -53,7 +53,7 @@
         "@types/libnpmdiff": "./types/libnpmdiff",
         "@types/node": "^16.0.2",
         "@types/npm-package-arg": "^6.1.1",
-        "@types/react": "^17.0.13",
+        "@types/react": "^17.0.14",
         "@types/react-diff-view": "./types/react-diff-view",
         "@types/react-dom": "^17.0.9",
         "@types/semver": "^7.3.7",
