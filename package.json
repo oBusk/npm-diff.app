@@ -51,7 +51,7 @@
     },
     "devDependencies": {
         "@types/libnpmdiff": "./types/libnpmdiff",
-        "@types/node": "^16.0.2",
+        "@types/node": "^16.3.0",
         "@types/npm-package-arg": "^6.1.1",
         "@types/react": "^17.0.14",
         "@types/react-diff-view": "./types/react-diff-view",
