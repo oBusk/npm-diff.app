@@ -1,44 +1,7 @@
 import { npmDiff } from "lib/npm-diff";
+import { parseBoolean, parseString, paseNumber } from "lib/parse-query";
 import { partsToSpecs } from "lib/parts-to-specs";
 import { NextApiRequest, NextApiResponse } from "next";
-
-function parseString(str: undefined | string | string[]): undefined | string {
-    // If the param is multiple times, we take last value. Assumption is user
-    // threw it on the end.
-    if (Array.isArray(str)) {
-        return str.filter((t) => t == null).pop();
-    } else {
-        return str;
-    }
-}
-
-function parseBoolean(str: undefined | string | string[]): undefined | boolean {
-    str = parseString(str);
-
-    if (str == null) {
-        return undefined;
-    } else if (
-        // 0, 00, 000 etc.
-        parseInt(str) == 0 ||
-        str.toLowerCase() == "no" ||
-        str.toLowerCase() == "false"
-    ) {
-        return false;
-    } else {
-        // 1, 2, yes, true, '' etc.
-        return true;
-    }
-}
-
-function paseNumber(str: undefined | string | string[]): undefined | number {
-    str = parseString(str);
-
-    if (str == null) {
-        return undefined;
-    }
-
-    return parseInt(str);
-}
 
 const apiEndpoint = async (
     req: NextApiRequest,
