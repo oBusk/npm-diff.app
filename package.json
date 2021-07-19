@@ -36,7 +36,7 @@
         "lint-staged": "lint-staged"
     },
     "dependencies": {
-        "@chakra-ui/react": "^1.6.4",
+        "@chakra-ui/react": "^1.6.5",
         "@emotion/react": "^11.4.0",
         "@emotion/styled": "^11.3.0",
         "framer-motion": "^4.1.17",
@@ -51,17 +51,17 @@
     },
     "devDependencies": {
         "@types/libnpmdiff": "./types/libnpmdiff",
-        "@types/node": "^16.0.2",
+        "@types/node": "^16.3.3",
         "@types/npm-package-arg": "^6.1.1",
         "@types/react": "^17.0.14",
         "@types/react-diff-view": "./types/react-diff-view",
         "@types/react-dom": "^17.0.9",
         "@types/semver": "^7.3.7",
-        "eslint": "^7.30.0",
+        "eslint": "^7.31.0",
         "eslint-config-next": "^11.0.1",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^3.4.0",
-        "lint-staged": "^11.0.0",
+        "lint-staged": "^11.0.1",
         "prettier": "^2.3.2",
         "simple-git-hooks": "^2.5.1",
         "typescript": "4.3.5"
