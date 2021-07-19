@@ -2,7 +2,7 @@ import { withTheme } from "@emotion/react";
 import DiffFiles from "components/Diff/DiffFiles";
 import Layout from "components/Layout";
 import { Loading } from "components/Loading";
-import { EXAMPLES } from "examples";
+import { EXAMPLES } from "lib/examples";
 import { npmDiff } from "lib/npm-diff";
 import { partsToSpecs } from "lib/parts-to-specs";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
