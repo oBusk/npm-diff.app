@@ -3,5 +3,6 @@
     "typescript.tsdk": "node_modules/typescript/lib",
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "conventionalCommits.scopes": ["deps", "deps-dev", "vscode"]
 }
