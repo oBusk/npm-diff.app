@@ -17,7 +17,7 @@ type Props = {
 
 export const getStaticPaths: GetStaticPaths = async () => {
     return {
-        paths: EXAMPLES.map((ex) => ({ params: { parts: [ex] } })),
+        paths: [],
         fallback: true,
     };
 };
