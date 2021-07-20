@@ -50,7 +50,7 @@
         "semver": "^7.3.5"
     },
     "devDependencies": {
-        "@types/libnpmdiff": "./types/libnpmdiff",
+        "@types/libnpmdiff": "^2.0.0",
         "@types/node": "^16.3.3",
         "@types/npm-package-arg": "^6.1.1",
         "@types/react": "^17.0.14",
