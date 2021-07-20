@@ -5,7 +5,7 @@ import { Loading } from "components/Loading";
 import { arrayEquals } from "lib/array-equals";
 import { EXAMPLES } from "lib/examples";
 import getAbsoluteSpecs from "lib/get-absolute-specs";
-import { partsToSpecs } from "lib/parts-to-specs";
+import splitParts from "lib/split-parts";
 import libnpmdiff from "libnpmdiff";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import * as React from "react";
@@ -16,7 +16,7 @@ type Props = {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const examplesSpecs = EXAMPLES.map(partsToSpecs);
+    const examplesSpecs = EXAMPLES.map(splitParts);
     const absoluteSpecs = await Promise.all(
         examplesSpecs.map(getAbsoluteSpecs),
     );
@@ -33,7 +33,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
     const { parts } = params ?? {};
 
-    const specs = partsToSpecs(parts);
+    const specs = splitParts(parts);
 
     const absoluteSpecs = await getAbsoluteSpecs(specs);
 

@@ -1,7 +1,7 @@
 import { arrayEquals } from "lib/array-equals";
 import getAbsoluteSpecs from "lib/get-absolute-specs";
 import { parseBoolean, parseString, paseNumber } from "lib/parse-query";
-import { partsToSpecs } from "lib/parts-to-specs";
+import splitParts from "lib/split-parts";
 import libnpmdiff from "libnpmdiff";
 import { NextApiRequest, NextApiResponse } from "next";
 
@@ -25,7 +25,7 @@ const apiEndpoint = async (
         diffText,
     } = req.query ?? {};
 
-    const specs = partsToSpecs(parts);
+    const specs = splitParts(parts);
 
     const absoluteSpecs = await getAbsoluteSpecs(specs);
 

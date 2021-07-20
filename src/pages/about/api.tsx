@@ -2,7 +2,7 @@ import { Code, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { withTheme } from "@emotion/react";
 import Layout from "components/Layout";
 import { EXAMPLES } from "lib/examples";
-import { partsToSpecs } from "lib/parts-to-specs";
+import splitParts from "lib/split-parts";
 import libnpmdiff from "libnpmdiff";
 import { GetStaticProps, NextPage } from "next";
 
@@ -19,7 +19,7 @@ type Props = {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({}) => {
-    const specs = partsToSpecs(EXAMPLE_QUERY);
+    const specs = splitParts(EXAMPLE_QUERY);
     const diff = await libnpmdiff(specs);
 
     return { props: { diff, specs } };
