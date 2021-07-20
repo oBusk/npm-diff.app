@@ -16,8 +16,16 @@ type Props = {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
+    const examplesSpecs = EXAMPLES.map(partsToSpecs);
+    const absoluteSpecs = await Promise.all(
+        examplesSpecs.map(getAbsoluteSpecs),
+    );
+
     return {
-        paths: [],
+        paths: absoluteSpecs.map(([a, b]) => ({
+            params: { parts: [`${a}...${b}`] },
+        })),
+
         fallback: true,
     };
 };
