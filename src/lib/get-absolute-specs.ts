@@ -37,24 +37,25 @@ export async function getAbsoluteSpecs(
     // Use the same mechanics as `npm diff` to get base specs
     const specs = convertVersionsToSpecs(input);
 
-    // if (
-    //     specs.map((spec) => npa(spec).type).every((type) => type === "version")
-    // ) {
-    //     // both are version specs, so we can just return the input
+    if (
+        specs.map((spec) => npa(spec).type).every((type) => type === "version")
+    ) {
+        // both are version specs, so we can just return the input
 
-    //     return specs;
-    // } else {
-    //     // Either of the specs are not version specs, so we need to resolve
+        return specs;
+    } else {
+        // Either of the specs are not version specs, so we need to resolve
 
-    // https://github.com/npm/libnpmdiff/blob/v2.0.4/index.js#L16-L20
-    const [aManifest, bManifest] = await Promise.all(
-        specs.map((spec) => pacote.manifest(spec)),
-    );
+        // https://github.com/npm/libnpmdiff/blob/v2.0.4/index.js#L16-L20
+        const [aManifest, bManifest] = await Promise.all(
+            specs.map((spec) => pacote.manifest(spec)),
+        );
 
-    return [
-        `${aManifest.name}@${aManifest.version}`,
-        `${bManifest.name}@${bManifest.version}`,
-    ];
-
-    // }
+        return [
+            `${aManifest.name}@${aManifest.version}`,
+            `${bManifest.name}@${bManifest.version}`,
+        ];
+    }
 }
+
+export default getAbsoluteSpecs;

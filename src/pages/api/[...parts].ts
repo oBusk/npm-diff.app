@@ -1,5 +1,5 @@
 import { arrayEquals } from "lib/array-equals";
-import { getAbsoluteSpecs } from "lib/get-absolute-specs";
+import getAbsoluteSpecs from "lib/get-absolute-specs";
 import { parseBoolean, parseString, paseNumber } from "lib/parse-query";
 import { partsToSpecs } from "lib/parts-to-specs";
 import libnpmdiff from "libnpmdiff";

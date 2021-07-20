@@ -4,7 +4,7 @@ import Layout from "components/Layout";
 import { Loading } from "components/Loading";
 import { arrayEquals } from "lib/array-equals";
 import { EXAMPLES } from "lib/examples";
-import { getAbsoluteSpecs } from "lib/get-absolute-specs";
+import getAbsoluteSpecs from "lib/get-absolute-specs";
 import { partsToSpecs } from "lib/parts-to-specs";
 import libnpmdiff from "libnpmdiff";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
