@@ -2,12 +2,13 @@ import { withTheme } from "@emotion/react";
 import DiffFiles from "components/Diff/DiffFiles";
 import Layout from "components/Layout";
 import { Loading } from "components/Loading";
-import { arrayEquals } from "lib/array-equals";
 import { EXAMPLES } from "lib/examples";
 import getAbsoluteSpecs from "lib/get-absolute-specs";
+import npmDiff from "lib/npm-diff";
 import splitParts from "lib/split-parts";
-import libnpmdiff from "libnpmdiff";
+import { versionsToSpecs } from "lib/versions-to-specs";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import querystring from "querystring";
 import * as React from "react";
 import { parseDiff } from "react-diff-view";
 
@@ -16,13 +17,14 @@ type Props = {
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-    const examplesSpecs = EXAMPLES.map(splitParts);
-    const absoluteSpecs = await Promise.all(
+    const examplesSpecsOrVersions = EXAMPLES.map(splitParts);
+    const examplesSpecs = examplesSpecsOrVersions.map(versionsToSpecs);
+    const immutableSpecs = await Promise.all(
         examplesSpecs.map(getAbsoluteSpecs),
     );
 
     return {
-        paths: absoluteSpecs.map(([a, b]) => ({
+        paths: immutableSpecs.map(([a, b]) => ({
             params: { parts: [`${a}...${b}`] },
         })),
 
@@ -31,22 +33,50 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-    const { parts } = params ?? {};
+    const {
+        parts,
+        diffNameOnly,
+        diffUnified,
+        diffIgnoreAllSpace,
+        diffNoPrefix,
+        diffSrcPrefix,
+        diffDstPrefix,
+        diffText,
+    } = params ?? {};
 
-    const specs = splitParts(parts);
+    const specsOrVersions = splitParts(parts);
 
-    const absoluteSpecs = await getAbsoluteSpecs(specs);
+    const result = await npmDiff(specsOrVersions, {
+        diffNameOnly,
+        diffUnified,
+        diffIgnoreAllSpace,
+        diffNoPrefix,
+        diffSrcPrefix,
+        diffDstPrefix,
+        diffText,
+    });
 
-    if (arrayEquals(specs, absoluteSpecs)) {
-        const diff = await libnpmdiff(specs);
-
-        return { props: { diff } };
-    } else {
+    if (result.type === "redirect") {
         return {
             redirect: {
-                destination: `/${absoluteSpecs[0]}...${absoluteSpecs[1]}`,
-                // TODO: There are cases where this could be true
-                permanent: false,
+                destination: `/${
+                    result.destinationDiff
+                }?${querystring.stringify({
+                    diffNameOnly,
+                    diffUnified,
+                    diffIgnoreAllSpace,
+                    diffNoPrefix,
+                    diffSrcPrefix,
+                    diffDstPrefix,
+                    diffText,
+                })}`,
+                permanent: result.permanent,
+            },
+        };
+    } else {
+        return {
+            props: {
+                diff: result.diff,
             },
         };
     }

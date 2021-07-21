@@ -53,12 +53,6 @@ describe("getAbsoluteSpecs", () => {
     describe("using specific version", () => {
         it("package@version x2", () =>
             t(["chalk@3.0.0", "chalk@4.1.1"], ["chalk@3.0.0", "chalk@4.1.1"]));
-
-        it("package@version | version", () =>
-            t(["chalk@3.0.0", "4.1.1"], ["chalk@3.0.0", "chalk@4.1.1"]));
-
-        it("version | package@version", async () =>
-            t(["3.0.0", "chalk@4.1.1"], ["chalk@3.0.0", "chalk@4.1.1"]));
     });
 
     describe("no version (fallback to latest)", () => {

@@ -1,3 +1,5 @@
+import libnpmdiff from "libnpmdiff";
+
 export function parseString(
     str: undefined | string | string[],
 ): undefined | string {
@@ -41,3 +43,35 @@ export function paseNumber(
 
     return parseInt(str);
 }
+
+export type QueryParams = {
+    diffNameOnly?: string | string[];
+    diffUnified?: string | string[];
+    diffIgnoreAllSpace?: string | string[];
+    diffNoPrefix?: string | string[];
+    diffSrcPrefix?: string | string[];
+    diffDstPrefix?: string | string[];
+    diffText?: string | string[];
+};
+
+export function parseQuery({
+    diffNameOnly,
+    diffUnified,
+    diffIgnoreAllSpace,
+    diffNoPrefix,
+    diffSrcPrefix,
+    diffDstPrefix,
+    diffText,
+}: QueryParams): libnpmdiff.Options {
+    return {
+        diffNameOnly: parseBoolean(diffNameOnly),
+        diffUnified: paseNumber(diffUnified),
+        diffIgnoreAllSpace: parseBoolean(diffIgnoreAllSpace),
+        diffNoPrefix: parseBoolean(diffNoPrefix),
+        diffSrcPrefix: parseString(diffSrcPrefix),
+        diffDstPrefix: parseString(diffDstPrefix),
+        diffText: parseBoolean(diffText),
+    };
+}
+
+export default parseQuery;

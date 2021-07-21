@@ -1,8 +1,5 @@
-import { arrayEquals } from "lib/array-equals";
-import getAbsoluteSpecs from "lib/get-absolute-specs";
-import { parseBoolean, parseString, paseNumber } from "lib/parse-query";
+import npmDiff from "lib/npm-diff";
 import splitParts from "lib/split-parts";
-import libnpmdiff from "libnpmdiff";
 import { NextApiRequest, NextApiResponse } from "next";
 
 enum STATUS_CODES {
@@ -25,29 +22,28 @@ const apiEndpoint = async (
         diffText,
     } = req.query ?? {};
 
-    const specs = splitParts(parts);
+    const specsOrVersions = splitParts(parts);
 
-    const absoluteSpecs = await getAbsoluteSpecs(specs);
+    const result = await npmDiff(specsOrVersions, {
+        diffNameOnly,
+        diffUnified,
+        diffIgnoreAllSpace,
+        diffNoPrefix,
+        diffSrcPrefix,
+        diffDstPrefix,
+        diffText,
+    });
 
-    if (arrayEquals(specs, absoluteSpecs)) {
-        const diff = await libnpmdiff(specs, {
-            diffNameOnly: parseBoolean(diffNameOnly),
-            diffUnified: paseNumber(diffUnified),
-            diffIgnoreAllSpace: parseBoolean(diffIgnoreAllSpace),
-            diffNoPrefix: parseBoolean(diffNoPrefix),
-            diffSrcPrefix: parseString(diffSrcPrefix),
-            diffDstPrefix: parseString(diffDstPrefix),
-            diffText: parseBoolean(diffText),
-        });
-
-        res.status(200).send(diff);
+    if (result.type === "result") {
+        res.status(200).send(result.diff);
     } else {
-        const rawQuery = req.url?.match(/\?.*$/);
+        const rawQuery = req.url?.match(/\?.*/);
 
         res.redirect(
-            // TODO: Could be permanent in some situations.
-            STATUS_CODES.TEMPORARY_REDIRECT,
-            `/api/${absoluteSpecs[0]}...${absoluteSpecs[1]}${rawQuery ?? ""}`,
+            result.permanent
+                ? STATUS_CODES.PERMANENT_REDIRECT
+                : STATUS_CODES.TEMPORARY_REDIRECT,
+            `/api/${result.destinationDiff}${rawQuery ?? ""}`,
         );
     }
 };
