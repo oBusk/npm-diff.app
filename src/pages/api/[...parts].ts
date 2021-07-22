@@ -27,7 +27,7 @@ const apiEndpoint: NextApiHandler<string> = async (req, res) => {
             redirect === "permanent"
                 ? STATUS_CODES.PERMANENT_REDIRECT
                 : STATUS_CODES.TEMPORARY_REDIRECT,
-            `/api/${specsToDiff(immutableSpecs)}` + rawQuery(req),
+            `/api/${specsToDiff(immutableSpecs)}` + rawQuery(req, "parts"),
         );
     }
 };

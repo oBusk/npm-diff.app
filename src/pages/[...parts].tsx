@@ -36,8 +36,9 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     } else {
         return {
             redirect: {
-                destination: `/${specsToDiff(immutableSpecs)}` + rawQuery(req),
                 permanent: redirect === "permanent",
+                destination:
+                    `/${specsToDiff(immutableSpecs)}` + rawQuery(req, "parts"),
             },
         };
     }
