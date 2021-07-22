@@ -4,47 +4,22 @@ import rawQuery from "lib/raw-query";
 import specsToDiff from "lib/specs-to-diff";
 import splitParts from "lib/split-parts";
 import libnpmdiff from "libnpmdiff";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
 
 enum STATUS_CODES {
     TEMPORARY_REDIRECT = 307,
     PERMANENT_REDIRECT = 308,
 }
 
-const apiEndpoint = async (
-    req: NextApiRequest,
-    res: NextApiResponse,
-): Promise<void> => {
-    const {
-        parts,
-        diffNameOnly,
-        diffUnified,
-        diffIgnoreAllSpace,
-        diffNoPrefix,
-        diffSrcPrefix,
-        diffDstPrefix,
-        diffText,
-    } = req.query ?? {};
+const apiEndpoint: NextApiHandler<string> = async (req, res) => {
+    const { parts, ...options } = req.query ?? {};
 
     const specsOrVersions = splitParts(parts);
 
-    const { redirect, immutableSpecs: specs } = await destination(
-        specsOrVersions,
-    );
+    const { redirect, immutableSpecs } = await destination(specsOrVersions);
 
     if (redirect === false) {
-        const diff = await libnpmdiff(
-            specs,
-            parseQuery({
-                diffNameOnly,
-                diffUnified,
-                diffIgnoreAllSpace,
-                diffNoPrefix,
-                diffSrcPrefix,
-                diffDstPrefix,
-                diffText,
-            }),
-        );
+        const diff = await libnpmdiff(immutableSpecs, parseQuery(options));
 
         res.status(200).send(diff);
     } else {
@@ -52,7 +27,7 @@ const apiEndpoint = async (
             redirect === "permanent"
                 ? STATUS_CODES.PERMANENT_REDIRECT
                 : STATUS_CODES.TEMPORARY_REDIRECT,
-            `/api/${specsToDiff(specs)}` + rawQuery(req),
+            `/api/${specsToDiff(immutableSpecs)}` + rawQuery(req),
         );
     }
 };
