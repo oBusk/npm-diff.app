@@ -1,10 +1,11 @@
 import destination from "lib/destination";
 import parseQuery from "lib/parse-query";
 import rawQuery from "lib/raw-query";
+import setCacheControl from "lib/set-cache-control";
 import specsToDiff from "lib/specs-to-diff";
 import splitParts from "lib/split-parts";
 import libnpmdiff from "libnpmdiff";
-import { NextApiHandler, NextApiRequest, NextApiResponse } from "next";
+import { NextApiHandler } from "next";
 
 enum STATUS_CODES {
     TEMPORARY_REDIRECT = 307,
@@ -17,6 +18,10 @@ const apiEndpoint: NextApiHandler<string> = async (req, res) => {
     const specsOrVersions = splitParts(parts);
 
     const { redirect, immutableSpecs } = await destination(specsOrVersions);
+
+    if (redirect !== "temporary") {
+        setCacheControl(res);
+    }
 
     if (redirect === false) {
         const diff = await libnpmdiff(immutableSpecs, parseQuery(options));
