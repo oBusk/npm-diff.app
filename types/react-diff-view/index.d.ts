@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, Props } from "react";
 
 export interface DiffFile {
     oldRevision: string;
@@ -32,7 +32,7 @@ export interface DiffProps {
 
 export declare const Diff: FunctionComponent<DiffProps>;
 
-export interface DecorationProps extends React.Props {
+export interface DecorationProps extends Props {
     className?: string;
     gutterClassName?: string;
     contentClassName?: string;

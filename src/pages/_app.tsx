@@ -1,7 +1,7 @@
 import { ChakraProvider, CSSReset } from "@chakra-ui/react";
 import { AppProps } from "next/app";
 
-function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+function MyApp({ Component, pageProps }: AppProps) {
     return (
         <ChakraProvider>
             <CSSReset />

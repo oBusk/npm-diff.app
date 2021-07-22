@@ -1,6 +1,7 @@
 import { Flex, FlexProps } from "@chakra-ui/react";
+import { FunctionComponent } from "react";
 
-export const Hero: React.FC<FlexProps> = ({ children, ...rest }) => {
+export const Hero: FunctionComponent<FlexProps> = ({ children, ...rest }) => {
     return (
         <Flex
             justifyContent="center"

@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FunctionComponent } from "react";
 import { Diff, DiffType, HunkData } from "react-diff-view";
 import DiffHunk from "./DiffHunk";
 import "react-diff-view/style/index.css";
@@ -8,7 +8,7 @@ type Props = {
     type: DiffType;
 };
 
-const DiffFile: FC<Props> = ({ type, hunks }) => (
+const DiffFile: FunctionComponent<Props> = ({ type, hunks }) => (
     <Diff viewType="split" diffType={type} hunks={hunks}>
         {(hunks: HunkData[]) =>
             hunks.map((hunk) => (

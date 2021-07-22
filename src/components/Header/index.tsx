@@ -1,11 +1,10 @@
 import { Box, Flex, FlexProps, Heading } from "@chakra-ui/react";
 import Link from "next/link";
+import { FunctionComponent } from "react";
 import { APILInk } from "./APILink";
 import { GithubLink } from "./GithubLink";
 
-export type Props = FlexProps;
-
-export const Header: React.FC<Props> = (props) => (
+export const Header: FunctionComponent<FlexProps> = (props) => (
     <Flex
         as="nav"
         align="center"
