@@ -1,7 +1,7 @@
 import { withTheme } from "@emotion/react";
 import DiffFiles from "components/Diff/DiffFiles";
 import Layout from "components/Layout";
-import { Loading } from "components/Loading";
+import Loading from "components/Loading";
 import destination from "lib/destination";
 import parseQuery from "lib/parse-query";
 import rawQuery from "lib/raw-query";
@@ -9,7 +9,6 @@ import specsToDiff from "lib/specs-to-diff";
 import splitParts from "lib/split-parts";
 import libnpmdiff from "libnpmdiff";
 import { GetServerSideProps, NextPage } from "next";
-import * as React from "react";
 import { parseDiff } from "react-diff-view";
 
 type Props = {
