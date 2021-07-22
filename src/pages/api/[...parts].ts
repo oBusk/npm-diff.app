@@ -1,5 +1,6 @@
 import destination from "lib/destination";
 import parseQuery from "lib/parse-query";
+import rawQuery from "lib/raw-query";
 import specsToDiff from "lib/specs-to-diff";
 import splitParts from "lib/split-parts";
 import libnpmdiff from "libnpmdiff";
@@ -47,13 +48,11 @@ const apiEndpoint = async (
 
         res.status(200).send(diff);
     } else {
-        const rawQuery = req.url?.match(/\?.*/);
-
         res.redirect(
             redirect === "permanent"
                 ? STATUS_CODES.PERMANENT_REDIRECT
                 : STATUS_CODES.TEMPORARY_REDIRECT,
-            `/api/${specsToDiff(specs)}${rawQuery ?? ""}`,
+            `/api/${specsToDiff(specs)}` + rawQuery(req),
         );
     }
 };
