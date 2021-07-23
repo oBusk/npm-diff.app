@@ -1,4 +1,4 @@
-export function specsToDiff([a, b]: [string, string]): string {
+function specsToDiff([a, b]: [string, string]): string {
     return `${a}...${b}`;
 }
 

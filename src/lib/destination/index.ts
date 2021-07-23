@@ -14,7 +14,7 @@ export interface Destination {
  * a "immutable" specs (specs that will for ever load the same version)
  * and redirect information, information if and what type of redirect we can use.
  */
-export async function destination(
+async function destination(
     specsOrVersions: [string, string],
 ): Promise<Destination> {
     // This part is done in npm/cli

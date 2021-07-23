@@ -1,7 +1,7 @@
 import { Code, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { withTheme } from "@emotion/react";
 import Layout from "components/Layout";
-import { EXAMPLES } from "lib/examples";
+import EXAMPLES from "lib/examples";
 import splitParts from "lib/utils/splitParts";
 import libnpmdiff from "libnpmdiff";
 import { GetStaticProps, NextPage } from "next";

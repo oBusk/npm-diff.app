@@ -2,7 +2,7 @@ import { Button, Input } from "@chakra-ui/react";
 import { withTheme } from "@emotion/react";
 import Hero from "components/Hero";
 import Layout from "components/Layout";
-import { EXAMPLES } from "lib/examples";
+import EXAMPLES from "lib/examples";
 import Link from "next/link";
 import router from "next/router";
 import { Component, createRef, FormEvent, RefObject } from "react";

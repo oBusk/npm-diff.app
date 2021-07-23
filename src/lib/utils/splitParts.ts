@@ -12,7 +12,7 @@ function isTupleOfTwo<T>(t: T[]): t is [T, T] {
  *
  * `['@types', 'package@^1...@types', 'package@^2']` ➡ `['@types/package@^1', '@types/package@^2']`
  */
-export function splitParts(parts?: string | string[]): [string, string] {
+function splitParts(parts?: string | string[]): [string, string] {
     if (!parts || (typeof parts !== "string" && !Array.isArray(parts))) {
         throw new Error("Invalid query");
     }
