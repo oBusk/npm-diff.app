@@ -7,14 +7,26 @@ import Link from "next/link";
 import router from "next/router";
 import { Component, createRef, FormEvent, RefObject } from "react";
 
-class IndexPage extends Component {
+export interface IndexProps {}
+
+export interface IndexState {
+    isLoading: boolean;
+}
+
+class IndexPage extends Component<IndexProps, IndexState> {
     a: RefObject<HTMLInputElement>;
     b: RefObject<HTMLInputElement>;
+    form: RefObject<HTMLFormElement>;
 
     constructor(props: {}) {
         super(props);
         this.a = createRef();
         this.b = createRef();
+        this.form = createRef();
+
+        this.state = {
+            isLoading: false,
+        };
     }
 
     render() {
@@ -29,16 +41,22 @@ class IndexPage extends Component {
                     <Input
                         type="text"
                         name="a"
-                        placeholder="package@version"
+                        placeholder="package@1.2.3, package@^1, package@2.X"
+                        disabled={this.state.isLoading}
                         ref={this.a}
                     ></Input>
                     <Input
                         type="text"
                         name="b"
-                        placeholder="version or package@version"
+                        placeholder="^3.0.1, ~1.0.0, package-b@~3.0.0"
+                        disabled={this.state.isLoading}
                         ref={this.b}
                     ></Input>
-                    <Button width="400px" type="submit">
+                    <Button
+                        isLoading={this.state.isLoading}
+                        width="400px"
+                        type="submit"
+                    >
                         npm diff! 📦🔃
                     </Button>
                 </Hero>
@@ -55,6 +73,8 @@ class IndexPage extends Component {
 
         this.a.current.value = a ?? "";
         this.b.current.value = b ?? "";
+
+        this.setState({ isLoading: true });
     };
 
     private handleSubmit = (event: FormEvent): void => {
@@ -67,6 +87,8 @@ class IndexPage extends Component {
         };
         const a = target.a.value;
         const b = target.b.value;
+
+        this.setState({ isLoading: true });
 
         void router.push(`/${a}...${b}`);
     };
