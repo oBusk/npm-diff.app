@@ -15,7 +15,7 @@ import semver from "semver";
  *
  * > Based on: https://github.com/npm/cli/blob/v7.19.1/lib/diff.js#L235-L264
  */
-export function versionsToSpecs([a, b]: [string, string]): [string, string] {
+function versionsToSpecs([a, b]: [string, string]): [string, string] {
     const semverA = semver.validRange(a);
     const semverB = semver.validRange(b);
 
@@ -37,3 +37,5 @@ export function versionsToSpecs([a, b]: [string, string]): [string, string] {
     // no valid semver ranges used
     return [a, b];
 }
+
+export default versionsToSpecs;

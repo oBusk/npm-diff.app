@@ -1,4 +1,4 @@
-export function arrayEquals(a: any[], b: any[]) {
+function arrayEquals(a: any[], b: any[]) {
     if (a === b) {
         return true;
     }
@@ -15,3 +15,5 @@ export function arrayEquals(a: any[], b: any[]) {
     }
     return true;
 }
+
+export default arrayEquals;
