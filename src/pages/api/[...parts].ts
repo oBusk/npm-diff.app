@@ -1,35 +1,40 @@
-import { npmDiff } from "lib/npm-diff";
-import { parseBoolean, parseString, paseNumber } from "lib/parse-query";
-import { partsToSpecs } from "lib/parts-to-specs";
-import { NextApiRequest, NextApiResponse } from "next";
+import destination from "lib/destination";
+import parseQuery from "lib/query";
+import rawQuery from "lib/utils/raw-query";
+import setCacheControl from "lib/utils/set-cache-control";
+import specsToDiff from "lib/utils/specs-to-diff";
+import splitParts from "lib/utils/split-parts";
+import libnpmdiff from "libnpmdiff";
+import { NextApiHandler } from "next";
 
-const apiEndpoint = async (
-    req: NextApiRequest,
-    res: NextApiResponse,
-): Promise<void> => {
-    const {
-        parts,
-        diffNameOnly,
-        diffUnified,
-        diffIgnoreAllSpace,
-        diffNoPrefix,
-        diffSrcPrefix,
-        diffDstPrefix,
-        diffText,
-    } = req.query ?? {};
+enum STATUS_CODES {
+    TEMPORARY_REDIRECT = 307,
+    PERMANENT_REDIRECT = 308,
+}
 
-    const specs = partsToSpecs(parts);
-    const diff = await npmDiff(specs, {
-        diffNameOnly: parseBoolean(diffNameOnly),
-        diffUnified: paseNumber(diffUnified),
-        diffIgnoreAllSpace: parseBoolean(diffIgnoreAllSpace),
-        diffNoPrefix: parseBoolean(diffNoPrefix),
-        diffSrcPrefix: parseString(diffSrcPrefix),
-        diffDstPrefix: parseString(diffDstPrefix),
-        diffText: parseBoolean(diffText),
-    });
+const apiEndpoint: NextApiHandler<string> = async (req, res) => {
+    const { parts, ...options } = req.query ?? {};
 
-    res.status(200).send(diff);
+    const specsOrVersions = splitParts(parts);
+
+    const { redirect, immutableSpecs } = await destination(specsOrVersions);
+
+    if (redirect !== "temporary") {
+        setCacheControl(res);
+    }
+
+    if (redirect === false) {
+        const diff = await libnpmdiff(immutableSpecs, parseQuery(options));
+
+        res.status(200).send(diff);
+    } else {
+        res.redirect(
+            redirect === "permanent"
+                ? STATUS_CODES.PERMANENT_REDIRECT
+                : STATUS_CODES.TEMPORARY_REDIRECT,
+            `/api/${specsToDiff(immutableSpecs)}` + rawQuery(req, "parts"),
+        );
+    }
 };
 
 export default apiEndpoint;

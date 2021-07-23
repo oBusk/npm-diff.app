@@ -33,16 +33,20 @@
         "prettier": "prettier **/*.{md,yml,yaml,json} --ignore-path .gitignore --check",
         "postlint-fix": "npm run prettier-fix",
         "prettier-fix": "prettier **/*.{md,yml,yaml,json} --ignore-path .gitignore --write",
-        "lint-staged": "lint-staged"
+        "lint-staged": "lint-staged",
+        "test": "jest --watch",
+        "test-ci": "jest --ci"
     },
     "dependencies": {
         "@chakra-ui/react": "^1.6.5",
         "@emotion/react": "^11.4.0",
         "@emotion/styled": "^11.3.0",
         "framer-motion": "^4.1.17",
+        "jest": "^27.0.6",
         "libnpmdiff": "^2.0.4",
         "next": "^11.0.1",
         "npm-package-arg": "^8.1.5",
+        "pacote": "^11.3.5",
         "react": "^17.0.2",
         "react-diff-view": "^2.4.7",
         "react-dom": "^17.0.2",
@@ -50,13 +54,16 @@
         "semver": "^7.3.5"
     },
     "devDependencies": {
+        "@types/jest": "^26.0.24",
         "@types/libnpmdiff": "^2.0.0",
         "@types/node": "^16.4.0",
         "@types/npm-package-arg": "^6.1.1",
+        "@types/pacote": "^11.1.1",
         "@types/react": "^17.0.14",
         "@types/react-diff-view": "./types/react-diff-view",
         "@types/react-dom": "^17.0.9",
         "@types/semver": "^7.3.7",
+        "babel-jest": "^27.0.6",
         "eslint": "^7.31.0",
         "eslint-config-next": "^11.0.1",
         "eslint-config-prettier": "^8.3.0",

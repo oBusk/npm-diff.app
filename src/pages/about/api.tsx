@@ -2,8 +2,8 @@ import { Code, Heading, Link, Text, VStack } from "@chakra-ui/react";
 import { withTheme } from "@emotion/react";
 import Layout from "components/Layout";
 import { EXAMPLES } from "lib/examples";
-import { npmDiff } from "lib/npm-diff";
-import { partsToSpecs } from "lib/parts-to-specs";
+import splitParts from "lib/utils/split-parts";
+import libnpmdiff from "libnpmdiff";
 import { GetStaticProps, NextPage } from "next";
 
 // TODO: Would be nice if this was dynamic. But doesn't seem possible
@@ -19,8 +19,8 @@ type Props = {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({}) => {
-    const specs = partsToSpecs(EXAMPLE_QUERY);
-    const diff = await npmDiff(specs);
+    const specs = splitParts(EXAMPLE_QUERY);
+    const diff = await libnpmdiff(specs);
 
     return { props: { diff, specs } };
 };

@@ -4,5 +4,14 @@
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "conventionalCommits.scopes": ["deps", "deps-dev", "vscode"]
+    "conventionalCommits.scopes": [
+        "actions",
+        "api",
+        "deps-dev",
+        "deps",
+        "lib",
+        "test",
+        "ui",
+        "vscode"
+    ]
 }

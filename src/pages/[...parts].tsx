@@ -1,32 +1,53 @@
 import { withTheme } from "@emotion/react";
 import DiffFiles from "components/Diff/DiffFiles";
 import Layout from "components/Layout";
-import { Loading } from "components/Loading";
-import { EXAMPLES } from "lib/examples";
-import { npmDiff } from "lib/npm-diff";
-import { partsToSpecs } from "lib/parts-to-specs";
-import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import * as React from "react";
+import Loading from "components/Loading";
+import destination from "lib/destination";
+import parseQuery from "lib/query";
+import rawQuery from "lib/utils/raw-query";
+import setCacheControl from "lib/utils/set-cache-control";
+import specsToDiff from "lib/utils/specs-to-diff";
+import splitParts from "lib/utils/split-parts";
+import libnpmdiff from "libnpmdiff";
+import { GetServerSideProps, NextPage } from "next";
 import { parseDiff } from "react-diff-view";
 
 type Props = {
     diff: string;
 };
 
-export const getStaticPaths: GetStaticPaths = async () => {
-    return {
-        paths: EXAMPLES.map((ex) => ({ params: { parts: [ex] } })),
-        fallback: true,
-    };
-};
+export const getServerSideProps: GetServerSideProps<Props> = async ({
+    query,
+    req,
+    res,
+}) => {
+    const { parts, ...options } = query ?? {};
 
-export const getStaticProps: GetStaticProps<Props> = async ({ params }) => {
-    const { parts } = params ?? {};
+    const specsOrVersions = splitParts(parts);
 
-    const specs = partsToSpecs(parts);
-    const diff = await npmDiff(specs);
+    const { redirect, immutableSpecs } = await destination(specsOrVersions);
 
-    return { props: { diff } };
+    if (redirect !== "temporary") {
+        setCacheControl(res);
+    }
+
+    if (redirect === false) {
+        const diff = await libnpmdiff(immutableSpecs, parseQuery(options));
+
+        return {
+            props: {
+                diff,
+            },
+        };
+    } else {
+        return {
+            redirect: {
+                permanent: redirect === "permanent",
+                destination:
+                    `/${specsToDiff(immutableSpecs)}` + rawQuery(req, "parts"),
+            },
+        };
+    }
 };
 
 const DiffPage: NextPage<Props> = ({ diff }) => {

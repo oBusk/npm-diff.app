@@ -1,13 +1,13 @@
 import { Flex } from "@chakra-ui/react";
 import Head from "next/head";
-import * as React from "react";
+import { FunctionComponent } from "react";
 import { Header } from "./Header";
 
 type Props = {
     title?: string;
 };
 
-const Layout: React.FunctionComponent<Props> = ({
+const Layout: FunctionComponent<Props> = ({
     children,
     title = "",
     ...props

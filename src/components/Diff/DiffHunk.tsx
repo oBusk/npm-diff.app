@@ -1,11 +1,11 @@
-import { FC } from "react";
+import { FunctionComponent } from "react";
 import { Decoration, Hunk, HunkData } from "react-diff-view";
 
 interface Props {
     hunk: HunkData;
 }
 
-const DiffHunk: FC<Props> = ({ hunk }) => (
+const DiffHunk: FunctionComponent<Props> = ({ hunk }) => (
     <>
         <Decoration>{hunk.content}</Decoration>
         <Hunk hunk={hunk}></Hunk>

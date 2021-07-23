@@ -34,6 +34,37 @@ jobs:
             - name: Check Linting
               run: npm run lint
 
+    test:
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        env:
+            CI: true
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+            - name: Use Volta Node/NPM
+              uses: volta-cli/action@v1.7.0
+            - name: Get cache dir, Node Version and NPM Version
+              id: node-config
+              run: |
+                  echo "::set-output name=nodev::$(node -v)"
+                  echo "::set-output name=npmv::$(npm -v)"
+                  echo "::set-output name=dir::$(npm config get cache)"
+            - name: Cache npm cache
+              uses: actions/cache@v2
+              with:
+                  path: ${{ steps.node-config.outputs.dir }}
+                  key: npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  restore-keys: |
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}-npm-v${{ steps.node-config.outputs.npmv }}
+                      npm-${{ runner.os }}-node-${{ steps.node-config.outputs.nodev }}
+                      npm-${{ runner.os }}
+            - name: Install
+              run: npm ci
+            - name: Run tests
+              run: npm run test-ci
+
     build:
         runs-on: ubuntu-latest
         timeout-minutes: 5

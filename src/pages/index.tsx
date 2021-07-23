@@ -5,7 +5,7 @@ import Layout from "components/Layout";
 import { EXAMPLES } from "lib/examples";
 import Link from "next/link";
 import router from "next/router";
-import { Component, createRef, RefObject } from "react";
+import { Component, createRef, FormEvent, RefObject } from "react";
 
 class IndexPage extends Component {
     a: RefObject<HTMLInputElement>;
@@ -17,7 +17,7 @@ class IndexPage extends Component {
         this.b = createRef();
     }
 
-    render(): JSX.Element {
+    render() {
         return (
             <Layout>
                 {EXAMPLES.map((ex) => (
@@ -57,7 +57,7 @@ class IndexPage extends Component {
         this.b.current.value = b ?? "";
     };
 
-    private handleSubmit = (event: React.FormEvent): void => {
+    private handleSubmit = (event: FormEvent): void => {
         event.preventDefault();
 
         const target = event.target as typeof event.target & {
