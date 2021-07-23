@@ -1,5 +1,5 @@
 import destination from "lib/destination";
-import parseQuery from "lib/utils/parse-query";
+import parseQuery from "lib/query";
 import rawQuery from "lib/utils/raw-query";
 import setCacheControl from "lib/utils/set-cache-control";
 import specsToDiff from "lib/utils/specs-to-diff";
