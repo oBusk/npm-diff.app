@@ -1,4 +1,5 @@
 module.exports = {
+    moduleDirectories: ["node_modules", "src"],
     collectCoverageFrom: [
         "**/*.{js,jsx,ts,tsx}",
         "!**/*.d.ts",
