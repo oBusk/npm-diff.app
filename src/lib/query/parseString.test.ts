@@ -1,4 +1,4 @@
-import parseString from "./parse-string";
+import parseString from "./parseString";
 
 describe("query/parseString", () => {
     it("input is undefiend", () =>

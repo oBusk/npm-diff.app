@@ -1,5 +1,5 @@
 import pacote from "pacote";
-import immutableSpec from "./immutable-spec";
+import immutableSpec from "./immutableSpec";
 
 const hashFinder = /(?:\#.*)?$/;
 

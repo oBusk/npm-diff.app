@@ -1,4 +1,4 @@
-import parseString from "./parse-string";
+import parseString from "./parseString";
 
 function parseBoolean(str: undefined | string | string[]): undefined | boolean {
     str = parseString(str);

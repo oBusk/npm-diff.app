@@ -1,4 +1,4 @@
-import parseBoolean from "./parse-boolean";
+import parseBoolean from "./parseBoolean";
 
 describe("query/parseBoolean", () => {
     it("input is `undefined`", () =>

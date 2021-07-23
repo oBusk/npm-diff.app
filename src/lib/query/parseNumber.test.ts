@@ -1,4 +1,4 @@
-import parseNumber from "./parse-number";
+import parseNumber from "./parseNumber";
 
 describe("query/parseNumber", () => {
     it("input is `undefined`", () =>

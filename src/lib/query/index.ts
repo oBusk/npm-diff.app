@@ -1,7 +1,7 @@
 import libnpmdiff from "libnpmdiff";
-import parseBoolean from "./parse-boolean";
-import parseNumber from "./parse-number";
-import parseString from "./parse-string";
+import parseBoolean from "./parseBoolean";
+import parseNumber from "./parseNumber";
+import parseString from "./parseString";
 
 export type QueryParams = {
     diffNameOnly?: string | string[];

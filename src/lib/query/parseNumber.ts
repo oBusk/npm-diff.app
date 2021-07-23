@@ -1,4 +1,4 @@
-import parseString from "./parse-string";
+import parseString from "./parseString";
 
 function parseNumber(str: undefined | string | string[]): undefined | number {
     str = parseString(str);

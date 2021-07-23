@@ -1,4 +1,4 @@
-import vts from "./versions-to-specs";
+import vts from "./versionsToSpecs";
 
 describe("versionsToSpecs", () => {
     const expected = Object.freeze(["example@1.0.0", "example@2.0.0"] as const);
