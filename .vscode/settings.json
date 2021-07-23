@@ -6,9 +6,12 @@
     },
     "conventionalCommits.scopes": [
         "actions",
-        "deps",
+        "api",
         "deps-dev",
-        "vscode",
-        "test"
+        "deps",
+        "lib",
+        "test",
+        "ui",
+        "vscode"
     ]
 }
