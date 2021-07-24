@@ -1,7 +1,6 @@
 import { withTheme } from "@emotion/react";
 import DiffFiles from "components/Diff/DiffFiles";
 import Layout from "components/Layout";
-import Loading from "components/Loading";
 import destination from "lib/destination";
 import parseQuery from "lib/query";
 import rawQuery from "lib/utils/rawQuery";
