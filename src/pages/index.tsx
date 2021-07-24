@@ -16,13 +16,11 @@ export interface IndexState {
 class IndexPage extends Component<IndexProps, IndexState> {
     a: RefObject<HTMLInputElement>;
     b: RefObject<HTMLInputElement>;
-    form: RefObject<HTMLFormElement>;
 
     constructor(props: {}) {
         super(props);
         this.a = createRef();
         this.b = createRef();
-        this.form = createRef();
 
         this.state = {
             isLoading: false,
