@@ -51,21 +51,13 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 };
 
 const DiffPage: NextPage<Props> = ({ diff }) => {
-    if (!diff) {
-        return (
-            <Layout>
-                <Loading />
-            </Layout>
-        );
-    } else {
-        const files = parseDiff(diff);
+    const files = parseDiff(diff);
 
-        return (
-            <Layout>
-                <DiffFiles files={files} />
-            </Layout>
-        );
-    }
+    return (
+        <Layout>
+            <DiffFiles files={files} />
+        </Layout>
+    );
 };
 
 export default withTheme(DiffPage);
