@@ -7,6 +7,8 @@ type Props = {
     title?: string;
 };
 
+const BACKGROUND_COLOR = "white";
+
 const Layout: FunctionComponent<Props> = ({
     children,
     title = "",
@@ -21,11 +23,11 @@ const Layout: FunctionComponent<Props> = ({
                 direction="column"
                 alignItems="center"
                 justifyContent="flex-start"
-                bg="gray.50"
+                bg={BACKGROUND_COLOR}
                 minHeight="100vh"
                 {...props}
             >
-                <Header bg="gray.50" />
+                <Header bg={BACKGROUND_COLOR} />
                 {children}
             </Flex>
         </>

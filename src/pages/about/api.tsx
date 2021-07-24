@@ -34,8 +34,14 @@ const ApiPage: NextPage<Props> = ({ diff, specs }) => {
                 </Heading>
                 <Text>
                     npm-diff.app exposes a online API to equal{" "}
-                    <Code>npm diff</Code>, to be able to see the changes between
-                    versions of packages or forks of packages.
+                    <a
+                        href="https://docs.npmjs.com/cli/v7/commands/npm-diff"
+                        rel="noopener noreferrer"
+                    >
+                        <Code>npm diff</Code>
+                    </a>
+                    , to be able to see the changes between versions of packages
+                    or forks of packages.
                 </Text>
 
                 <Text>

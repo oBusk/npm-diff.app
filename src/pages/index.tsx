@@ -1,3 +1,4 @@
+import { Heading, Code, Text } from "@chakra-ui/react";
 import { withTheme } from "@emotion/react";
 import Layout from "components/Layout";
 import MainForm from "components/MainForm";
@@ -10,8 +11,8 @@ export interface IndexProps {}
 
 export interface IndexState {
     isLoading: boolean;
-    aValue: string;
-    bValue: string;
+    overrideA: string | null;
+    overrideB: string | null;
 }
 
 class IndexPage extends Component<IndexProps, IndexState> {
@@ -19,8 +20,8 @@ class IndexPage extends Component<IndexProps, IndexState> {
         super(props);
 
         this.state = {
-            aValue: "",
-            bValue: "",
+            overrideA: null,
+            overrideB: null,
             isLoading: false,
         };
     }
@@ -28,30 +29,61 @@ class IndexPage extends Component<IndexProps, IndexState> {
     render() {
         return (
             <Layout>
-                {EXAMPLES.map((ex) => (
-                    <Link key={ex} href={`/${ex}`}>
-                        <a onClick={() => this.clickedExample(ex)}>{ex}</a>
-                    </Link>
-                ))}
+                <Text align="center">
+                    <a
+                        href="https://docs.npmjs.com/cli/v7/commands/npm-diff"
+                        rel="noopener noreferrer"
+                    >
+                        <Code>npm diff</Code>
+                    </a>{" "}
+                    online!
+                    <br />
+                    Web tool to compare versions, or branches, of NPM packages.
+                </Text>
                 <MainForm
-                    aValue={this.state.aValue}
-                    bValue={this.state.bValue}
+                    overrideA={this.state.overrideA}
+                    overrideB={this.state.overrideB}
                     isLoading={this.state.isLoading}
                     handleSubmit={this.goToDiff}
                 />
+                <Heading color="gray.300" size="md">
+                    Examples
+                </Heading>
+                {EXAMPLES.map((ex) => (
+                    <Link key={ex} href={`/${ex}`}>
+                        <a
+                            onMouseOver={() => this.exampleMouseOver(ex)}
+                            onMouseOut={() => this.exampleMouseOut()}
+                            onClick={() => this.exampleClicked()}
+                        >
+                            {ex}
+                        </a>
+                    </Link>
+                ))}
             </Layout>
         );
     }
 
-    private clickedExample = (ex: string) => {
+    private exampleMouseOver = (ex: string) => {
         const [a, b] = ex.split("...");
 
         this.setState({
-            aValue: a,
-            bValue: b,
+            overrideA: a,
+            overrideB: b,
         });
+    };
 
-        this.goToDiff(a, b);
+    private exampleMouseOut = () => {
+        this.setState({
+            overrideA: null,
+            overrideB: null,
+        });
+    };
+
+    private exampleClicked = () => {
+        this.setState({
+            isLoading: true,
+        });
     };
 
     private goToDiff = (a: string | undefined, b: string | undefined): void => {
