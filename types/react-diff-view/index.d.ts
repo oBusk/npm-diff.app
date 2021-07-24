@@ -1,47 +1,11 @@
-import { FunctionComponent, Props } from "react";
+// Type definitions for react-diff-view 2.4
+// Project: https://github.com/otakustay/react-diff-view#readme
+// Definitions by: Oscar Busk <https://github.com/oBusk>
+// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
 
-export interface DiffFile {
-    oldRevision: string;
-    newRevision: string;
-    type: DiffType;
-    hunks: HunkData[];
-}
+export { File, Hunk as HunkData, Change } from "gitdiff-parser";
 
-export declare const parseDiff: (diffText: string) => DiffFile[];
-
-export type DiffType = "add" | "delete" | "modify" | "rename" | "copy";
-
-export type ViewType = "unified" | "split";
-
-export type GutterType = "default" | "none" | "anchor";
-
-export interface DiffProps {
-    diffType: DiffType;
-    viewType: ViewType;
-    hunks: HunkData[];
-    gutterType?: GutterType;
-    generateAnchorID?: function;
-    selectedChanges?: string[];
-    widgets?: { [k: string]: JSX.Element };
-    optimizeSelection?: boolean;
-    className?: string;
-    renderToken?: function;
-    renderGutter?: function;
-    children?: function;
-}
-
-export declare const Diff: FunctionComponent<DiffProps>;
-
-export interface DecorationProps extends Props {
-    className?: string;
-    gutterClassName?: string;
-    contentClassName?: string;
-}
-
-export declare const Decoration: FunctionComponent<DecorationProps>;
-
-export interface HunkData {
-    content: string;
-}
-
-export declare const Hunk: FunctionComponent<{ hunk: HunkData }>;
+export * from "./Decoration";
+export * from "./Diff";
+export * from "./Hunk";
+export * from "./utils";

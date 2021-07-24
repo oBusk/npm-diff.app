@@ -1,9 +1,9 @@
 import { FunctionComponent } from "react";
-import { DiffFile } from "react-diff-view";
+import { File } from "react-diff-view";
 import DiffFileComponent from "./DiffFile";
 
 interface Props {
-    files: DiffFile[];
+    files: File[];
 }
 
 const DiffFiles: FunctionComponent<Props> = ({ files }) => (
