@@ -8,9 +8,9 @@ interface Props {
 
 const DiffFiles: FunctionComponent<Props> = ({ files }) => (
     <div>
-        {files.map(({ oldRevision, newRevision, type, hunks }) => (
+        {files.map(({ newPath, newRevision, type, hunks }) => (
             <DiffFileComponent
-                key={oldRevision + "-" + newRevision}
+                key={`${newPath}|${newRevision}`}
                 type={type}
                 hunks={hunks}
             />
