@@ -1,28 +1,26 @@
-import { Button, Input } from "@chakra-ui/react";
 import { withTheme } from "@emotion/react";
-import Hero from "components/Hero";
 import Layout from "components/Layout";
+import MainForm from "components/MainForm";
 import EXAMPLES from "lib/examples";
 import Link from "next/link";
 import router from "next/router";
-import { Component, createRef, FormEvent, RefObject } from "react";
+import { Component } from "react";
 
 export interface IndexProps {}
 
 export interface IndexState {
     isLoading: boolean;
+    aValue: string;
+    bValue: string;
 }
 
 class IndexPage extends Component<IndexProps, IndexState> {
-    a: RefObject<HTMLInputElement>;
-    b: RefObject<HTMLInputElement>;
-
     constructor(props: {}) {
         super(props);
-        this.a = createRef();
-        this.b = createRef();
 
         this.state = {
+            aValue: "",
+            bValue: "",
             isLoading: false,
         };
     }
@@ -35,29 +33,12 @@ class IndexPage extends Component<IndexProps, IndexState> {
                         <a onClick={() => this.clickedExample(ex)}>{ex}</a>
                     </Link>
                 ))}
-                <Hero as="form" onSubmit={this.handleSubmit}>
-                    <Input
-                        type="text"
-                        name="a"
-                        placeholder="package@1.2.3, package@^1, package@2.X"
-                        disabled={this.state.isLoading}
-                        ref={this.a}
-                    ></Input>
-                    <Input
-                        type="text"
-                        name="b"
-                        placeholder="^3.0.1, ~1.0.0, package-b@~3.0.0"
-                        disabled={this.state.isLoading}
-                        ref={this.b}
-                    ></Input>
-                    <Button
-                        isLoading={this.state.isLoading}
-                        width="400px"
-                        type="submit"
-                    >
-                        npm diff! 📦🔃
-                    </Button>
-                </Hero>
+                <MainForm
+                    aValue={this.state.aValue}
+                    bValue={this.state.bValue}
+                    isLoading={this.state.isLoading}
+                    handleSubmit={this.goToDiff}
+                />
             </Layout>
         );
     }
@@ -65,27 +46,15 @@ class IndexPage extends Component<IndexProps, IndexState> {
     private clickedExample = (ex: string) => {
         const [a, b] = ex.split("...");
 
-        if (!this.a.current || !this.b.current) {
-            throw new Error("No input elements");
-        }
+        this.setState({
+            aValue: a,
+            bValue: b,
+        });
 
-        this.a.current.value = a ?? "";
-        this.b.current.value = b ?? "";
-
-        this.setState({ isLoading: true });
+        this.goToDiff(a, b);
     };
 
-    private handleSubmit = (event: FormEvent): void => {
-        event.preventDefault();
-
-        const target = event.target as typeof event.target & {
-            // Defined named children
-            a: HTMLInputElement;
-            b: HTMLInputElement;
-        };
-        const a = target.a.value;
-        const b = target.b.value;
-
+    private goToDiff = (a: string | undefined, b: string | undefined): void => {
         this.setState({ isLoading: true });
 
         void router.push(`/${a}...${b}`);
