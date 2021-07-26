@@ -62,7 +62,7 @@
         "@types/react": "^17.0.14",
         "@types/react-diff-view": "./types/react-diff-view",
         "@types/react-dom": "^17.0.9",
-        "@types/semver": "^7.3.7",
+        "@types/semver": "^7.3.8",
         "babel-jest": "^27.0.6",
         "eslint": "^7.31.0",
         "eslint-config-next": "^11.0.1",
