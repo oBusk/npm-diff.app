@@ -4,6 +4,7 @@ describe("query", () => {
     it("can parse a object with the supported options", () =>
         expect(
             parseQuery({
+                diffFiles: "**/*.js",
                 diffNameOnly: "true",
                 diffUnified: "3",
                 // diffIgnoreAllSpaces ommitted
@@ -13,6 +14,7 @@ describe("query", () => {
                 diffText: "", // This is the result from `...&diffTexT&...`
             }),
         ).toStrictEqual({
+            diffFiles: ["**/*.js"],
             diffNameOnly: true,
             diffUnified: 3,
             diffIgnoreAllSpace: undefined,
