@@ -1,9 +1,9 @@
-import { Heading, Code, Text } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import { withTheme } from "@emotion/react";
+import ExamplesList from "components/ExamplesList";
+import Intro from "components/Intro";
 import Layout from "components/Layout";
 import MainForm from "components/MainForm";
-import EXAMPLES from "lib/examples";
-import Link from "next/link";
 import router from "next/router";
 import { Component } from "react";
 
@@ -29,54 +29,34 @@ class IndexPage extends Component<IndexProps, IndexState> {
     render() {
         return (
             <Layout>
-                <Text align="center">
-                    <a
-                        href="https://docs.npmjs.com/cli/v7/commands/npm-diff"
-                        rel="noopener noreferrer"
-                    >
-                        <Code>npm diff</Code>
-                    </a>{" "}
-                    online!
-                    <br />
-                    Web tool to compare versions, or branches, of NPM packages.
-                </Text>
+                <Box flex={1}>
+                    {/* Top half */}
+                    <Intro />
+                </Box>
+                {/* Center segment */}
                 <MainForm
                     overrideA={this.state.overrideA}
                     overrideB={this.state.overrideB}
                     isLoading={this.state.isLoading}
                     handleSubmit={this.goToDiff}
+                    flex={0}
                 />
-                <Heading color="gray.300" size="md">
-                    Examples
-                </Heading>
-                {EXAMPLES.map((ex) => (
-                    <Link key={ex} href={`/${ex}`}>
-                        <a
-                            onMouseOver={() => this.exampleMouseOver(ex)}
-                            onMouseOut={() => this.exampleMouseOut()}
-                            onClick={() => this.exampleClicked()}
-                        >
-                            {ex}
-                        </a>
-                    </Link>
-                ))}
+                <Flex flex={1} direction="column" justifyContent="flex-end">
+                    {/* Bottom half */}
+                    <ExamplesList
+                        exampleMouseOver={(a, b) => this.setInput(a, b)}
+                        exampleMouseOut={() => this.setInput(null, null)}
+                        exampleClicked={this.exampleClicked}
+                    />
+                </Flex>
             </Layout>
         );
     }
 
-    private exampleMouseOver = (ex: string) => {
-        const [a, b] = ex.split("...");
-
+    private setInput = (a: string | null, b: string | null) => {
         this.setState({
             overrideA: a,
             overrideB: b,
-        });
-    };
-
-    private exampleMouseOut = () => {
-        this.setState({
-            overrideA: null,
-            overrideB: null,
         });
     };
 

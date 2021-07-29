@@ -53,7 +53,6 @@ const MainForm: FunctionComponent<MainFormProps> = ({
         <Flex
             justifyContent="center"
             alignItems="center"
-            flex="1"
             direction="row"
             as="form"
             onSubmit={internalHandleSubmit}
