@@ -4,6 +4,7 @@ import parseNumber from "./parseNumber";
 import parseString from "./parseString";
 
 export type QueryParams = {
+    diffFiles?: string | string[];
     diffNameOnly?: string | string[];
     diffUnified?: string | string[];
     diffIgnoreAllSpace?: string | string[];
@@ -14,6 +15,7 @@ export type QueryParams = {
 };
 
 function parseQuery({
+    diffFiles,
     diffNameOnly,
     diffUnified,
     diffIgnoreAllSpace,
@@ -23,6 +25,7 @@ function parseQuery({
     diffText,
 }: QueryParams): libnpmdiff.Options {
     return {
+        diffFiles: typeof diffFiles === "string" ? [diffFiles] : diffFiles,
         diffNameOnly: parseBoolean(diffNameOnly),
         diffUnified: parseNumber(diffUnified),
         diffIgnoreAllSpace: parseBoolean(diffIgnoreAllSpace),
