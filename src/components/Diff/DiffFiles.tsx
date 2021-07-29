@@ -1,3 +1,4 @@
+import { Box } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { File } from "react-diff-view";
 import DiffFileComponent from "./DiffFile";
@@ -17,16 +18,17 @@ function hashFromString(s: string): string {
 }
 
 const DiffFiles: FunctionComponent<Props> = ({ files }) => (
-    <div>
+    <Box minWidth="100%">
         {files.map(({ newPath, newRevision, type, hunks }) => (
             <DiffFileComponent
                 key={`${newPath}|${newRevision}`}
+                newPath={newPath}
                 type={type}
                 hunks={hunks}
                 hash={hashFromString(newPath)}
             />
         ))}
-    </div>
+    </Box>
 );
 
 export default DiffFiles;

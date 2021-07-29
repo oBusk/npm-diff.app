@@ -1,3 +1,7 @@
 .diff-gutter {
     scroll-margin-top: 100px;
 }
+
+.diff-gutter > a:link {
+    padding: 0;
+}
