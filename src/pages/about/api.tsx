@@ -1,4 +1,4 @@
-import { Code, Heading, Link, Text, VStack } from "@chakra-ui/react";
+import { Code, Heading, Link, Text, Tooltip, VStack } from "@chakra-ui/react";
 import { withTheme } from "@emotion/react";
 import Layout from "components/Layout";
 import EXAMPLES from "lib/examples";
@@ -34,19 +34,26 @@ const ApiPage: NextPage<Props> = ({ diff, specs }) => {
                 </Heading>
                 <Text>
                     npm-diff.app exposes a online API to equal{" "}
-                    <a
-                        href="https://docs.npmjs.com/cli/v7/commands/npm-diff"
-                        rel="noopener noreferrer"
-                    >
-                        <Code>npm diff</Code>
-                    </a>
+                    <Tooltip label="https://docs.npmjs.com/cli/v7/commands/npm-diff">
+                        <Link
+                            href="https://docs.npmjs.com/cli/v7/commands/npm-diff"
+                            rel="noopener noreferrer"
+                        >
+                            <Code>npm diff</Code>
+                        </Link>
+                    </Tooltip>
                     , to be able to see the changes between versions of packages
                     or forks of packages.
                 </Text>
 
                 <Text>
                     <Code>
-                        GET <Link href={EXAMPLE_URL}>{EXAMPLE_URL}</Link>
+                        GET{" "}
+                        <Tooltip label="Click to view the response from the API">
+                            <Link href={EXAMPLE_URL} rel="noopener noreferrer">
+                                {EXAMPLE_URL}
+                            </Link>
+                        </Tooltip>
                     </Code>
                     <br />
                     will return the same as
