@@ -8,10 +8,12 @@ import { GetStaticProps, NextPage } from "next";
 
 // TODO: Would be nice if this was dynamic. But doesn't seem possible
 // https://github.com/vercel/next.js/discussions/12848
-const BASE_PATH = "https://npm-diff.app";
-const API_PATH = `${BASE_PATH}/api`;
+const API_PATH = `/api` as const;
 const EXAMPLE_QUERY = EXAMPLES[0];
-const EXAMPLE_URL = `${API_PATH}/${EXAMPLE_QUERY}`;
+const EXAMPLE_RELATIVE_LINK = `${API_PATH}/${EXAMPLE_QUERY}` as const;
+
+const DOMAIN = "https://npm-diff.app";
+const EXAMPLE_ABSOLUTE_URL = `${DOMAIN}${EXAMPLE_RELATIVE_LINK}` as const;
 
 type Props = {
     diff: string;
@@ -50,8 +52,11 @@ const ApiPage: NextPage<Props> = ({ diff, specs }) => {
                     <Code>
                         GET{" "}
                         <Tooltip label="Click to view the response from the API">
-                            <Link href={EXAMPLE_URL} rel="noopener noreferrer">
-                                {EXAMPLE_URL}
+                            <Link
+                                href={EXAMPLE_RELATIVE_LINK}
+                                rel="noopener noreferrer"
+                            >
+                                {EXAMPLE_ABSOLUTE_URL}
                             </Link>
                         </Tooltip>
                     </Code>
