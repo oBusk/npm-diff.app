@@ -53,7 +53,6 @@ class IndexPage extends Component<IndexProps, IndexState> {
                 <HalfSegment justifyContent="space-between">
                     {/* Bottom half */}
                     <OptionsForm
-                        overflow="auto"
                         files={this.state.diffFiles}
                         filesChange={(files) =>
                             this.setState({ diffFiles: files })
