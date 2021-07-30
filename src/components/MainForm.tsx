@@ -6,6 +6,7 @@ import {
     InputGroup,
     InputLeftAddon,
     InputRightAddon,
+    Tooltip,
 } from "@chakra-ui/react";
 import {
     FormEvent,
@@ -59,45 +60,61 @@ const MainForm: FunctionComponent<MainFormProps> = ({
             {...props}
         >
             <InputGroup>
-                <Input
-                    type="text"
-                    name="a"
-                    placeholder="package@1.2.3 or package@^1"
-                    disabled={overrideA != null || isLoading}
-                    width={250}
-                    value={(overrideA != null && overrideA) || a || ""}
-                    onChange={(event) => setA(event.target.value)}
-                    ref={aRef}
-                ></Input>
-                <InputRightAddon borderRightRadius={0}>...</InputRightAddon>
-            </InputGroup>
-            <InputGroup>
-                <InputLeftAddon display="none" />
-                <Input
-                    type="text"
-                    name="b"
-                    placeholder="^3.0.1 or package-b@3.X"
-                    disabled={overrideB != null || isLoading}
-                    width={260}
-                    value={(overrideB != null && overrideB) || b || ""}
-                    onChange={(event) => setB(event.target.value)}
-                    borderLeft={0}
-                ></Input>
+                <Tooltip
+                    label={`The specification of the base, like "package@1.2.3"`}
+                    closeOnClick={false}
+                >
+                    <Input
+                        type="text"
+                        name="a"
+                        placeholder="package@1.2.3 or package@^1"
+                        disabled={overrideA != null || isLoading}
+                        width={250}
+                        value={(overrideA != null && overrideA) || a || ""}
+                        onChange={(event) => setA(event.target.value)}
+                        ref={aRef}
+                        borderRightRadius={0}
+                    ></Input>
+                </Tooltip>
+                <InputRightAddon borderRightRadius={0} borderRight={0}>
+                    ...
+                </InputRightAddon>
+                <Tooltip
+                    label={`The specification of the compare, like "package"`}
+                    closeOnClick={false}
+                >
+                    <Input
+                        type="text"
+                        name="b"
+                        placeholder="^3.0.1 or package-b@3.X"
+                        disabled={overrideB != null || isLoading}
+                        width={260}
+                        value={(overrideB != null && overrideB) || b || ""}
+                        onChange={(event) => setB(event.target.value)}
+                        borderLeftRadius={0}
+                    ></Input>
+                </Tooltip>
             </InputGroup>
             <InputGroup marginLeft={8}>
-                <Button
-                    isLoading={isLoading}
-                    width={140}
-                    type="submit"
-                    disabled={!b || !a}
-                    title={
+                <Tooltip
+                    label={
                         !a || !b
                             ? "Neither field can be emtpy"
                             : `Compare "${a}" and "${b}" now!`
                     }
+                    bg={!a || !b ? "red.700" : undefined}
                 >
-                    npm diff! 📦🔃
-                </Button>
+                    <span>
+                        <Button
+                            isLoading={isLoading}
+                            width={140}
+                            type="submit"
+                            disabled={!b || !a}
+                        >
+                            npm diff! 📦🔃
+                        </Button>
+                    </span>
+                </Tooltip>
             </InputGroup>
         </Flex>
     );
