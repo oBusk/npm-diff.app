@@ -4,6 +4,7 @@ import DiffIntro from "components/DiffIntro";
 import Layout from "components/Layout";
 import destination from "lib/destination";
 import parseQuery from "lib/query";
+import countChanges from "lib/utils/countChanges";
 import rawQuery from "lib/utils/rawQuery";
 import setCacheControl from "lib/utils/setCacheControl";
 import specsToDiff from "lib/utils/specsToDiff";
@@ -55,9 +56,26 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
 const DiffPage: NextPage<Props> = ({ diff, specs: [a, b] }) => {
     const files = parseDiff(diff);
 
+    const changedFiles = files.length;
+
+    const changes = files.map((file) => countChanges(file.hunks));
+    const additions = changes
+        .map(({ additions }) => additions)
+        .reduce((a, b) => a + b);
+    const deletions = changes
+        .map(({ deletions }) => deletions)
+        .reduce((a, b) => a + b);
+
     return (
         <Layout title={`Comparing ${a}...${b}`}>
-            <DiffIntro a={a} b={b} alignSelf="stretch" />
+            <DiffIntro
+                a={a}
+                b={b}
+                changedFiles={changedFiles}
+                additions={additions}
+                deletions={deletions}
+                alignSelf="stretch"
+            />
             <DiffFiles files={files} />
         </Layout>
     );
