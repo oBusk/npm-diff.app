@@ -22,7 +22,7 @@ const DiffFiles: FunctionComponent<Props> = ({ files }) => (
         {files.map(({ newPath, newRevision, type, hunks }) => (
             <DiffFileComponent
                 key={`${newPath}|${newRevision}`}
-                newPath={newPath}
+                title={newPath}
                 type={type}
                 hunks={hunks}
                 hash={hashFromString(newPath)}
