@@ -17,7 +17,7 @@ const Layout: FunctionComponent<Props> = ({
     return (
         <>
             <Head>
-                <title>{title ? title + " - " : ""}npm-diff.app 📦🔃</title>
+                <title>{title ? `${title} • ` : ""}npm-diff.app 📦🔃</title>
             </Head>
             <Flex
                 direction="column"

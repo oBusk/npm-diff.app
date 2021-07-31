@@ -1,5 +1,6 @@
 import { withTheme } from "@emotion/react";
 import DiffFiles from "components/Diff/DiffFiles";
+import DiffIntro from "components/DiffIntro";
 import Layout from "components/Layout";
 import destination from "lib/destination";
 import parseQuery from "lib/query";
@@ -13,6 +14,7 @@ import { parseDiff } from "react-diff-view";
 
 type Props = {
     diff: string;
+    specs: [string, string];
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
@@ -36,6 +38,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
         return {
             props: {
                 diff,
+                specs: immutableSpecs,
             },
         };
     } else {
@@ -49,11 +52,12 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
 };
 
-const DiffPage: NextPage<Props> = ({ diff }) => {
+const DiffPage: NextPage<Props> = ({ diff, specs: [a, b] }) => {
     const files = parseDiff(diff);
 
     return (
-        <Layout>
+        <Layout title={`Comparing ${a}...${b}`}>
+            <DiffIntro a={a} b={b} alignSelf="stretch" />
             <DiffFiles files={files} />
         </Layout>
     );
