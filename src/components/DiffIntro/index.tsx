@@ -41,8 +41,8 @@ export interface DiffIntroProps extends FlexProps {
     changedFiles: number;
     additions: number;
     deletions: number;
-    packagephobiaResults: PackagephobiaResults;
-    bundlephobiaResults: BundlephobiaResults;
+    packagephobiaResults: PackagephobiaResults | null;
+    bundlephobiaResults: BundlephobiaResults | null;
 }
 
 const DiffIntro = forwardRef<DiffIntroProps, "h2">(
@@ -94,45 +94,56 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                         </Flex>
                     </Flex>
                 </Heading>
-                <Heading size="xs">Packagephobia</Heading>
-                <SizeComparison
-                    serviceName="Packagephobia"
-                    serviceLink={serviceLinks.Packagephobia}
-                    a={{ name: aName ?? "ERROR", version: aVersion }}
-                    b={{ name: bName ?? "ERROR", version: bVersion }}
-                    sizeRows={[
-                        {
-                            name: "Publish",
-                            a: {
-                                bytes: packagephobiaResults.a.publish.bytes,
-                                color: packagephobiaResults.a.publish.color,
-                            },
-                            b: {
-                                bytes: packagephobiaResults.b.publish.bytes,
-                                color: packagephobiaResults.b.publish.color,
-                            },
-                        },
-                        {
-                            name: "Install",
-                            a: {
-                                bytes: packagephobiaResults.a.install.bytes,
-                                color: packagephobiaResults.a.install.color,
-                            },
-                            b: {
-                                bytes: packagephobiaResults.b.install.bytes,
-                                color: packagephobiaResults.b.install.color,
-                            },
-                        },
-                    ]}
-                    width="100%"
-                />
+                {packagephobiaResults && (
+                    <>
+                        <Heading marginTop="8px" size="xs">
+                            Packagephobia
+                        </Heading>
+                        <SizeComparison
+                            serviceName="Packagephobia"
+                            serviceLink={serviceLinks.Packagephobia}
+                            a={{ name: aName ?? "ERROR", version: aVersion }}
+                            b={{ name: bName ?? "ERROR", version: bVersion }}
+                            sizeRows={[
+                                {
+                                    name: "Publish",
+                                    a: {
+                                        bytes: packagephobiaResults.a.publish
+                                            .bytes,
+                                        color: packagephobiaResults.a.publish
+                                            .color,
+                                    },
+                                    b: {
+                                        bytes: packagephobiaResults.b.publish
+                                            .bytes,
+                                        color: packagephobiaResults.b.publish
+                                            .color,
+                                    },
+                                },
+                                {
+                                    name: "Install",
+                                    a: {
+                                        bytes: packagephobiaResults.a.install
+                                            .bytes,
+                                        color: packagephobiaResults.a.install
+                                            .color,
+                                    },
+                                    b: {
+                                        bytes: packagephobiaResults.b.install
+                                            .bytes,
+                                        color: packagephobiaResults.b.install
+                                            .color,
+                                    },
+                                },
+                            ]}
+                            width="100%"
+                        />
+                    </>
+                )}
                 {bundlephobiaResults && (
                     <>
                         <Heading size="xs">Bundlephobia</Heading>
-                        <BundlephobiaFlags
-                            data={bundlephobiaResults}
-                            margin="10px 0"
-                        />
+                        <BundlephobiaFlags data={bundlephobiaResults} />
                         <SizeComparison
                             serviceName="Bundlephobia"
                             serviceLink={serviceLinks.Bundlephobia}

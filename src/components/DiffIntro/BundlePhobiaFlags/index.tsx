@@ -85,7 +85,12 @@ const Flag: FunctionComponent<{
 
         return (
             <Tooltip label={tooltip}>
-                <Tag colorScheme={colorScheme} {...props} cursor="help">
+                <Tag
+                    colorScheme={colorScheme}
+                    cursor="help"
+                    margin="10px 0"
+                    {...props}
+                >
                     <TagLeftIcon boxSize="16px" as={icon} fill="currentColor" />
                     <TagLabel>{label}</TagLabel>
                 </Tag>

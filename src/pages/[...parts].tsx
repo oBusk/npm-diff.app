@@ -19,8 +19,8 @@ import { parseDiff } from "react-diff-view";
 type Props = {
     diff: string;
     specs: [string, string];
-    packagephobiaResults: PackagephobiaResults;
-    bundlephobiaResults: BundlephobiaResults;
+    packagephobiaResults: PackagephobiaResults | null;
+    bundlephobiaResults: BundlephobiaResults | null;
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
