@@ -1,14 +1,14 @@
 import {
     Box,
-    chakra,
     Flex,
     FlexProps,
     forwardRef,
-    Link,
     LinkProps,
     Text,
 } from "@chakra-ui/react";
 import ServiceTooltip from "components/ServiceTooltip";
+import ExternalLink from "components/theme/ExternalLink";
+import Span from "components/theme/Span";
 import { prettyByte } from "lib/utils/prettyByte";
 import { FunctionComponent, ReactNode } from "react";
 
@@ -49,9 +49,7 @@ const LinkButton: FunctionComponent<
         packageName={packageName}
         packageVersion={packageVersion}
     >
-        <Link
-            rel="noreferrer noopener"
-            target="_blank"
+        <ExternalLink
             borderRadius="lg"
             padding={COMMON_PADDING}
             href={serviceLink(packageName, packageVersion)}
@@ -72,9 +70,9 @@ const SizeText: FunctionComponent<{
     baseBytes?: number;
 }> = ({ bytes, color, baseBytes }) => (
     <Text>
-        <chakra.span color={color}>{prettyByte(bytes)}</chakra.span>
+        <Span color={color}>{prettyByte(bytes)}</Span>
         {baseBytes != null && baseBytes != 0 && (
-            <chakra.small>{byteDifferance(baseBytes, bytes)}</chakra.small>
+            <Span as="small">{byteDifferance(baseBytes, bytes)}</Span>
         )}
     </Text>
 );
@@ -84,9 +82,9 @@ const CountText: FunctionComponent<{
     baseCount?: number;
 }> = ({ count, baseCount }) => (
     <Text>
-        <chakra.span>{count}</chakra.span>
+        <Span>{count}</Span>
         {baseCount != null && baseCount != 0 && (
-            <chakra.small>{differance(baseCount, count)}</chakra.small>
+            <Span as="small">{differance(baseCount, count)}</Span>
         )}
     </Text>
 );

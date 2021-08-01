@@ -7,6 +7,7 @@ import {
     Heading,
     Text,
 } from "@chakra-ui/react";
+import B from "components/theme/B";
 import BorderBox from "components/theme/BorderBox";
 import { BundlephobiaResults } from "lib/bundlephobia";
 import { PackagephobiaResults } from "lib/packagephobia";
@@ -174,8 +175,8 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                 )}
                 <BorderBox textAlign="center" margin="10px 0">
                     Showing {changedFiles} files with{" "}
-                    <b>{additions} additions</b> and{" "}
-                    <b>{deletions} deletions</b>
+                    <B>{additions} additions</B> and{" "}
+                    <B>{deletions} deletions</B>
                 </BorderBox>
             </Flex>
         );

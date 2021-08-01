@@ -1,5 +1,5 @@
 import { Box, Flex, FlexProps, Heading } from "@chakra-ui/react";
-import Link from "next/link";
+import NextLink from "components/theme/NextLink";
 import { FunctionComponent } from "react";
 import { APILInk } from "./APILink";
 import { GithubLink } from "./GithubLink";
@@ -17,7 +17,7 @@ export const Header: FunctionComponent<FlexProps> = (props) => (
         {...props}
     >
         <GithubLink />
-        <Link href="/" passHref>
+        <NextLink href="/">
             <Box
                 as="a"
                 transition="all 0.2s"
@@ -28,7 +28,7 @@ export const Header: FunctionComponent<FlexProps> = (props) => (
             >
                 <Heading as="h1">npm-diff.app 📦🔃</Heading>
             </Box>
-        </Link>
+        </NextLink>
         <APILInk />
     </Flex>
 );

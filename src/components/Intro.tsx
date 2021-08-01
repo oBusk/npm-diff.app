@@ -1,18 +1,17 @@
 import { Code, Text } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
+import ExternalLink from "./theme/ExternalLink";
 
 const Intro: FunctionComponent<{}> = () => (
-    <Text align="center">
-        <a
-            href="https://docs.npmjs.com/cli/v7/commands/npm-diff"
-            rel="noopener noreferrer"
-        >
-            <Code>npm diff</Code>
-        </a>{" "}
-        online!
-        <br />
-        Web tool to compare versions, or branches, of NPM packages.
-    </Text>
+    <>
+        <Text align="center">
+            <ExternalLink href="https://docs.npmjs.com/cli/v7/commands/npm-diff">
+                <Code>npm diff</Code>
+            </ExternalLink>{" "}
+            online!
+        </Text>
+        <Text>Web tool to compare versions, or branches, of NPM packages.</Text>
+    </>
 );
 
 export default Intro;

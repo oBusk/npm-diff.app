@@ -1,7 +1,7 @@
-import { Flex, FlexProps, Heading } from "@chakra-ui/react";
+import { Flex, FlexProps, Heading, Link } from "@chakra-ui/react";
+import NextLink from "components/theme/NextLink";
 import EXAMPLES from "lib/examples";
 import { QueryParams } from "lib/query";
-import Link from "next/link";
 import { FunctionComponent } from "react";
 
 export interface ExamplesListProps extends FlexProps {
@@ -30,21 +30,21 @@ const ExamplesList: FunctionComponent<ExamplesListProps> = ({
                 Examples
             </Heading>
             {EXAMPLES.map((ex) => (
-                <Link
+                <NextLink
                     key={ex}
                     href={{
                         pathname: `/${ex}`,
                         query,
                     }}
                 >
-                    <a
+                    <Link
                         onMouseOver={() => onMouseOver(ex)}
                         onMouseOut={() => onMouseOut()}
                         onClick={() => onClick()}
                     >
                         {ex}
-                    </a>
-                </Link>
+                    </Link>
+                </NextLink>
             ))}
         </Flex>
     );

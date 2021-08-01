@@ -1,5 +1,4 @@
 import {
-    chakra,
     Code,
     forwardRef,
     HStack,
@@ -9,6 +8,8 @@ import {
     TagLeftIcon,
     Text,
 } from "@chakra-ui/react";
+import B from "components/theme/B";
+import Span from "components/theme/Span";
 import Tooltip from "components/theme/Tooltip";
 import { BundlephobiaResults } from "lib/bundlephobia";
 import { ElementType, FunctionComponent, ReactNode } from "react";
@@ -58,8 +59,8 @@ const Flag: FunctionComponent<{
             tooltip = (
                 <Text>
                     <Code>{aSpec}</Code> was not{" "}
-                    <chakra.span whiteSpace="nowrap">{label}</chakra.span>, but{" "}
-                    <Code>{bSpec}</Code> <chakra.b>is</chakra.b>
+                    <Span whiteSpace="nowrap">{label}</Span>, but{" "}
+                    <Code>{bSpec}</Code> <B>is</B>
                 </Text>
             );
         } else if (status === "removed") {
@@ -67,8 +68,8 @@ const Flag: FunctionComponent<{
             tooltip = (
                 <Text>
                     <Code>{aSpec}</Code> was{" "}
-                    <chakra.span whiteSpace="nowrap">{label}</chakra.span>, but{" "}
-                    <Code>{bSpec}</Code> is <chakra.b>not</chakra.b>
+                    <Span whiteSpace="nowrap">{label}</Span>, but{" "}
+                    <Code>{bSpec}</Code> is <B>not</B>
                 </Text>
             );
         } else {
@@ -76,9 +77,8 @@ const Flag: FunctionComponent<{
             colorScheme = undefined;
             tooltip = (
                 <Text>
-                    <Code>{aSpec}</Code> and <Code>{bSpec}</Code>{" "}
-                    <chakra.b>are</chakra.b> both{" "}
-                    <chakra.span whiteSpace="nowrap">{label}</chakra.span>
+                    <Code>{aSpec}</Code> and <Code>{bSpec}</Code> <B>are</B>{" "}
+                    both <Span whiteSpace="nowrap">{label}</Span>
                 </Text>
             );
         }

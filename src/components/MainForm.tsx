@@ -4,10 +4,10 @@ import {
     FlexProps,
     Input,
     InputGroup,
-    InputLeftAddon,
     InputRightAddon,
     Tooltip,
 } from "@chakra-ui/react";
+import Span from "components/theme/Span";
 import {
     FormEvent,
     FunctionComponent,
@@ -104,7 +104,7 @@ const MainForm: FunctionComponent<MainFormProps> = ({
                     }
                     bg={!a || !b ? "red.700" : undefined}
                 >
-                    <span>
+                    <Span>
                         <Button
                             isLoading={isLoading}
                             width={140}
@@ -113,7 +113,7 @@ const MainForm: FunctionComponent<MainFormProps> = ({
                         >
                             npm diff! 📦🔃
                         </Button>
-                    </span>
+                    </Span>
                 </Tooltip>
             </InputGroup>
         </Flex>

@@ -1,10 +1,11 @@
 import {
+    Code,
     forwardRef,
+    Text,
     Tooltip,
     TooltipProps,
-    Code,
-    Text,
 } from "@chakra-ui/react";
+import B from "components/theme/B";
 
 export interface ServiceTooltipProps extends TooltipProps {
     packageName: string;
@@ -27,7 +28,7 @@ const ServiceTooltip = forwardRef<ServiceTooltipProps, any>(
                         </Code>
                     </Text>
                     <Text>
-                        on <b>{serviceName}</b>
+                        on <B>{serviceName}</B>
                     </Text>
                 </>
             }
