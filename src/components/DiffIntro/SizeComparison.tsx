@@ -9,7 +9,6 @@ import {
     Text,
 } from "@chakra-ui/react";
 import ServiceTooltip from "components/ServiceTooltip";
-import { serviceLinks } from "lib/serviceLinks";
 import { prettyByte } from "lib/utils/prettyByte";
 import { FunctionComponent, ReactNode } from "react";
 
@@ -19,7 +18,7 @@ function differance(a: number, b: number): ReactNode {
     if (diff < 0) {
         return ` (${diff})`;
     } else if (diff > 0) {
-        return ` (-${diff})`;
+        return ` (+${diff})`;
     } else {
         return "";
     }
