@@ -14,6 +14,18 @@ import { prettyByte } from "lib/utils/prettyByte";
 import { FunctionComponent, ReactNode } from "react";
 
 function differance(a: number, b: number): ReactNode {
+    const diff = a - b;
+
+    if (diff < 0) {
+        return ` (${diff})`;
+    } else if (diff > 0) {
+        return ` (-${diff})`;
+    } else {
+        return "";
+    }
+}
+
+function byteDifferance(a: number, b: number): ReactNode {
     const diff = b - a;
 
     if (diff < 0) {
@@ -63,7 +75,7 @@ const SizeText: FunctionComponent<{
     <Text>
         <chakra.span color={color}>{prettyByte(bytes)}</chakra.span>
         {baseBytes != null && baseBytes != 0 && (
-            <chakra.small>{differance(baseBytes, bytes)}</chakra.small>
+            <chakra.small>{byteDifferance(baseBytes, bytes)}</chakra.small>
         )}
     </Text>
 );
@@ -150,17 +162,24 @@ const SizeComparison = forwardRef<SizeComparisonProps, "div">(
                     packageName={b.name}
                     packageVersion={b.version}
                 >
-                    {sizeRows.map(({ name, b }) => {
+                    {sizeRows.map(({ name, a, b }) => {
                         if (b.bytes != null) {
                             return (
                                 <SizeText
                                     key={name}
                                     bytes={b.bytes}
                                     color={b.color}
+                                    baseBytes={a.bytes}
                                 />
                             );
                         } else if (b.count != null) {
-                            return <CountText key={name} count={b.count} />;
+                            return (
+                                <CountText
+                                    key={name}
+                                    count={b.count}
+                                    baseCount={a.count}
+                                />
+                            );
                         } else {
                             return null;
                         }
