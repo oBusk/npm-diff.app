@@ -125,44 +125,53 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                     ]}
                     width="100%"
                 />
-                <Heading size="xs">Bundlephobia</Heading>
-                <BundlephobiaFlags data={bundlephobiaResults} margin="10px 0" />
-                <SizeComparison
-                    serviceName="Bundlephobia"
-                    serviceLink={serviceLinks.Bundlephobia}
-                    a={{ name: aName, version: aVersion }}
-                    b={{ name: bName, version: bVersion }}
-                    sizeRows={[
-                        {
-                            name: "Size",
-                            a: {
-                                bytes: bundlephobiaResults.a.size,
-                            },
-                            b: {
-                                bytes: bundlephobiaResults.b.size,
-                            },
-                        },
-                        {
-                            name: "Gzip",
-                            a: {
-                                bytes: bundlephobiaResults.a.gzip,
-                            },
-                            b: {
-                                bytes: bundlephobiaResults.b.gzip,
-                            },
-                        },
-                        {
-                            name: "Dependencies",
-                            a: {
-                                count: bundlephobiaResults.a.dependencyCount,
-                            },
-                            b: {
-                                count: bundlephobiaResults.b.dependencyCount,
-                            },
-                        },
-                    ]}
-                    width="100%"
-                />
+                {bundlephobiaResults && (
+                    <>
+                        <Heading size="xs">Bundlephobia</Heading>
+                        <BundlephobiaFlags
+                            data={bundlephobiaResults}
+                            margin="10px 0"
+                        />
+                        <SizeComparison
+                            serviceName="Bundlephobia"
+                            serviceLink={serviceLinks.Bundlephobia}
+                            a={{ name: aName, version: aVersion }}
+                            b={{ name: bName, version: bVersion }}
+                            sizeRows={[
+                                {
+                                    name: "Size",
+                                    a: {
+                                        bytes: bundlephobiaResults.a.size,
+                                    },
+                                    b: {
+                                        bytes: bundlephobiaResults.b.size,
+                                    },
+                                },
+                                {
+                                    name: "Gzip",
+                                    a: {
+                                        bytes: bundlephobiaResults.a.gzip,
+                                    },
+                                    b: {
+                                        bytes: bundlephobiaResults.b.gzip,
+                                    },
+                                },
+                                {
+                                    name: "Dependencies",
+                                    a: {
+                                        count: bundlephobiaResults.a
+                                            .dependencyCount,
+                                    },
+                                    b: {
+                                        count: bundlephobiaResults.b
+                                            .dependencyCount,
+                                    },
+                                },
+                            ]}
+                            width="100%"
+                        />
+                    </>
+                )}
                 <BorderBox textAlign="center" margin="10px 0">
                     Showing {changedFiles} files with{" "}
                     <b>{additions} additions</b> and{" "}
