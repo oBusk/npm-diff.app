@@ -1,4 +1,12 @@
-import { Button, Input, Stack, StackProps, Tooltip } from "@chakra-ui/react";
+import {
+    Button,
+    forwardRef,
+    Input,
+    InputProps,
+    Stack,
+    StackProps,
+    Tooltip,
+} from "@chakra-ui/react";
 import {
     FormEvent,
     FunctionComponent,
@@ -6,6 +14,10 @@ import {
     useRef,
     useState,
 } from "react";
+
+const SpecInput = forwardRef<InputProps, "input">((props, ref) => (
+    <Input type="text" maxWidth="24em" ref={ref} {...props} />
+));
 
 export interface MainFormProps extends StackProps {
     overrideA: string | null;
@@ -43,37 +55,37 @@ const MainForm: FunctionComponent<MainFormProps> = ({
 
     return (
         <Stack
-            align="center"
             as="form"
             onSubmit={internalHandleSubmit}
+            align="center"
+            justify="center"
+            direction={{ base: "column", lg: "row" }}
             {...props}
         >
             <Tooltip
                 label={`The specification of the base, like "package@1.2.3"`}
                 closeOnClick={false}
             >
-                <Input
-                    type="text"
+                <SpecInput
                     name="a"
                     placeholder="package@1.2.3 or package@^1"
                     disabled={overrideA != null || isLoading}
-                    value={(overrideA != null && overrideA) || a || ""}
+                    value={overrideA ?? a ?? ""}
                     onChange={(event) => setA(event.target.value)}
                     ref={aRef}
-                ></Input>
+                ></SpecInput>
             </Tooltip>
             <Tooltip
                 label={`The specification of the compare, like "package"`}
                 closeOnClick={false}
             >
-                <Input
-                    type="text"
+                <SpecInput
                     name="b"
                     placeholder="^3.0.1 or package-b@3.X"
                     disabled={overrideB != null || isLoading}
-                    value={(overrideB != null && overrideB) || b || ""}
+                    value={overrideB ?? b ?? ""}
                     onChange={(event) => setB(event.target.value)}
-                ></Input>
+                ></SpecInput>
             </Tooltip>
             <Tooltip
                 label={
@@ -82,6 +94,7 @@ const MainForm: FunctionComponent<MainFormProps> = ({
                         : `Compare "${a}" and "${b}" now!`
                 }
                 background={!a || !b ? "red.700" : undefined}
+                shouldWrapChildren
             >
                 <Button isLoading={isLoading} type="submit" disabled={!b || !a}>
                     npm diff! 📦🔃
