@@ -84,7 +84,11 @@ const Flag: FunctionComponent<{
         }
 
         return (
-            <Tooltip label={tooltip}>
+            <Tooltip
+                label={tooltip}
+                closeOnClick={false}
+                shouldWrapChildren={true}
+            >
                 <Tag
                     colorScheme={colorScheme}
                     cursor="help"
