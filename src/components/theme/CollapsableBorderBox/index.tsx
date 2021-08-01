@@ -1,4 +1,4 @@
-import { forwardRef } from "@chakra-ui/react";
+import { forwardRef, Box } from "@chakra-ui/react";
 import { ReactNode, useState } from "react";
 import BorderBox, { BorderBoxProps } from "../BorderBox";
 import CollapsableBorderBoxHeader from "./CollapsableBorderBoxHeader";
@@ -14,14 +14,14 @@ const CollapsableBorderBox = forwardRef<CollapsableBorderBoxProps, "div">(
         const [isExpanded, setIsExpanded] = useState(true);
 
         return (
-            <BorderBox padding={0} {...props}>
+            <BorderBox padding={0} ref={ref} {...props}>
                 <CollapsableBorderBoxHeader
                     isExpanded={isExpanded}
                     toggleIsExpanded={() => setIsExpanded(!isExpanded)}
                 >
                     {header}
                 </CollapsableBorderBoxHeader>
-                {isExpanded && children}
+                {isExpanded && <Box overflow="auto">{children}</Box>}
             </BorderBox>
         );
     },

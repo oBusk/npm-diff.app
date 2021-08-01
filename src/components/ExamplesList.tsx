@@ -1,10 +1,10 @@
-import { Flex, FlexProps, Heading, Link } from "@chakra-ui/react";
+import { Stack, StackProps, Heading, Link } from "@chakra-ui/react";
 import NextLink from "components/theme/NextLink";
 import EXAMPLES from "lib/examples";
 import { QueryParams } from "lib/query";
 import { FunctionComponent } from "react";
 
-export interface ExamplesListProps extends FlexProps {
+export interface ExamplesListProps extends StackProps {
     exampleMouseOver: (a: string, b: string) => void;
     exampleMouseOut: () => void;
     exampleClicked: () => void;
@@ -25,7 +25,7 @@ const ExamplesList: FunctionComponent<ExamplesListProps> = ({
     };
 
     return (
-        <Flex flexDirection="column" alignItems="center" {...props}>
+        <Stack align="center" fontSize="sm" {...props}>
             <Heading color="gray.300" size="md">
                 Examples
             </Heading>
@@ -46,7 +46,7 @@ const ExamplesList: FunctionComponent<ExamplesListProps> = ({
                     </Link>
                 </NextLink>
             ))}
-        </Flex>
+        </Stack>
     );
 };
 

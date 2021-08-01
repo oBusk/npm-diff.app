@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import { File } from "react-diff-view";
+import { File } from "sreact-diff-view";
 import DiffFileComponent from "./DiffFile";
 
 interface Props {

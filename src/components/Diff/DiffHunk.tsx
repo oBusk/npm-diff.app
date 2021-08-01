@@ -1,10 +1,8 @@
-import { Box, BoxProps, Text } from "@chakra-ui/react";
+import { Text } from "@chakra-ui/react";
+import { Decoration } from "components/react-diff-view";
 import { FunctionComponent } from "react";
-import { Decoration, Hunk, HunkData } from "react-diff-view";
-
-const DiffDecoration: FunctionComponent<BoxProps> = ({ ...props }) => (
-    <Box as={Decoration} {...props}></Box>
-);
+import { HunkData } from "react-diff-view";
+import { Hunk } from "components/react-diff-view";
 
 interface DiffHunkProps {
     hunk: HunkData;
@@ -12,14 +10,14 @@ interface DiffHunkProps {
 
 const DiffHunk: FunctionComponent<DiffHunkProps> = ({ hunk }) => (
     <>
-        <DiffDecoration
+        <Decoration
             borderTopWidth="1px"
             borderBottomWidth="1px"
             color="gray"
             bg="gray.100"
         >
             <Text padding="10px">{hunk.content}</Text>
-        </DiffDecoration>
+        </Decoration>
         <Hunk hunk={hunk}></Hunk>
     </>
 );
