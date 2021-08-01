@@ -2,6 +2,7 @@ import { withTheme } from "@emotion/react";
 import DiffFiles from "components/Diff/DiffFiles";
 import DiffIntro from "components/DiffIntro";
 import Layout from "components/Layout";
+import { bundlephobia, BundlephobiaResults } from "lib/bundlephobia";
 import destination from "lib/destination";
 import { packagephobia, PackagephobiaResults } from "lib/packagephobia";
 import parseQuery from "lib/query";
@@ -18,6 +19,7 @@ type Props = {
     diff: string;
     specs: [string, string];
     packagephobiaResults: PackagephobiaResults;
+    bundlephobiaResults: BundlephobiaResults;
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
@@ -36,16 +38,19 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
 
     if (redirect === false) {
-        const [diff, packagephobiaResults] = await Promise.all([
-            libnpmdiff(immutableSpecs, parseQuery(options)),
-            packagephobia(immutableSpecs),
-        ]);
+        const [diff, packagephobiaResults, bundlephobiaResults] =
+            await Promise.all([
+                libnpmdiff(immutableSpecs, parseQuery(options)),
+                packagephobia(immutableSpecs),
+                bundlephobia(immutableSpecs),
+            ]);
 
         return {
             props: {
                 specs: immutableSpecs,
                 diff,
                 packagephobiaResults,
+                bundlephobiaResults,
             },
         };
     } else {
@@ -63,6 +68,7 @@ const DiffPage: NextPage<Props> = ({
     diff,
     specs: [a, b],
     packagephobiaResults,
+    bundlephobiaResults,
 }) => {
     const files = parseDiff(diff);
 
@@ -85,6 +91,7 @@ const DiffPage: NextPage<Props> = ({
                 additions={additions}
                 deletions={deletions}
                 packagephobiaResults={packagephobiaResults}
+                bundlephobiaResults={bundlephobiaResults}
                 alignSelf="stretch"
             />
             <DiffFiles files={files} />

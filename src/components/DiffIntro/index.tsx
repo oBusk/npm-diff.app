@@ -8,11 +8,11 @@ import {
     Text,
 } from "@chakra-ui/react";
 import BorderBox from "components/theme/BorderBox";
+import { bundlephobia, BundlephobiaResults } from "lib/bundlephobia";
 import { PackagephobiaResults } from "lib/packagephobia";
 import { serviceLinks } from "lib/serviceLinks";
 import npa from "npm-package-arg";
 import { FunctionComponent } from "react";
-import PackagephobiaComparison from "./PackagephobiaComparison";
 import ServiceLinks from "./ServiceLinks";
 import SizeComparison from "./SizeComparison";
 
@@ -40,6 +40,7 @@ export interface DiffIntroProps extends FlexProps {
     additions: number;
     deletions: number;
     packagephobiaResults: PackagephobiaResults;
+    bundlephobiaResults: BundlephobiaResults;
 }
 
 const DiffIntro = forwardRef<DiffIntroProps, "h2">(
@@ -51,6 +52,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
             additions,
             deletions,
             packagephobiaResults,
+            bundlephobiaResults,
             ...props
         },
         ref,
@@ -117,6 +119,43 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                             b: {
                                 bytes: packagephobiaResults.b.install.bytes,
                                 color: packagephobiaResults.b.install.color,
+                            },
+                        },
+                    ]}
+                    width="100%"
+                />
+                <Heading size="xs">Bundlephobia</Heading>
+                <SizeComparison
+                    serviceName="Bundlephobia"
+                    serviceLink={serviceLinks.Bundlephobia}
+                    a={{ name: aName, version: aVersion }}
+                    b={{ name: bName, version: bVersion }}
+                    sizeRows={[
+                        {
+                            name: "Size",
+                            a: {
+                                bytes: bundlephobiaResults.a.size,
+                            },
+                            b: {
+                                bytes: bundlephobiaResults.b.size,
+                            },
+                        },
+                        {
+                            name: "Gzip",
+                            a: {
+                                bytes: bundlephobiaResults.a.gzip,
+                            },
+                            b: {
+                                bytes: bundlephobiaResults.b.gzip,
+                            },
+                        },
+                        {
+                            name: "Dependencies",
+                            a: {
+                                count: bundlephobiaResults.a.dependencyCount,
+                            },
+                            b: {
+                                count: bundlephobiaResults.b.dependencyCount,
                             },
                         },
                     ]}

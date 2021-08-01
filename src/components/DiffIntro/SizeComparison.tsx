@@ -44,6 +44,7 @@ const LinkButton: FunctionComponent<
             borderRadius="lg"
             padding={COMMON_PADDING}
             href={serviceLink(packageName, packageVersion)}
+            textAlign="center"
             _hover={{
                 textDecoration: "none",
                 background: "gray.100",
@@ -56,6 +57,7 @@ const LinkButton: FunctionComponent<
 const SizeText: FunctionComponent<{
     bytes: number;
     color?: string;
+    num?: number;
     baseBytes?: number;
 }> = ({ bytes, color, baseBytes }) => (
     <Text>
@@ -66,9 +68,22 @@ const SizeText: FunctionComponent<{
     </Text>
 );
 
+const CountText: FunctionComponent<{
+    count: number;
+    baseCount?: number;
+}> = ({ count, baseCount }) => (
+    <Text>
+        <chakra.span>{count}</chakra.span>
+        {baseCount != null && baseCount != 0 && (
+            <chakra.small>{differance(baseCount, count)}</chakra.small>
+        )}
+    </Text>
+);
+
 export interface Size {
-    bytes: number;
-    color: string;
+    bytes?: number;
+    count?: number;
+    color?: string;
 }
 
 export interface SizeComparisonRow {
@@ -105,13 +120,21 @@ const SizeComparison = forwardRef<SizeComparisonProps, "div">(
                     packageName={a.name}
                     packageVersion={a.version}
                 >
-                    {sizeRows.map((sizeRow) => (
-                        <SizeText
-                            key={sizeRow.name}
-                            bytes={sizeRow.a.bytes}
-                            color={sizeRow.a.color}
-                        />
-                    ))}
+                    {sizeRows.map(({ name, a }) => {
+                        if (a.bytes != null) {
+                            return (
+                                <SizeText
+                                    key={name}
+                                    bytes={a.bytes}
+                                    color={a.color}
+                                />
+                            );
+                        } else if (a.count != null) {
+                            return <CountText key={name} count={a.count} />;
+                        } else {
+                            return null;
+                        }
+                    })}
                 </LinkButton>
             </Flex>
             <Box padding={COMMON_PADDING} textAlign="center">
@@ -127,14 +150,21 @@ const SizeComparison = forwardRef<SizeComparisonProps, "div">(
                     packageName={b.name}
                     packageVersion={b.version}
                 >
-                    {sizeRows.map((sizeRow) => (
-                        <SizeText
-                            key={sizeRow.name}
-                            bytes={sizeRow.b.bytes}
-                            color={sizeRow.b.color}
-                            baseBytes={sizeRow.a.bytes}
-                        />
-                    ))}
+                    {sizeRows.map(({ name, b }) => {
+                        if (b.bytes != null) {
+                            return (
+                                <SizeText
+                                    key={name}
+                                    bytes={b.bytes}
+                                    color={b.color}
+                                />
+                            );
+                        } else if (b.count != null) {
+                            return <CountText key={name} count={b.count} />;
+                        } else {
+                            return null;
+                        }
+                    })}
                 </LinkButton>
             </Flex>
         </Flex>
