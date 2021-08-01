@@ -1,16 +1,4 @@
-import {
-    Button,
-    Flex,
-    FlexProps,
-    Input,
-    InputGroup,
-    InputRightAddon,
-    Tooltip,
-    Box,
-    Stack,
-    StackProps,
-} from "@chakra-ui/react";
-import Span from "components/theme/Span";
+import { Button, Input, Stack, StackProps, Tooltip } from "@chakra-ui/react";
 import {
     FormEvent,
     FunctionComponent,
