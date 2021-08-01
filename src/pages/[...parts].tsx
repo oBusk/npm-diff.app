@@ -4,6 +4,7 @@ import DiffIntro from "components/DiffIntro";
 import Layout from "components/Layout";
 import { bundlephobia, BundlephobiaResults } from "lib/bundlephobia";
 import destination from "lib/destination";
+import measuredPromise from "lib/measuredPromise";
 import { packagephobia, PackagephobiaResults } from "lib/packagephobia";
 import parseQuery from "lib/query";
 import countChanges from "lib/utils/countChanges";
@@ -38,12 +39,24 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
 
     if (redirect === false) {
-        const [diff, packagephobiaResults, bundlephobiaResults] =
-            await Promise.all([
-                libnpmdiff(immutableSpecs, parseQuery(options)),
-                packagephobia(immutableSpecs),
-                bundlephobia(immutableSpecs),
-            ]);
+        const [
+            { result: diff, time: diffTime },
+            { result: packagephobiaResults, time: packagephobiaTime },
+            { result: bundlephobiaResults, time: bundlephobiaTime },
+        ] = await Promise.all([
+            measuredPromise(libnpmdiff(immutableSpecs, parseQuery(options))),
+            measuredPromise(packagephobia(immutableSpecs)),
+            measuredPromise(bundlephobia(immutableSpecs)),
+        ]);
+
+        console.log({
+            specs: immutableSpecs,
+            timings: {
+                diff: diffTime,
+                packagephobia: packagephobiaTime,
+                bundlephobia: bundlephobiaTime,
+            },
+        });
 
         return {
             props: {
