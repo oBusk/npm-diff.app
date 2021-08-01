@@ -8,11 +8,12 @@ import {
     Text,
 } from "@chakra-ui/react";
 import BorderBox from "components/theme/BorderBox";
-import { bundlephobia, BundlephobiaResults } from "lib/bundlephobia";
+import { BundlephobiaResults } from "lib/bundlephobia";
 import { PackagephobiaResults } from "lib/packagephobia";
 import { serviceLinks } from "lib/serviceLinks";
 import npa from "npm-package-arg";
 import { FunctionComponent } from "react";
+import BundlephobiaFlags from "./BundlePhobiaFlags";
 import ServiceLinks from "./ServiceLinks";
 import SizeComparison from "./SizeComparison";
 
@@ -125,6 +126,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                     width="100%"
                 />
                 <Heading size="xs">Bundlephobia</Heading>
+                <BundlephobiaFlags data={bundlephobiaResults} margin="10px 0" />
                 <SizeComparison
                     serviceName="Bundlephobia"
                     serviceLink={serviceLinks.Bundlephobia}
