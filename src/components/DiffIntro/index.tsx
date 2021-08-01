@@ -65,15 +65,16 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                         </Flex>
                     </Flex>
                 </Heading>
-                <BorderBox textAlign="center" margin="10px 0">
-                    {changedFiles} files with <b>{additions} additions</b> and{" "}
-                    <b>{deletions} deletions</b>
-                </BorderBox>
                 <Heading size="xs">Packagephobia</Heading>
                 <PackagephobiaComparison
                     packagephobiaResults={packagephobiaResults}
                     width="100%"
                 />
+                <BorderBox textAlign="center" margin="10px 0">
+                    Showing {changedFiles} files with{" "}
+                    <b>{additions} additions</b> and{" "}
+                    <b>{deletions} deletions</b>
+                </BorderBox>
             </Flex>
         );
     },
