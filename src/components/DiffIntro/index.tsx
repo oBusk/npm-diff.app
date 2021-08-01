@@ -8,7 +8,9 @@ import {
     Text,
 } from "@chakra-ui/react";
 import BorderBox from "components/theme/BorderBox";
+import { PackagephobiaResults } from "lib/packagephobia";
 import { FunctionComponent } from "react";
+import PackagephobiaComparison from "./PackagephobiaComparison";
 import ServiceLinks from "./ServiceLinks";
 
 const SpecBox: FunctionComponent<{ packageSpec: string }> = ({
@@ -28,10 +30,22 @@ export interface DiffIntroProps extends FlexProps {
     changedFiles: number;
     additions: number;
     deletions: number;
+    packagephobiaResults: PackagephobiaResults;
 }
 
 const DiffIntro = forwardRef<DiffIntroProps, "h2">(
-    ({ a, b, changedFiles, additions, deletions, ...props }, ref) => {
+    (
+        {
+            a,
+            b,
+            changedFiles,
+            additions,
+            deletions,
+            packagephobiaResults,
+            ...props
+        },
+        ref,
+    ) => {
         return (
             <Flex direction="column" alignItems="center" ref={ref} {...props}>
                 <Heading as="h2" size="sm" width="100%" textAlign="center">
@@ -55,6 +69,11 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                     {changedFiles} files with <b>{additions} additions</b> and{" "}
                     <b>{deletions} deletions</b>
                 </BorderBox>
+                <Heading size="xs">Packagephobia</Heading>
+                <PackagephobiaComparison
+                    packagephobiaResults={packagephobiaResults}
+                    width="100%"
+                />
             </Flex>
         );
     },

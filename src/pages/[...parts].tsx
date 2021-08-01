@@ -3,6 +3,7 @@ import DiffFiles from "components/Diff/DiffFiles";
 import DiffIntro from "components/DiffIntro";
 import Layout from "components/Layout";
 import destination from "lib/destination";
+import { packagephobia, PackagephobiaResults } from "lib/packagephobia";
 import parseQuery from "lib/query";
 import countChanges from "lib/utils/countChanges";
 import rawQuery from "lib/utils/rawQuery";
@@ -16,6 +17,7 @@ import { parseDiff } from "react-diff-view";
 type Props = {
     diff: string;
     specs: [string, string];
+    packagephobiaResults: PackagephobiaResults;
 };
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
@@ -34,12 +36,16 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
 
     if (redirect === false) {
-        const diff = await libnpmdiff(immutableSpecs, parseQuery(options));
+        const [diff, packagephobiaResults] = await Promise.all([
+            libnpmdiff(immutableSpecs, parseQuery(options)),
+            packagephobia(immutableSpecs),
+        ]);
 
         return {
             props: {
-                diff,
                 specs: immutableSpecs,
+                diff,
+                packagephobiaResults,
             },
         };
     } else {
@@ -53,7 +59,11 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
 };
 
-const DiffPage: NextPage<Props> = ({ diff, specs: [a, b] }) => {
+const DiffPage: NextPage<Props> = ({
+    diff,
+    specs: [a, b],
+    packagephobiaResults,
+}) => {
     const files = parseDiff(diff);
 
     const changedFiles = files.length;
@@ -74,6 +84,7 @@ const DiffPage: NextPage<Props> = ({ diff, specs: [a, b] }) => {
                 changedFiles={changedFiles}
                 additions={additions}
                 deletions={deletions}
+                packagephobiaResults={packagephobiaResults}
                 alignSelf="stretch"
             />
             <DiffFiles files={files} />

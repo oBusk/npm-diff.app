@@ -1,24 +1,25 @@
-import { Code, IconProps, Link, Text, Tooltip } from "@chakra-ui/react";
+import { IconProps, Link } from "@chakra-ui/react";
+import ServiceTooltip from "components/ServiceTooltip";
 import { FunctionComponent } from "react";
 
 export interface ServiceLinkProps extends IconProps {
     name: string;
     href: string;
-    packageSpec: string;
+    packageName: string;
+    packageVersion: string;
 }
 
 const ServiceLink: FunctionComponent<ServiceLinkProps> = ({
     name,
     href,
-    packageSpec,
+    packageName,
+    packageVersion,
     children,
 }) => (
-    <Tooltip
-        label={
-            <>
-                View <Code>{packageSpec}</Code> on <b>{name}</b>
-            </>
-        }
+    <ServiceTooltip
+        serviceName={name}
+        packageName={packageName}
+        packageVersion={packageVersion}
     >
         <Link
             margin="0 2px"
@@ -28,7 +29,7 @@ const ServiceLink: FunctionComponent<ServiceLinkProps> = ({
         >
             {children}
         </Link>
-    </Tooltip>
+    </ServiceTooltip>
 );
 
 export default ServiceLink;

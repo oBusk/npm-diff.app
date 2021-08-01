@@ -1,3 +1,4 @@
+import { serviceLinks } from "lib/serviceLinks";
 import { FunctionComponent } from "react";
 import { DiNpm } from "react-icons/di";
 import { FaBox, FaCloud, FaRegFrownOpen } from "react-icons/fa";
@@ -17,32 +18,36 @@ const ServiceLinks: FunctionComponent<ServiceLinksProps> = ({
         <>
             <ServiceLink
                 name="npmjs.com"
-                href={`https://www.npmjs.com/package/${packageName}/v/${packageVersion}`}
-                packageSpec={packageSpec}
+                href={serviceLinks["npmjs.com"](packageName, packageVersion)}
+                packageName={packageName}
+                packageVersion={packageVersion}
             >
                 <ServiceIcon width="22px" height="22px" as={DiNpm} />
             </ServiceLink>
 
             <ServiceLink
                 name="UNPKG"
-                href={`https://unpkg.com/${packageSpec}/`}
-                packageSpec={packageSpec}
+                href={serviceLinks.UNPKG(packageName, packageVersion)}
+                packageName={packageName}
+                packageVersion={packageVersion}
             >
                 <ServiceIcon as={FaCloud} />
             </ServiceLink>
 
             <ServiceLink
                 name="Packagephobia"
-                href={`https://packagephobia.com/result?p=${packageSpec}`}
-                packageSpec={packageSpec}
+                href={serviceLinks.Packagephobia(packageName, packageVersion)}
+                packageName={packageName}
+                packageVersion={packageVersion}
             >
                 <ServiceIcon as={FaBox} />
             </ServiceLink>
 
             <ServiceLink
                 name="Bundlephobia"
-                href={`https://bundlephobia.com/package/${packageSpec}/`}
-                packageSpec={packageSpec}
+                href={serviceLinks.Bundlephobia(packageName, packageVersion)}
+                packageName={packageName}
+                packageVersion={packageVersion}
             >
                 <ServiceIcon as={FaRegFrownOpen} />
             </ServiceLink>
