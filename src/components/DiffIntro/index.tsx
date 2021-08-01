@@ -9,17 +9,26 @@ import {
 } from "@chakra-ui/react";
 import BorderBox from "components/theme/BorderBox";
 import { PackagephobiaResults } from "lib/packagephobia";
+import { serviceLinks } from "lib/serviceLinks";
+import npa from "npm-package-arg";
 import { FunctionComponent } from "react";
 import PackagephobiaComparison from "./PackagephobiaComparison";
 import ServiceLinks from "./ServiceLinks";
+import SizeComparison from "./SizeComparison";
 
-const SpecBox: FunctionComponent<{ packageSpec: string }> = ({
-    packageSpec,
-}) => (
+const SpecBox: FunctionComponent<{
+    packageName: string;
+    packageVersion: string;
+}> = ({ packageName, packageVersion }) => (
     <Box>
-        <Code>{packageSpec}</Code>
+        <Code>
+            {packageName}@{packageVersion}
+        </Code>
         <Text>
-            <ServiceLinks packageSpec={packageSpec} />
+            <ServiceLinks
+                packageName={packageName}
+                packageVersion={packageVersion}
+            />
         </Text>
     </Box>
 );
@@ -46,6 +55,16 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
         },
         ref,
     ) => {
+        let { name: aName, rawSpec: aVersion } = npa(a);
+        let { name: bName, rawSpec: bVersion } = npa(b);
+
+        if (aName == null) {
+            aName = "ERROR";
+        }
+        if (bName == null) {
+            bName = "ERROR";
+        }
+
         return (
             <Flex direction="column" alignItems="center" ref={ref} {...props}>
                 <Heading as="h2" size="sm" width="100%" textAlign="center">
@@ -53,7 +72,10 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                     <Flex>
                         <Flex flex="1 0 0px" justifyContent="end">
                             {/* Left half */}
-                            <SpecBox packageSpec={a} />
+                            <SpecBox
+                                packageName={aName}
+                                packageVersion={aVersion}
+                            />
                         </Flex>
                         <Box>
                             {/* Center column */}
@@ -61,13 +83,43 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                         </Box>
                         <Flex flex="1 0 0px" justifyContent="start">
                             {/* Right half */}
-                            <SpecBox packageSpec={b} />
+                            <SpecBox
+                                packageName={bName}
+                                packageVersion={bVersion}
+                            />
                         </Flex>
                     </Flex>
                 </Heading>
                 <Heading size="xs">Packagephobia</Heading>
-                <PackagephobiaComparison
-                    packagephobiaResults={packagephobiaResults}
+                <SizeComparison
+                    serviceName="Packagephobia"
+                    serviceLink={serviceLinks.Packagephobia}
+                    a={{ name: aName ?? "ERROR", version: aVersion }}
+                    b={{ name: bName ?? "ERROR", version: bVersion }}
+                    sizeRows={[
+                        {
+                            name: "Publish",
+                            a: {
+                                bytes: packagephobiaResults.a.publish.bytes,
+                                color: packagephobiaResults.a.publish.color,
+                            },
+                            b: {
+                                bytes: packagephobiaResults.b.publish.bytes,
+                                color: packagephobiaResults.b.publish.color,
+                            },
+                        },
+                        {
+                            name: "Install",
+                            a: {
+                                bytes: packagephobiaResults.a.install.bytes,
+                                color: packagephobiaResults.a.install.color,
+                            },
+                            b: {
+                                bytes: packagephobiaResults.b.install.bytes,
+                                color: packagephobiaResults.b.install.color,
+                            },
+                        },
+                    ]}
                     width="100%"
                 />
                 <BorderBox textAlign="center" margin="10px 0">

@@ -6,53 +6,51 @@ import ServiceIcon from "./ServiceIcon";
 import ServiceLink from "./ServiceLink";
 
 export interface ServiceLinksProps {
-    packageSpec: string;
+    packageName: string;
+    packageVersion: string;
 }
 
 const ServiceLinks: FunctionComponent<ServiceLinksProps> = ({
-    packageSpec,
-}) => {
-    const [packageName, packageVersion] = packageSpec.split("@");
+    packageName,
+    packageVersion,
+}) => (
+    <>
+        <ServiceLink
+            name="npmjs.com"
+            href={serviceLinks["npmjs.com"](packageName, packageVersion)}
+            packageName={packageName}
+            packageVersion={packageVersion}
+        >
+            <ServiceIcon width="22px" height="22px" as={DiNpm} />
+        </ServiceLink>
 
-    return (
-        <>
-            <ServiceLink
-                name="npmjs.com"
-                href={serviceLinks["npmjs.com"](packageName, packageVersion)}
-                packageName={packageName}
-                packageVersion={packageVersion}
-            >
-                <ServiceIcon width="22px" height="22px" as={DiNpm} />
-            </ServiceLink>
+        <ServiceLink
+            name="UNPKG"
+            href={serviceLinks.UNPKG(packageName, packageVersion)}
+            packageName={packageName}
+            packageVersion={packageVersion}
+        >
+            <ServiceIcon as={FaCloud} />
+        </ServiceLink>
 
-            <ServiceLink
-                name="UNPKG"
-                href={serviceLinks.UNPKG(packageName, packageVersion)}
-                packageName={packageName}
-                packageVersion={packageVersion}
-            >
-                <ServiceIcon as={FaCloud} />
-            </ServiceLink>
+        <ServiceLink
+            name="Packagephobia"
+            href={serviceLinks.Packagephobia(packageName, packageVersion)}
+            packageName={packageName}
+            packageVersion={packageVersion}
+        >
+            <ServiceIcon as={FaBox} />
+        </ServiceLink>
 
-            <ServiceLink
-                name="Packagephobia"
-                href={serviceLinks.Packagephobia(packageName, packageVersion)}
-                packageName={packageName}
-                packageVersion={packageVersion}
-            >
-                <ServiceIcon as={FaBox} />
-            </ServiceLink>
-
-            <ServiceLink
-                name="Bundlephobia"
-                href={serviceLinks.Bundlephobia(packageName, packageVersion)}
-                packageName={packageName}
-                packageVersion={packageVersion}
-            >
-                <ServiceIcon as={FaRegFrownOpen} />
-            </ServiceLink>
-        </>
-    );
-};
+        <ServiceLink
+            name="Bundlephobia"
+            href={serviceLinks.Bundlephobia(packageName, packageVersion)}
+            packageName={packageName}
+            packageVersion={packageVersion}
+        >
+            <ServiceIcon as={FaRegFrownOpen} />
+        </ServiceLink>
+    </>
+);
 
 export default ServiceLinks;
