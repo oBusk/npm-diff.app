@@ -1,7 +1,9 @@
 import {
     Button,
+    chakra,
     forwardRef,
     Input,
+    InputAddonProps,
     InputProps,
     Stack,
     StackProps,
@@ -14,9 +16,10 @@ import {
     useRef,
     useState,
 } from "react";
+import CenterInputAddon from "./CenterInputAddon";
 
 const SpecInput = forwardRef<InputProps, "input">((props, ref) => (
-    <Input type="text" maxWidth="24em" ref={ref} {...props} />
+    <Input type="text" maxWidth="20em" ref={ref} {...props} />
 ));
 
 export interface MainFormProps extends StackProps {
@@ -60,6 +63,7 @@ const MainForm: FunctionComponent<MainFormProps> = ({
             align="center"
             justify="center"
             direction={{ base: "column", lg: "row" }}
+            spacing={{ base: "0.5rem", lg: 0 }}
             {...props}
         >
             <Tooltip
@@ -73,8 +77,12 @@ const MainForm: FunctionComponent<MainFormProps> = ({
                     value={overrideA ?? a ?? ""}
                     onChange={(event) => setA(event.target.value)}
                     ref={aRef}
+                    borderEndRadius={{ lg: 0 }}
                 ></SpecInput>
             </Tooltip>
+            <CenterInputAddon display={{ base: "none", lg: "flex" }}>
+                ...
+            </CenterInputAddon>
             <Tooltip
                 label={`The specification of the compare, like "package"`}
                 closeOnClick={false}
@@ -85,6 +93,7 @@ const MainForm: FunctionComponent<MainFormProps> = ({
                     disabled={overrideB != null || isLoading}
                     value={overrideB ?? b ?? ""}
                     onChange={(event) => setB(event.target.value)}
+                    borderStartRadius={{ lg: 0 }}
                 ></SpecInput>
             </Tooltip>
             <Tooltip
@@ -96,7 +105,12 @@ const MainForm: FunctionComponent<MainFormProps> = ({
                 background={!a || !b ? "red.700" : undefined}
                 shouldWrapChildren
             >
-                <Button isLoading={isLoading} type="submit" disabled={!b || !a}>
+                <Button
+                    isLoading={isLoading}
+                    type="submit"
+                    disabled={!b || !a}
+                    marginInlineStart={{ lg: "2rem" }}
+                >
                     npm diff! 📦🔃
                 </Button>
             </Tooltip>
