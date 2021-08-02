@@ -121,7 +121,7 @@ const COMMON_PADDING = "8px";
 const SizeComparison = forwardRef<SizeComparisonProps, "div">(
     ({ a, b, sizeRows, serviceName, serviceLink, ...props }, ref) => (
         <Flex ref={ref} {...props}>
-            <Flex flex="1 0 0px" justifyContent="end">
+            <Flex flex="1 0 0px" justifyContent="flex-end">
                 <LinkButton
                     padding={COMMON_PADDING}
                     serviceName={serviceName}
@@ -151,7 +151,7 @@ const SizeComparison = forwardRef<SizeComparisonProps, "div">(
                     <Text key={sizeRow.name}>{sizeRow.name}</Text>
                 ))}
             </Box>
-            <Flex flex="1 0 0px" justifyContent="start">
+            <Flex flex="1 0 0px" justifyContent="flex-start">
                 <LinkButton
                     padding={COMMON_PADDING}
                     serviceName={serviceName}

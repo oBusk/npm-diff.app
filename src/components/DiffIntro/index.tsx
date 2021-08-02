@@ -74,7 +74,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                 <Heading as="h2" size="sm" width="100%" textAlign="center">
                     <Text>Comparing </Text>
                     <Flex>
-                        <Flex flex="1 0 0px" justifyContent="end">
+                        <Flex flex="1 0 0px" justifyContent="flex-end">
                             {/* Left half */}
                             <SpecBox
                                 packageName={aName}
@@ -85,7 +85,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                             {/* Center column */}
                             <Code>...</Code>
                         </Box>
-                        <Flex flex="1 0 0px" justifyContent="start">
+                        <Flex flex="1 0 0px" justifyContent="flex-start">
                             {/* Right half */}
                             <SpecBox
                                 packageName={bName}

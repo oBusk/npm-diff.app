@@ -15,7 +15,7 @@ export const Header: FunctionComponent<FlexProps> = (props) => (
         right="0"
         {...props}
     >
-        <Flex flex="1 0 0px" justifyContent="start">
+        <Flex flex="1 0 0px" justifyContent="flex-start">
             <GithubLink />
         </Flex>
         <NextLink href="/">
@@ -32,7 +32,7 @@ export const Header: FunctionComponent<FlexProps> = (props) => (
                 </Heading>
             </Box>
         </NextLink>
-        <Flex flex="1 0 0px" justifyContent="end">
+        <Flex flex="1 0 0px" justifyContent="flex-end">
             <APILInk />
         </Flex>
     </Flex>
