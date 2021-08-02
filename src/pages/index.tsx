@@ -1,12 +1,13 @@
-import { Flex, FlexProps, Stack } from "@chakra-ui/react";
+import { Stack } from "@chakra-ui/react";
 import { withTheme } from "@emotion/react";
 import ExamplesList from "components/ExamplesList";
 import Intro from "components/Intro";
 import Layout from "components/Layout";
 import MainForm from "components/MainForm";
 import OptionsForm from "components/OptionsForm";
-import router from "next/router";
-import { Component, FunctionComponent } from "react";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 export interface IndexProps {}
 
@@ -17,78 +18,71 @@ export interface IndexState {
     diffFiles: string;
 }
 
-// /** To unify main styles of top/bottom half of the page */
-// const HalfSegment: FunctionComponent<FlexProps> = ({ children, ...props }) => (
-//     <Flex flex="1 0 0px" direction="column" overflow="hidden" {...props}>
-//         {children}
-//     </Flex>
-// );
+const IndexPage: NextPage<IndexProps> = () => {
+    const [state, setState] = useState<IndexState>({
+        overrideA: null,
+        overrideB: null,
+        isLoading: false,
+        diffFiles: "**/!(*.map|*.min.js)",
+    });
+    const router = useRouter();
 
-class IndexPage extends Component<IndexProps, IndexState> {
-    constructor(props: {}) {
-        super(props);
-
-        this.state = {
-            overrideA: null,
-            overrideB: null,
-            isLoading: false,
-            diffFiles: "**/!(*.map|*.min.js)",
-        };
-    }
-
-    render() {
-        return (
-            <Layout>
-                <Intro as={Stack} />
-                <Stack>
-                    <MainForm
-                        overrideA={this.state.overrideA}
-                        overrideB={this.state.overrideB}
-                        isLoading={this.state.isLoading}
-                        handleSubmit={this.goToDiff}
-                    />
-                    <OptionsForm
-                        files={this.state.diffFiles}
-                        filesChange={(files) =>
-                            this.setState({ diffFiles: files })
-                        }
-                    />
-                </Stack>
-                <ExamplesList
-                    exampleMouseOver={(a, b) => this.setInput(a, b)}
-                    exampleMouseOut={() => this.setInput(null, null)}
-                    exampleClicked={this.exampleClicked}
-                    queryParams={{
-                        diffFiles: this.state.diffFiles,
-                    }}
-                />
-            </Layout>
-        );
-    }
-
-    private setInput = (a: string | null, b: string | null) => {
-        this.setState({
+    const setInput = (a: string | null, b: string | null) => {
+        setState({
+            ...state,
             overrideA: a,
             overrideB: b,
         });
     };
 
-    private exampleClicked = () => {
-        this.setState({
+    const exampleClicked = () => {
+        setState({
+            ...state,
             isLoading: true,
         });
     };
 
-    private goToDiff = (a: string | undefined, b: string | undefined): void => {
-        this.setState({ isLoading: true });
+    const goToDiff = (a: string | undefined, b: string | undefined): void => {
+        setState({
+            ...state,
+            isLoading: true,
+        });
 
         router.push({
             pathname: `/${a}...${b}`,
             query: {
-                diffFiles: this.state.diffFiles,
+                diffFiles: state.diffFiles,
             },
         });
     };
-}
+
+    return (
+        <Layout>
+            <Intro as={Stack} />
+            <Stack>
+                <MainForm
+                    overrideA={state.overrideA}
+                    overrideB={state.overrideB}
+                    isLoading={state.isLoading}
+                    handleSubmit={goToDiff}
+                />
+                <OptionsForm
+                    files={state.diffFiles}
+                    filesChange={(files) =>
+                        setState({ ...state, diffFiles: files })
+                    }
+                />
+            </Stack>
+            <ExamplesList
+                exampleMouseOver={(a, b) => setInput(a, b)}
+                exampleMouseOut={() => setInput(null, null)}
+                exampleClicked={exampleClicked}
+                queryParams={{
+                    diffFiles: state.diffFiles,
+                }}
+            />
+        </Layout>
+    );
+};
 
 export default withTheme(IndexPage);
