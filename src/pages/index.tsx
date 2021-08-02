@@ -1,4 +1,4 @@
-import { Flex, FlexProps } from "@chakra-ui/react";
+import { Flex, FlexProps, Stack } from "@chakra-ui/react";
 import { withTheme } from "@emotion/react";
 import ExamplesList from "components/ExamplesList";
 import Intro from "components/Intro";
@@ -17,12 +17,12 @@ export interface IndexState {
     diffFiles: string;
 }
 
-/** To unify main styles of top/bottom half of the page */
-const HalfSegment: FunctionComponent<FlexProps> = ({ children, ...props }) => (
-    <Flex flex="1 0 0px" direction="column" overflow="hidden" {...props}>
-        {children}
-    </Flex>
-);
+// /** To unify main styles of top/bottom half of the page */
+// const HalfSegment: FunctionComponent<FlexProps> = ({ children, ...props }) => (
+//     <Flex flex="1 0 0px" direction="column" overflow="hidden" {...props}>
+//         {children}
+//     </Flex>
+// );
 
 class IndexPage extends Component<IndexProps, IndexState> {
     constructor(props: {}) {
@@ -39,34 +39,29 @@ class IndexPage extends Component<IndexProps, IndexState> {
     render() {
         return (
             <Layout>
-                <HalfSegment>
-                    {/* Top half */}
-                    <Intro />
-                </HalfSegment>
-                {/* Center segment */}
-                <MainForm
-                    overrideA={this.state.overrideA}
-                    overrideB={this.state.overrideB}
-                    isLoading={this.state.isLoading}
-                    handleSubmit={this.goToDiff}
-                />
-                <HalfSegment justifyContent="space-between">
-                    {/* Bottom half */}
+                <Intro as={Stack} />
+                <Stack>
+                    <MainForm
+                        overrideA={this.state.overrideA}
+                        overrideB={this.state.overrideB}
+                        isLoading={this.state.isLoading}
+                        handleSubmit={this.goToDiff}
+                    />
                     <OptionsForm
                         files={this.state.diffFiles}
                         filesChange={(files) =>
                             this.setState({ diffFiles: files })
                         }
                     />
-                    <ExamplesList
-                        exampleMouseOver={(a, b) => this.setInput(a, b)}
-                        exampleMouseOut={() => this.setInput(null, null)}
-                        exampleClicked={this.exampleClicked}
-                        queryParams={{
-                            diffFiles: this.state.diffFiles,
-                        }}
-                    />
-                </HalfSegment>
+                </Stack>
+                <ExamplesList
+                    exampleMouseOver={(a, b) => this.setInput(a, b)}
+                    exampleMouseOut={() => this.setInput(null, null)}
+                    exampleClicked={this.exampleClicked}
+                    queryParams={{
+                        diffFiles: this.state.diffFiles,
+                    }}
+                />
             </Layout>
         );
     }

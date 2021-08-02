@@ -66,7 +66,11 @@ const ApiPage: NextPage<Props> = ({ diff, specs }) => {
                 <Text>
                     a <Text as="i">diff</Text> of the two provided packages
                 </Text>
-                <Code as="pre" whiteSpace="pre-wrap">
+                <Code
+                    as="pre"
+                    whiteSpace="pre-wrap"
+                    display={{ base: "none", lg: "initial" }}
+                >
                     {diff}
                 </Code>
             </VStack>

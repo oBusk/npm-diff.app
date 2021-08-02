@@ -8,15 +8,16 @@ export const Header: FunctionComponent<FlexProps> = (props) => (
     <Flex
         as="nav"
         align="center"
-        justify="space-between"
-        wrap="wrap"
         padding="1.5rem"
         position="sticky"
         top="0"
-        width="100%"
+        left="0"
+        right="0"
         {...props}
     >
-        <GithubLink />
+        <Flex flex="1 0 0px" justifyContent="flex-start">
+            <GithubLink />
+        </Flex>
         <NextLink href="/">
             <Box
                 as="a"
@@ -26,9 +27,13 @@ export const Header: FunctionComponent<FlexProps> = (props) => (
                     boxShadow: "outline",
                 }}
             >
-                <Heading as="h1">npm-diff.app 📦🔃</Heading>
+                <Heading as="h1" fontSize={{ base: "md", sm: "xl", lg: "3xl" }}>
+                    npm-diff.app 📦🔃
+                </Heading>
             </Box>
         </NextLink>
-        <APILInk />
+        <Flex flex="1 0 0px" justifyContent="flex-end">
+            <APILInk />
+        </Flex>
     </Flex>
 );

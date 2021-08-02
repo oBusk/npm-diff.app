@@ -1,15 +1,17 @@
-import { Flex } from "@chakra-ui/react";
+import { Stack, StackProps } from "@chakra-ui/react";
 import Head from "next/head";
 import { FunctionComponent } from "react";
 import { Header } from "./Header";
+import Footer from "./Footer";
 
-type Props = {
+export interface LayoutProps extends StackProps {
     title?: string;
-};
+}
 
 const BACKGROUND_COLOR = "white";
+const PADDING = "1em";
 
-const Layout: FunctionComponent<Props> = ({
+const Layout: FunctionComponent<LayoutProps> = ({
     children,
     title = "",
     ...props
@@ -19,17 +21,20 @@ const Layout: FunctionComponent<Props> = ({
             <Head>
                 <title>{title ? `${title} • ` : ""}npm-diff.app 📦🔃</title>
             </Head>
-            <Flex
-                direction="column"
-                alignItems="center"
-                justifyContent="flex-start"
-                bg={BACKGROUND_COLOR}
+            <Stack
+                background={BACKGROUND_COLOR}
                 minHeight="100vh"
+                justifyContent="space-between"
+                padding={PADDING}
                 {...props}
             >
-                <Header bg={BACKGROUND_COLOR} />
+                <Header
+                    margin={`-${PADDING} -${PADDING} 0`}
+                    background={BACKGROUND_COLOR}
+                />
                 {children}
-            </Flex>
+                <Footer margin={`-${PADDING}`} background={BACKGROUND_COLOR} />
+            </Stack>
         </>
     );
 };

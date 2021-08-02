@@ -1,9 +1,11 @@
+import { useBreakpointValue } from "@chakra-ui/react";
+import { Diff } from "components/react-diff-view";
 import CollapsableBorderBox, {
     CollapsableBorderBoxProps,
 } from "components/theme/CollapsableBorderBox";
 import countChanges from "lib/utils/countChanges";
 import { FunctionComponent } from "react";
-import { Diff, DiffType, HunkData } from "react-diff-view";
+import { DiffType, HunkData, ViewType } from "react-diff-view";
 import "react-diff-view/style/index.css";
 import DiffHunk from "../DiffHunk";
 import DiffFileHeader from "./DiffFileHeader";
@@ -22,11 +24,17 @@ const DiffFile: FunctionComponent<DiffFileProps> = ({
     title,
     ...props
 }) => {
+    const viewType =
+        useBreakpointValue<ViewType>({
+            base: "unified",
+            lg: "split",
+        }) ?? "split";
+
     const { additions, deletions } = countChanges(hunks);
 
     return (
         <CollapsableBorderBox
-            margin="16px"
+            margin="1em 0"
             header={
                 <DiffFileHeader additions={additions} deletions={deletions}>
                     {title}
@@ -35,7 +43,8 @@ const DiffFile: FunctionComponent<DiffFileProps> = ({
             {...props}
         >
             <Diff
-                viewType="split"
+                minWidth="50em"
+                viewType={viewType}
                 diffType={type}
                 hunks={hunks}
                 gutterType="anchor"

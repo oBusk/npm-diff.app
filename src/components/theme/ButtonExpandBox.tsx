@@ -1,6 +1,12 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import { Button, Flex, FlexProps, forwardRef, Tooltip } from "@chakra-ui/react";
-import { useState } from "react";
+import {
+    Button,
+    Flex,
+    FlexProps,
+    forwardRef,
+    Tooltip,
+    useBoolean,
+} from "@chakra-ui/react";
 import BorderBox from "./BorderBox";
 
 export interface CollapseBlockProps extends FlexProps {
@@ -17,7 +23,7 @@ export interface CollapseBlockProps extends FlexProps {
  */
 const ButtonExpandBox = forwardRef<CollapseBlockProps, "div">(
     ({ buttonContent, buttonLabel, children, ...props }, ref) => {
-        const [isExpanded, setExpanded] = useState(false);
+        const [isExpanded, setExpanded] = useBoolean(false);
 
         return (
             <Flex
@@ -34,7 +40,7 @@ const ButtonExpandBox = forwardRef<CollapseBlockProps, "div">(
                 <Tooltip label={buttonLabel}>
                     <Button
                         variant="outline"
-                        onClick={() => setExpanded(!isExpanded)}
+                        onClick={setExpanded.toggle}
                         leftIcon={<ChevronDownIcon />}
                         {...(isExpanded && {
                             leftIcon: <ChevronUpIcon />,
