@@ -22,7 +22,7 @@ export interface BundlephobiaResponse {
 
     hasJSModule: false | string;
     hasJSNext: false | string;
-    hasSideEffects: boolean;
+    hasSideEffects: boolean | string[];
     isModuleType: boolean;
     dependencyCount: number;
 

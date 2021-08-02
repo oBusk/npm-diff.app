@@ -2,7 +2,7 @@ import { createIcon } from "@chakra-ui/react";
 
 // https://github.com/pastelsky/bundlephobia/blob/b4075b/client/assets/tree-shake.svg
 const TreeshakeIcon = createIcon({
-    displayName: "SideEffectIcon",
+    displayName: "TreeshakeIcon",
     viewBox: "0 0 23 21",
     path: (
         <>
