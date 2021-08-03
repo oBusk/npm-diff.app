@@ -5,6 +5,7 @@ import {
     forwardRef,
     LinkProps,
     Text,
+    useColorModeValue,
 } from "@chakra-ui/react";
 import ServiceTooltip from "components/ServiceTooltip";
 import ExternalLink from "components/theme/ExternalLink";
@@ -43,25 +44,29 @@ const LinkButton: FunctionComponent<
         serviceName: string;
         serviceLink: (packageName: string, packageVersion: string) => string;
     }
-> = ({ packageName, packageVersion, serviceName, serviceLink, ...props }) => (
-    <ServiceTooltip
-        serviceName={serviceName}
-        packageName={packageName}
-        packageVersion={packageVersion}
-    >
-        <ExternalLink
-            borderRadius="lg"
-            padding={COMMON_PADDING}
-            href={serviceLink(packageName, packageVersion)}
-            textAlign="center"
-            _hover={{
-                textDecoration: "none",
-                background: "gray.100",
-            }}
-            {...props}
-        />
-    </ServiceTooltip>
-);
+> = ({ packageName, packageVersion, serviceName, serviceLink, ...props }) => {
+    const hoverBg = useColorModeValue("gray.100", "gray.700");
+
+    return (
+        <ServiceTooltip
+            serviceName={serviceName}
+            packageName={packageName}
+            packageVersion={packageVersion}
+        >
+            <ExternalLink
+                borderRadius="lg"
+                padding={COMMON_PADDING}
+                href={serviceLink(packageName, packageVersion)}
+                textAlign="center"
+                _hover={{
+                    textDecoration: "none",
+                    background: hoverBg,
+                }}
+                {...props}
+            />
+        </ServiceTooltip>
+    );
+};
 
 const SizeText: FunctionComponent<{
     bytes: number;
