@@ -1,15 +1,4 @@
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import {
-    Box,
-    Button,
-    Flex,
-    FlexProps,
-    Heading,
-    HStack,
-    IconButton,
-    Tooltip,
-    useColorMode,
-} from "@chakra-ui/react";
+import { Box, Flex, FlexProps, Heading, HStack } from "@chakra-ui/react";
 import NextLink from "components/theme/NextLink";
 import { FunctionComponent } from "react";
 import { APILInk } from "./APILink";
