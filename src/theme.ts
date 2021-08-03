@@ -20,7 +20,8 @@ const reactDiffViewDarkModeVariables = {
 } as const;
 
 const config: ThemeConfig = {
-    useSystemColorMode: true,
+    initialColorMode: "dark",
+    // useSystemColorMode: true,
 };
 
 const theme = extendTheme({
@@ -29,6 +30,7 @@ const theme = extendTheme({
         global: ({ colorMode }) => ({
             ":root": colorMode === "dark" ? reactDiffViewDarkModeVariables : {},
             html: {
+                background: "gray.800",
                 // 360px
                 minWidth: "22em",
             },
