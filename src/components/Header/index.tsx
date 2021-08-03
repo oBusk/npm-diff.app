@@ -14,6 +14,7 @@ export const Header: FunctionComponent<FlexProps> = (props) => (
         top="0"
         left="0"
         right="0"
+        zIndex="2"
         {...props}
     >
         <HStack flex="1 0 0px">
