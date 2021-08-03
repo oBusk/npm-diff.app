@@ -3,7 +3,6 @@ import {
     forwardRef,
     InputAddonProps,
     useMultiStyleConfig,
-    useStyleConfig,
 } from "@chakra-ui/react";
 
 const StyledAddon = chakra("div", {
@@ -16,6 +15,12 @@ const StyledAddon = chakra("div", {
     },
 });
 
+// Trying to replicate what happens in
+// https://github.com/chakra-ui/chakra-ui/blob/%40chakra-ui/react%401.6.5/packages/input/src/input-addon.tsx
+// with some extra spice from
+// https://github.com/chakra-ui/chakra-ui/blob/%40chakra-ui/react%401.6.5/packages/input/src/input-group.tsx
+// Goal is to have a InputAddon that fits between two input elements without having to be wrapped in a
+// InputGroup.
 const CenterInputAddon = forwardRef<InputAddonProps, "div">((props, ref) => {
     const { addon: addonStyles } = useMultiStyleConfig("Input", props);
 
