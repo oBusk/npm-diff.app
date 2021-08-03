@@ -13,7 +13,7 @@ import {
 import NextLink from "components/theme/NextLink";
 import { FunctionComponent } from "react";
 import { APILInk } from "./APILink";
-import DarkmodeToggle from "./DarkmodeToggle";
+import ColorModeToggle from "./ColorModeToggle";
 import { GithubLink } from "./GithubLink";
 
 export const Header: FunctionComponent<FlexProps> = (props) => (
@@ -29,7 +29,7 @@ export const Header: FunctionComponent<FlexProps> = (props) => (
     >
         <HStack flex="1 0 0px">
             <GithubLink variant="ghost" />
-            <DarkmodeToggle variant="ghost" />
+            <ColorModeToggle variant="ghost" />
         </HStack>
         <NextLink href="/">
             <Box

@@ -7,9 +7,9 @@ import {
 } from "@chakra-ui/react";
 import Tooltip from "components/theme/Tooltip";
 
-export interface DarkmodeToggleProps extends Partial<IconButtonProps> {}
+export interface ColorModeToggleProps extends Partial<IconButtonProps> {}
 
-const DarkmodeToggle = forwardRef<DarkmodeToggleProps, "button">(
+const ColorModeToggle = forwardRef<ColorModeToggleProps, "button">(
     ({ ...props }, ref) => {
         const { colorMode, toggleColorMode } = useColorMode();
 
@@ -31,4 +31,4 @@ const DarkmodeToggle = forwardRef<DarkmodeToggleProps, "button">(
     },
 );
 
-export default DarkmodeToggle;
+export default ColorModeToggle;
