@@ -1,4 +1,3 @@
-import { withTheme } from "@emotion/react";
 import Landing from "components/Landing";
 import { NextPage } from "next";
 
@@ -15,4 +14,4 @@ const IndexPage: NextPage<IndexProps> = () => {
     return <Landing />;
 };
 
-export default withTheme(IndexPage);
+export default IndexPage;

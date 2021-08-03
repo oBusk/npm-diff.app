@@ -1,4 +1,10 @@
-import { chakra, forwardRef, InputAddonProps } from "@chakra-ui/react";
+import {
+    chakra,
+    forwardRef,
+    InputAddonProps,
+    useMultiStyleConfig,
+    useStyleConfig,
+} from "@chakra-ui/react";
 
 const StyledAddon = chakra("div", {
     baseStyle: {
@@ -11,19 +17,9 @@ const StyledAddon = chakra("div", {
 });
 
 const CenterInputAddon = forwardRef<InputAddonProps, "div">((props, ref) => {
+    const { addon: addonStyles } = useMultiStyleConfig("Input", props);
+
     const { placement: _, ...rest } = props;
-    const addonStyles = {
-        // Just read what `useStyles().addon` returns and store it
-        // Can't use `useStyles` because it only works inside a `InputGroup`
-        // which messes up layout
-        fontSize: "md",
-        px: 4,
-        h: 10,
-        borderRadius: "md",
-        border: "1px solid",
-        borderColor: "inherit",
-        bg: "gray.100",
-    } as const;
     const placementStyles = {
         // Do both what placement=left and placement=right do
         marginEnd: "-1px",
@@ -38,7 +34,7 @@ const CenterInputAddon = forwardRef<InputAddonProps, "div">((props, ref) => {
         <StyledAddon
             ref={ref}
             {...rest}
-            __css={{
+            sx={{
                 ...addonStyles,
                 ...placementStyles,
             }}

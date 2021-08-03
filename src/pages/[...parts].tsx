@@ -1,4 +1,3 @@
-import { withTheme } from "@emotion/react";
 import DiffFiles from "components/Diff/DiffFiles";
 import DiffIntro from "components/DiffIntro";
 import Layout from "components/Layout";
@@ -112,4 +111,4 @@ const DiffPage: NextPage<Props> = ({
     );
 };
 
-export default withTheme(DiffPage);
+export default DiffPage;

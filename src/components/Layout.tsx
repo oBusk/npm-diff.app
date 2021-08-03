@@ -1,14 +1,19 @@
-import { Stack, StackProps } from "@chakra-ui/react";
+import {
+    Stack,
+    StackProps,
+    useColorModeValue,
+    useTheme,
+} from "@chakra-ui/react";
 import Head from "next/head";
 import { FunctionComponent } from "react";
 import { Header } from "./Header";
 import Footer from "./Footer";
-
+import { Theme } from "theme";
 export interface LayoutProps extends StackProps {
     title?: string;
 }
 
-const BACKGROUND_COLOR = "white";
+const BACKGROUND_COLOR = undefined;
 const PADDING = "1em";
 
 const Layout: FunctionComponent<LayoutProps> = ({
@@ -16,13 +21,15 @@ const Layout: FunctionComponent<LayoutProps> = ({
     title = "",
     ...props
 }) => {
+    // https://github.com/chakra-ui/chakra-ui/blob/%40chakra-ui/react%401.6.5/packages/theme/src/styles.ts#L8
+    const background = useColorModeValue("white", "gray.800");
+
     return (
         <>
             <Head>
                 <title>{title ? `${title} • ` : ""}npm-diff.app 📦🔃</title>
             </Head>
             <Stack
-                background={BACKGROUND_COLOR}
                 minHeight="100vh"
                 justifyContent="space-between"
                 padding={PADDING}
@@ -30,10 +37,10 @@ const Layout: FunctionComponent<LayoutProps> = ({
             >
                 <Header
                     margin={`-${PADDING} -${PADDING} 0`}
-                    background={BACKGROUND_COLOR}
+                    background={background}
                 />
                 {children}
-                <Footer margin={`-${PADDING}`} background={BACKGROUND_COLOR} />
+                <Footer margin={`-${PADDING}`} background={background} />
             </Stack>
         </>
     );

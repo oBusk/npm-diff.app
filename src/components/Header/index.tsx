@@ -1,7 +1,19 @@
-import { Box, Flex, FlexProps, Heading } from "@chakra-ui/react";
+import { MoonIcon, SunIcon } from "@chakra-ui/icons";
+import {
+    Box,
+    Button,
+    Flex,
+    FlexProps,
+    Heading,
+    HStack,
+    IconButton,
+    Tooltip,
+    useColorMode,
+} from "@chakra-ui/react";
 import NextLink from "components/theme/NextLink";
 import { FunctionComponent } from "react";
 import { APILInk } from "./APILink";
+import DarkmodeToggle from "./DarkmodeToggle";
 import { GithubLink } from "./GithubLink";
 
 export const Header: FunctionComponent<FlexProps> = (props) => (
@@ -15,9 +27,10 @@ export const Header: FunctionComponent<FlexProps> = (props) => (
         right="0"
         {...props}
     >
-        <Flex flex="1 0 0px" justifyContent="flex-start">
-            <GithubLink />
-        </Flex>
+        <HStack flex="1 0 0px">
+            <GithubLink variant="ghost" />
+            <DarkmodeToggle variant="ghost" />
+        </HStack>
         <NextLink href="/">
             <Box
                 as="a"

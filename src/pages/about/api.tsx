@@ -1,5 +1,4 @@
 import { Code, Heading, Text, Tooltip, VStack } from "@chakra-ui/react";
-import { withTheme } from "@emotion/react";
 import Layout from "components/Layout";
 import ExternalLink from "components/theme/ExternalLink";
 import NextLink from "components/theme/NextLink";
@@ -78,4 +77,4 @@ const ApiPage: NextPage<Props> = ({ diff, specs }) => {
     );
 };
 
-export default withTheme(ApiPage);
+export default ApiPage;
