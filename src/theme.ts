@@ -30,9 +30,13 @@ const theme = extendTheme({
         global: ({ colorMode }) => ({
             ":root": colorMode === "dark" ? reactDiffViewDarkModeVariables : {},
             html: {
-                background: "gray.800",
+                // I find it less annoying to go from dark->ligth when loading, than flash of light
+                background: colorMode === "light" ? "white" : "gray.800",
                 // 360px
                 minWidth: "22em",
+            },
+            body: {
+                minHeight: "100vh",
             },
             ".diff-gutter": {
                 scrollMarginTop: "100px",
