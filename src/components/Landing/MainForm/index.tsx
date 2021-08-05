@@ -1,9 +1,7 @@
 import {
     Button,
-    chakra,
     forwardRef,
     Input,
-    InputAddonProps,
     InputProps,
     Stack,
     StackProps,
@@ -38,8 +36,13 @@ const MainForm: FunctionComponent<MainFormProps> = ({
     ...props
 }) => {
     const aRef = useRef<HTMLInputElement>(null);
-    const [a, setA] = useState(overrideA);
-    const [b, setB] = useState(overrideB);
+    const [a, setA] = useState("");
+    const [b, setB] = useState("");
+
+    useEffect(() => {
+        // Focus the input on initial load (only)
+        aRef.current?.focus();
+    }, []);
 
     const internalHandleSubmit = (event: FormEvent): void => {
         event.preventDefault();
@@ -51,10 +54,6 @@ const MainForm: FunctionComponent<MainFormProps> = ({
 
         handleSubmit(target.a.value, target.b.value);
     };
-
-    useEffect(() => {
-        aRef.current?.focus();
-    }, []);
 
     return (
         <Stack

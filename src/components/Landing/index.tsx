@@ -1,4 +1,4 @@
-import { Stack } from "@chakra-ui/react";
+import { Stack, useBoolean } from "@chakra-ui/react";
 import Layout from "components/Layout";
 import { useRouter } from "next/router";
 import { FunctionComponent, useState } from "react";
@@ -9,47 +9,36 @@ import OptionsForm from "./OptionsForm";
 
 export interface LandingProps {}
 
-export interface LandingState {
-    isLoading: boolean;
-    overrideA: string | null;
-    overrideB: string | null;
-    diffFiles: string;
-}
-
 const Landing: FunctionComponent<LandingProps> = () => {
-    const [state, setState] = useState<LandingState>({
-        overrideA: null,
-        overrideB: null,
-        isLoading: false,
-        diffFiles: "**/!(*.map|*.min.js)",
+    const [overrides, setOverrides] = useState<{
+        a: string | null;
+        b: string | null;
+    }>({
+        a: null,
+        b: null,
     });
+    const [diffFiles, setDiffFiles] = useState("**/!(*.map|*.min.js)");
+    const [isLoading, setLoading] = useBoolean(false);
     const router = useRouter();
 
     const setInput = (a: string | null, b: string | null) => {
-        setState({
-            ...state,
-            overrideA: a,
-            overrideB: b,
+        setOverrides({
+            a,
+            b,
         });
     };
 
     const exampleClicked = () => {
-        setState({
-            ...state,
-            isLoading: true,
-        });
+        setLoading.on();
     };
 
     const goToDiff = (a: string | undefined, b: string | undefined): void => {
-        setState({
-            ...state,
-            isLoading: true,
-        });
+        setLoading.on();
 
         router.push({
             pathname: `/${a}...${b}`,
             query: {
-                diffFiles: state.diffFiles,
+                diffFiles: diffFiles,
             },
         });
     };
@@ -59,25 +48,18 @@ const Landing: FunctionComponent<LandingProps> = () => {
             <Intro as={Stack} />
             <Stack>
                 <MainForm
-                    overrideA={state.overrideA}
-                    overrideB={state.overrideB}
-                    isLoading={state.isLoading}
+                    overrideA={overrides.a}
+                    overrideB={overrides.b}
+                    isLoading={isLoading}
                     handleSubmit={goToDiff}
                 />
-                <OptionsForm
-                    files={state.diffFiles}
-                    filesChange={(files) =>
-                        setState({ ...state, diffFiles: files })
-                    }
-                />
+                <OptionsForm files={diffFiles} filesChange={setDiffFiles} />
             </Stack>
             <ExamplesList
                 exampleMouseOver={(a, b) => setInput(a, b)}
                 exampleMouseOut={() => setInput(null, null)}
                 exampleClicked={exampleClicked}
-                queryParams={{
-                    diffFiles: state.diffFiles,
-                }}
+                queryParams={{ diffFiles }}
             />
         </Layout>
     );
