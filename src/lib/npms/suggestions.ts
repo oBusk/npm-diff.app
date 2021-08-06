@@ -30,15 +30,14 @@ const suggestionSort = (suggestionA: Suggestion, suggestionB: Suggestion) => {
 
 export const suggestionsUrl = `${searchUrl}/suggestions` as const;
 
-export default async function suggestions(
+export default async function getSuggestions(
     query: string,
     size = 25,
-): Promise<string[]> {
+): Promise<Suggestions> {
     const url = `${suggestionsUrl}?q=${query}&size=${size}` as const;
     const response = await fetch(url);
     const json: Suggestions = await response.json();
     const sorted = json.sort(suggestionSort);
-    const packageNames = sorted.map((suggestion) => suggestion.package.name);
 
-    return packageNames;
+    return sorted;
 }

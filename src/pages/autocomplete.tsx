@@ -6,26 +6,47 @@ import {
     InputGroup,
     InputRightElement,
     ListItem,
+    Text,
     UnorderedList,
+    Code,
 } from "@chakra-ui/react";
 import Layout from "components/Layout";
 import BorderBox from "components/theme/BorderBox";
 import { useCombobox } from "downshift";
 import getPopularPackages from "lib/npms/popularPackages";
-import suggestions from "lib/npms/suggestions";
+import Result from "lib/npms/Result";
+import getSuggestions, { Suggestion } from "lib/npms/suggestions";
 import { GetStaticProps, NextPage } from "next";
 import { useState } from "react";
 
+interface AutocompleteSuggestion {
+    name: string;
+    description: string;
+}
+
 export interface AutocompletePageProps {
-    popularPackages: string[];
+    popularPackages: AutocompleteSuggestion[];
 }
 
 const AUTOCOMPLETE_SIZE = 6;
 
+const toAutocompleteSuggestion = ({
+    package: { name, description },
+}: Result | Suggestion) => ({
+    name,
+    description,
+});
+
+const getAutocompleteSuggestions = async (query: string) => {
+    const results = await getSuggestions(query, AUTOCOMPLETE_SIZE);
+
+    return results.map(toAutocompleteSuggestion);
+};
+
 export const getStaticProps: GetStaticProps<AutocompletePageProps> =
     async () => {
         const { results } = await getPopularPackages(AUTOCOMPLETE_SIZE);
-        const popularPackages = results.map((p) => p.package.name);
+        const popularPackages = results.map(toAutocompleteSuggestion);
 
         return {
             props: {
@@ -54,17 +75,18 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
         onInputValueChange: async ({ inputValue = "" }) => {
             const packages =
                 inputValue.length > 0
-                    ? await suggestions(inputValue, AUTOCOMPLETE_SIZE)
+                    ? await getAutocompleteSuggestions(inputValue)
                     : popularPackages;
             setInputItems(packages);
         },
+        itemToString: (suggestion) => (suggestion ? suggestion.name : ""),
     });
 
     return (
         <Layout alignItems="center">
             <BorderBox position="relative">
                 <FormLabel {...getLabelProps()}>Choose an element:</FormLabel>
-                <InputGroup size="md" style={{}} {...getComboboxProps()}>
+                <InputGroup size="lg" style={{}} {...getComboboxProps()}>
                     <Input
                         borderBottomRadius={isOpen ? "0" : undefined}
                         {...getInputProps()}
@@ -102,7 +124,7 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
                     {isOpen &&
                         inputItems.map((item, index) => (
                             <ListItem
-                                key={`${item}${index}`}
+                                key={`${item.name}${index}`}
                                 padding="16px"
                                 background={
                                     highlightedIndex === index
@@ -111,7 +133,8 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
                                 }
                                 {...getItemProps({ item, index })}
                             >
-                                {item}
+                                <Code>{item.name}</Code>
+                                <Text fontSize="xs">{item.description}</Text>
                             </ListItem>
                         ))}
                 </UnorderedList>
