@@ -20,9 +20,11 @@ export interface AutocompletePageProps {
     popularPackages: string[];
 }
 
+const AUTOCOMPLETE_SIZE = 6;
+
 export const getStaticProps: GetStaticProps<AutocompletePageProps> =
     async () => {
-        const { results } = await getPopularPackages();
+        const { results } = await getPopularPackages(AUTOCOMPLETE_SIZE);
         const popularPackages = results.map((p) => p.package.name);
 
         return {
@@ -52,7 +54,7 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
         onInputValueChange: async ({ inputValue = "" }) => {
             const packages =
                 inputValue.length > 0
-                    ? await suggestions(inputValue)
+                    ? await suggestions(inputValue, AUTOCOMPLETE_SIZE)
                     : popularPackages;
             setInputItems(packages);
         },

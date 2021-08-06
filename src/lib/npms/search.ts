@@ -8,8 +8,11 @@ export interface SearchResults {
 
 export const searchUrl = `${NpmsApiUrl}/search` as const;
 
-export default async function search(query: string): Promise<SearchResults> {
-    const url = `${searchUrl}?q=${query}` as const;
+export default async function search(
+    query: string,
+    size = 25,
+): Promise<SearchResults> {
+    const url = `${searchUrl}?q=${query}&size=${size}` as const;
     const response = await fetch(url);
     const result: SearchResults = await response.json();
 
