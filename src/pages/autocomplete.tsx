@@ -11,118 +11,10 @@ import {
 import Layout from "components/Layout";
 import BorderBox from "components/theme/BorderBox";
 import { useCombobox } from "downshift";
+import getPopularPackages from "lib/npms/popularPackages";
+import suggestions from "lib/npms/suggestions";
 import { GetStaticProps, NextPage } from "next";
 import { useState } from "react";
-
-export interface NpmsPackageLinks {
-    npm: string;
-    homepage: string;
-    repository: string;
-    bugs: string;
-}
-
-export interface NpmsPackageAuthor {
-    name: string;
-}
-
-export interface NpmsPackageMaintainer {
-    username: string;
-    email: string;
-}
-
-export interface NpmsPackage {
-    name: string;
-    scope: string;
-    version: string;
-    description: string;
-    keywords: string[];
-    date: string;
-    links: NpmsPackageLinks;
-    author: NpmsPackageAuthor;
-    publisher: NpmsPackageMaintainer;
-    maintainers: NpmsPackageMaintainer[];
-}
-
-export interface NpmsFlags {
-    deprecated?: true;
-    unstable?: true;
-    insecure?: true;
-}
-
-export interface NpmsSuggestionScoreDetail {
-    quality: number;
-    popularity: number;
-    maintenance: number;
-}
-
-export interface NpmsSuggestionScore {
-    final: number;
-    detail: NpmsSuggestionScoreDetail;
-}
-
-// https://api-docs.npms.io/
-export interface NpmsSuggestion extends NpmsSearchResult {
-    /** A string containing highlighted matched text */
-    highlight?: string;
-}
-
-export interface NpmsSearchResult {
-    /** The package data which contains the name, version and other useful information */
-    package: NpmsPackage;
-    /** The package flags (deprecated, unstable, insecure) */
-    flags?: NpmsFlags;
-    /** The package score */
-    score: NpmsSuggestionScore;
-    /** The computed search score (from Elasticsearch) */
-    searchScore: number;
-}
-
-export type NpmsSuggestions = NpmsSuggestion[];
-
-export interface NpmsSearchResults {
-    total: number;
-    results: NpmsSearchResult[];
-}
-
-async function getSuggestions(query: string): Promise<string[]> {
-    const suggestionSort = (
-        suggestionA: NpmsSuggestion,
-        suggestionB: NpmsSuggestion,
-    ) => {
-        // Rank closely matching packages followed
-        // by most popular ones
-        if (
-            Math.abs(
-                Math.log(suggestionB.searchScore) -
-                    Math.log(suggestionA.searchScore),
-            ) > 1
-        ) {
-            return suggestionB.searchScore - suggestionA.searchScore;
-        } else {
-            return (
-                suggestionB.score.detail.popularity -
-                suggestionA.score.detail.popularity
-            );
-        }
-    };
-
-    const response = await fetch(
-        `https://api.npms.io/v2/search/suggestions?q=${query}`,
-    );
-    const json: NpmsSuggestions = await response.json();
-    const sorted = json.sort(suggestionSort);
-    const packageNames = sorted.map((suggestion) => suggestion.package.name);
-
-    return packageNames;
-}
-
-async function getPopularPackages(): Promise<NpmsSearchResults> {
-    const response = await fetch(
-        `https://api.npms.io/v2/search?q=not:deprecated`,
-    );
-    const json = await response.json();
-    return json;
-}
 
 export interface AutocompletePageProps {
     popularPackages: string[];
@@ -130,8 +22,8 @@ export interface AutocompletePageProps {
 
 export const getStaticProps: GetStaticProps<AutocompletePageProps> =
     async () => {
-        const { results } = await getPopularPackages();
-        const popularPackages = results.map((p) => p.package.name);
+        const asd = await getPopularPackages();
+        const popularPackages = asd.results.map((p) => p.package.name);
 
         return {
             props: {
@@ -160,7 +52,7 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
         onInputValueChange: async ({ inputValue = "" }) => {
             const packages =
                 inputValue.length > 0
-                    ? await getSuggestions(inputValue)
+                    ? await suggestions(inputValue)
                     : popularPackages;
             setInputItems(packages);
         },
