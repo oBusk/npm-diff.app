@@ -83,8 +83,8 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
     });
 
     return (
-        <Layout alignItems="center">
-            <BorderBox position="relative">
+        <Layout>
+            <BorderBox alignSelf="center" position="relative">
                 <FormLabel {...getLabelProps()}>Choose an element:</FormLabel>
                 <InputGroup size="lg" style={{}} {...getComboboxProps()}>
                     <Input
