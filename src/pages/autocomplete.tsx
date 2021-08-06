@@ -14,12 +14,33 @@ import { useCombobox } from "downshift";
 import { NextPage } from "next";
 import { useState } from "react";
 
+function getSuggestions(query: string) {
+    const suggestionSort = (packageA: any, packageB: any) => {
+        // Rank closely matching packages followed
+        // by most popular ones
+        if (
+            Math.abs(
+                Math.log(packageB.searchScore) - Math.log(packageA.searchScore),
+            ) > 1
+        ) {
+            return packageB.searchScore - packageA.searchScore;
+        } else {
+            return (
+                packageB.score.detail.popularity -
+                packageA.score.detail.popularity
+            );
+        }
+    };
+
+    return fetch(`https://api.npms.io/v2/search/suggestions?q=${query}`)
+        .then((result) => result.json())
+        .then((result) => result.sort(suggestionSort));
+}
+
 export interface AutocompletePageProps {}
 
-const items = ["apple", "banana", "orange", "grapefruit", "lemon"];
-
 const AutocompletePage: NextPage<AutocompletePageProps> = (props, context) => {
-    const [inputItems, setInputItems] = useState(items);
+    const [inputItems, setInputItems] = useState([]);
     const {
         getComboboxProps,
         getInputProps,
@@ -32,11 +53,12 @@ const AutocompletePage: NextPage<AutocompletePageProps> = (props, context) => {
     } = useCombobox({
         items: inputItems,
         onInputValueChange: ({ inputValue = "" }) => {
-            setInputItems(
-                items.filter((item) =>
-                    item.toLowerCase().startsWith(inputValue.toLowerCase()),
-                ),
-            );
+            getSuggestions(inputValue).then((suggestions) => {
+                // console.log(suggestions);
+                setInputItems(
+                    suggestions.map((result: any) => result.package.name),
+                );
+            });
         },
     });
 
