@@ -1,11 +1,12 @@
 import { ArrowDownIcon } from "@chakra-ui/icons";
 import {
-    Button,
     FormLabel,
     IconButton,
     Input,
     InputGroup,
     InputRightElement,
+    ListItem,
+    UnorderedList,
 } from "@chakra-ui/react";
 import Layout from "components/Layout";
 import BorderBox from "components/theme/BorderBox";
@@ -41,10 +42,13 @@ const AutocompletePage: NextPage<AutocompletePageProps> = (props, context) => {
 
     return (
         <Layout alignItems="center">
-            <BorderBox>
+            <BorderBox position="relative">
                 <FormLabel {...getLabelProps()}>Choose an element:</FormLabel>
                 <InputGroup size="md" style={{}} {...getComboboxProps()}>
-                    <Input {...getInputProps()} />
+                    <Input
+                        borderBottomRadius={isOpen ? "0" : undefined}
+                        {...getInputProps()}
+                    />
                     <InputRightElement>
                         <IconButton
                             type="button"
@@ -57,22 +61,40 @@ const AutocompletePage: NextPage<AutocompletePageProps> = (props, context) => {
                         </IconButton>
                     </InputRightElement>
                 </InputGroup>
-                <ul {...getMenuProps()} style={{}}>
+                <UnorderedList
+                    background="white"
+                    borderWidth={1}
+                    borderTopWidth={0}
+                    borderBottomRadius="lg"
+                    position="absolute"
+                    styleType="none"
+                    stylePosition="inside"
+                    marginX="16px"
+                    left={0}
+                    right={0}
+                    _empty={{
+                        padding: 0,
+                        visibility: "hidden",
+                    }}
+                    {...getMenuProps()}
+                    style={{}}
+                >
                     {isOpen &&
                         inputItems.map((item, index) => (
-                            <li
-                                style={
-                                    highlightedIndex === index
-                                        ? { backgroundColor: "#bde4ff" }
-                                        : {}
-                                }
+                            <ListItem
                                 key={`${item}${index}`}
+                                padding="16px"
+                                background={
+                                    highlightedIndex === index
+                                        ? "gray.100"
+                                        : null
+                                }
                                 {...getItemProps({ item, index })}
                             >
                                 {item}
-                            </li>
+                            </ListItem>
                         ))}
-                </ul>
+                </UnorderedList>
             </BorderBox>
         </Layout>
     );
