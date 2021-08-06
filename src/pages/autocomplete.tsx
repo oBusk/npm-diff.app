@@ -22,8 +22,8 @@ export interface AutocompletePageProps {
 
 export const getStaticProps: GetStaticProps<AutocompletePageProps> =
     async () => {
-        const asd = await getPopularPackages();
-        const popularPackages = asd.results.map((p) => p.package.name);
+        const { results } = await getPopularPackages();
+        const popularPackages = results.map((p) => p.package.name);
 
         return {
             props: {
