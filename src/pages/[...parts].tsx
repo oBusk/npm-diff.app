@@ -7,8 +7,8 @@ import measuredPromise from "lib/measuredPromise";
 import { packagephobia, PackagephobiaResults } from "lib/packagephobia";
 import parseQuery from "lib/query";
 import countChanges from "lib/utils/countChanges";
+import { setDefaultPageCaching } from "lib/utils/headers";
 import rawQuery from "lib/utils/rawQuery";
-import setCacheControl from "lib/utils/setCacheControl";
 import specsToDiff from "lib/utils/specsToDiff";
 import splitParts from "lib/utils/splitParts";
 import libnpmdiff from "libnpmdiff";
@@ -34,7 +34,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     const { redirect, immutableSpecs } = await destination(specsOrVersions);
 
     if (redirect !== "temporary") {
-        setCacheControl(res);
+        setDefaultPageCaching(res);
     }
 
     if (redirect === false) {

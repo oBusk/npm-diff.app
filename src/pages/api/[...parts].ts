@@ -1,7 +1,7 @@
 import destination from "lib/destination";
 import parseQuery from "lib/query";
+import { setDefaultPageCaching } from "lib/utils/headers";
 import rawQuery from "lib/utils/rawQuery";
-import setCacheControl from "lib/utils/setCacheControl";
 import specsToDiff from "lib/utils/specsToDiff";
 import splitParts from "lib/utils/splitParts";
 import libnpmdiff from "libnpmdiff";
@@ -20,7 +20,7 @@ const apiEndpoint: NextApiHandler<string> = async (req, res) => {
     const { redirect, immutableSpecs } = await destination(specsOrVersions);
 
     if (redirect !== "temporary") {
-        setCacheControl(res);
+        setDefaultPageCaching(res);
     }
 
     if (redirect === false) {

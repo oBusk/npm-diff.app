@@ -1,3 +1,4 @@
+import { headersCache30min } from "lib/utils/headers";
 import Result from "./Result";
 import { searchUrl } from "./search";
 
@@ -35,7 +36,9 @@ export default async function getSuggestions(
     size = 25,
 ): Promise<Suggestions> {
     const url = `${suggestionsUrl}?q=${query}&size=${size}` as const;
-    const response = await fetch(url);
+    const response = await fetch(url, {
+        headers: headersCache30min,
+    });
     const json: Suggestions = await response.json();
     const sorted = json.sort(suggestionSort);
 
