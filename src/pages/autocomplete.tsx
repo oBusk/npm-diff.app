@@ -1,5 +1,6 @@
 import { ArrowDownIcon } from "@chakra-ui/icons";
 import {
+    Code,
     FormLabel,
     IconButton,
     Input,
@@ -8,7 +9,6 @@ import {
     ListItem,
     Text,
     UnorderedList,
-    Code,
 } from "@chakra-ui/react";
 import Layout from "components/Layout";
 import BorderBox from "components/theme/BorderBox";
@@ -16,8 +16,8 @@ import { useCombobox } from "downshift";
 import getPopularPackages from "lib/npms/popularPackages";
 import Result from "lib/npms/Result";
 import getSuggestions, { Suggestion } from "lib/npms/suggestions";
+import useAsyncState from "lib/useAsyncState";
 import { GetStaticProps, NextPage } from "next";
-import { useState } from "react";
 
 interface AutocompleteSuggestion {
     name: string;
@@ -59,7 +59,7 @@ export const getStaticProps: GetStaticProps<AutocompletePageProps> =
 const AutocompletePage: NextPage<AutocompletePageProps> = ({
     popularPackages,
 }) => {
-    const [inputItems, setInputItems] = useState(popularPackages);
+    const [inputItems, setInputItems] = useAsyncState(popularPackages);
     const {
         getComboboxProps,
         getInputProps,
@@ -74,11 +74,11 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
         items: inputItems,
         initialIsOpen: true,
         onInputValueChange: async ({ inputValue = "" }) => {
-            const packages =
+            setInputItems(
                 inputValue.length > 0
-                    ? await getAutocompleteSuggestions(inputValue)
-                    : popularPackages;
-            setInputItems(packages);
+                    ? getAutocompleteSuggestions(inputValue)
+                    : popularPackages,
+            );
         },
         itemToString: (suggestion) => (suggestion ? suggestion.name : ""),
     });
