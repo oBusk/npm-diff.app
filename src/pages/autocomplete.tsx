@@ -2,6 +2,7 @@ import { ArrowDownIcon } from "@chakra-ui/icons";
 import {
     Code,
     FormLabel,
+    Heading,
     IconButton,
     Input,
     InputGroup,
@@ -86,8 +87,8 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
     return (
         <Layout>
             <BorderBox alignSelf="center" position="relative">
-                <FormLabel {...getLabelProps()}>Choose an element:</FormLabel>
-                <InputGroup size="lg" style={{}} {...getComboboxProps()}>
+                <FormLabel {...getLabelProps()}>Find a package</FormLabel>
+                <InputGroup size="lg" {...getComboboxProps()}>
                     <Input
                         borderBottomRadius={isOpen ? "0" : undefined}
                         {...getInputProps()}
@@ -99,9 +100,7 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
                             icon={<ArrowDownIcon />}
                             {...getToggleButtonProps()}
                             aria-label="toggle-menu"
-                        >
-                            &#8595;
-                        </IconButton>
+                        />
                     </InputRightElement>
                 </InputGroup>
                 <UnorderedList
@@ -111,32 +110,38 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
                     borderBottomRadius="lg"
                     position="absolute"
                     styleType="none"
-                    stylePosition="inside"
                     marginX="16px"
                     left={0}
                     right={0}
-                    _empty={{
-                        padding: 0,
-                        visibility: "hidden",
-                    }}
                     {...getMenuProps()}
-                    style={{}}
                 >
                     {isOpen &&
-                        inputItems.map((item, index) => (
-                            <ListItem
-                                key={`${item.name}${index}`}
+                        (inputItems.length === 0 ? (
+                            <Text
                                 padding="16px"
-                                background={
-                                    highlightedIndex === index
-                                        ? "gray.100"
-                                        : null
-                                }
-                                {...getItemProps({ item, index })}
+                                align="center"
+                                color="gray.200"
                             >
-                                <Code>{item.name}</Code>
-                                <Text fontSize="xs">{item.description}</Text>
-                            </ListItem>
+                                Found no packages
+                            </Text>
+                        ) : (
+                            inputItems.map((item, index) => (
+                                <ListItem
+                                    key={item.name}
+                                    padding="16px"
+                                    background={
+                                        highlightedIndex === index
+                                            ? "gray.100"
+                                            : null
+                                    }
+                                    {...getItemProps({ item, index })}
+                                >
+                                    <Code>{item.name}</Code>
+                                    <Text fontSize="xs">
+                                        {item.description}
+                                    </Text>
+                                </ListItem>
+                            ))
                         ))}
                 </UnorderedList>
             </BorderBox>
