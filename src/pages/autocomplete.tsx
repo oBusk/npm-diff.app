@@ -2,10 +2,13 @@ import { ArrowDownIcon } from "@chakra-ui/icons";
 import {
     Code,
     FormLabel,
+    FormLabelProps,
+    forwardRef,
     Heading,
     IconButton,
     Input,
     InputGroup,
+    InputGroupProps,
     InputRightElement,
     ListItem,
     Text,
@@ -87,8 +90,10 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
     return (
         <Layout>
             <BorderBox alignSelf="center" position="relative">
-                <FormLabel {...getLabelProps()}>Find a package</FormLabel>
-                <InputGroup size="lg" {...getComboboxProps()}>
+                <ComboboxLabel {...getLabelProps()}>
+                    Find a package
+                </ComboboxLabel>
+                <ComboboxBox {...getComboboxProps()}>
                     <Input
                         borderBottomRadius={isOpen ? "0" : undefined}
                         {...getInputProps()}
@@ -102,7 +107,7 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
                             aria-label="toggle-menu"
                         />
                     </InputRightElement>
-                </InputGroup>
+                </ComboboxBox>
                 <UnorderedList
                     background="white"
                     borderWidth={1}
@@ -148,5 +153,13 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
         </Layout>
     );
 };
+
+const ComboboxLabel = forwardRef<FormLabelProps, "label">((props, ref) => (
+    <FormLabel ref={ref} {...props} />
+));
+
+const ComboboxBox = forwardRef<InputGroupProps, "div">((props, ref) => (
+    <InputGroup size="lg" {...props} />
+));
 
 export default AutocompletePage;
