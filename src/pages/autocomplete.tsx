@@ -70,6 +70,7 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
         highlightedIndex,
         isOpen,
     } = useCombobox({
+        id: "autocomplete",
         items: inputItems,
         initialIsOpen: true,
         onInputValueChange: async ({ inputValue = "" }) => {
