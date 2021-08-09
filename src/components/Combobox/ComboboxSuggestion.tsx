@@ -1,18 +1,27 @@
-import { forwardRef, ListItem, ListItemProps } from "@chakra-ui/react";
+import {
+    forwardRef,
+    ListItem,
+    ListItemProps,
+    useColorModeValue,
+} from "@chakra-ui/react";
 
 interface ComboboxSuggestionProps extends ListItemProps {
     highlighted: boolean;
 }
 
 const ComboboxSuggestion = forwardRef<ComboboxSuggestionProps, "li">(
-    ({ highlighted, ...props }, ref) => (
-        <ListItem
-            background={highlighted ? "gray.100" : undefined}
-            padding="16px"
-            ref={ref}
-            {...props}
-        />
-    ),
+    ({ highlighted, ...props }, ref) => {
+        const highlightColor = useColorModeValue("gray.100", "gray.600");
+
+        return (
+            <ListItem
+                background={highlighted ? highlightColor : undefined}
+                padding="16px"
+                ref={ref}
+                {...props}
+            />
+        );
+    },
 );
 
 export default ComboboxSuggestion;
