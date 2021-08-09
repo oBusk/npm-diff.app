@@ -1,8 +1,4 @@
-import {
-    renderHook,
-    RenderHookResult,
-    RenderResult,
-} from "@testing-library/react-hooks";
+import { renderHook, RenderResult } from "@testing-library/react-hooks";
 import useThrottle from "./useThrottle";
 
 describe("useThrottle", () => {

@@ -1,4 +1,10 @@
-import { SetStateAction, useEffect, useRef, useState } from "react";
+import {
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 
 /**
  * Very simplistic hook which works a lot like `useState()` but the input can
@@ -11,23 +17,26 @@ export const useAsyncState = <T>(initialState: T) => {
     const index = useRef(0);
     const latestDelivered = useRef(-1);
 
-    const setAsync = async (
-        asyncState: SetStateAction<T> | Promise<SetStateAction<T>>,
-    ) => {
-        const currentIndex = index.current++;
-        const result = await asyncState;
-        if (currentIndex > latestDelivered.current) {
-            latestDelivered.current = currentIndex;
-            setSync(result);
-        }
-    };
+    const setAsync = useCallback(
+        async (asyncState: SetStateAction<T> | Promise<SetStateAction<T>>) => {
+            const currentIndex = index.current++;
+            const result = await asyncState;
+            if (currentIndex > latestDelivered.current) {
+                latestDelivered.current = currentIndex;
+                setSync(result);
+            }
+        },
+        [],
+    );
 
     const cleanup = () => {
         // By setting this value to an unreachable value, we can ignore any future resolves
         latestDelivered.current = Number.MAX_SAFE_INTEGER;
     };
 
-    useEffect(() => cleanup, []);
+    useEffect(() => {
+        return cleanup;
+    }, []);
 
     return [value, setAsync] as const;
 };
