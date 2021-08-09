@@ -4,7 +4,6 @@ import {
     FormLabel,
     FormLabelProps,
     forwardRef,
-    Heading,
     IconButton,
     Input,
     InputGroup,
@@ -21,6 +20,7 @@ import getPopularPackages from "lib/npms/popularPackages";
 import Result from "lib/npms/Result";
 import getSuggestions, { Suggestion } from "lib/npms/suggestions";
 import useAsyncState from "lib/useAsyncState";
+import useThrottle from "lib/utils/useThrottle";
 import { GetStaticProps, NextPage } from "next";
 
 interface AutocompleteSuggestion {
@@ -64,6 +64,19 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
     popularPackages,
 }) => {
     const [inputItems, setInputItems] = useAsyncState(popularPackages);
+
+    const updateSuggestions = useThrottle(
+        (inputValue: string | undefined = "") => {
+            setInputItems(
+                inputValue.length > 0
+                    ? getAutocompleteSuggestions(inputValue)
+                    : popularPackages,
+            );
+        },
+        200,
+        true,
+    );
+
     const {
         getComboboxProps,
         getInputProps,
@@ -77,13 +90,7 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
         id: "autocomplete",
         items: inputItems,
         initialIsOpen: true,
-        onInputValueChange: async ({ inputValue = "" }) => {
-            setInputItems(
-                inputValue.length > 0
-                    ? getAutocompleteSuggestions(inputValue)
-                    : popularPackages,
-            );
-        },
+        onInputValueChange: ({ inputValue }) => updateSuggestions(inputValue),
         itemToString: (suggestion) => (suggestion ? suggestion.name : ""),
     });
 

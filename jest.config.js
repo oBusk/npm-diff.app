@@ -1,4 +1,5 @@
 module.exports = {
+    testEnvironment: "jsdom",
     moduleDirectories: ["node_modules", "src"],
     collectCoverageFrom: [
         "**/*.{js,jsx,ts,tsx}",
