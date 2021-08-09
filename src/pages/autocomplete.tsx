@@ -159,7 +159,7 @@ const ComboboxLabel = forwardRef<FormLabelProps, "label">((props, ref) => (
 ));
 
 const ComboboxBox = forwardRef<InputGroupProps, "div">((props, ref) => (
-    <InputGroup size="lg" {...props} />
+    <InputGroup size="lg" ref={ref} {...props} />
 ));
 
 export default AutocompletePage;
