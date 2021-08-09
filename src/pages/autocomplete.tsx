@@ -1,15 +1,21 @@
 import { ArrowDownIcon } from "@chakra-ui/icons";
 import {
+    Box,
+    BoxProps,
     Code,
     FormLabel,
     FormLabelProps,
     forwardRef,
     IconButton,
+    IconButtonProps,
     Input,
     InputGroup,
     InputGroupProps,
+    InputProps,
     InputRightElement,
     ListItem,
+    ListItemProps,
+    ListProps,
     Text,
     UnorderedList,
 } from "@chakra-ui/react";
@@ -96,37 +102,18 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
 
     return (
         <Layout>
-            <BorderBox alignSelf="center" position="relative">
+            <ComboboxWrapper as={BorderBox} alignSelf="center">
                 <ComboboxLabel {...getLabelProps()}>
                     Find a package
                 </ComboboxLabel>
                 <ComboboxBox {...getComboboxProps()}>
-                    <Input
-                        borderBottomRadius={isOpen ? "0" : undefined}
-                        {...getInputProps()}
+                    <ComboboxInput {...getInputProps()} />
+                    <ComboboxButton
+                        aria-label="toggle-menu"
+                        {...getToggleButtonProps()}
                     />
-                    <InputRightElement>
-                        <IconButton
-                            type="button"
-                            size="sm"
-                            icon={<ArrowDownIcon />}
-                            {...getToggleButtonProps()}
-                            aria-label="toggle-menu"
-                        />
-                    </InputRightElement>
                 </ComboboxBox>
-                <UnorderedList
-                    background="white"
-                    borderWidth={1}
-                    borderTopWidth={0}
-                    borderBottomRadius="lg"
-                    position="absolute"
-                    styleType="none"
-                    marginX="16px"
-                    left={0}
-                    right={0}
-                    {...getMenuProps()}
-                >
+                <ComboboxSuggestionList {...getMenuProps()}>
                     {isOpen &&
                         (inputItems.length === 0 ? (
                             <Text
@@ -138,28 +125,27 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
                             </Text>
                         ) : (
                             inputItems.map((item, index) => (
-                                <ListItem
+                                <ComboboxSuggestion
                                     key={item.name}
-                                    padding="16px"
-                                    background={
-                                        highlightedIndex === index
-                                            ? "gray.100"
-                                            : null
-                                    }
+                                    highlighted={highlightedIndex === index}
                                     {...getItemProps({ item, index })}
                                 >
                                     <Code>{item.name}</Code>
                                     <Text fontSize="xs">
                                         {item.description}
                                     </Text>
-                                </ListItem>
+                                </ComboboxSuggestion>
                             ))
                         ))}
-                </UnorderedList>
-            </BorderBox>
+                </ComboboxSuggestionList>
+            </ComboboxWrapper>
         </Layout>
     );
 };
+
+const ComboboxWrapper = forwardRef<BoxProps, "div">((props, ref) => (
+    <Box position="relative" ref={ref} {...props} />
+));
 
 const ComboboxLabel = forwardRef<FormLabelProps, "label">((props, ref) => (
     <FormLabel ref={ref} {...props} />
@@ -168,5 +154,62 @@ const ComboboxLabel = forwardRef<FormLabelProps, "label">((props, ref) => (
 const ComboboxBox = forwardRef<InputGroupProps, "div">((props, ref) => (
     <InputGroup size="lg" ref={ref} {...props} />
 ));
+
+interface ComboboxInputProps extends InputProps {
+    isOpen: boolean;
+}
+
+const ComboboxInput = forwardRef<ComboboxInputProps, "input">(
+    ({ isOpen, ...props }, ref) => (
+        <Input
+            borderBottomRadius={isOpen ? "0" : undefined}
+            ref={ref}
+            {...props}
+        />
+    ),
+);
+
+const ComboboxButton = forwardRef<IconButtonProps, "button">((props, ref) => (
+    <InputRightElement>
+        <IconButton
+            type="button"
+            icon={<ArrowDownIcon />}
+            ref={ref}
+            {...props}
+            size="sm"
+        />
+    </InputRightElement>
+));
+
+const ComboboxSuggestionList = forwardRef<ListProps, "ul">((props, ref) => (
+    <UnorderedList
+        background="white"
+        borderWidth={1}
+        borderTopWidth={0}
+        borderBottomRadius="lg"
+        position="absolute"
+        styleType="none"
+        marginX="16px"
+        left={0}
+        right={0}
+        ref={ref}
+        {...props}
+    />
+));
+
+interface ComboboxSuggestionProps extends ListItemProps {
+    highlighted: boolean;
+}
+
+const ComboboxSuggestion = forwardRef<ComboboxSuggestionProps, "li">(
+    ({ highlighted, ...props }, ref) => (
+        <ListItem
+            background={highlighted ? "gray.100" : undefined}
+            padding="16px"
+            ref={ref}
+            {...props}
+        />
+    ),
+);
 
 export default AutocompletePage;
