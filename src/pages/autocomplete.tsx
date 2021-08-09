@@ -1,33 +1,12 @@
-import { ArrowDownIcon } from "@chakra-ui/icons";
-import {
-    Box,
-    BoxProps,
-    Code,
-    FormLabel,
-    FormLabelProps,
-    forwardRef,
-    IconButton,
-    IconButtonProps,
-    Input,
-    InputGroup,
-    InputGroupProps,
-    InputProps,
-    InputRightElement,
-    ListItem,
-    ListItemProps,
-    ListProps,
-    Text,
-    UnorderedList,
-} from "@chakra-ui/react";
+import Combobox from "components/Combobox";
 import Layout from "components/Layout";
 import BorderBox from "components/theme/BorderBox";
-import { useCombobox } from "downshift";
 import getPopularPackages from "lib/npms/popularPackages";
 import Result from "lib/npms/Result";
 import getSuggestions, { Suggestion } from "lib/npms/suggestions";
-import useAsyncState from "lib/utils/useAsyncState";
-import useThrottle from "lib/utils/useThrottle";
 import { GetStaticProps, NextPage } from "next";
+import { useCallback } from "react";
+import { Code, Text } from "@chakra-ui/react";
 
 interface AutocompleteSuggestion {
     name: string;
@@ -69,147 +48,37 @@ export const getStaticProps: GetStaticProps<AutocompletePageProps> =
 const AutocompletePage: NextPage<AutocompletePageProps> = ({
     popularPackages,
 }) => {
-    const [inputItems, setInputItems] = useAsyncState(popularPackages);
-
-    const updateSuggestions = useThrottle(
-        (inputValue: string | undefined = "") => {
-            setInputItems(
-                inputValue.length > 0
-                    ? getAutocompleteSuggestions(inputValue)
-                    : popularPackages,
-            );
-        },
-        200,
-        true,
+    const suggestionFinder = useCallback(
+        (inputValue: string | undefined = "") =>
+            inputValue.length > 0
+                ? getAutocompleteSuggestions(inputValue)
+                : popularPackages,
+        [popularPackages],
     );
 
-    const {
-        getComboboxProps,
-        getInputProps,
-        getItemProps,
-        getLabelProps,
-        getMenuProps,
-        getToggleButtonProps,
-        highlightedIndex,
-        isOpen,
-    } = useCombobox({
-        id: "autocomplete",
-        items: inputItems,
-        initialIsOpen: true,
-        onInputValueChange: ({ inputValue }) => updateSuggestions(inputValue),
-        itemToString: (suggestion) => (suggestion ? suggestion.name : ""),
-    });
+    const itemToString = useCallback(
+        (suggestion) => (suggestion ? suggestion.name : ""),
+        [],
+    );
 
     return (
         <Layout>
-            <ComboboxWrapper as={BorderBox} alignSelf="center">
-                <ComboboxLabel {...getLabelProps()}>
-                    Find a package
-                </ComboboxLabel>
-                <ComboboxBox {...getComboboxProps()}>
-                    <ComboboxInput {...getInputProps()} />
-                    <ComboboxButton
-                        aria-label="toggle-menu"
-                        {...getToggleButtonProps()}
-                    />
-                </ComboboxBox>
-                <ComboboxSuggestionList {...getMenuProps()}>
-                    {isOpen &&
-                        (inputItems.length === 0 ? (
-                            <Text
-                                padding="16px"
-                                align="center"
-                                color="gray.200"
-                            >
-                                Found no packages
-                            </Text>
-                        ) : (
-                            inputItems.map((item, index) => (
-                                <ComboboxSuggestion
-                                    key={item.name}
-                                    highlighted={highlightedIndex === index}
-                                    {...getItemProps({ item, index })}
-                                >
-                                    <Code>{item.name}</Code>
-                                    <Text fontSize="xs">
-                                        {item.description}
-                                    </Text>
-                                </ComboboxSuggestion>
-                            ))
-                        ))}
-                </ComboboxSuggestionList>
-            </ComboboxWrapper>
+            <Combobox
+                alignSelf="center"
+                as={BorderBox}
+                id="autocomplete"
+                suggestionFinder={suggestionFinder}
+                initialSuggestions={popularPackages}
+                itemToString={itemToString}
+                renderItem={(item) => (
+                    <>
+                        <Code>{item.name}</Code>
+                        <Text>{item.description}</Text>
+                    </>
+                )}
+            />
         </Layout>
     );
 };
-
-const ComboboxWrapper = forwardRef<BoxProps, "div">((props, ref) => (
-    <Box position="relative" ref={ref} {...props} />
-));
-
-const ComboboxLabel = forwardRef<FormLabelProps, "label">((props, ref) => (
-    <FormLabel ref={ref} {...props} />
-));
-
-const ComboboxBox = forwardRef<InputGroupProps, "div">((props, ref) => (
-    <InputGroup size="lg" ref={ref} {...props} />
-));
-
-interface ComboboxInputProps extends InputProps {
-    isOpen: boolean;
-}
-
-const ComboboxInput = forwardRef<ComboboxInputProps, "input">(
-    ({ isOpen, ...props }, ref) => (
-        <Input
-            borderBottomRadius={isOpen ? "0" : undefined}
-            ref={ref}
-            {...props}
-        />
-    ),
-);
-
-const ComboboxButton = forwardRef<IconButtonProps, "button">((props, ref) => (
-    <InputRightElement>
-        <IconButton
-            type="button"
-            icon={<ArrowDownIcon />}
-            ref={ref}
-            {...props}
-            size="sm"
-        />
-    </InputRightElement>
-));
-
-const ComboboxSuggestionList = forwardRef<ListProps, "ul">((props, ref) => (
-    <UnorderedList
-        background="white"
-        borderWidth={1}
-        borderTopWidth={0}
-        borderBottomRadius="lg"
-        position="absolute"
-        styleType="none"
-        marginX="16px"
-        left={0}
-        right={0}
-        ref={ref}
-        {...props}
-    />
-));
-
-interface ComboboxSuggestionProps extends ListItemProps {
-    highlighted: boolean;
-}
-
-const ComboboxSuggestion = forwardRef<ComboboxSuggestionProps, "li">(
-    ({ highlighted, ...props }, ref) => (
-        <ListItem
-            background={highlighted ? "gray.100" : undefined}
-            padding="16px"
-            ref={ref}
-            {...props}
-        />
-    ),
-);
 
 export default AutocompletePage;
