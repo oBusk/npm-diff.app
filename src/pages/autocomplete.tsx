@@ -19,7 +19,7 @@ import { useCombobox } from "downshift";
 import getPopularPackages from "lib/npms/popularPackages";
 import Result from "lib/npms/Result";
 import getSuggestions, { Suggestion } from "lib/npms/suggestions";
-import useAsyncState from "lib/useAsyncState";
+import useAsyncState from "lib/utils/useAsyncState";
 import useThrottle from "lib/utils/useThrottle";
 import { GetStaticProps, NextPage } from "next";
 
