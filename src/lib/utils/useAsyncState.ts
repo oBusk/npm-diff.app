@@ -29,13 +29,13 @@ export const useAsyncState = <T>(initialState: T) => {
         [],
     );
 
-    const cleanup = () => {
-        // By setting this value to an unreachable value, we can ignore any future resolves
-        latestDelivered.current = Number.MAX_SAFE_INTEGER;
-    };
-
     useEffect(() => {
-        return cleanup;
+        const cleanupFn = () => {
+            // By setting this value to an unreachable value, we can ignore any future resolves
+            latestDelivered.current = Number.MAX_SAFE_INTEGER;
+        };
+
+        return cleanupFn;
     }, []);
 
     return [value, setAsync] as const;

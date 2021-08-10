@@ -2,7 +2,7 @@ import { BoxProps, Text } from "@chakra-ui/react";
 import { useCombobox } from "downshift";
 import useAsyncState from "lib/utils/useAsyncState";
 import useThrottle from "lib/utils/useThrottle";
-import { ReactNode, useCallback } from "react";
+import { ReactNode } from "react";
 import ComboboxBox from "./ComboboxBox";
 import ComboboxButton from "./ComboboxButton";
 import ComboboxInput from "./ComboboxInput";
@@ -44,19 +44,12 @@ const Combobox = <T,>({
     renderItem = (item, _index) => itemToString(item),
     ...props
 }: ComboboxProps<T>) => {
-    const [inputItems, setInputItems] = useAsyncState(initialSuggestions);
+    const [items, setItems] = useAsyncState(initialSuggestions);
 
     const updateSuggestions = useThrottle(
-        (inputValue: string | undefined = "") => {
-            setInputItems(suggestionFinder(inputValue));
-        },
+        (inputValue = "") => setItems(suggestionFinder(inputValue)),
         throttle,
         true,
-    );
-
-    const onInputValueChange = useCallback(
-        ({ inputValue }) => updateSuggestions(inputValue),
-        [updateSuggestions],
     );
 
     const {
@@ -70,9 +63,9 @@ const Combobox = <T,>({
         isOpen,
     } = useCombobox({
         id,
-        items: inputItems,
+        items,
         initialIsOpen,
-        onInputValueChange,
+        onInputValueChange: ({ inputValue }) => updateSuggestions(inputValue),
         itemToString,
     });
 
@@ -88,9 +81,9 @@ const Combobox = <T,>({
             </ComboboxBox>
             <ComboboxSuggestionList {...getMenuProps()}>
                 {isOpen &&
-                    (inputItems.length === 0
+                    (items.length === 0
                         ? emptyState
-                        : inputItems.map((item, index) => (
+                        : items.map((item, index) => (
                               <ComboboxSuggestion
                                   key={itemToString(item)}
                                   highlighted={index === highlightedIndex}

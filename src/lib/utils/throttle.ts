@@ -6,7 +6,7 @@ function throttle<F extends (...args: any) => void>(
     let timeout: ReturnType<typeof setTimeout> | null;
     let lastArgs: any[];
 
-    return function (this: unknown, ...args: any[]) {
+    return function throttledFn(this: unknown, ...args: any[]) {
         if (leading) {
             fn.apply(this, args);
             leading = false;

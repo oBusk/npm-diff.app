@@ -1,5 +1,6 @@
 import { renderHook, RenderResult } from "@testing-library/react-hooks";
 import useThrottle from "./useThrottle";
+import * as throttle from "./throttle";
 
 describe("useThrottle", () => {
     let fn: (n: number) => void;
@@ -22,6 +23,22 @@ describe("useThrottle", () => {
         rerender();
         const second = result.current;
         expect(first).toBe(second);
+    });
+
+    it("doesn't call 'throttle' multiple times", () => {
+        const mock = jest.spyOn(throttle, "default");
+
+        const { result, rerender } = renderHook(() =>
+            useThrottle(() => {}, 100, false),
+        );
+        const first = result.current;
+        rerender();
+        const second = result.current;
+        expect(first).toBe(second);
+
+        expect(mock).toHaveBeenCalledTimes(1);
+
+        mock.mockRestore();
     });
 
     describe("leading=false", () => {

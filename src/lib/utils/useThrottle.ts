@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { useMemo } from "react";
 import throttle from "./throttle";
 
 function useThrottle<F extends (...args: any) => void>(
@@ -7,7 +7,7 @@ function useThrottle<F extends (...args: any) => void>(
     leading = false,
 ): F {
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    return useCallback(throttle(fn, wait, leading), []);
+    return useMemo(() => throttle(fn, wait, leading), []);
 }
 
 export default useThrottle;
