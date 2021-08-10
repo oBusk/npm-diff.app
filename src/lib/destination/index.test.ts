@@ -1,3 +1,7 @@
+/**
+ * @jest-environment node
+ */
+
 import pacote from "pacote";
 import d, { Redirect } from ".";
 
