@@ -55,7 +55,7 @@
         "semver": "^7.3.5"
     },
     "devDependencies": {
-        "@types/jest": "^26.0.24",
+        "@types/jest": "^27.0.0",
         "@types/libnpmdiff": "^2.0.0",
         "@types/node": "^16.4.13",
         "@types/npm-package-arg": "^6.1.1",
