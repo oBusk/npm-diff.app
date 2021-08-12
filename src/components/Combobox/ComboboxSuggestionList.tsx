@@ -19,6 +19,9 @@ const ComboboxSuggestionList = forwardRef<ListProps, "ul">((props, ref) => {
             marginX="16px"
             left={0}
             right={0}
+            _empty={{
+                visibility: "hidden",
+            }}
             ref={ref}
             {...props}
         />
