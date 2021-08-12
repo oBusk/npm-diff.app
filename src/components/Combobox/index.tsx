@@ -32,7 +32,7 @@ const Combobox = <T,>({
     id,
     suggestionFinder,
     initialSuggestions = [],
-    throttle = 200,
+    throttle = 250,
     initialIsOpen = true,
     emptyState = (
         <Text padding="16px" align="center" color="gray.200">
