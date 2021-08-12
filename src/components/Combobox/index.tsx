@@ -49,7 +49,6 @@ const Combobox = <T,>({
     const updateSuggestions = useThrottle(
         (inputValue = "") => setItems(suggestionFinder(inputValue)),
         throttle,
-        true,
     );
 
     const {
