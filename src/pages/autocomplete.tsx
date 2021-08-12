@@ -68,7 +68,9 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
             alignSelf="center"
             as={BorderBox}
             id="autocomplete"
-            suggestionFinder={(q) => (q === "" ? popularPackages : search(q))}
+            suggestionFinder={(q = "") =>
+                q === "" ? popularPackages : search(q)
+            }
             initialSuggestions={popularPackages}
             itemToString={(suggestion) => suggestion?.name || ""}
             renderItem={(item) => (
