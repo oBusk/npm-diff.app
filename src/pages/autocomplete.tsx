@@ -6,6 +6,7 @@ import getPopularPackages from "lib/npms/popularPackages";
 import Result from "lib/npms/Result";
 import getSuggestions, { Suggestion } from "lib/npms/suggestions";
 import { GetStaticProps, NextPage } from "next";
+import type { ApiVersionsResponse } from "./api/versions";
 
 interface AutocompleteSuggestion {
     name: string;
@@ -31,6 +32,21 @@ const getAutocompleteSuggestions = async (query: string) => {
     return results.map(toAutocompleteSuggestion);
 };
 
+const hasAt = /[^@]@\S*$/;
+
+const search = async (query: string): Promise<AutocompleteSuggestion[]> => {
+    if (hasAt.test(query)) {
+        const response = await fetch(`/api/versions?spec=${query}`);
+        const versions: ApiVersionsResponse = await response.json();
+
+        return versions.map(({ name, version }) => ({
+            name: `${name}@${version}`,
+        }));
+    } else {
+        return getAutocompleteSuggestions(query);
+    }
+};
+
 export const getStaticProps: GetStaticProps<AutocompletePageProps> =
     async () => {
         const { results } = await getPopularPackages(AUTOCOMPLETE_SIZE);
@@ -52,11 +68,7 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({
             alignSelf="center"
             as={BorderBox}
             id="autocomplete"
-            suggestionFinder={(inputValue: string = "") =>
-                inputValue.length > 0
-                    ? getAutocompleteSuggestions(inputValue)
-                    : popularPackages
-            }
+            suggestionFinder={(q) => (q === "" ? popularPackages : search(q))}
             initialSuggestions={popularPackages}
             itemToString={(suggestion) => suggestion?.name || ""}
             renderItem={(item) => (
