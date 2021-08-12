@@ -4,7 +4,6 @@ import * as throttle from "./throttle";
 
 describe("useThrottle", () => {
     let fn: (n: number) => void;
-    let throttledFn: RenderResult<(n: number) => void>;
 
     beforeEach(() => {
         jest.useFakeTimers();
@@ -41,30 +40,45 @@ describe("useThrottle", () => {
         mock.mockRestore();
     });
 
-    describe("leading=false", () => {
-        beforeEach(() => {
-            ({ result: throttledFn } = renderHook(() =>
-                useThrottle(fn, 100, false),
-            ));
-        });
+    it(`Triggers instantly when "clean", otherwise delays.`, () => {
+        const { result, rerender } = renderHook(() =>
+            useThrottle(fn, 100, false),
+        );
 
-        it("Does not trigger synchronously", () => {
-            throttledFn.current(1);
-            throttledFn.current(2);
-            throttledFn.current(3);
-            expect(fn).not.toHaveBeenCalled();
-        });
+        // Triggers ONCE synchronously
+        result.current(1);
+        result.current(2);
+        result.current(3);
+        expect(fn).toHaveBeenCalledTimes(1);
+        expect(fn).toHaveBeenCalledWith(1);
 
-        it("Triggers ONCE after waiting", () => {
-            throttledFn.current(1);
-            throttledFn.current(2);
-            throttledFn.current(3);
-            expect(fn).not.toHaveBeenCalled();
-            jest.advanceTimersByTime(100);
-            expect(fn).toHaveBeenCalledTimes(1);
-            expect(fn).toHaveBeenCalledWith(3);
-            jest.advanceTimersByTime(300);
-            expect(fn).toHaveBeenCalledTimes(1);
-        });
+        rerender();
+
+        // Should not run 2 or 3 until 100ms have passed
+        jest.advanceTimersByTime(99);
+        expect(fn).toHaveBeenCalledTimes(1);
+
+        // Triggers again with queued calls
+        jest.advanceTimersByTime(1);
+        expect(fn).toHaveBeenCalledTimes(2);
+        expect(fn).toHaveBeenCalledWith(3);
+
+        // fn was just exectued from queue, should not execute syncronously
+        result.current(4);
+        expect(fn).toHaveBeenCalledTimes(2);
+
+        rerender();
+
+        // Should trigger 4 after waiting 100ms
+        jest.advanceTimersByTime(100);
+        expect(fn).toHaveBeenCalledTimes(3);
+        expect(fn).toHaveBeenCalledWith(4);
+
+        // Should execute synchronously if called after more than 100ms
+        jest.advanceTimersByTime(100);
+        result.current(5);
+        result.current(6);
+        expect(fn).toHaveBeenCalledTimes(4);
+        expect(fn).toHaveBeenCalledWith(5);
     });
 });

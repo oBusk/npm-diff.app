@@ -1,27 +1,26 @@
-function throttle<F extends (...args: any) => void>(
-    fn: F,
-    wait: number,
-    leading: boolean = false,
-): F {
-    let timeout: ReturnType<typeof setTimeout> | null;
-    let lastArgs: any[];
+function throttle<F extends (...args: any) => void>(fn: F, wait: number): F {
+    let cooldown: ReturnType<typeof setTimeout> | null;
+    let queuedArgs: any[] | null;
 
     return function throttledFn(this: unknown, ...args: any[]) {
-        if (leading) {
-            fn.apply(this, args);
-            leading = false;
-        } else {
-            // Update lastargs on every call
-            lastArgs = args;
+        function executeFn(this: unknown) {
+            fn.apply(this, queuedArgs!);
+            queuedArgs = null;
 
-            if (!timeout) {
-                // If there is no timeout waiting, setup one
-                timeout = setTimeout(() => {
-                    timeout = null;
-                    // Run with whatever is stored in `lastArgs`
-                    fn.apply(this, lastArgs);
-                }, wait);
-            }
+            cooldown = setTimeout(function cooldownCallback() {
+                // Clear the cooldown
+                cooldown = null;
+
+                if (queuedArgs != null) {
+                    executeFn();
+                }
+            }, wait);
+        }
+
+        queuedArgs = args;
+
+        if (!cooldown) {
+            executeFn();
         }
     } as F;
 }
