@@ -1,9 +1,5 @@
 import { packument } from "pacote";
-
-export interface Version {
-    name: string;
-    version: string;
-}
+import Version from "./Version";
 
 async function getAllVersions(spec: string): Promise<Version[]> {
     const result = await packument(spec);

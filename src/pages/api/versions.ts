@@ -1,4 +1,4 @@
-import getAllVersions, { Version } from "lib/getAllVersions";
+import getAllVersions, { Version } from "lib/api/versions";
 import { setSwrCaching } from "lib/utils/headers";
 import { NextApiHandler } from "next";
 
