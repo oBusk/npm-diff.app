@@ -1,10 +1,10 @@
 import DiffFiles from "components/Diff/DiffFiles";
 import DiffIntro from "components/DiffIntro";
 import Layout from "components/Layout";
-import { bundlephobia, BundlephobiaResults } from "lib/bundlephobia";
+import bundlephobia, { BundlephobiaResults } from "lib/api/bundlephobia";
+import { packagephobia, PackagephobiaResults } from "lib/api/packagephobia";
 import destination from "lib/destination";
 import measuredPromise from "lib/measuredPromise";
-import { packagephobia, PackagephobiaResults } from "lib/packagephobia";
 import parseQuery from "lib/query";
 import countChanges from "lib/utils/countChanges";
 import { setDefaultPageCaching } from "lib/utils/headers";

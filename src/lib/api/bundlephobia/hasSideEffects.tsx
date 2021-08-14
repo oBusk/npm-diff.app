@@ -1,6 +1,6 @@
-import { BundlephobiaResponse } from "lib/bundlephobia/BundlephobiaResponse";
+import BundlephobiaResponse from "./BundlephobiaResponse";
 
-export function hasSideEffects({
+function hasSideEffects({
     hasSideEffects,
 }: BundlephobiaResponse): true | false | "some" {
     // Based on functionality in bundlephobia:
@@ -11,3 +11,5 @@ export function hasSideEffects({
             : false
         : hasSideEffects;
 }
+
+export default hasSideEffects;

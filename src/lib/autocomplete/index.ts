@@ -1,4 +1,4 @@
-import getSuggestions from "lib/npms/suggestions";
+import getSuggestions from "lib/api/npms/suggestions";
 import type { ApiVersionsResponse } from "pages/api/versions";
 import AUTOCOMPLETE_SIZE from "./autcompleteSize";
 import AutocompleteSuggestion from "./AutocompleteSuggestion";

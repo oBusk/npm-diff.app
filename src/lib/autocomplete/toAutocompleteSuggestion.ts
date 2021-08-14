@@ -1,5 +1,5 @@
-import Result from "lib/npms/Result";
-import { Suggestion } from "lib/npms/suggestions";
+import Result from "lib/api/npms/Result";
+import { Suggestion } from "lib/api/npms/suggestions";
 import AutocompleteSuggestion from "./AutocompleteSuggestion";
 
 const toAutocompleteSuggestion = ({

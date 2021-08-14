@@ -10,7 +10,7 @@ export interface BundlephobiaResponseDependencySize {
     approximateSize: number;
 }
 
-export interface BundlephobiaResponse {
+interface BundlephobiaResponse {
     name: string;
     version: string;
     description: string;
@@ -29,3 +29,5 @@ export interface BundlephobiaResponse {
     assets: BundlephobiaResponseAsset[];
     dependencySizes: BundlephobiaResponseDependencySize[];
 }
+
+export default BundlephobiaResponse;

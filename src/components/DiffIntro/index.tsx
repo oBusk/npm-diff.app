@@ -9,8 +9,8 @@ import {
 } from "@chakra-ui/react";
 import B from "components/theme/B";
 import BorderBox from "components/theme/BorderBox";
-import { BundlephobiaResults } from "lib/bundlephobia";
-import { PackagephobiaResults } from "lib/packagephobia";
+import { BundlephobiaResults } from "lib/api/bundlephobia";
+import { PackagephobiaResults } from "lib/api/packagephobia";
 import { serviceLinks } from "lib/serviceLinks";
 import npa from "npm-package-arg";
 import { FunctionComponent } from "react";
