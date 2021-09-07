@@ -1,4 +1,4 @@
-import { extendTheme, ThemeConfig } from "@chakra-ui/react";
+import { extendTheme, ThemeConfig, ThemeOverride } from "@chakra-ui/react";
 
 // https://github.com/otakustay/react-diff-view/blob/v2.4.8/site/components/DiffView/diff.global.less#L22-L36
 // Cross referenced with
@@ -24,7 +24,7 @@ const config: ThemeConfig = {
     // useSystemColorMode: true,
 };
 
-const theme = extendTheme({
+const themeOverride: ThemeOverride = {
     config,
     styles: {
         global: ({ colorMode }) => ({
@@ -43,7 +43,9 @@ const theme = extendTheme({
             },
         }),
     },
-});
+};
+
+const theme = extendTheme(themeOverride);
 
 export type Theme = typeof theme;
 
