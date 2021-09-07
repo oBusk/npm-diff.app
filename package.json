@@ -12,8 +12,8 @@
     "author": "Oscar Busk <oscar.busk@gmail.com>",
     "license": "ISC",
     "volta": {
-        "node": "14.17.5",
-        "npm": "7.20.6"
+        "node": "14.17.6",
+        "npm": "7.22.0"
     },
     "engines": {
         "node": "14.x",
@@ -39,14 +39,14 @@
     },
     "dependencies": {
         "@chakra-ui/icons": "^1.0.15",
-        "@chakra-ui/react": "^1.6.6",
+        "@chakra-ui/react": "^1.6.7",
         "@emotion/react": "^11.4.1",
         "@emotion/styled": "^11.3.0",
         "downshift": "^6.1.7",
         "framer-motion": "^4.1.17",
-        "jest": "^27.0.6",
+        "jest": "^27.1.0",
         "libnpmdiff": "^2.0.4",
-        "next": "^11.1.0",
+        "next": "^11.1.2",
         "npm-package-arg": "^8.1.5",
         "pacote": "^11.3.5",
         "react": "^17.0.2",
@@ -60,22 +60,22 @@
         "@testing-library/react-hooks": "^7.0.1",
         "@types/jest": "^27.0.1",
         "@types/libnpmdiff": "^2.0.0",
-        "@types/node": "^16.6.2",
+        "@types/node": "^16.7.13",
         "@types/npm-package-arg": "^6.1.1",
         "@types/pacote": "^11.1.1",
-        "@types/react": "^17.0.18",
+        "@types/react": "^17.0.20",
         "@types/react-diff-view": "./types/react-diff-view",
         "@types/react-dom": "^17.0.9",
         "@types/semver": "^7.3.8",
-        "babel-jest": "^27.0.6",
+        "babel-jest": "^27.1.0",
         "eslint": "^7.32.0",
-        "eslint-config-next": "^11.1.0",
+        "eslint-config-next": "^11.1.2",
         "eslint-config-prettier": "^8.3.0",
-        "eslint-plugin-prettier": "^3.4.0",
+        "eslint-plugin-prettier": "^4.0.0",
         "jest-watch-typeahead": "^0.6.4",
         "lint-staged": "^11.1.2",
         "prettier": "^2.3.2",
         "simple-git-hooks": "^2.6.1",
-        "typescript": "4.3.5"
+        "typescript": "4.4.2"
     }
 }
