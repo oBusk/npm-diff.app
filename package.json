@@ -43,7 +43,7 @@
         "@emotion/react": "^11.4.1",
         "@emotion/styled": "^11.3.0",
         "framer-motion": "^4.1.17",
-        "jest": "^27.1.0",
+        "jest": "^27.1.1",
         "libnpmdiff": "^2.0.4",
         "next": "^11.1.2",
         "npm-package-arg": "^8.1.5",
