@@ -3,7 +3,7 @@ import parseBoolean from "./parseBoolean";
 import parseNumber from "./parseNumber";
 import parseString from "./parseString";
 
-export type QueryParams = {
+export interface QueryParams {
     diffFiles?: string | string[];
     diffNameOnly?: string | string[];
     diffUnified?: string | string[];
@@ -12,7 +12,7 @@ export type QueryParams = {
     diffSrcPrefix?: string | string[];
     diffDstPrefix?: string | string[];
     diffText?: string | string[];
-};
+}
 
 function parseQuery({
     diffFiles,

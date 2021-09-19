@@ -2,10 +2,11 @@ import DiffFiles from "components/Diff/DiffFiles";
 import DiffIntro from "components/DiffIntro";
 import Layout from "components/Layout";
 import { bundlephobia, BundlephobiaResults } from "lib/bundlephobia";
+import { DEFAULT_DIFF_FILES_GLOB } from "lib/default-diff-files";
 import destination from "lib/destination";
 import measuredPromise from "lib/measuredPromise";
 import { packagephobia, PackagephobiaResults } from "lib/packagephobia";
-import parseQuery from "lib/query";
+import parseQuery, { QueryParams } from "lib/query";
 import countChanges from "lib/utils/countChanges";
 import rawQuery from "lib/utils/rawQuery";
 import setCacheControl from "lib/utils/setCacheControl";
@@ -13,21 +14,27 @@ import specsToDiff from "lib/utils/specsToDiff";
 import splitParts from "lib/utils/splitParts";
 import libnpmdiff from "libnpmdiff";
 import { GetServerSideProps, NextPage } from "next";
+import { ParsedUrlQuery } from "querystring";
 import { parseDiff } from "react-diff-view";
 
-type Props = {
+interface Props {
     diff: string;
     specs: [string, string];
     packagephobiaResults: PackagephobiaResults | null;
     bundlephobiaResults: BundlephobiaResults | null;
-};
+}
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-    query,
+interface Params extends ParsedUrlQuery {
+    parts: string | string[];
+}
+
+export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
+    params: { parts } = {},
+    query = {},
     req,
     res,
 }) => {
-    const { parts, ...options } = query ?? {};
+    const { diffFiles, ...options } = query as QueryParams;
 
     const specsOrVersions = splitParts(parts);
 
@@ -43,7 +50,17 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
             { result: packagephobiaResults, time: packagephobiaTime },
             { result: bundlephobiaResults, time: bundlephobiaTime },
         ] = await Promise.all([
-            measuredPromise(libnpmdiff(immutableSpecs, parseQuery(options))),
+            measuredPromise(
+                libnpmdiff(
+                    immutableSpecs,
+                    parseQuery({
+                        // If no diffFiles is passed, use the default.
+                        // This is done here, since we don't want a fall back in the API
+                        diffFiles: diffFiles ?? DEFAULT_DIFF_FILES_GLOB,
+                        ...options,
+                    }),
+                ),
+            ),
             measuredPromise(packagephobia(immutableSpecs)),
             measuredPromise(bundlephobia(immutableSpecs)),
         ]);
