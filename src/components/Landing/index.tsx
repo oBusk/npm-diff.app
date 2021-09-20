@@ -18,7 +18,7 @@ const Landing: FunctionComponent<LandingProps> = () => {
         a: null,
         b: null,
     });
-    const [diffFiles, setDiffFiles] = useState(DEFAULT_DIFF_FILES_GLOB);
+    const [diffFiles, setDiffFiles] = useState(`${DEFAULT_DIFF_FILES_GLOB}`);
     const [isLoading, setLoading] = useBoolean(false);
     const router = useRouter();
 
