@@ -22,6 +22,11 @@ const Landing: FunctionComponent<LandingProps> = () => {
     const [isLoading, setLoading] = useBoolean(false);
     const router = useRouter();
 
+    const query = {
+        // If the value matches the default, we don't need to send it
+        ...(diffFiles.trim() === DEFAULT_DIFF_FILES_GLOB ? {} : { diffFiles }),
+    };
+
     const setInput = (a: string | null, b: string | null) => {
         setOverrides({
             a,
@@ -38,12 +43,7 @@ const Landing: FunctionComponent<LandingProps> = () => {
 
         router.push({
             pathname: `/${a}...${b}`,
-            query: {
-                // If the value matches the default, we don't need to send it
-                ...(diffFiles.trim() === DEFAULT_DIFF_FILES_GLOB
-                    ? {}
-                    : { diffFiles }),
-            },
+            query,
         });
     };
 
@@ -63,7 +63,7 @@ const Landing: FunctionComponent<LandingProps> = () => {
                 exampleMouseOver={(a, b) => setInput(a, b)}
                 exampleMouseOut={() => setInput(null, null)}
                 exampleClicked={exampleClicked}
-                queryParams={{ diffFiles }}
+                queryParams={query}
             />
         </Layout>
     );
