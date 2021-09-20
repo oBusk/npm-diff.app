@@ -34,7 +34,7 @@ const ExamplesList: FunctionComponent<ExamplesListProps> = ({
                     key={ex}
                     href={{
                         pathname: `/${ex}`,
-                        query,
+                        query: { ...query },
                     }}
                 >
                     <Link
