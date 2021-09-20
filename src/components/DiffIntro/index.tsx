@@ -10,11 +10,13 @@ import {
 import B from "components/theme/B";
 import BorderBox from "components/theme/BorderBox";
 import { BundlephobiaResults } from "lib/bundlephobia";
+import DiffOptions from "lib/DiffOptions";
 import { PackagephobiaResults } from "lib/packagephobia";
 import { serviceLinks } from "lib/serviceLinks";
 import npa from "npm-package-arg";
 import { FunctionComponent } from "react";
 import BundlephobiaFlags from "./BundlePhobiaFlags";
+import Options from "./Options";
 import ServiceLinks from "./ServiceLinks";
 import SizeComparison from "./SizeComparison";
 
@@ -43,6 +45,7 @@ export interface DiffIntroProps extends FlexProps {
     deletions: number;
     packagephobiaResults: PackagephobiaResults | null;
     bundlephobiaResults: BundlephobiaResults | null;
+    options: DiffOptions;
 }
 
 const DiffIntro = forwardRef<DiffIntroProps, "h2">(
@@ -55,6 +58,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
             deletions,
             packagephobiaResults,
             bundlephobiaResults,
+            options,
             ...props
         },
         ref,
@@ -184,6 +188,15 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                         />
                     </>
                 )}
+                <Heading size="l">npm diff</Heading>
+                <Options options={options} />
+                {/* <Command
+                    aName={aName}
+                    aVersion={aVersion}
+                    bName={bName}
+                    bVersion={bVersion}
+                    options={options}
+                /> */}
                 <BorderBox textAlign="center" margin="10px 0">
                     Showing {changedFiles} files with{" "}
                     <B>{additions} additions</B> and{" "}

@@ -4,6 +4,7 @@ import Layout from "components/Layout";
 import { bundlephobia, BundlephobiaResults } from "lib/bundlephobia";
 import { DEFAULT_DIFF_FILES_GLOB } from "lib/default-diff-files";
 import destination from "lib/destination";
+import DiffOptions from "lib/DiffOptions";
 import measuredPromise from "lib/measuredPromise";
 import { packagephobia, PackagephobiaResults } from "lib/packagephobia";
 import parseQuery, { QueryParams } from "lib/query";
@@ -22,6 +23,7 @@ interface Props {
     specs: [string, string];
     packagephobiaResults: PackagephobiaResults | null;
     bundlephobiaResults: BundlephobiaResults | null;
+    options: DiffOptions;
 }
 
 interface Params extends ParsedUrlQuery {
@@ -34,7 +36,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
     req,
     res,
 }) => {
-    const { diffFiles, ...options } = query as QueryParams;
+    const { diffFiles, ...optionsQuery } = query as QueryParams;
 
     const specsOrVersions = splitParts(parts);
 
@@ -45,22 +47,19 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
     }
 
     if (redirect === false) {
+        const options = parseQuery({
+            // If no diffFiles is passed, use the default.
+            // This is done here, since we don't want a fall back in the API
+            diffFiles: diffFiles ?? DEFAULT_DIFF_FILES_GLOB,
+            ...optionsQuery,
+        });
+
         const [
             { result: diff, time: diffTime },
             { result: packagephobiaResults, time: packagephobiaTime },
             { result: bundlephobiaResults, time: bundlephobiaTime },
         ] = await Promise.all([
-            measuredPromise(
-                libnpmdiff(
-                    immutableSpecs,
-                    parseQuery({
-                        // If no diffFiles is passed, use the default.
-                        // This is done here, since we don't want a fall back in the API
-                        diffFiles: diffFiles ?? DEFAULT_DIFF_FILES_GLOB,
-                        ...options,
-                    }),
-                ),
-            ),
+            measuredPromise(libnpmdiff(immutableSpecs, options)),
             measuredPromise(packagephobia(immutableSpecs)),
             measuredPromise(bundlephobia(immutableSpecs)),
         ]);
@@ -80,6 +79,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
                 diff,
                 packagephobiaResults,
                 bundlephobiaResults,
+                options,
             },
         };
     } else {
@@ -98,6 +98,7 @@ const DiffPage: NextPage<Props> = ({
     specs: [a, b],
     packagephobiaResults,
     bundlephobiaResults,
+    options,
 }) => {
     const files = parseDiff(diff);
 
@@ -121,6 +122,7 @@ const DiffPage: NextPage<Props> = ({
                 deletions={deletions}
                 packagephobiaResults={packagephobiaResults}
                 bundlephobiaResults={bundlephobiaResults}
+                options={options}
                 alignSelf="stretch"
             />
             <DiffFiles files={files} />
