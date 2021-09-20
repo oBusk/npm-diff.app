@@ -17,7 +17,7 @@ describe("query", () => {
             diffFiles: ["**/*.js"],
             diffNameOnly: true,
             diffUnified: 3,
-            diffIgnoreAllSpace: undefined,
+            // diffIgnoreAllSpaces ommitted
             diffNoPrefix: false,
             diffSrcPrefix: "x/",
             diffDstPrefix: "y/",
