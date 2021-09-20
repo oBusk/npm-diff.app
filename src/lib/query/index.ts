@@ -1,9 +1,10 @@
-import libnpmdiff from "libnpmdiff";
+import DiffOptions from "lib/DiffOptions";
+import trimUndefined from "lib/utils/trimUndefined";
 import parseBoolean from "./parseBoolean";
 import parseNumber from "./parseNumber";
 import parseString from "./parseString";
 
-export type QueryParams = {
+export interface QueryParams {
     diffFiles?: string | string[];
     diffNameOnly?: string | string[];
     diffUnified?: string | string[];
@@ -12,7 +13,7 @@ export type QueryParams = {
     diffSrcPrefix?: string | string[];
     diffDstPrefix?: string | string[];
     diffText?: string | string[];
-};
+}
 
 function parseQuery({
     diffFiles,
@@ -23,8 +24,8 @@ function parseQuery({
     diffSrcPrefix,
     diffDstPrefix,
     diffText,
-}: QueryParams): libnpmdiff.Options {
-    return {
+}: QueryParams): DiffOptions {
+    return trimUndefined({
         diffFiles: typeof diffFiles === "string" ? [diffFiles] : diffFiles,
         diffNameOnly: parseBoolean(diffNameOnly),
         diffUnified: parseNumber(diffUnified),
@@ -33,7 +34,7 @@ function parseQuery({
         diffSrcPrefix: parseString(diffSrcPrefix),
         diffDstPrefix: parseString(diffDstPrefix),
         diffText: parseBoolean(diffText),
-    };
+    });
 }
 
 export default parseQuery;

@@ -3,9 +3,11 @@ import DiffIntro from "components/DiffIntro";
 import Layout from "components/Layout";
 import bundlephobia, { BundlephobiaResults } from "lib/api/bundlephobia";
 import { packagephobia, PackagephobiaResults } from "lib/api/packagephobia";
+import { DEFAULT_DIFF_FILES_GLOB } from "lib/default-diff-files";
 import destination from "lib/destination";
+import DiffOptions from "lib/DiffOptions";
 import measuredPromise from "lib/measuredPromise";
-import parseQuery from "lib/query";
+import parseQuery, { QueryParams } from "lib/query";
 import countChanges from "lib/utils/countChanges";
 import { setDefaultPageCaching } from "lib/utils/headers";
 import rawQuery from "lib/utils/rawQuery";
@@ -13,21 +15,28 @@ import specsToDiff from "lib/utils/specsToDiff";
 import splitParts from "lib/utils/splitParts";
 import libnpmdiff from "libnpmdiff";
 import { GetServerSideProps, NextPage } from "next";
+import { ParsedUrlQuery } from "querystring";
 import { parseDiff } from "react-diff-view";
 
-type Props = {
+interface Props {
     diff: string;
     specs: [string, string];
     packagephobiaResults: PackagephobiaResults | null;
     bundlephobiaResults: BundlephobiaResults | null;
-};
+    options: DiffOptions;
+}
 
-export const getServerSideProps: GetServerSideProps<Props> = async ({
-    query,
+interface Params extends ParsedUrlQuery {
+    parts: string | string[];
+}
+
+export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
+    params: { parts } = {},
+    query = {},
     req,
     res,
 }) => {
-    const { parts, ...options } = query ?? {};
+    const { diffFiles, ...optionsQuery } = query as QueryParams;
 
     const specsOrVersions = splitParts(parts);
 
@@ -38,12 +47,19 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
     }
 
     if (redirect === false) {
+        const options = parseQuery({
+            // If no diffFiles is passed, use the default.
+            // This is done here, since we don't want a fall back in the API
+            diffFiles: diffFiles ?? DEFAULT_DIFF_FILES_GLOB,
+            ...optionsQuery,
+        });
+
         const [
             { result: diff, time: diffTime },
             { result: packagephobiaResults, time: packagephobiaTime },
             { result: bundlephobiaResults, time: bundlephobiaTime },
         ] = await Promise.all([
-            measuredPromise(libnpmdiff(immutableSpecs, parseQuery(options))),
+            measuredPromise(libnpmdiff(immutableSpecs, options)),
             measuredPromise(packagephobia(immutableSpecs)),
             measuredPromise(bundlephobia(immutableSpecs)),
         ]);
@@ -63,6 +79,7 @@ export const getServerSideProps: GetServerSideProps<Props> = async ({
                 diff,
                 packagephobiaResults,
                 bundlephobiaResults,
+                options,
             },
         };
     } else {
@@ -81,6 +98,7 @@ const DiffPage: NextPage<Props> = ({
     specs: [a, b],
     packagephobiaResults,
     bundlephobiaResults,
+    options,
 }) => {
     const files = parseDiff(diff);
 
@@ -104,6 +122,7 @@ const DiffPage: NextPage<Props> = ({
                 deletions={deletions}
                 packagephobiaResults={packagephobiaResults}
                 bundlephobiaResults={bundlephobiaResults}
+                options={options}
                 alignSelf="stretch"
             />
             <DiffFiles files={files} />

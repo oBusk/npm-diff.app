@@ -1,5 +1,6 @@
 import { Stack, useBoolean } from "@chakra-ui/react";
 import Layout from "components/Layout";
+import { DEFAULT_DIFF_FILES_GLOB } from "lib/default-diff-files";
 import { useRouter } from "next/router";
 import { FunctionComponent, useState } from "react";
 import ExamplesList from "./ExamplesList";
@@ -17,7 +18,7 @@ const Landing: FunctionComponent<LandingProps> = () => {
         a: null,
         b: null,
     });
-    const [diffFiles, setDiffFiles] = useState("**/!(*.map|*.min.js)");
+    const [diffFiles, setDiffFiles] = useState(DEFAULT_DIFF_FILES_GLOB);
     const [isLoading, setLoading] = useBoolean(false);
     const router = useRouter();
 
@@ -38,7 +39,10 @@ const Landing: FunctionComponent<LandingProps> = () => {
         router.push({
             pathname: `/${a}...${b}`,
             query: {
-                diffFiles: diffFiles,
+                // If the value matches the default, we don't need to send it
+                ...(diffFiles.trim() === DEFAULT_DIFF_FILES_GLOB
+                    ? {}
+                    : { diffFiles }),
             },
         });
     };

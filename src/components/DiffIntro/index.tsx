@@ -11,10 +11,13 @@ import B from "components/theme/B";
 import BorderBox from "components/theme/BorderBox";
 import { BundlephobiaResults } from "lib/api/bundlephobia";
 import { PackagephobiaResults } from "lib/api/packagephobia";
+import DiffOptions from "lib/DiffOptions";
 import { serviceLinks } from "lib/serviceLinks";
 import npa from "npm-package-arg";
 import { FunctionComponent } from "react";
 import BundlephobiaFlags from "./BundlePhobiaFlags";
+import Halfs from "./Halfs";
+import Options from "./Options";
 import ServiceLinks from "./ServiceLinks";
 import SizeComparison from "./SizeComparison";
 
@@ -43,6 +46,7 @@ export interface DiffIntroProps extends FlexProps {
     deletions: number;
     packagephobiaResults: PackagephobiaResults | null;
     bundlephobiaResults: BundlephobiaResults | null;
+    options: DiffOptions;
 }
 
 const DiffIntro = forwardRef<DiffIntroProps, "h2">(
@@ -55,6 +59,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
             deletions,
             packagephobiaResults,
             bundlephobiaResults,
+            options,
             ...props
         },
         ref,
@@ -73,26 +78,26 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
             <Flex direction="column" alignItems="center" ref={ref} {...props}>
                 <Heading as="h2" size="sm" width="100%" textAlign="center">
                     <Text>Comparing </Text>
-                    <Flex>
-                        <Flex flex="1 0 0px" justifyContent="flex-end">
-                            {/* Left half */}
+                    <Halfs
+                        left={
                             <SpecBox
                                 packageName={aName}
                                 packageVersion={aVersion}
                             />
-                        </Flex>
-                        <Box>
-                            {/* Center column */}
-                            <Code>...</Code>
-                        </Box>
-                        <Flex flex="1 0 0px" justifyContent="flex-start">
-                            {/* Right half */}
+                        }
+                        center={
+                            <Box>
+                                {/* Center column */}
+                                <Code>...</Code>
+                            </Box>
+                        }
+                        right={
                             <SpecBox
                                 packageName={bName}
                                 packageVersion={bVersion}
                             />
-                        </Flex>
-                    </Flex>
+                        }
+                    />
                 </Heading>
                 {packagephobiaResults && (
                     <>
@@ -184,6 +189,15 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                         />
                     </>
                 )}
+                <Heading size="l">npm diff</Heading>
+                <Options options={options} />
+                {/* <Command
+                    aName={aName}
+                    aVersion={aVersion}
+                    bName={bName}
+                    bVersion={bVersion}
+                    options={options}
+                /> */}
                 <BorderBox textAlign="center" margin="10px 0">
                     Showing {changedFiles} files with{" "}
                     <B>{additions} additions</B> and{" "}

@@ -12,6 +12,7 @@ import ExternalLink from "components/theme/ExternalLink";
 import Span from "components/theme/Span";
 import { prettyByte } from "lib/utils/prettyByte";
 import { FunctionComponent, ReactNode } from "react";
+import Halfs from "./Halfs";
 
 function differance(a: number, b: number): ReactNode {
     const diff = a - b;
@@ -123,10 +124,12 @@ export interface SizeComparisonProps extends FlexProps {
 /** The padding of the center column and the right/left half has to be the same to line up */
 const COMMON_PADDING = "8px";
 
-const SizeComparison = forwardRef<SizeComparisonProps, "div">(
+const SizeComparison = forwardRef<SizeComparisonProps, typeof Halfs>(
     ({ a, b, sizeRows, serviceName, serviceLink, ...props }, ref) => (
-        <Flex ref={ref} {...props}>
-            <Flex flex="1 0 0px" justifyContent="flex-end">
+        <Halfs
+            ref={ref}
+            {...props}
+            left={
                 <LinkButton
                     padding={COMMON_PADDING}
                     serviceName={serviceName}
@@ -150,45 +153,49 @@ const SizeComparison = forwardRef<SizeComparisonProps, "div">(
                         }
                     })}
                 </LinkButton>
-            </Flex>
-            <Box padding={COMMON_PADDING} textAlign="center">
-                {sizeRows.map((sizeRow) => (
-                    <Text key={sizeRow.name}>{sizeRow.name}</Text>
-                ))}
-            </Box>
-            <Flex flex="1 0 0px" justifyContent="flex-start">
-                <LinkButton
-                    padding={COMMON_PADDING}
-                    serviceName={serviceName}
-                    serviceLink={serviceLink}
-                    packageName={b.name}
-                    packageVersion={b.version}
-                >
-                    {sizeRows.map(({ name, a, b }) => {
-                        if (b.bytes != null) {
-                            return (
-                                <SizeText
-                                    key={name}
-                                    bytes={b.bytes}
-                                    color={b.color}
-                                    baseBytes={a.bytes}
-                                />
-                            );
-                        } else if (b.count != null) {
-                            return (
-                                <CountText
-                                    key={name}
-                                    count={b.count}
-                                    baseCount={a.count}
-                                />
-                            );
-                        } else {
-                            return null;
-                        }
-                    })}
-                </LinkButton>
-            </Flex>
-        </Flex>
+            }
+            center={
+                <Box padding={COMMON_PADDING} textAlign="center">
+                    {sizeRows.map((sizeRow) => (
+                        <Text key={sizeRow.name}>{sizeRow.name}</Text>
+                    ))}
+                </Box>
+            }
+            right={
+                <Flex flex="1 0 0px" justifyContent="flex-start">
+                    <LinkButton
+                        padding={COMMON_PADDING}
+                        serviceName={serviceName}
+                        serviceLink={serviceLink}
+                        packageName={b.name}
+                        packageVersion={b.version}
+                    >
+                        {sizeRows.map(({ name, a, b }) => {
+                            if (b.bytes != null) {
+                                return (
+                                    <SizeText
+                                        key={name}
+                                        bytes={b.bytes}
+                                        color={b.color}
+                                        baseBytes={a.bytes}
+                                    />
+                                );
+                            } else if (b.count != null) {
+                                return (
+                                    <CountText
+                                        key={name}
+                                        count={b.count}
+                                        baseCount={a.count}
+                                    />
+                                );
+                            } else {
+                                return null;
+                            }
+                        })}
+                    </LinkButton>
+                </Flex>
+            }
+        />
     ),
 );
 
