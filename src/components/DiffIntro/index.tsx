@@ -16,6 +16,7 @@ import { serviceLinks } from "lib/serviceLinks";
 import npa from "npm-package-arg";
 import { FunctionComponent } from "react";
 import BundlephobiaFlags from "./BundlePhobiaFlags";
+import Halfs from "./Halfs";
 import Options from "./Options";
 import ServiceLinks from "./ServiceLinks";
 import SizeComparison from "./SizeComparison";
@@ -77,26 +78,26 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
             <Flex direction="column" alignItems="center" ref={ref} {...props}>
                 <Heading as="h2" size="sm" width="100%" textAlign="center">
                     <Text>Comparing </Text>
-                    <Flex>
-                        <Flex flex="1 0 0px" justifyContent="flex-end">
-                            {/* Left half */}
+                    <Halfs
+                        left={
                             <SpecBox
                                 packageName={aName}
                                 packageVersion={aVersion}
                             />
-                        </Flex>
-                        <Box>
-                            {/* Center column */}
-                            <Code>...</Code>
-                        </Box>
-                        <Flex flex="1 0 0px" justifyContent="flex-start">
-                            {/* Right half */}
+                        }
+                        center={
+                            <Box>
+                                {/* Center column */}
+                                <Code>...</Code>
+                            </Box>
+                        }
+                        right={
                             <SpecBox
                                 packageName={bName}
                                 packageVersion={bVersion}
                             />
-                        </Flex>
-                    </Flex>
+                        }
+                    />
                 </Heading>
                 {packagephobiaResults && (
                     <>
