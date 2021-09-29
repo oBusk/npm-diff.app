@@ -56,7 +56,7 @@
         "semver": "^7.3.5"
     },
     "devDependencies": {
-        "@testing-library/react": "^12.1.0",
+        "@testing-library/react": "^12.1.1",
         "@testing-library/react-hooks": "^7.0.2",
         "@types/jest": "^27.0.2",
         "@types/libnpmdiff": "^2.0.0",
@@ -72,7 +72,7 @@
         "eslint-config-next": "^11.1.2",
         "eslint-config-prettier": "^8.3.0",
         "eslint-plugin-prettier": "^4.0.0",
-        "jest-watch-typeahead": "^0.6.4",
+        "jest-watch-typeahead": "^1.0.0",
         "lint-staged": "^11.1.2",
         "prettier": "^2.4.1",
         "simple-git-hooks": "^2.6.1",
