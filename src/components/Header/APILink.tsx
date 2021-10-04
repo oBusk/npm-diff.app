@@ -1,5 +1,5 @@
 import { Link, LinkProps } from "@chakra-ui/react";
-import NextLink from "components/theme/NextLink";
+import NextLink from "_/components/theme/NextLink";
 import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
 

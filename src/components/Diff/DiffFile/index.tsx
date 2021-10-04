@@ -1,9 +1,9 @@
 import { useBreakpointValue } from "@chakra-ui/react";
-import { Diff } from "components/react-diff-view";
+import { Diff } from "_/components/react-diff-view";
 import CollapsableBorderBox, {
     CollapsableBorderBoxProps,
-} from "components/theme/CollapsableBorderBox";
-import countChanges from "lib/utils/countChanges";
+} from "_/components/theme/CollapsableBorderBox";
+import countChanges from "_/lib/utils/countChanges";
 import { FunctionComponent } from "react";
 import { DiffType, HunkData, ViewType } from "react-diff-view";
 import "react-diff-view/style/index.css";

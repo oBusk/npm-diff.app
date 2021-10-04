@@ -1,9 +1,9 @@
 import { Code, Heading, Text, Tooltip, VStack } from "@chakra-ui/react";
-import Layout from "components/Layout";
-import ExternalLink from "components/theme/ExternalLink";
-import NextLink from "components/theme/NextLink";
-import EXAMPLES from "lib/examples";
-import splitParts from "lib/utils/splitParts";
+import Layout from "_/components/Layout";
+import ExternalLink from "_/components/theme/ExternalLink";
+import NextLink from "_/components/theme/NextLink";
+import EXAMPLES from "_/lib/examples";
+import splitParts from "_/lib/utils/splitParts";
 import libnpmdiff from "libnpmdiff";
 import { GetStaticProps, NextPage } from "next";
 

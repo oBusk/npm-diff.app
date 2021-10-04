@@ -5,7 +5,7 @@ import {
     Tooltip,
     TooltipProps,
 } from "@chakra-ui/react";
-import B from "components/theme/B";
+import B from "_/components/theme/B";
 
 export interface ServiceTooltipProps extends TooltipProps {
     packageName: string;

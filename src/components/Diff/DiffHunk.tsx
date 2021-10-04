@@ -1,5 +1,5 @@
 import { Text, useColorModeValue } from "@chakra-ui/react";
-import { Decoration, Hunk } from "components/react-diff-view";
+import { Decoration, Hunk } from "_/components/react-diff-view";
 import { FunctionComponent } from "react";
 import { HunkData } from "react-diff-view";
 

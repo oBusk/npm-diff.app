@@ -8,7 +8,7 @@ import Head from "next/head";
 import { FunctionComponent } from "react";
 import { Header } from "./Header";
 import Footer from "./Footer";
-import { Theme } from "theme";
+import { Theme } from "_/theme";
 export interface LayoutProps extends StackProps {
     title?: string;
 }

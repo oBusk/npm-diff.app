@@ -5,7 +5,7 @@ import {
     TagLeftIcon,
     TagProps,
 } from "@chakra-ui/react";
-import Tooltip from "components/theme/Tooltip";
+import Tooltip from "_/components/theme/Tooltip";
 import { ElementType, ReactNode } from "react";
 
 interface FlagProps extends TagProps {
