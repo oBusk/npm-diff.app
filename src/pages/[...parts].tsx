@@ -1,16 +1,16 @@
 import DiffFiles from "components/Diff/DiffFiles";
 import DiffIntro from "components/DiffIntro";
 import Layout from "components/Layout";
-import { bundlephobia, BundlephobiaResults } from "lib/bundlephobia";
+import bundlephobia, { BundlephobiaResults } from "lib/api/bundlephobia";
+import { packagephobia, PackagephobiaResults } from "lib/api/packagephobia";
 import { DEFAULT_DIFF_FILES_GLOB } from "lib/default-diff-files";
 import destination from "lib/destination";
 import DiffOptions from "lib/DiffOptions";
 import measuredPromise from "lib/measuredPromise";
-import { packagephobia, PackagephobiaResults } from "lib/packagephobia";
 import parseQuery, { QueryParams } from "lib/query";
 import countChanges from "lib/utils/countChanges";
+import { setDefaultPageCaching } from "lib/utils/headers";
 import rawQuery from "lib/utils/rawQuery";
-import setCacheControl from "lib/utils/setCacheControl";
 import specsToDiff from "lib/utils/specsToDiff";
 import splitParts from "lib/utils/splitParts";
 import libnpmdiff from "libnpmdiff";
@@ -43,7 +43,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
     const { redirect, immutableSpecs } = await destination(specsOrVersions);
 
     if (redirect !== "temporary") {
-        setCacheControl(res);
+        setDefaultPageCaching(res);
     }
 
     if (redirect === false) {

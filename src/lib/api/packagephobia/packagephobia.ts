@@ -1,9 +1,5 @@
-import { PackagephobiaResponse } from "./PackagephobiaResponse";
-
-export interface PackagephobiaResults {
-    a: PackagephobiaResponse;
-    b: PackagephobiaResponse;
-}
+import PackagephobiaResponse from "./PackagephobiaResponse";
+import PackagephobiaResults from "./PackagephobiaResult";
 
 async function getPackage(spec: string): Promise<PackagephobiaResponse> {
     const response = await fetch(
@@ -13,7 +9,7 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse> {
     return json;
 }
 
-export async function packagephobia([aSpec, bSpec]: [
+export default async function packagephobia([aSpec, bSpec]: [
     string,
     string,
 ]): Promise<PackagephobiaResults> {

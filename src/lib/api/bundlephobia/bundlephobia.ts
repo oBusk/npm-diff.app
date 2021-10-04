@@ -1,9 +1,5 @@
-import { BundlephobiaResponse } from "./BundlephobiaResponse";
-
-export interface BundlephobiaResults {
-    a: BundlephobiaResponse;
-    b: BundlephobiaResponse;
-}
+import BundlephobiaResponse from "./BundlephobiaResponse";
+import BundlephobiaResults from "./BundlephobiaResults";
 
 async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
     const response = await fetch(
@@ -24,7 +20,7 @@ async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
     }
 }
 
-export async function bundlephobia([aSpec, bSpec]: [
+async function bundlephobia([aSpec, bSpec]: [
     string,
     string,
 ]): Promise<BundlephobiaResults | null> {
@@ -41,3 +37,5 @@ export async function bundlephobia([aSpec, bSpec]: [
 
     return null;
 }
+
+export default bundlephobia;
