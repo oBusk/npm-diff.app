@@ -55,6 +55,8 @@
         "semver": "^7.3.5"
     },
     "devDependencies": {
+        "@testing-library/react": "^12.1.1",
+        "@testing-library/react-hooks": "^7.0.2",
         "@types/jest": "^27.0.2",
         "@types/libnpmdiff": "^2.0.0",
         "@types/node": "^16.10.2",
