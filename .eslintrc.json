@@ -6,6 +6,7 @@
         "plugin:import/typescript",
         "plugin:prettier/recommended"
     ],
+    "plugins": ["jest", "testing-library"],
     "rules": {
         "import/order": [
             "error",
@@ -34,5 +35,18 @@
         "import": {
             "internal-regex": "^_/"
         }
-    }
+    },
+    "overrides": [
+        {
+            "files": [
+                "**/__tests__/**/*.[jt]s?(x)",
+                "**/?(*.)+(spec|test).[jt]s?(x)"
+            ],
+            "extends": [
+                "plugin:jest/recommended",
+                "plugin:jest/style",
+                "plugin:testing-library/react"
+            ]
+        }
+    ]
 }
