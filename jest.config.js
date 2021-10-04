@@ -2,10 +2,7 @@ module.exports = {
     roots: ["<rootDir>"],
     testEnvironment: "jsdom",
     moduleFileExtensions: ["ts", "tsx", "js", "json", "jsx"],
-    watchPlugins: [
-        "jest-watch-typeahead/filename",
-        "jest-watch-typeahead/testname",
-    ],
+    watchPlugins: [],
     moduleDirectories: ["node_modules", "src"],
     moduleNameMapper: {
         "\\.(css|less|sass|scss)$": "identity-obj-proxy",
