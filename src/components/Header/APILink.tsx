@@ -1,7 +1,7 @@
 import { Link, LinkProps } from "@chakra-ui/react";
-import NextLink from "_/components/theme/NextLink";
 import { useRouter } from "next/router";
 import { FunctionComponent } from "react";
+import NextLink from "_/components/theme/NextLink";
 
 export const APILInk: FunctionComponent<LinkProps> = (props) => {
     const router = useRouter();

@@ -7,14 +7,14 @@ import {
     Heading,
     Text,
 } from "@chakra-ui/react";
+import npa from "npm-package-arg";
+import { FunctionComponent } from "react";
 import B from "_/components/theme/B";
 import BorderBox from "_/components/theme/BorderBox";
 import { BundlephobiaResults } from "_/lib/api/bundlephobia";
 import { PackagephobiaResults } from "_/lib/api/packagephobia";
 import DiffOptions from "_/lib/DiffOptions";
 import { serviceLinks } from "_/lib/serviceLinks";
-import npa from "npm-package-arg";
-import { FunctionComponent } from "react";
 import BundlephobiaFlags from "./BundlePhobiaFlags";
 import Halfs from "./Halfs";
 import Options from "./Options";

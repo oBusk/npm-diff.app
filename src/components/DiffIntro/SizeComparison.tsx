@@ -7,11 +7,11 @@ import {
     Text,
     useColorModeValue,
 } from "@chakra-ui/react";
+import { FunctionComponent, ReactNode } from "react";
 import ServiceTooltip from "_/components/ServiceTooltip";
 import ExternalLink from "_/components/theme/ExternalLink";
 import Span from "_/components/theme/Span";
 import { prettyByte } from "_/lib/utils/prettyByte";
-import { FunctionComponent, ReactNode } from "react";
 import Halfs from "./Halfs";
 
 function differance(a: number, b: number): ReactNode {
