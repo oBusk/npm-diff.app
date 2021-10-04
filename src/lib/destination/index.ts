@@ -1,4 +1,4 @@
-import arrayEquals from "lib/utils/arrayEquals";
+import arrayEquals from "_/lib/utils/arrayEquals";
 import immutableSpec from "./immutableSpec";
 import versionsToSpecs from "./versionsToSpecs";
 

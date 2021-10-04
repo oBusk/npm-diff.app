@@ -1,6 +1,6 @@
 import { forwardRef } from "@chakra-ui/system";
 import { Code } from "@chakra-ui/react";
-import DiffOptions from "lib/DiffOptions";
+import DiffOptions from "_/lib/DiffOptions";
 
 export interface CommandProps {
     aName: string;

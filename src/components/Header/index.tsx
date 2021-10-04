@@ -1,5 +1,5 @@
 import { Box, Flex, FlexProps, Heading, HStack } from "@chakra-ui/react";
-import NextLink from "components/theme/NextLink";
+import NextLink from "_/components/theme/NextLink";
 import { FunctionComponent } from "react";
 import { APILInk } from "./APILink";
 import ColorModeToggle from "./ColorModeToggle";

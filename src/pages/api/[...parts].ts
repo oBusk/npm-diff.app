@@ -1,9 +1,9 @@
-import destination from "lib/destination";
-import parseQuery from "lib/query";
-import { setDefaultPageCaching } from "lib/utils/headers";
-import rawQuery from "lib/utils/rawQuery";
-import specsToDiff from "lib/utils/specsToDiff";
-import splitParts from "lib/utils/splitParts";
+import destination from "_/lib/destination";
+import parseQuery from "_/lib/query";
+import { setDefaultPageCaching } from "_/lib/utils/headers";
+import rawQuery from "_/lib/utils/rawQuery";
+import specsToDiff from "_/lib/utils/specsToDiff";
+import splitParts from "_/lib/utils/splitParts";
 import libnpmdiff from "libnpmdiff";
 import { NextApiHandler } from "next";
 

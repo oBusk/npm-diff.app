@@ -1,4 +1,4 @@
-import { serviceLinks } from "lib/serviceLinks";
+import { serviceLinks } from "_/lib/serviceLinks";
 import { FunctionComponent } from "react";
 import { DiNpm } from "react-icons/di";
 import { FaBox, FaCloud, FaRegFrownOpen } from "react-icons/fa";

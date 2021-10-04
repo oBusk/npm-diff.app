@@ -7,10 +7,10 @@ import {
     Text,
     useColorModeValue,
 } from "@chakra-ui/react";
-import ServiceTooltip from "components/ServiceTooltip";
-import ExternalLink from "components/theme/ExternalLink";
-import Span from "components/theme/Span";
-import { prettyByte } from "lib/utils/prettyByte";
+import ServiceTooltip from "_/components/ServiceTooltip";
+import ExternalLink from "_/components/theme/ExternalLink";
+import Span from "_/components/theme/Span";
+import { prettyByte } from "_/lib/utils/prettyByte";
 import { FunctionComponent, ReactNode } from "react";
 import Halfs from "./Halfs";
 

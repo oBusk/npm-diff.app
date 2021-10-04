@@ -1,7 +1,7 @@
 import { Stack, StackProps, Heading, Link } from "@chakra-ui/react";
-import NextLink from "components/theme/NextLink";
-import EXAMPLES from "lib/examples";
-import { QueryParams } from "lib/query";
+import NextLink from "_/components/theme/NextLink";
+import EXAMPLES from "_/lib/examples";
+import { QueryParams } from "_/lib/query";
 import { FunctionComponent } from "react";
 
 export interface ExamplesListProps extends StackProps {
