@@ -1,16 +1,18 @@
 module.exports = {
-    roots: ["<rootDir>"],
-    testEnvironment: "jsdom",
-    moduleFileExtensions: ["ts", "tsx", "js", "json", "jsx"],
-    watchPlugins: [],
+    collectCoverageFrom: ["**/*.[jt]sx?$", "!**/*.d.ts", "!**/node_modules/**"],
     moduleDirectories: ["node_modules", "src"],
     moduleNameMapper: {
-        "\\.(css|less|sass|scss)$": "identity-obj-proxy",
-        "\\.(gif|ttf|eot|svg|png)$": "<rootDir>/test/__mocks__/fileMock.js",
+        // Handle CSS imports (with CSS modules)
+        // https://jestjs.io/docs/webpack#mocking-css-modules
+        "^.+\\.module\\.(c|sa|sc)ss$": "identity-obj-proxy",
+
+        // Handle CSS imports (without CSS modules)
+        "^.+\\.(c|sa|sc)ss$": "<rootDir>/__mocks__/styleMock.js",
+
+        // Handle image imports
+        // https://jestjs.io/docs/webpack#handling-static-assets
+        "^.+\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.js",
     },
-    testPathIgnorePatterns: ["<rootDir>[/\\\\](node_modules|.next)[/\\\\]"],
-    transform: {
-        "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
-    },
-    transformIgnorePatterns: ["[/\\\\]node_modules[/\\\\].+\\.(ts|tsx)$"],
+    testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
+    transformIgnorePatterns: ["/node_modules/", "^.+\\.module\\.(c|sa|sc)ss$"],
 };

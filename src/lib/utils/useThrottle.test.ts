@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { renderHook, RenderResult } from "@testing-library/react-hooks";
 import useThrottle from "./useThrottle";
 import * as throttle from "./throttle";
