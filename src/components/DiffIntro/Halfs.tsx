@@ -1,6 +1,6 @@
+import { Flex } from "@chakra-ui/react";
 import { forwardRef } from "@chakra-ui/system";
 import { ReactNode } from "react";
-import { Flex } from "@chakra-ui/react";
 
 interface ComparisonViewProps {
     left: ReactNode;

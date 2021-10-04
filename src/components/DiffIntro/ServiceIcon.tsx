@@ -1,4 +1,4 @@
-import { Icon, forwardRef, IconProps } from "@chakra-ui/react";
+import { forwardRef, Icon, IconProps } from "@chakra-ui/react";
 
 export interface ServiceIconProps extends IconProps {}
 

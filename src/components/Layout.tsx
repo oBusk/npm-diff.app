@@ -1,14 +1,9 @@
-import {
-    Stack,
-    StackProps,
-    useColorModeValue,
-    useTheme,
-} from "@chakra-ui/react";
+import { Stack, StackProps, useColorModeValue } from "@chakra-ui/react";
 import Head from "next/head";
 import { FunctionComponent } from "react";
-import { Header } from "./Header";
 import Footer from "./Footer";
-import { Theme } from "_/theme";
+import { Header } from "./Header";
+
 export interface LayoutProps extends StackProps {
     title?: string;
 }

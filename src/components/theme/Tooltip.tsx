@@ -1,7 +1,7 @@
 import {
-    forwardRef,
     Tooltip as ChakraTooltip,
     TooltipProps as ChakraTooltipProps,
+    forwardRef,
 } from "@chakra-ui/react";
 
 export interface TooltipProps extends ChakraTooltipProps {}

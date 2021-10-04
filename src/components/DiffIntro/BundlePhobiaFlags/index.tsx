@@ -1,10 +1,10 @@
 import { Code, forwardRef, HStack, StackProps, Text } from "@chakra-ui/react";
+import { ReactNode } from "react";
 import {
     BundlephobiaResults,
     hasSideEffects,
     isTreeShakeable,
 } from "_/lib/api/bundlephobia";
-import { ReactNode } from "react";
 import SideeffectIcon from "./assets/SideeffectIcon";
 import TreeshakeIcon from "./assets/TreeshakeIcon";
 import Flag from "./Flag";

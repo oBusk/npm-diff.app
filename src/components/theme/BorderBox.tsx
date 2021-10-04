@@ -1,4 +1,4 @@
-import { BoxProps, forwardRef, Box } from "@chakra-ui/react";
+import { Box, BoxProps, forwardRef } from "@chakra-ui/react";
 
 export interface BorderBoxProps extends BoxProps {}
 

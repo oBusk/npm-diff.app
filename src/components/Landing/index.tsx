@@ -1,8 +1,8 @@
 import { Stack, useBoolean } from "@chakra-ui/react";
-import Layout from "_/components/Layout";
-import { DEFAULT_DIFF_FILES_GLOB } from "_/lib/default-diff-files";
 import { useRouter } from "next/router";
 import { FunctionComponent, useState } from "react";
+import Layout from "_/components/Layout";
+import { DEFAULT_DIFF_FILES_GLOB } from "_/lib/default-diff-files";
 import ExamplesList from "./ExamplesList";
 import Intro from "./Intro";
 import MainForm from "./MainForm";
