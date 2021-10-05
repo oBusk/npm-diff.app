@@ -1,4 +1,4 @@
-import parseQuery from ".";
+import parseQuery from "./parseQuery";
 
 describe("query", () => {
     it("can parse a object with the supported options", () =>
