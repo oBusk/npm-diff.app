@@ -1,4 +1,4 @@
-import { headersCache30min } from "lib/utils/headers";
+import { headersCache30min } from "_/lib/utils/headers";
 import Result from "./Result";
 import { searchUrl } from "./search";
 

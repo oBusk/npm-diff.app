@@ -3,8 +3,8 @@
  */
 
 import { renderHook, RenderResult } from "@testing-library/react-hooks";
-import useThrottle from "./useThrottle";
 import * as throttle from "./throttle";
+import useThrottle from "./useThrottle";
 
 describe("useThrottle", () => {
     let fn: (n: number) => void;

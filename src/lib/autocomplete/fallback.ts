@@ -1,4 +1,4 @@
-import getPopularPackages from "lib/api/npms/popularPackages";
+import getPopularPackages from "_/lib/api/npms/popularPackages";
 import AUTOCOMPLETE_SIZE from "./autcompleteSize";
 import AutocompleteSuggestion from "./AutocompleteSuggestion";
 import toAutocompleteSuggestion from "./toAutocompleteSuggestion";

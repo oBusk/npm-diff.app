@@ -12,7 +12,7 @@ import {
  * returns. Handles race conditions by not updating the state if a later
  * action has already resolved.
  */
-export const useAsyncState = <T>(initialState: T) => {
+const useAsyncState = <T>(initialState: T) => {
     const [value, setSync] = useState(initialState);
     const index = useRef(0);
     const latestDelivered = useRef(-1);

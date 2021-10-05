@@ -1,6 +1,6 @@
-import getAllVersions, { Version } from "lib/api/versions";
-import { setSwrCaching } from "lib/utils/headers";
 import { NextApiHandler } from "next";
+import getAllVersions, { Version } from "_/lib/api/versions";
+import { setSwrCaching } from "_/lib/utils/headers";
 
 export type ApiVersionsResponse = Array<Version>;
 

@@ -44,7 +44,7 @@ describe("useAsyncState", () => {
         expect(value2).toBe(2);
     });
 
-    it("Should update value when inputting async update", async () => {
+    it("Should update value when inputting timeout update", async () => {
         const { result } = renderHook(() => useAsyncState(1));
 
         const [value, setter] = result.current;

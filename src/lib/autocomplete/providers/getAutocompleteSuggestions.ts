@@ -1,4 +1,4 @@
-import getSuggestions from "lib/api/npms/suggestions";
+import getSuggestions from "_/lib/api/npms/suggestions";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import AutocompleteSuggestion from "../AutocompleteSuggestion";
 import toAutocompleteSuggestion from "../toAutocompleteSuggestion";
