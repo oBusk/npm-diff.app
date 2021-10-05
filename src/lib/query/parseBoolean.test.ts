@@ -12,7 +12,6 @@ describe("query/parseBoolean", () => {
 
     it(`input is "yes"`, () => expect(parseBoolean("yes")).toBe(true));
     it(`input is "true"`, () => expect(parseBoolean("true")).toBe(true));
-    it(`input is "yes"`, () => expect(parseBoolean("yes")).toBe(true));
     it(`input is "1"`, () => expect(parseBoolean("1")).toBe(true));
     it(`input is "1000"`, () => expect(parseBoolean("1000")).toBe(true));
     it(`input is ""`, () => expect(parseBoolean("")).toBe(true));
