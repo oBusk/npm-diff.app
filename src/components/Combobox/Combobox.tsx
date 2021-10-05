@@ -1,8 +1,8 @@
 import { Text } from "@chakra-ui/react";
 import { useCombobox } from "downshift";
 import { ReactNode } from "react";
-import useAsyncState from "_/lib/utils/useAsyncState";
-import useThrottle from "_/lib/utils/useThrottle";
+import useAsyncState from "_/lib/hooks/useAsyncState";
+import useThrottle from "_/lib/hooks/useThrottle";
 import ComboboxBox from "./ComboboxBox";
 import ComboboxButton from "./ComboboxButton";
 import ComboboxInput from "./ComboboxInput";
