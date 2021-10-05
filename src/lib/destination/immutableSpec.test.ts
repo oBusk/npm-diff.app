@@ -3,6 +3,7 @@ import immutableSpec from "./immutableSpec";
 
 const hashFinder = /(?:\#.*)?$/;
 
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["t"] }] */
 async function t(input: string, expected: string = "DEFAULT_VALUE") {
     expect(await immutableSpec(input)).toBe(expected);
 }
@@ -136,21 +137,27 @@ describe("immutableSpec", () => {
         it("Throw on file sub spec", () => {
             const expectedError = `Unsupported registry specifier type: "file"`;
 
-            expect(() => t("myalias@~/example.tgz")).rejects.toThrow(
-                expectedError,
-            );
-            expect(() => t("myalias@d:/example.tar")).rejects.toThrow(
-                expectedError,
-            );
+            return Promise.all([
+                expect(() => t("myalias@~/example.tgz")).rejects.toThrow(
+                    expectedError,
+                ),
+                expect(() => t("myalias@d:/example.tar")).rejects.toThrow(
+                    expectedError,
+                ),
+            ]);
         });
 
         it("Throw on directory sub spec", () => {
             const expectedError = `Unsupported registry specifier type: "directory"`;
 
-            expect(() => t("myalias@~/example")).rejects.toThrow(expectedError);
-            expect(() => t("myalias@d:/example")).rejects.toThrow(
-                expectedError,
-            );
+            return Promise.all([
+                expect(() => t("myalias@~/example")).rejects.toThrow(
+                    expectedError,
+                ),
+                expect(() => t("myalias@d:/example")).rejects.toThrow(
+                    expectedError,
+                ),
+            ]);
         });
     });
 
@@ -159,11 +166,15 @@ describe("immutableSpec", () => {
 
         // We could test with backslashes, but that's only when running on windows.
         // And forwardslash should work on all platforms.
-        expect(() => t(".example.tgz")).rejects.toThrow(expectedError);
-        expect(() => t("~/example.tar.gz")).rejects.toThrow(expectedError);
-        expect(() => t("c:/dir/example.tar")).rejects.toThrow(expectedError);
-        expect(() => t("/a/b/example.tgz")).rejects.toThrow(expectedError);
-        expect(() => t("file:example.tar")).rejects.toThrow(expectedError);
+        return Promise.all([
+            expect(() => t(".example.tgz")).rejects.toThrow(expectedError),
+            expect(() => t("~/example.tar.gz")).rejects.toThrow(expectedError),
+            expect(() => t("c:/dir/example.tar")).rejects.toThrow(
+                expectedError,
+            ),
+            expect(() => t("/a/b/example.tgz")).rejects.toThrow(expectedError),
+            expect(() => t("file:example.tar")).rejects.toThrow(expectedError),
+        ]);
     });
 
     it("Throws on specifier of type `directory`", () => {
@@ -171,10 +182,12 @@ describe("immutableSpec", () => {
 
         // We could test with backslashes, but that's only when running on windows.
         // And forwardslash should work on all platforms.
-        expect(() => t(".example")).rejects.toThrow(expectedError);
-        expect(() => t("~/example.")).rejects.toThrow(expectedError);
-        expect(() => t("c:/dir/example")).rejects.toThrow(expectedError);
-        expect(() => t("/a/b/example")).rejects.toThrow(expectedError);
-        expect(() => t("file:example")).rejects.toThrow(expectedError);
+        return Promise.all([
+            expect(() => t(".example")).rejects.toThrow(expectedError),
+            expect(() => t("~/example.")).rejects.toThrow(expectedError),
+            expect(() => t("c:/dir/example")).rejects.toThrow(expectedError),
+            expect(() => t("/a/b/example")).rejects.toThrow(expectedError),
+            expect(() => t("file:example")).rejects.toThrow(expectedError),
+        ]);
     });
 });

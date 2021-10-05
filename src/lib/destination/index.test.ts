@@ -9,6 +9,7 @@ interface ExpectedResults<T = string> {
     readonly next: T;
 }
 
+/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["t"] }] */
 async function t(
     input: [string, string],
     expectedSpecs?: [string, string],
@@ -106,13 +107,6 @@ describe("destination()", () => {
                 "temporary",
             ));
 
-        it("package@2.1.x | package@2.x", () =>
-            t(
-                ["chalk@2.1.x", "chalk@2.x"],
-                [specs["~2.1"], specs["^2.1"]],
-                "temporary",
-            ));
-
         it("package@^3.0.0-beta | package", () =>
             t(
                 ["chalk@^3.0.0-beta", "chalk"],
@@ -146,11 +140,10 @@ describe("destination()", () => {
                     "permanent",
                 ));
 
-            it("Throws on version | version", () => {
+            it("Throws on version | version", () =>
                 expect(() => t(["3.0.1", "3.0.1"])).rejects.toThrow(
                     "One of the spec",
-                );
-            });
+                ));
         });
 
         describe("semver", () => {
@@ -168,11 +161,10 @@ describe("destination()", () => {
                     "temporary",
                 ));
 
-            it("Throws on semver | semver", () => {
+            it("Throws on semver | semver", () =>
                 expect(() => t(["^2.1", "^2.1"])).rejects.toThrow(
                     "One of the spec",
-                );
-            });
+                ));
         });
     });
 });
