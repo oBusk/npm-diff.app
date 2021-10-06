@@ -1,6 +1,6 @@
-import Result from "_/lib/api/npms/Result";
-import { Suggestion } from "_/lib/api/npms/suggestions";
 import AutocompleteSuggestion from "./AutocompleteSuggestion";
+import Result from "-/lib/api/npms/Result";
+import { Suggestion } from "-/lib/api/npms/suggestions";
 
 const toAutocompleteSuggestion = ({
     package: { name, description },

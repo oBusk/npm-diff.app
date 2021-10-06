@@ -1,10 +1,10 @@
 import { Code, Text } from "@chakra-ui/react";
 import { GetStaticProps, NextPage } from "next";
-import Combobox from "_/components/Combobox";
-import Layout from "_/components/Layout";
-import BorderBox from "_/components/theme/BorderBox";
-import getAutocompleter from "_/lib/autocomplete";
-import fallback, { AutocompleteFallback } from "_/lib/autocomplete/fallback";
+import Combobox from "-/components/Combobox";
+import Layout from "-/components/Layout";
+import BorderBox from "-/components/theme/BorderBox";
+import getAutocompleter from "-/lib/autocomplete";
+import fallback, { AutocompleteFallback } from "-/lib/autocomplete/fallback";
 
 export interface AutocompletePageProps {
     fallback: AutocompleteFallback;

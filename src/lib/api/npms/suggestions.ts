@@ -1,6 +1,6 @@
-import { headersCache30min } from "_/lib/utils/headers";
 import Result from "./Result";
 import { searchUrl } from "./search";
+import { headersCache30min } from "-/lib/utils/headers";
 
 // https://api-docs.npms.io/
 export interface Suggestion extends Result {

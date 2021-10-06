@@ -1,8 +1,6 @@
 import { Text } from "@chakra-ui/react";
 import { useCombobox } from "downshift";
 import { ReactNode } from "react";
-import useAsyncState from "_/lib/hooks/useAsyncState";
-import useThrottle from "_/lib/hooks/useThrottle";
 import ComboboxBox from "./ComboboxBox";
 import ComboboxButton from "./ComboboxButton";
 import ComboboxInput from "./ComboboxInput";
@@ -10,6 +8,8 @@ import ComboboxLabel from "./ComboboxLabel";
 import ComboboxSuggestion from "./ComboboxSuggestion";
 import ComboboxSuggestionList from "./ComboboxSuggestionList";
 import ComboboxWrapper, { ComboboxWrapperProps } from "./ComboboxWrapper";
+import useAsyncState from "-/lib/hooks/useAsyncState";
+import useThrottle from "-/lib/hooks/useThrottle";
 
 export interface ComboboxProps<I> extends ComboboxWrapperProps {
     id: string;

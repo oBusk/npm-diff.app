@@ -1,9 +1,9 @@
-import DiffOptions from "_/lib/DiffOptions";
 import QueryParams from "../QueryParams";
 import parseBoolean from "./parseBoolean";
 import parseNumber from "./parseNumber";
 import parseString from "./parseString";
 import trimUndefined from "./trimUndefined";
+import DiffOptions from "-/lib/DiffOptions";
 
 function parseQuery({
     diffFiles,

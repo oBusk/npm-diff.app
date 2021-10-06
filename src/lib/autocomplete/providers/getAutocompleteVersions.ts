@@ -1,7 +1,7 @@
 import npa from "npm-package-arg";
-import type { ApiVersionsResponse } from "_/pages/api/versions";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import AutocompleteSuggestion from "../AutocompleteSuggestion";
+import type { ApiVersionsResponse } from "-/pages/api/versions";
 
 async function getAutocompleteVersions(
     query: string,
