@@ -13,7 +13,7 @@ module.exports = {
         "^.+\\.(jpg|jpeg|png|gif|webp|svg)$": "<rootDir>/__mocks__/fileMock.js",
 
         // Handle module aliases
-        "^_/(.*)$": "<rootDir>/src/$1",
+        "^-/(.*)$": "<rootDir>/src/$1",
     },
     testPathIgnorePatterns: ["<rootDir>/node_modules/", "<rootDir>/.next/"],
     transformIgnorePatterns: [

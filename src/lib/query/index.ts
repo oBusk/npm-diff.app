@@ -1,8 +1,8 @@
-import DiffOptions from "_/lib/DiffOptions";
-import trimUndefined from "_/lib/utils/trimUndefined";
 import parseBoolean from "./parseBoolean";
 import parseNumber from "./parseNumber";
 import parseString from "./parseString";
+import DiffOptions from "-/lib/DiffOptions";
+import trimUndefined from "-/lib/utils/trimUndefined";
 
 export interface QueryParams {
     diffFiles?: string | string[];
