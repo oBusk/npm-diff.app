@@ -9,17 +9,17 @@ import {
 } from "@chakra-ui/react";
 import npa from "npm-package-arg";
 import { FunctionComponent } from "react";
-import B from "_/components/theme/B";
-import BorderBox from "_/components/theme/BorderBox";
-import { BundlephobiaResults } from "_/lib/api/bundlephobia";
-import { PackagephobiaResults } from "_/lib/api/packagephobia";
-import DiffOptions from "_/lib/DiffOptions";
-import { serviceLinks } from "_/lib/serviceLinks";
 import BundlephobiaFlags from "./BundlePhobiaFlags";
 import Halfs from "./Halfs";
 import Options from "./Options";
 import ServiceLinks from "./ServiceLinks";
 import SizeComparison from "./SizeComparison";
+import B from "-/components/theme/B";
+import BorderBox from "-/components/theme/BorderBox";
+import { BundlephobiaResults } from "-/lib/api/bundlephobia";
+import { PackagephobiaResults } from "-/lib/api/packagephobia";
+import DiffOptions from "-/lib/DiffOptions";
+import { serviceLinks } from "-/lib/serviceLinks";
 
 const SpecBox: FunctionComponent<{
     packageName: string;

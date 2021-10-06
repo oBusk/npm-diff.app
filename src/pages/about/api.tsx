@@ -1,11 +1,11 @@
 import { Code, Heading, Text, Tooltip, VStack } from "@chakra-ui/react";
 import libnpmdiff from "libnpmdiff";
 import { GetStaticProps, NextPage } from "next";
-import Layout from "_/components/Layout";
-import ExternalLink from "_/components/theme/ExternalLink";
-import NextLink from "_/components/theme/NextLink";
-import EXAMPLES from "_/lib/examples";
-import splitParts from "_/lib/utils/splitParts";
+import Layout from "-/components/Layout";
+import ExternalLink from "-/components/theme/ExternalLink";
+import NextLink from "-/components/theme/NextLink";
+import EXAMPLES from "-/lib/examples";
+import splitParts from "-/lib/utils/splitParts";
 
 // TODO: Would be nice if this was dynamic. But doesn't seem possible
 // https://github.com/vercel/next.js/discussions/12848

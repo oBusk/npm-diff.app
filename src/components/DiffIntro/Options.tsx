@@ -1,7 +1,7 @@
 import { Code, Heading, Text } from "@chakra-ui/react";
 import { forwardRef } from "@chakra-ui/system";
-import BorderBox from "_/components/theme/BorderBox";
-import DiffOptions from "_/lib/DiffOptions";
+import BorderBox from "-/components/theme/BorderBox";
+import DiffOptions from "-/lib/DiffOptions";
 
 interface OptionsProps {
     options: DiffOptions;

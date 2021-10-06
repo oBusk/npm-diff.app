@@ -1,5 +1,5 @@
 import { NextPage } from "next";
-import Landing from "_/components/Landing";
+import Landing from "-/components/Landing";
 
 export interface IndexProps {}
 
