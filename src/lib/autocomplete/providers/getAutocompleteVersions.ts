@@ -20,7 +20,8 @@ async function getAutocompleteVersions(
             .filter(({ version }) => version.startsWith(rawSpec))
             .slice(0, AUTOCOMPLETE_SIZE)
             .map(({ name, version }) => ({
-                name: `${name}@${version}`,
+                value: `${name}@${version}`,
+                title: `${name}@${version}`,
             }))
     );
 }

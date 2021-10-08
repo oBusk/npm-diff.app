@@ -8,13 +8,17 @@ const toAutocompleteSuggestion = ({
 }: Result & Suggestion): AutocompleteSuggestion =>
     highlight
         ? {
-              name,
-              description,
-              highlight,
+              // @ suffix to start selecting version right away
+              value: `${name}@`,
+              title: name,
+              body: description,
+              titleWithHighlight: highlight,
           }
         : {
-              name,
-              description,
+              // @ suffix to start selecting version right away
+              value: `${name}@`,
+              title: name,
+              body: description,
           };
 
 export default toAutocompleteSuggestion;

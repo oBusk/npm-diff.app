@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { useCombobox } from "downshift";
+import { useCombobox, UseComboboxStateChange } from "downshift";
 import { ReactNode } from "react";
 import ComboboxBox from "./ComboboxBox";
 import ComboboxButton from "./ComboboxButton";
@@ -22,6 +22,14 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
     itemToString?: (item: I | null) => string;
     /** How to render the item in the dropdown */
     renderItem?: (item: I, index?: number) => ReactNode;
+    /**
+     * NOTE: This is a bit of a hack.
+     *
+     * A flag to re-open the dropdown when closing it.
+     *
+     * Use to re-open the dropdown when the user selects something that should be autocompleted again.
+     */
+    reopenOnClose?: boolean | ((changes: UseComboboxStateChange<I>) => boolean);
 }
 
 const defaultEmptyState = (
@@ -40,6 +48,7 @@ const Combobox = <T,>({
     itemToString = (item) =>
         typeof item === "string" ? item : JSON.stringify(item),
     renderItem = (item, _index) => itemToString(item),
+    reopenOnClose = false,
     ...props
 }: ComboboxProps<T>) => {
     const [items, setItems] = useAsyncState(initialSuggestions);
@@ -58,12 +67,24 @@ const Combobox = <T,>({
         getToggleButtonProps,
         highlightedIndex,
         isOpen,
+        openMenu,
     } = useCombobox({
         id,
         items,
         initialIsOpen,
         onInputValueChange: ({ inputValue }) => updateSuggestions(inputValue),
         itemToString,
+        onIsOpenChange: (changes) => {
+            if (!changes.isOpen) {
+                if (
+                    typeof reopenOnClose === "function"
+                        ? reopenOnClose(changes)
+                        : reopenOnClose
+                ) {
+                    openMenu();
+                }
+            }
+        },
     });
 
     return (

@@ -20,8 +20,11 @@ export const getStaticProps: GetStaticProps<AutocompletePageProps> =
         };
     };
 
-const PackageName = styled(Code, {
+const SuggestionTitle = styled(Code, {
     baseStyle: {
+        // `npms` wraps the matching part of the package name with `<em>`.
+        // The Italic looks a bit too discreet, so let's remove italic
+        // and add underline instead.
         em: {
             fontStyle: "normal",
             textDecoration: "underline",
@@ -37,20 +40,25 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({ fallback }) => (
             id="autocomplete"
             initialSuggestions={fallback}
             suggestionFinder={getAutocompleter(fallback)}
-            itemToString={(suggestion) => suggestion?.name || ""}
-            renderItem={({ name, description, highlight }) => (
+            itemToString={(suggestion) => suggestion?.value || ""}
+            renderItem={({ title, body, titleWithHighlight }) => (
                 <>
-                    {highlight ? (
-                        <PackageName
-                            dangerouslySetInnerHTML={{ __html: highlight }}
-                        ></PackageName>
+                    {titleWithHighlight ? (
+                        <SuggestionTitle
+                            dangerouslySetInnerHTML={{
+                                __html: titleWithHighlight,
+                            }}
+                        ></SuggestionTitle>
                     ) : (
-                        <PackageName>{name}</PackageName>
+                        <SuggestionTitle>{title}</SuggestionTitle>
                     )}
 
-                    {description && <Text>{description}</Text>}
+                    {body && <Text>{body}</Text>}
                 </>
             )}
+            reopenOnClose={({ inputValue }) =>
+                inputValue?.endsWith("@") || false
+            }
         />
     </Layout>
 );
