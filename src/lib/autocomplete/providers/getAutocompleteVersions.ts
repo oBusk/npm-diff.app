@@ -22,6 +22,9 @@ async function getAutocompleteVersions(
     ).map(({ name, version }) => ({
         value: `${name}@${version}`,
         title: `${name}@${version}`,
+        titleWithHighlight: `<em>${name}@${rawSpec}</em>${version.slice(
+            rawSpec.length,
+        )}`,
     }));
 }
 
