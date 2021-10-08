@@ -1,4 +1,4 @@
-import { Code, css, Text } from "@chakra-ui/react";
+import { Code, styled, Text } from "@chakra-ui/react";
 import { GetStaticProps, NextPage } from "next";
 import Combobox from "-/components/Combobox";
 import Layout from "-/components/Layout";
@@ -20,6 +20,15 @@ export const getStaticProps: GetStaticProps<AutocompletePageProps> =
         };
     };
 
+const PackageName = styled(Code, {
+    baseStyle: {
+        em: {
+            fontStyle: "normal",
+            textDecoration: "underline",
+        },
+    },
+});
+
 const AutocompletePage: NextPage<AutocompletePageProps> = ({ fallback }) => (
     <Layout>
         <Combobox
@@ -32,17 +41,11 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({ fallback }) => (
             renderItem={({ name, description, highlight }) => (
                 <>
                     {highlight ? (
-                        <Code
-                            css={css({
-                                em: {
-                                    fontStyle: "normal",
-                                    textDecoration: "underline",
-                                },
-                            })}
+                        <PackageName
                             dangerouslySetInnerHTML={{ __html: highlight }}
-                        ></Code>
+                        ></PackageName>
                     ) : (
-                        <Code>{name}</Code>
+                        <PackageName>{name}</PackageName>
                     )}
 
                     {description && <Text>{description}</Text>}
