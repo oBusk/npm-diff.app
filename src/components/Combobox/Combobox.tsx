@@ -18,7 +18,9 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
     throttle?: number;
     initialIsOpen?: boolean;
     emptyState?: ReactNode;
+    /** Convert the item to a string to input into the input field */
     itemToString?: (item: I | null) => string;
+    /** How to render the item in the dropdown */
     renderItem?: (item: I, index?: number) => ReactNode;
 }
 

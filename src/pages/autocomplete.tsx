@@ -1,4 +1,4 @@
-import { Code, Text } from "@chakra-ui/react";
+import { Code, css, Text } from "@chakra-ui/react";
 import { GetStaticProps, NextPage } from "next";
 import Combobox from "-/components/Combobox";
 import Layout from "-/components/Layout";
@@ -29,10 +29,23 @@ const AutocompletePage: NextPage<AutocompletePageProps> = ({ fallback }) => (
             initialSuggestions={fallback}
             suggestionFinder={getAutocompleter(fallback)}
             itemToString={(suggestion) => suggestion?.name || ""}
-            renderItem={(item) => (
+            renderItem={({ name, description, highlight }) => (
                 <>
-                    <Code>{item.name}</Code>
-                    {item.description && <Text>{item.description}</Text>}
+                    {highlight ? (
+                        <Code
+                            css={css({
+                                em: {
+                                    fontStyle: "normal",
+                                    textDecoration: "underline",
+                                },
+                            })}
+                            dangerouslySetInnerHTML={{ __html: highlight }}
+                        ></Code>
+                    ) : (
+                        <Code>{name}</Code>
+                    )}
+
+                    {description && <Text>{description}</Text>}
                 </>
             )}
         />
