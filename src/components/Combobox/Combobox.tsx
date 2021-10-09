@@ -20,10 +20,19 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
     throttle?: number;
     initialIsOpen?: boolean;
     emptyState?: ReactNode;
-    /** Convert the item to a string to input into the input field */
+    /**
+     * Convert the item to a string to input into the input field
+     *
+     * @default (item) => JSON.stringify(item)
+     */
     itemToString?: (item: I | null) => string;
-    /** How to render the item in the dropdown */
-    renderItem?: (item: I, index?: number) => ReactNode;
+    /**
+     * How to render the _content_ of the item in the dropdown.
+     * Every item is already a `li` element, this prop should define the content of that element.
+     *
+     * @default ({ item }) => itemToString(item)
+     */
+    renderItem?: (props: { item?: I; index?: number }) => ReactNode;
     /**
      * NOTE: This is a bit of a hack.
      * TODO: Looks like stateReducer is what we should be using!!
@@ -63,7 +72,7 @@ const Combobox = <T,>({
     emptyState = defaultEmptyState,
     itemToString = (item) =>
         typeof item === "string" ? item : JSON.stringify(item),
-    renderItem = (item, _index) => itemToString(item),
+    renderItem = ({ item }) => itemToString(item ?? null),
     reopenOnClose = false,
     showToggleButton = false,
     inputProps,
@@ -144,7 +153,7 @@ const Combobox = <T,>({
                                   highlighted={index === highlightedIndex}
                                   {...getItemProps({ item, index })}
                               >
-                                  {renderItem(item, index)}
+                                  {renderItem({ item, index })}
                               </ComboboxSuggestion>
                           )))}
             </ComboboxSuggestionList>
