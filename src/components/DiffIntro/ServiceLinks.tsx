@@ -3,7 +3,7 @@ import { DiNpm } from "react-icons/di";
 import { FaBox, FaCloud, FaRegFrownOpen } from "react-icons/fa";
 import ServiceIcon from "./ServiceIcon";
 import ServiceLink from "./ServiceLink";
-import { serviceLinks } from "-/lib/serviceLinks";
+import { serviceLinks } from "^/lib/serviceLinks";
 
 export interface ServiceLinksProps {
     packageName: string;

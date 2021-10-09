@@ -1,8 +1,8 @@
 import { Heading, Link, Stack, StackProps } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import NextLink from "-/components/theme/NextLink";
-import EXAMPLES from "-/lib/examples";
-import { QueryParams } from "-/lib/query";
+import NextLink from "^/components/theme/NextLink";
+import EXAMPLES from "^/lib/examples";
+import { QueryParams } from "^/lib/query";
 
 export interface ExamplesListProps extends StackProps {
     exampleMouseOver: (a: string, b: string) => void;

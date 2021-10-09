@@ -7,7 +7,7 @@ import {
     BundlephobiaResults,
     hasSideEffects,
     isTreeShakeable,
-} from "-/lib/api/bundlephobia";
+} from "^/lib/api/bundlephobia";
 
 export interface BundlephobiaFlagsProps extends StackProps {
     data: BundlephobiaResults;

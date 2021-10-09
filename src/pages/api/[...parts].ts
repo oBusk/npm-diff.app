@@ -1,11 +1,11 @@
 import libnpmdiff from "libnpmdiff";
 import { NextApiHandler } from "next";
-import destination from "-/lib/destination";
-import parseQuery from "-/lib/query";
-import { setDefaultPageCaching } from "-/lib/utils/headers";
-import rawQuery from "-/lib/utils/rawQuery";
-import specsToDiff from "-/lib/utils/specsToDiff";
-import splitParts from "-/lib/utils/splitParts";
+import destination from "^/lib/destination";
+import parseQuery from "^/lib/query";
+import { setDefaultPageCaching } from "^/lib/utils/headers";
+import rawQuery from "^/lib/utils/rawQuery";
+import specsToDiff from "^/lib/utils/specsToDiff";
+import splitParts from "^/lib/utils/splitParts";
 
 enum STATUS_CODES {
     TEMPORARY_REDIRECT = 307,

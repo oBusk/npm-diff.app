@@ -1,6 +1,6 @@
 import immutableSpec from "./immutableSpec";
 import versionsToSpecs from "./versionsToSpecs";
-import arrayEquals from "-/lib/utils/arrayEquals";
+import arrayEquals from "^/lib/utils/arrayEquals";
 
 export type Redirect = false | "temporary" | "permanent";
 

@@ -1,5 +1,5 @@
 import { Box, BoxProps, Code, forwardRef, Text } from "@chakra-ui/react";
-import ExternalLink from "-/components/theme/ExternalLink";
+import ExternalLink from "^/components/theme/ExternalLink";
 
 export interface IntroProps extends BoxProps {}
 
