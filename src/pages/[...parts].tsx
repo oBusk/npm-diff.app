@@ -11,10 +11,9 @@ import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
 import DiffOptions from "^/lib/DiffOptions";
 import measuredPromise from "^/lib/measuredPromise";
-import parseQuery, { QueryParams } from "^/lib/query";
+import { parseQuery, QueryParams, rawQuery } from "^/lib/query";
 import countChanges from "^/lib/utils/countChanges";
 import { setDefaultPageCaching } from "^/lib/utils/headers";
-import rawQuery from "^/lib/utils/rawQuery";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
 
