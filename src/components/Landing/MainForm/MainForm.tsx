@@ -1,7 +1,8 @@
 import {
     Button,
-    chakra,
+    forwardRef,
     Input,
+    InputProps,
     Stack,
     StackProps,
     Tooltip,
@@ -15,11 +16,9 @@ import {
 } from "react";
 import CenterInputAddon from "./CenterInputAddon";
 
-const SpecInput = chakra(Input, {
-    baseStyle: {
-        maxWidth: "20em",
-    },
-});
+const SpecInput = forwardRef<InputProps, "input">((props, ref) => (
+    <Input type="text" maxWidth="20em" ref={ref} {...props} />
+));
 
 export interface MainFormProps extends StackProps {
     overrideA: string | null;
