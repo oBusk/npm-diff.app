@@ -1,26 +1,71 @@
-import {
-    Button,
-    forwardRef,
-    Input,
-    InputProps,
-    Stack,
-    StackProps,
-    Tooltip,
-} from "@chakra-ui/react";
-import {
-    FormEvent,
-    FunctionComponent,
-    useEffect,
-    useRef,
-    useState,
-} from "react";
+import { Button, Code, Flex, StackProps, styled, Text } from "@chakra-ui/react";
+import { FormEvent, FunctionComponent, useContext } from "react";
 import CenterInputAddon from "./CenterInputAddon";
+import Combobox, { ComboboxProps } from "-/components/Combobox/Combobox";
+import getAutocompleter from "-/lib/autocomplete";
+import AutocompleteSuggestion from "-/lib/autocomplete/AutocompleteSuggestion";
+import { FallbackSuggestionsContext } from "-/lib/contexts/FallbackSuggestions";
 
-const SpecInput = forwardRef<InputProps, "input">((props, ref) => (
-    <Input type="text" maxWidth="20em" ref={ref} {...props} />
-));
+const SIZE = "md";
+
+const SuggestionTitle = styled(Code, {
+    baseStyle: {
+        // `npms` wraps the matching part of the package name with `<em>`.
+        // The Italic looks a bit too discreet, so let's remove italic
+        // and add underline instead.
+        em: {
+            fontStyle: "normal",
+            textDecoration: "underline",
+        },
+    },
+});
+
+const renderItem = ({
+    title,
+    body,
+    titleWithHighlight,
+}: AutocompleteSuggestion) => (
+    <>
+        {titleWithHighlight ? (
+            <SuggestionTitle
+                dangerouslySetInnerHTML={{
+                    __html: titleWithHighlight,
+                }}
+            ></SuggestionTitle>
+        ) : (
+            <SuggestionTitle>{title}</SuggestionTitle>
+        )}
+
+        {body && <Text>{body}</Text>}
+    </>
+);
+
+const SpecInput = ({
+    id,
+    ...props
+}: Omit<ComboboxProps<AutocompleteSuggestion>, "suggestionFinder">) => {
+    const fallback = useContext(FallbackSuggestionsContext);
+
+    return (
+        <Combobox
+            width="100%"
+            maxWidth="20em"
+            id={id}
+            label={null}
+            initialSuggestions={fallback}
+            suggestionFinder={getAutocompleter(fallback)}
+            itemToString={(suggestion) => suggestion?.value || ""}
+            renderItem={renderItem}
+            reopenOnClose={({ inputValue }) =>
+                inputValue?.endsWith("@") || false
+            }
+            {...props}
+        />
+    );
+};
 
 export interface MainFormProps extends StackProps {
+    comboboxFallback: AutocompleteSuggestion[];
     overrideA: string | null;
     overrideB: string | null;
     isLoading: boolean;
@@ -35,67 +80,60 @@ const MainForm: FunctionComponent<MainFormProps> = ({
     handleSubmit,
     ...props
 }) => {
-    const aRef = useRef<HTMLInputElement>(null);
-    const [a, setA] = useState("");
-    const [b, setB] = useState("");
+    // const aRef = useRef<HTMLInputElement>(null);
+    // const [a, setA] = useState("");
+    // const [b, setB] = useState("");
 
-    useEffect(() => {
-        // Focus the input on initial load (only)
-        aRef.current?.focus();
-    }, []);
+    // useEffect(() => {
+    //     // Focus the input on initial load (only)
+    //     aRef.current?.focus();
+    // }, []);
 
     const internalHandleSubmit = (event: FormEvent): void => {
         event.preventDefault();
 
         const target = event.target as typeof event.target & {
-            a: HTMLInputElement;
-            b: HTMLInputElement;
+            ["a-input"]: HTMLInputElement;
+            ["b-input"]: HTMLInputElement;
         };
 
-        handleSubmit(target.a.value, target.b.value);
+        handleSubmit(target["a-input"].value, target["b-input"].value);
     };
 
     return (
-        <Stack
+        <Flex
             as="form"
             onSubmit={internalHandleSubmit}
             align="center"
             justify="center"
             direction={{ base: "column", lg: "row" }}
-            spacing={{ base: "0.5rem", lg: 0 }}
             {...props}
         >
-            <Tooltip
-                label={`The specification of the base, like "package@1.2.3"`}
-                closeOnClick={false}
+            <SpecInput
+                size={SIZE}
+                id="a"
+                initialIsOpen={true}
+                inputProps={{
+                    placeholder: "package@1.2.3 or package@^1",
+                    borderEndRadius: { lg: 0 },
+                }}
+            ></SpecInput>
+            <CenterInputAddon
+                size={SIZE}
+                display={{ base: "none", lg: "flex" }}
             >
-                <SpecInput
-                    name="a"
-                    placeholder="package@1.2.3 or package@^1"
-                    disabled={overrideA != null || isLoading}
-                    value={overrideA ?? a ?? ""}
-                    onChange={(event) => setA(event.target.value)}
-                    ref={aRef}
-                    borderEndRadius={{ lg: 0 }}
-                ></SpecInput>
-            </Tooltip>
-            <CenterInputAddon display={{ base: "none", lg: "flex" }}>
                 ...
             </CenterInputAddon>
-            <Tooltip
-                label={`The specification of the compare, like "package"`}
-                closeOnClick={false}
-            >
-                <SpecInput
-                    name="b"
-                    placeholder="^3.0.1 or package-b@3.X"
-                    disabled={overrideB != null || isLoading}
-                    value={overrideB ?? b ?? ""}
-                    onChange={(event) => setB(event.target.value)}
-                    borderStartRadius={{ lg: 0 }}
-                ></SpecInput>
-            </Tooltip>
-            <Tooltip
+            <SpecInput
+                size={SIZE}
+                id="b"
+                inputProps={{
+                    placeholder: "^3.0.1 or package-b@3.X",
+                    borderStartRadius: { lg: 0 },
+                }}
+                marginTop={{ base: "0.5rem", lg: 0 }}
+            ></SpecInput>
+            {/* <Tooltip
                 label={
                     !a || !b
                         ? "Neither field can be emtpy"
@@ -103,17 +141,19 @@ const MainForm: FunctionComponent<MainFormProps> = ({
                 }
                 background={!a || !b ? "red.700" : undefined}
                 shouldWrapChildren
+            > */}
+            <Button
+                isLoading={isLoading}
+                type="submit"
+                size={SIZE}
+                // disabled={!b || !a}
+                marginInlineStart={{ lg: "2rem" }}
+                marginTop={{ base: "0.5rem", lg: 0 }}
             >
-                <Button
-                    isLoading={isLoading}
-                    type="submit"
-                    disabled={!b || !a}
-                    marginInlineStart={{ lg: "2rem" }}
-                >
-                    npm diff! 📦🔃
-                </Button>
-            </Tooltip>
-        </Stack>
+                npm diff! 📦🔃
+            </Button>
+            {/* </Tooltip> */}
+        </Flex>
     );
 };
 

@@ -1,9 +1,9 @@
 import { Text } from "@chakra-ui/react";
 import { useCombobox, UseComboboxStateChange } from "downshift";
 import { ReactNode } from "react";
-import ComboboxBox from "./ComboboxBox";
+import ComboboxBox, { ComboboxBoxProps } from "./ComboboxBox";
 import ComboboxButton from "./ComboboxButton";
-import ComboboxInput from "./ComboboxInput";
+import ComboboxInput, { ComboboxInputProps } from "./ComboboxInput";
 import ComboboxLabel from "./ComboboxLabel";
 import ComboboxSuggestion from "./ComboboxSuggestion";
 import ComboboxSuggestionList from "./ComboboxSuggestionList";
@@ -13,6 +13,8 @@ import useThrottle from "-/lib/hooks/useThrottle";
 
 export interface ComboboxProps<I> extends ComboboxWrapperProps {
     id: string;
+    /** @default "Find a package" */
+    label?: string | null;
     suggestionFinder: (input: string | undefined) => I[] | Promise<I[]>;
     initialSuggestions?: I[];
     throttle?: number;
@@ -24,12 +26,25 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
     renderItem?: (item: I, index?: number) => ReactNode;
     /**
      * NOTE: This is a bit of a hack.
+     * TODO: Looks like stateReducer is what we should be using!!
+     * https://github.com/downshift-js/downshift/blob/master/src/hooks/useCombobox/README.md#statereducer
      *
      * A flag to re-open the dropdown when closing it.
      *
      * Use to re-open the dropdown when the user selects something that should be autocompleted again.
      */
     reopenOnClose?: boolean | ((changes: UseComboboxStateChange<I>) => boolean);
+    /** If a small 🔽 toggle should be shown in the comboBox
+     * @default false
+     */
+    showToggleButton?: boolean;
+    /** Props that will be forwarded to the `<Input type="text" />` */
+    inputProps?: Omit<ComboboxInputProps, "isOpen">;
+    /**
+     * The chakra-ui "size" to set the input field as.
+     * @default "md"
+     */
+    size?: ComboboxBoxProps["size"];
 }
 
 const defaultEmptyState = (
@@ -40,15 +55,19 @@ const defaultEmptyState = (
 
 const Combobox = <T,>({
     id,
+    label = "Find a package",
     suggestionFinder,
     initialSuggestions = [],
     throttle = 250,
-    initialIsOpen = true,
+    initialIsOpen = false,
     emptyState = defaultEmptyState,
     itemToString = (item) =>
         typeof item === "string" ? item : JSON.stringify(item),
     renderItem = (item, _index) => itemToString(item),
     reopenOnClose = false,
+    showToggleButton = false,
+    inputProps,
+    size = "md",
     ...props
 }: ComboboxProps<T>) => {
     const [items, setItems] = useAsyncState(initialSuggestions);
@@ -89,13 +108,31 @@ const Combobox = <T,>({
 
     return (
         <ComboboxWrapper {...props}>
-            <ComboboxLabel {...getLabelProps()}>Find a package</ComboboxLabel>
-            <ComboboxBox {...getComboboxProps()}>
-                <ComboboxInput isOpen={isOpen} {...getInputProps()} />
-                <ComboboxButton
-                    aria-label="toggle-menu"
-                    {...getToggleButtonProps()}
+            {label && (
+                <ComboboxLabel {...getLabelProps()}>{label}</ComboboxLabel>
+            )}
+            <ComboboxBox size={size} {...getComboboxProps()}>
+                <ComboboxInput
+                    isOpen={isOpen}
+                    {...inputProps}
+                    {...getInputProps()}
                 />
+                {showToggleButton && (
+                    <ComboboxButton
+                        aria-label="toggle-menu"
+                        size={
+                            (
+                                {
+                                    xs: "xs",
+                                    sm: "xs",
+                                    md: "sm",
+                                    lg: "md",
+                                } as Record<string, string>
+                            )[size] || "sm"
+                        }
+                        {...getToggleButtonProps()}
+                    />
+                )}
             </ComboboxBox>
             <ComboboxSuggestionList {...getMenuProps()}>
                 {isOpen &&

@@ -6,16 +6,19 @@ import {
     InputRightElement,
 } from "@chakra-ui/react";
 
-const ComboboxButton = forwardRef<IconButtonProps, "button">((props, ref) => (
-    <InputRightElement>
-        <IconButton
-            type="button"
-            icon={<ArrowDownIcon />}
-            ref={ref}
-            {...props}
-            size="sm"
-        />
-    </InputRightElement>
-));
+export type ComboboxButtonProps = IconButtonProps;
+
+const ComboboxButton = forwardRef<ComboboxButtonProps, "button">(
+    (props, ref) => (
+        <InputRightElement>
+            <IconButton
+                type="button"
+                icon={<ArrowDownIcon />}
+                ref={ref}
+                {...props}
+            />
+        </InputRightElement>
+    ),
+);
 
 export default ComboboxButton;
