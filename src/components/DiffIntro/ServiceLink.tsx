@@ -1,6 +1,6 @@
 import { IconProps, Link } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import ServiceTooltip from "^/components/ServiceTooltip";
+import ServiceTooltip from "./ServiceTooltip";
 
 export interface ServiceLinkProps extends IconProps {
     name: string;

@@ -2,7 +2,7 @@ import { Stack, StackProps, useColorModeValue } from "@chakra-ui/react";
 import Head from "next/head";
 import { FunctionComponent } from "react";
 import Footer from "./Footer";
-import { Header } from "./Header";
+import Header from "./Header";
 
 export interface LayoutProps extends StackProps {
     title?: string;
