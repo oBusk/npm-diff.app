@@ -65,7 +65,6 @@ const SpecInput = ({
 };
 
 export interface MainFormProps extends StackProps {
-    comboboxFallback: AutocompleteSuggestion[];
     overrideA: string | null;
     overrideB: string | null;
     isLoading: boolean;
