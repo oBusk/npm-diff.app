@@ -15,6 +15,7 @@ const ComboboxSuggestionList = forwardRef<ListProps, "ul">((props, ref) => {
             borderTopWidth={0}
             borderBottomRadius="lg"
             position="absolute"
+            zIndex={1}
             styleType="none"
             margin={0}
             left={0}
