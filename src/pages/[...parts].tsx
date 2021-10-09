@@ -1,6 +1,6 @@
-import { ParsedUrlQuery } from "querystring";
 import libnpmdiff from "libnpmdiff";
 import { GetServerSideProps, NextPage } from "next";
+import { ParsedUrlQuery } from "querystring";
 import { parseDiff } from "react-diff-view";
 import DiffFiles from "^/components/Diff/DiffFiles";
 import DiffIntro from "^/components/DiffIntro";
