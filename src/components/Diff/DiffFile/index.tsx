@@ -4,11 +4,11 @@ import { DiffType, HunkData, ViewType } from "react-diff-view";
 import "react-diff-view/style/index.css";
 import DiffHunk from "../DiffHunk";
 import DiffFileHeader from "./DiffFileHeader";
-import { Diff } from "-/components/react-diff-view";
+import { Diff } from "^/components/react-diff-view";
 import CollapsableBorderBox, {
     CollapsableBorderBoxProps,
-} from "-/components/theme/CollapsableBorderBox";
-import countChanges from "-/lib/utils/countChanges";
+} from "^/components/theme/CollapsableBorderBox";
+import countChanges from "^/lib/utils/countChanges";
 
 interface DiffFileProps extends CollapsableBorderBoxProps {
     hunks: HunkData[];

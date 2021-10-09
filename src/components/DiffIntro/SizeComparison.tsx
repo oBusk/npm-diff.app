@@ -9,10 +9,10 @@ import {
 } from "@chakra-ui/react";
 import { FunctionComponent, ReactNode } from "react";
 import Halfs from "./Halfs";
-import ServiceTooltip from "-/components/ServiceTooltip";
-import ExternalLink from "-/components/theme/ExternalLink";
-import Span from "-/components/theme/Span";
-import { prettyByte } from "-/lib/utils/prettyByte";
+import ServiceTooltip from "^/components/ServiceTooltip";
+import ExternalLink from "^/components/theme/ExternalLink";
+import Span from "^/components/theme/Span";
+import { prettyByte } from "^/lib/utils/prettyByte";
 
 function differance(a: number, b: number): ReactNode {
     const diff = a - b;

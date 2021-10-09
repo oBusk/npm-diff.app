@@ -33,7 +33,7 @@
     },
     "settings": {
         "import": {
-            "internal-regex": "^-/(.*)$"
+            "internal-regex": "^\\^/(.*)$"
         }
     },
     "overrides": [

@@ -3,7 +3,7 @@ import { FunctionComponent } from "react";
 import { APILInk } from "./APILink";
 import ColorModeToggle from "./ColorModeToggle";
 import { GithubLink } from "./GithubLink";
-import NextLink from "-/components/theme/NextLink";
+import NextLink from "^/components/theme/NextLink";
 
 export const Header: FunctionComponent<FlexProps> = (props) => (
     <Flex

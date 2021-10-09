@@ -14,12 +14,12 @@ import Halfs from "./Halfs";
 import Options from "./Options";
 import ServiceLinks from "./ServiceLinks";
 import SizeComparison from "./SizeComparison";
-import B from "-/components/theme/B";
-import BorderBox from "-/components/theme/BorderBox";
-import { BundlephobiaResults } from "-/lib/api/bundlephobia";
-import { PackagephobiaResults } from "-/lib/api/packagephobia";
-import DiffOptions from "-/lib/DiffOptions";
-import { serviceLinks } from "-/lib/serviceLinks";
+import B from "^/components/theme/B";
+import BorderBox from "^/components/theme/BorderBox";
+import { BundlephobiaResults } from "^/lib/api/bundlephobia";
+import { PackagephobiaResults } from "^/lib/api/packagephobia";
+import DiffOptions from "^/lib/DiffOptions";
+import { serviceLinks } from "^/lib/serviceLinks";
 
 const SpecBox: FunctionComponent<{
     packageName: string;
