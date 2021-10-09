@@ -1,10 +1,10 @@
 import { Button, Code, Flex, StackProps, styled, Text } from "@chakra-ui/react";
 import { FormEvent, FunctionComponent, useContext } from "react";
 import CenterInputAddon from "./CenterInputAddon";
-import Combobox, { ComboboxProps } from "-/components/Combobox/Combobox";
-import getAutocompleter from "-/lib/autocomplete";
-import AutocompleteSuggestion from "-/lib/autocomplete/AutocompleteSuggestion";
-import { FallbackSuggestionsContext } from "-/lib/contexts/FallbackSuggestions";
+import Combobox, { ComboboxProps } from "^/components/Combobox/Combobox";
+import getAutocompleter from "^/lib/autocomplete";
+import AutocompleteSuggestion from "^/lib/autocomplete/AutocompleteSuggestion";
+import { FallbackSuggestionsContext } from "^/lib/contexts/FallbackSuggestions";
 
 const SIZE = "md";
 

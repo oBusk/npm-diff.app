@@ -8,8 +8,8 @@ import ComboboxLabel from "./ComboboxLabel";
 import ComboboxSuggestion from "./ComboboxSuggestion";
 import ComboboxSuggestionList from "./ComboboxSuggestionList";
 import ComboboxWrapper, { ComboboxWrapperProps } from "./ComboboxWrapper";
-import useAsyncState from "-/lib/hooks/useAsyncState";
-import useThrottle from "-/lib/hooks/useThrottle";
+import useAsyncState from "^/lib/hooks/useAsyncState";
+import useThrottle from "^/lib/hooks/useThrottle";
 
 export interface ComboboxProps<I> extends ComboboxWrapperProps {
     id: string;

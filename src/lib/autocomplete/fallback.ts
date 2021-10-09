@@ -1,7 +1,7 @@
 import AUTOCOMPLETE_SIZE from "./autcompleteSize";
 import AutocompleteSuggestion from "./AutocompleteSuggestion";
 import toAutocompleteSuggestion from "./toAutocompleteSuggestion";
-import getPopularPackages from "-/lib/api/npms/popularPackages";
+import getPopularPackages from "^/lib/api/npms/popularPackages";
 
 export type AutocompleteFallback = AutocompleteSuggestion[];
 

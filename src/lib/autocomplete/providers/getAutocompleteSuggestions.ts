@@ -1,7 +1,7 @@
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import AutocompleteSuggestion from "../AutocompleteSuggestion";
 import toAutocompleteSuggestion from "../toAutocompleteSuggestion";
-import getSuggestions from "-/lib/api/npms/suggestions";
+import getSuggestions from "^/lib/api/npms/suggestions";
 
 async function getAutocompleteSuggestions(
     query: string,
