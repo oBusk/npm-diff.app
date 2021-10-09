@@ -1,9 +1,7 @@
-import { chakra, forwardRef, HTMLChakraProps } from "@chakra-ui/react";
+import { chakra, HTMLChakraProps } from "@chakra-ui/react";
 
 export interface BProps extends HTMLChakraProps<"b"> {}
 
-const B = forwardRef<BProps, "b">((props, ref) => {
-    return <chakra.b {...props} ref={ref} />;
-});
+const B = chakra.b;
 
 export default B;

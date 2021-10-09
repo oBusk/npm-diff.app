@@ -1,9 +1,7 @@
-import { chakra, forwardRef, HTMLChakraProps } from "@chakra-ui/react";
+import { chakra, HTMLChakraProps } from "@chakra-ui/react";
 
 export interface SpanProps extends HTMLChakraProps<"span"> {}
 
-const Span = forwardRef<HTMLChakraProps<"span">, "span">((props, ref) => (
-    <chakra.span ref={ref} {...props}></chakra.span>
-));
+const Span = chakra.span;
 
 export default Span;

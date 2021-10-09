@@ -5,7 +5,7 @@ import Layout from "^/components/Layout";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import ExamplesList from "./ExamplesList";
 import Intro from "./Intro";
-import MainForm from "./MainForm";
+import MainForm from "./MainForm/MainForm";
 import OptionsForm from "./OptionsForm";
 
 export interface LandingProps {}

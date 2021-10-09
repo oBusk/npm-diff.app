@@ -1,16 +1,14 @@
-import { Box, BoxProps, forwardRef } from "@chakra-ui/react";
+import { Box, BoxProps, chakra } from "@chakra-ui/react";
 
 export interface BorderBoxProps extends BoxProps {}
 
 /** Very simple box with rounded corners and a border */
-const BorderBox = forwardRef<BorderBoxProps, "div">((props, ref) => (
-    <Box
-        borderWidth={1}
-        borderRadius="lg"
-        padding="16px"
-        ref={ref}
-        {...props}
-    />
-));
+const BorderBox = chakra(Box, {
+    baseStyle: {
+        borderWidth: 1,
+        borderRadius: "lg",
+        padding: "16px",
+    },
+});
 
 export default BorderBox;

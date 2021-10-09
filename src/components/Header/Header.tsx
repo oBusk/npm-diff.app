@@ -5,7 +5,7 @@ import { APILInk } from "./APILink";
 import ColorModeToggle from "./ColorModeToggle";
 import { GithubLink } from "./GithubLink";
 
-export const Header: FunctionComponent<FlexProps> = (props) => (
+const Header: FunctionComponent<FlexProps> = (props) => (
     <Flex
         as="nav"
         align="center"
@@ -40,3 +40,5 @@ export const Header: FunctionComponent<FlexProps> = (props) => (
         </Flex>
     </Flex>
 );
+
+export default Header;

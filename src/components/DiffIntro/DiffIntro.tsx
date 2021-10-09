@@ -15,7 +15,7 @@ import { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import { PackagephobiaResults } from "^/lib/api/packagephobia";
 import DiffOptions from "^/lib/DiffOptions";
 import { serviceLinks } from "^/lib/serviceLinks";
-import BundlephobiaFlags from "./BundlePhobiaFlags";
+import BundlephobiaFlags from "./BundlePhobiaFlags/BundlePhobiaFlags";
 import Halfs from "./Halfs";
 import Options from "./Options";
 import ServiceLinks from "./ServiceLinks";
