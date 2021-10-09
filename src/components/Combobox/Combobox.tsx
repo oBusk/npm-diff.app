@@ -1,5 +1,9 @@
 import { Text } from "@chakra-ui/react";
-import { useCombobox, UseComboboxStateChange } from "downshift";
+import {
+    useCombobox,
+    UseComboboxState,
+    UseComboboxStateChangeOptions,
+} from "downshift";
 import { ReactNode } from "react";
 import useAsyncState from "^/lib/hooks/useAsyncState";
 import useThrottle from "^/lib/hooks/useThrottle";
@@ -42,7 +46,7 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
      *
      * Use to re-open the dropdown when the user selects something that should be autocompleted again.
      */
-    reopenOnClose?: boolean | ((changes: UseComboboxStateChange<I>) => boolean);
+    keepOpen?: boolean | ((changes: Partial<UseComboboxState<I>>) => boolean);
     /** If a small 🔽 toggle should be shown in the comboBox
      * @default false
      */
@@ -56,12 +60,6 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
     size?: ComboboxBoxProps["size"];
 }
 
-const defaultEmptyState = (
-    <Text padding="16px" align="center" color="gray.200">
-        No suggestions
-    </Text>
-);
-
 const Combobox = <T,>({
     id,
     label = "Find a package",
@@ -69,11 +67,15 @@ const Combobox = <T,>({
     initialSuggestions = [],
     throttle = 250,
     initialIsOpen = false,
-    emptyState = defaultEmptyState,
+    emptyState = (
+        <Text padding="16px" align="center" color="gray.200">
+            No suggestions
+        </Text>
+    ),
     itemToString = (item) =>
         typeof item === "string" ? item : JSON.stringify(item),
     renderItem = ({ item }) => itemToString(item ?? null),
-    reopenOnClose = false,
+    keepOpen = false,
     showToggleButton = false,
     inputProps,
     size = "md",
@@ -86,6 +88,25 @@ const Combobox = <T,>({
         throttle,
     );
 
+    const shouldKeepOpen =
+        typeof keepOpen === "function" ? keepOpen : () => keepOpen;
+
+    const stateReducer: (
+        state: UseComboboxState<T>,
+        actionAndChanges: UseComboboxStateChangeOptions<T>,
+    ) => Partial<UseComboboxState<T>> = (state, { type, changes }) => {
+        switch (type) {
+            case useCombobox.stateChangeTypes.InputKeyDownEnter:
+            case useCombobox.stateChangeTypes.ItemClick:
+                return {
+                    ...changes,
+                    isOpen: shouldKeepOpen(changes),
+                };
+            default:
+                return changes;
+        }
+    };
+
     const {
         getComboboxProps,
         getInputProps,
@@ -95,24 +116,13 @@ const Combobox = <T,>({
         getToggleButtonProps,
         highlightedIndex,
         isOpen,
-        openMenu,
     } = useCombobox({
         id,
         items,
         initialIsOpen,
         onInputValueChange: ({ inputValue }) => updateSuggestions(inputValue),
         itemToString,
-        onIsOpenChange: (changes) => {
-            if (!changes.isOpen) {
-                if (
-                    typeof reopenOnClose === "function"
-                        ? reopenOnClose(changes)
-                        : reopenOnClose
-                ) {
-                    openMenu();
-                }
-            }
-        },
+        stateReducer,
     });
 
     return (

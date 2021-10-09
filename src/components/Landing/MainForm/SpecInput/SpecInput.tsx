@@ -23,9 +23,7 @@ const SpecInput = ({
             suggestionFinder={getAutocompleter(fallback)}
             itemToString={(suggestion) => suggestion?.value || ""}
             renderItem={Suggestion}
-            reopenOnClose={({ inputValue }) =>
-                inputValue?.endsWith("@") || false
-            }
+            keepOpen={({ inputValue }) => inputValue?.endsWith("@") || false}
             {...props}
         />
     );
