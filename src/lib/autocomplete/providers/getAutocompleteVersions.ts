@@ -3,6 +3,7 @@ import filterUntil from "^/lib/utils/filterUntil";
 import type { ApiVersionsResponse } from "^/pages/api/versions";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import AutocompleteSuggestion from "../AutocompleteSuggestion";
+import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
 
 async function getAutocompleteVersions(
     query: string,
@@ -20,6 +21,7 @@ async function getAutocompleteVersions(
         // Stops searching after finding X results
         AUTOCOMPLETE_SIZE,
     ).map(({ name, version }) => ({
+        type: AutocompleteSuggestionTypes.Version,
         value: `${name}@${version}`,
         title: `${name}@${version}`,
         titleWithHighlight: `<em>${name}@${rawSpec}</em>${version.slice(

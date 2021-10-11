@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Combobox, { ComboboxProps } from "^/components/Combobox/Combobox";
 import getAutocompleter from "^/lib/autocomplete";
 import AutocompleteSuggestion from "^/lib/autocomplete/AutocompleteSuggestion";
+import AutocompleteSuggestionTypes from "^/lib/autocomplete/AutocompleteSuggestionTypes";
 import { FallbackSuggestionsContext } from "^/lib/contexts/FallbackSuggestions";
 import Suggestion from "./Suggestion";
 
@@ -23,7 +24,10 @@ const SpecInput = ({
             suggestionFinder={getAutocompleter(fallback)}
             itemToString={(suggestion) => suggestion?.value || ""}
             renderItem={Suggestion}
-            keepOpen={({ inputValue }) => inputValue?.endsWith("@") || false}
+            keepOpen={({ selectedItem }) =>
+                // If it is package suggestion ("react" ➡ "react@") is selected, keep the input open to suggest version
+                selectedItem?.type === AutocompleteSuggestionTypes.Package
+            }
             {...props}
         />
     );
