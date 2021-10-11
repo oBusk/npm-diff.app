@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import Combobox, { ComboboxProps } from "^/components/Combobox/Combobox";
+import Combobox, { ComboboxProps } from "^/components/Combobox";
 import {
     AutocompleteSuggestion,
     AutocompleteSuggestionTypes,

@@ -1,3 +1,4 @@
-import Combobox from "./Combobox";
+import Combobox, { ComboboxProps } from "./Combobox";
 
 export default Combobox;
+export type { ComboboxProps };
