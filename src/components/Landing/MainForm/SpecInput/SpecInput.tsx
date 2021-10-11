@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import Combobox, { ComboboxProps } from "^/components/Combobox/Combobox";
-import getAutocompleter from "^/lib/autocomplete";
 import AutocompleteSuggestion from "^/lib/autocomplete/AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "^/lib/autocomplete/AutocompleteSuggestionTypes";
+import getAutocompleter from "^/lib/autocomplete/getAutocompleter";
 import { FallbackSuggestionsContext } from "^/lib/contexts/FallbackSuggestions";
 import Suggestion from "./Suggestion";
 
