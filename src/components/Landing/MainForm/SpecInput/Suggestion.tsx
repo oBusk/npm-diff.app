@@ -1,6 +1,6 @@
 import { chakra, Code, Text } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import AutocompleteSuggestion from "^/lib/autocomplete/AutocompleteSuggestion";
+import { AutocompleteSuggestion } from "^/lib/autocomplete";
 
 const SuggestionTitle = chakra(Code, {
     baseStyle: {
