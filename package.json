@@ -62,7 +62,7 @@
         "@types/node": "^16.10.3",
         "@types/npm-package-arg": "^6.1.1",
         "@types/pacote": "^11.1.1",
-        "@types/react": "^17.0.27",
+        "@types/react": "^17.0.30",
         "@types/react-diff-view": "./types/react-diff-view",
         "@types/react-dom": "^17.0.9",
         "@types/semver": "^7.3.8",
