@@ -1,6 +1,6 @@
 import npa from "npm-package-arg";
 import filterUntil from "^/lib/utils/filterUntil";
-import type { ApiVersionsResponse } from "^/pages/api/versions";
+import type { ApiVersionsResponse } from "^/pages/_middleware";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";

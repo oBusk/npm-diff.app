@@ -1,5 +1,5 @@
 import { NextFetchEvent, NextRequest } from "next/server";
-import getAllVersions from "^/lib/api/versions";
+import getAllVersions, { Version } from "^/lib/api/versions";
 
 type Middleware = (
     req: NextRequest,
@@ -12,6 +12,8 @@ const router: Middleware = (request) => {
             return versions(request);
     }
 };
+
+export type ApiVersionsResponse = Array<Version>;
 
 const versions: Middleware = async (request) => {
     const spec = request.nextUrl.searchParams.get("spec");
