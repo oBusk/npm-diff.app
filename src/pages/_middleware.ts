@@ -7,6 +7,8 @@ type Middleware = (
 ) => Promise<Response | undefined> | Response | undefined;
 
 const router: Middleware = (request) => {
+    console.log("Router");
+    console.log(JSON.stringify(request, null, 2));
     switch (request.nextUrl.pathname) {
         case "/api/versions":
             return versions(request);
