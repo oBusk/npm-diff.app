@@ -19,7 +19,9 @@ export const responseCacheSwr = {
     "Cache-Control": [
         "public",
         // Cache up to 5 minutes client side
-        `max-age=${5 * minute}`,
+        // `max-age=${5 * minute}`,
+        "max-age=0",
+        `s-maxage=${5 * minute}`,
         `stale-while-revalidate`,
     ].join(", "),
 } as const;
