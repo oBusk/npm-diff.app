@@ -17,6 +17,8 @@ import ComboboxWrapper, { ComboboxWrapperProps } from "./ComboboxWrapper";
 
 export interface ComboboxProps<I> extends ComboboxWrapperProps {
     id: string;
+    /** To get a `ref` to the `input`. Most likely to `focus()` it. */
+    inputRef?: React.Ref<HTMLInputElement>;
     /** @default "Find a package" */
     label?: string | null;
     suggestionFinder: (input: string | undefined) => I[] | Promise<I[]>;
@@ -38,15 +40,13 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
      */
     renderItem?: (props: { item?: I; index?: number }) => ReactNode;
     /**
-     * NOTE: This is a bit of a hack.
-     * TODO: Looks like stateReducer is what we should be using!!
-     * https://github.com/downshift-js/downshift/blob/master/src/hooks/useCombobox/README.md#statereducer
-     *
      * A flag to re-open the dropdown when closing it.
      *
      * Use to re-open the dropdown when the user selects something that should be autocompleted again.
      */
     keepOpen?: boolean | ((changes: Partial<UseComboboxState<I>>) => boolean);
+    /** Callback to run whenever an item is selected. */
+    onItemSelected?: (item: I) => void;
     /** If a small 🔽 toggle should be shown in the comboBox
      * @default false
      */
@@ -62,6 +62,7 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
 
 const Combobox = <T,>({
     id,
+    inputRef,
     label = "Find a package",
     suggestionFinder,
     initialSuggestions = [],
@@ -76,6 +77,7 @@ const Combobox = <T,>({
         typeof item === "string" ? item : JSON.stringify(item),
     renderItem = ({ item }) => itemToString(item ?? null),
     keepOpen = false,
+    onItemSelected,
     showToggleButton = false,
     inputProps,
     size = "md",
@@ -116,6 +118,7 @@ const Combobox = <T,>({
         getToggleButtonProps,
         highlightedIndex,
         isOpen,
+        openMenu,
     } = useCombobox({
         id,
         items,
@@ -123,6 +126,10 @@ const Combobox = <T,>({
         onInputValueChange: ({ inputValue }) => updateSuggestions(inputValue),
         itemToString,
         stateReducer,
+        onSelectedItemChange: onItemSelected
+            ? ({ selectedItem }) =>
+                  selectedItem != null && onItemSelected(selectedItem)
+            : undefined,
     });
 
     return (
@@ -133,8 +140,9 @@ const Combobox = <T,>({
             <ComboboxBox size={size} {...getComboboxProps()}>
                 <ComboboxInput
                     isOpen={isOpen}
+                    onFocus={openMenu}
                     {...inputProps}
-                    {...getInputProps()}
+                    {...getInputProps({ ref: inputRef })}
                 />
                 {showToggleButton && (
                     <ComboboxButton

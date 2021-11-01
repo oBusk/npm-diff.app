@@ -1,5 +1,5 @@
 import { Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
-import { FormEvent } from "react";
+import { FormEvent, useEffect, useRef } from "react";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
 
@@ -25,6 +25,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         //     // Focus the input on initial load (only)
         //     aRef.current?.focus();
         // }, []);
+
+        const bRef = useRef<HTMLInputElement>(null);
 
         const internalHandleSubmit = (event: FormEvent): void => {
             event.preventDefault();
@@ -55,6 +57,11 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                         placeholder: "package@1.2.3 or package@^1",
                         borderEndRadius: { lg: 0 },
                     }}
+                    versionSelected={() => {
+                        setTimeout(() => {
+                            bRef.current?.focus();
+                        });
+                    }}
                 ></SpecInput>
                 <CenterInputAddon
                     size={SIZE}
@@ -65,6 +72,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                 <SpecInput
                     size={SIZE}
                     id="b"
+                    inputRef={bRef}
                     inputProps={{
                         placeholder: "^3.0.1 or package-b@3.X",
                         borderStartRadius: { lg: 0 },
