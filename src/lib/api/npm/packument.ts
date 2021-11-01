@@ -82,7 +82,7 @@ export default async function packument(spec: string, opts?: RequestInit) {
     // const escapedName = npa(spec).escapedName;
     const name = packageName(spec);
     // https://github.com/npm/npm-package-arg/blob/c7571f4db7c91eac21714cbd63735fe9079fefd8/npa.js#L123-L124
-    const escapedName = name.replaceAll("/", "%2f");
+    const escapedName = name.replace(/\//gi, "%2f");
     const packumentUrl = registry.replace(/\/*$/, "/") + escapedName;
 
     const p = await fetch(packumentUrl, {
