@@ -1,5 +1,11 @@
-import React, { FunctionComponent, useContext } from "react";
+import React, {
+    FunctionComponent,
+    MutableRefObject,
+    RefObject,
+    useContext,
+} from "react";
 import Combobox, { ComboboxProps } from "^/components/Combobox";
+import { ComboboxRef } from "^/components/Combobox/Combobox";
 import {
     AutocompleteSuggestion,
     AutocompleteSuggestionTypes,
@@ -10,14 +16,14 @@ import Suggestion from "./Suggestion";
 
 export interface SpecInputProps
     extends Omit<ComboboxProps<AutocompleteSuggestion>, "suggestionFinder"> {
-    versionSelected?: () => void;
-    inputRef?: React.RefObject<HTMLInputElement>;
+    versionSelected?: (item: AutocompleteSuggestion) => void;
+    comboboxRef?: RefObject<ComboboxRef>;
 }
 
 const SpecInput: FunctionComponent<SpecInputProps> = ({
     id,
     versionSelected,
-    inputRef,
+    comboboxRef,
     ...props
 }) => {
     const fallback = useContext(FallbackSuggestionsContext);
@@ -36,11 +42,11 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
                 // If it is package suggestion ("react" ➡ "react@") is selected, keep the input open to suggest version
                 selectedItem?.type === AutocompleteSuggestionTypes.Package
             }
-            onItemSelected={({ type }) => {
-                type === AutocompleteSuggestionTypes.Version &&
-                    versionSelected?.();
+            onItemSelected={(item) => {
+                item.type === AutocompleteSuggestionTypes.Version &&
+                    versionSelected?.(item);
             }}
-            inputRef={inputRef}
+            comboboxRef={comboboxRef}
             {...props}
         />
     );

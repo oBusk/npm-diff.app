@@ -1,5 +1,6 @@
 import { Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
-import { FormEvent, useEffect, useRef } from "react";
+import { FormEvent, useRef } from "react";
+import { ComboboxRef } from "^/components/Combobox/Combobox";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
 
@@ -26,7 +27,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         //     aRef.current?.focus();
         // }, []);
 
-        const bRef = useRef<HTMLInputElement>(null);
+        const bRef = useRef<ComboboxRef | null>(null);
 
         const internalHandleSubmit = (event: FormEvent): void => {
             event.preventDefault();
@@ -57,7 +58,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                         placeholder: "package@1.2.3 or package@^1",
                         borderEndRadius: { lg: 0 },
                     }}
-                    versionSelected={() => {
+                    versionSelected={(item) => {
+                        bRef.current?.setValue(`${item.packageName}@`);
                         setTimeout(() => {
                             bRef.current?.focus();
                         });
@@ -72,7 +74,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                 <SpecInput
                     size={SIZE}
                     id="b"
-                    inputRef={bRef}
+                    comboboxRef={bRef}
                     inputProps={{
                         placeholder: "^3.0.1 or package-b@3.X",
                         borderStartRadius: { lg: 0 },

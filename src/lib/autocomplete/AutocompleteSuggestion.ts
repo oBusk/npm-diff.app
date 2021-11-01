@@ -12,6 +12,7 @@ interface AutocompleteSuggestion {
     titleWithHighlight?: string;
     /** A small description to show below the title in the dropdown */
     body?: string;
+    packageName?: string;
 }
 
 export default AutocompleteSuggestion;

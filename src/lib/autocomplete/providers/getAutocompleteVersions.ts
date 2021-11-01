@@ -27,6 +27,7 @@ async function getAutocompleteVersions(
         titleWithHighlight: `<em>${name}@${rawSpec}</em>${version.slice(
             rawSpec.length,
         )}`,
+        packageName: name,
     }));
 }
 

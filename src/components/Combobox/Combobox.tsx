@@ -4,7 +4,7 @@ import {
     UseComboboxState,
     UseComboboxStateChangeOptions,
 } from "downshift";
-import { ReactNode } from "react";
+import { MutableRefObject, ReactNode, RefObject, useRef } from "react";
 import useAsyncState from "^/lib/hooks/useAsyncState";
 import useThrottle from "^/lib/hooks/useThrottle";
 import ComboboxBox, { ComboboxBoxProps } from "./ComboboxBox";
@@ -15,10 +15,14 @@ import ComboboxSuggestion from "./ComboboxSuggestion";
 import ComboboxSuggestionList from "./ComboboxSuggestionList";
 import ComboboxWrapper, { ComboboxWrapperProps } from "./ComboboxWrapper";
 
+export interface ComboboxRef {
+    setValue: (input: string) => void;
+    focus: () => void;
+}
+
 export interface ComboboxProps<I> extends ComboboxWrapperProps {
     id: string;
-    /** To get a `ref` to the `input`. Most likely to `focus()` it. */
-    inputRef?: React.Ref<HTMLInputElement>;
+    comboboxRef?: RefObject<ComboboxRef>;
     /** @default "Find a package" */
     label?: string | null;
     suggestionFinder: (input: string | undefined) => I[] | Promise<I[]>;
@@ -62,7 +66,7 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
 
 const Combobox = <T,>({
     id,
-    inputRef,
+    comboboxRef,
     label = "Find a package",
     suggestionFinder,
     initialSuggestions = [],
@@ -84,6 +88,7 @@ const Combobox = <T,>({
     ...props
 }: ComboboxProps<T>) => {
     const [items, setItems] = useAsyncState(initialSuggestions);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const updateSuggestions = useThrottle(
         (inputValue = "") => setItems(suggestionFinder(inputValue)),
@@ -119,6 +124,7 @@ const Combobox = <T,>({
         highlightedIndex,
         isOpen,
         openMenu,
+        setInputValue,
     } = useCombobox({
         id,
         items,
@@ -131,6 +137,13 @@ const Combobox = <T,>({
                   selectedItem != null && onItemSelected(selectedItem)
             : undefined,
     });
+
+    if (comboboxRef) {
+        (comboboxRef as MutableRefObject<ComboboxRef>).current = {
+            setValue: setInputValue,
+            focus: () => inputRef.current?.focus(),
+        };
+    }
 
     return (
         <ComboboxWrapper {...props}>
