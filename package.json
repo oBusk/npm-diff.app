@@ -13,11 +13,11 @@
     "license": "ISC",
     "volta": {
         "node": "14.18.1",
-        "npm": "7.24.2"
+        "npm": "8.1.2"
     },
     "engines": {
         "node": "14.x",
-        "npm": "7.x"
+        "npm": "8.x"
     },
     "simple-git-hooks": {
         "pre-commit": "npm run lint-staged"
