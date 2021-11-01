@@ -17,12 +17,9 @@ export function setDefaultPageCaching(res: ServerResponse): void {
 
 export const responseCacheSwr = {
     "Cache-Control": [
-        "public",
         // Cache up to 5 minutes client side
-        // `max-age=${5 * minute}`,
-        "max-age=0",
-        `s-maxage=${31 * day}`,
-        // `stale-while-revalidate`,
+        `max-age=${5 * minute}`,
+        `stale-while-revalidate`,
     ].join(", "),
 } as const;
 
