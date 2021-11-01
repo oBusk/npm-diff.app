@@ -1,5 +1,6 @@
-import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
+import { NextFetchEvent, NextRequest } from "next/server";
 import getAllVersions, { Version } from "^/lib/api/versions";
+import { responseCacheSwr } from "^/lib/utils/headers";
 
 type Middleware = (
     req: NextRequest,
@@ -7,13 +8,9 @@ type Middleware = (
 ) => Promise<Response | undefined> | Response | undefined;
 
 const router: Middleware = (request) => {
-    console.log("Router");
-    console.log(JSON.stringify(request, null, 2));
-    switch (request.nextUrl.pathname) {
+    switch (request?.nextUrl?.pathname) {
         case "/api/versions":
             return versions(request);
-        default:
-            return NextResponse.next();
     }
 };
 
@@ -30,6 +27,9 @@ const versions: Middleware = async (request) => {
 
     return new Response(JSON.stringify(versions), {
         status: 200,
+        headers: {
+            ...responseCacheSwr,
+        },
     });
 };
 
