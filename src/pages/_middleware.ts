@@ -1,4 +1,4 @@
-import { NextFetchEvent, NextRequest } from "next/server";
+import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import getAllVersions, { Version } from "^/lib/api/versions";
 
 type Middleware = (
@@ -10,6 +10,8 @@ const router: Middleware = (request) => {
     switch (request.nextUrl.pathname) {
         case "/api/versions":
             return versions(request);
+        default:
+            return NextResponse.next();
     }
 };
 
