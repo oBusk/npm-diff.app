@@ -28,6 +28,7 @@ const versions: Middleware = async (request) => {
     return new Response(JSON.stringify(versions), {
         status: 200,
         headers: {
+            "Content-Type": "application/json",
             ...responseCacheSwr,
         },
     });
