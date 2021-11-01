@@ -1,4 +1,4 @@
-import { packument } from "pacote";
+import packument from "^/lib/api/npm/packument";
 import Version from "./Version";
 
 async function getAllVersions(spec: string): Promise<Version[]> {

@@ -16,17 +16,12 @@ export function setDefaultPageCaching(res: ServerResponse): void {
     res.setHeader("cache-control", defaultPageCaching);
 }
 
-export function setSwrCaching(res: ServerResponse): void {
-    res.setHeader(
-        "cache-control",
-        [
-            "public",
-            // Cache up to 5 minutes client side
-            `max-age=${5 * minute}`,
-            `stale-while-revalidate`,
-        ].join(", "),
-    );
-}
+export const swrCacheControl = [
+    "public",
+    // Cache up to 5 minutes client side
+    `max-age=${5 * minute}`,
+    `stale-while-revalidate`,
+].join(", ");
 
 export const headersCache30min = {
     "cache-control": `max-age=${30 * minute}`,
