@@ -1,7 +1,5 @@
-import { FormLabel, FormLabelProps, forwardRef } from "@chakra-ui/react";
+import { chakra, FormLabel } from "@chakra-ui/react";
 
-const ComboboxLabel = forwardRef<FormLabelProps, "label">((props, ref) => (
-    <FormLabel ref={ref} {...props} />
-));
+const ComboboxLabel = chakra(FormLabel);
 
 export default ComboboxLabel;

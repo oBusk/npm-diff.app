@@ -1,9 +1,11 @@
-import { forwardRef, InputGroup, InputGroupProps } from "@chakra-ui/react";
+import { chakra, InputGroup, InputGroupProps } from "@chakra-ui/react";
 
 export type ComboboxBoxProps = InputGroupProps;
 
-const ComboboxBox = forwardRef<InputGroupProps, "div">((props, ref) => (
-    <InputGroup size="md" ref={ref} {...props} />
-));
+const ComboboxBox = chakra(InputGroup, {
+    baseStyle: {
+        size: "md",
+    },
+});
 
 export default ComboboxBox;
