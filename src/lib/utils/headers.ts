@@ -21,8 +21,8 @@ export const responseCacheSwr = {
         // Cache up to 5 minutes client side
         // `max-age=${5 * minute}`,
         "max-age=0",
-        `s-maxage=${5 * minute}`,
-        `stale-while-revalidate`,
+        `s-maxage=${31 * day}`,
+        // `stale-while-revalidate`,
     ].join(", "),
 } as const;
 
