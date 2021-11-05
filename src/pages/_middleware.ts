@@ -1,11 +1,6 @@
-import { NextFetchEvent, NextRequest } from "next/server";
 import getAllVersions, { Version } from "^/lib/api/versions";
+import { Middleware } from "^/lib/middleware/Middleware";
 import { responseCacheSwr } from "^/lib/utils/headers";
-
-type Middleware = (
-    req: NextRequest,
-    res?: NextFetchEvent,
-) => Promise<Response | undefined> | Response | undefined;
 
 let requestNumber = 0;
 
