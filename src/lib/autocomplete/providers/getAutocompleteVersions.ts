@@ -1,6 +1,6 @@
 import npa from "npm-package-arg";
+import { VersionsEndpointResponse } from "^/lib/middleware";
 import filterUntil from "^/lib/utils/filterUntil";
-import type { ApiVersionsResponse } from "^/pages/_middleware";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
@@ -11,7 +11,7 @@ async function getAutocompleteVersions(
     const { name, rawSpec } = npa(query);
 
     const response = await fetch(`/api/versions?spec=${name}`);
-    const versions: ApiVersionsResponse = await response.json();
+    const versions: VersionsEndpointResponse = await response.json();
 
     return filterUntil(
         // We want to show the most recent versions rather than the oldest

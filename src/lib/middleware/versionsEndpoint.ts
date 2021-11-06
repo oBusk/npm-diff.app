@@ -1,17 +1,10 @@
 import getAllVersions, { Version } from "^/lib/api/versions";
-import { Middleware } from "^/lib/middleware/Middleware";
 import { responseCacheSwr } from "^/lib/utils/headers";
+import { Middleware } from "./Middleware";
 
-const router: Middleware = (request) => {
-    switch (request?.nextUrl?.pathname) {
-        case "/api/versions":
-            return versions(request);
-    }
-};
+export type VersionsEndpointResponse = Array<Version>;
 
-export type ApiVersionsResponse = Array<Version>;
-
-const versions: Middleware = async (request) => {
+export const versionsEndpoint: Middleware = async (request) => {
     const start = Date.now();
     const spec = request.nextUrl.searchParams.get("spec");
 
@@ -30,5 +23,3 @@ const versions: Middleware = async (request) => {
         },
     });
 };
-
-export default router;
