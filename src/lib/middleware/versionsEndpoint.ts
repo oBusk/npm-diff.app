@@ -1,8 +1,8 @@
-import getAllVersions, { Version } from "^/lib/api/versions";
+import packument from "^/lib/api/npm/packument";
 import { responseCacheSwr } from "^/lib/utils/headers";
 import { Middleware } from "./Middleware";
 
-export type VersionsEndpointResponse = Array<Version>;
+export type VersionsEndpointResponse = string[];
 
 export const versionsEndpoint: Middleware = async (request) => {
     const start = Date.now();
@@ -14,7 +14,13 @@ export const versionsEndpoint: Middleware = async (request) => {
 
     const name = Array.isArray(spec) ? spec[0] : spec;
 
-    return new Response(JSON.stringify(await getAllVersions(name)), {
+    const result = await packument(spec);
+
+    const versions = Object.values(result.versions).map(
+        ({ version }) => version,
+    );
+
+    return new Response(JSON.stringify(versions), {
         status: 200,
         headers: {
             "Content-Type": "application/json",

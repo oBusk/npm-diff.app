@@ -2,7 +2,7 @@ import { Middleware, versionsEndpoint } from "^/lib/middleware";
 
 const middleware: Middleware = (request) => {
     switch (request?.nextUrl?.pathname) {
-        case "/versions":
+        case "/api/versions":
             return versionsEndpoint(request);
     }
 };

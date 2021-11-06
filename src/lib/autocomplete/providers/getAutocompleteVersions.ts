@@ -1,34 +1,33 @@
 import npa from "npm-package-arg";
 import { VersionsEndpointResponse } from "^/lib/middleware";
-import filterUntil from "^/lib/utils/filterUntil";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
+import { matchVersions } from "./versions/matchVersions";
 
 async function getAutocompleteVersions(
-    query: string,
+    input: string,
 ): Promise<AutocompleteSuggestion[]> {
-    const { name, rawSpec } = npa(query);
+    const { name, rawSpec } = npa(input);
+
+    if (!name) {
+        throw new Error("No package name provided");
+    }
 
     const response = await fetch(`/api/versions?spec=${name}`);
     const versions: VersionsEndpointResponse = await response.json();
 
-    return filterUntil(
-        // We want to show the most recent versions rather than the oldest
-        versions.reverse(),
-        // Very simplistic matcher
-        ({ version }) => version.startsWith(rawSpec),
-        // Stops searching after finding X results
-        AUTOCOMPLETE_SIZE,
-    ).map(({ name, version }) => ({
-        type: AutocompleteSuggestionTypes.Version,
-        value: `${name}@${version}`,
-        title: `${name}@${version}`,
-        titleWithHighlight: `<em>${name}@${rawSpec}</em>${version.slice(
-            rawSpec.length,
-        )}`,
-        packageName: name,
-    }));
+    return matchVersions({ rawSpec, versions, size: AUTOCOMPLETE_SIZE }).map(
+        (version) => ({
+            type: AutocompleteSuggestionTypes.Version,
+            value: `${name}@${version}`,
+            title: `${name}@${version}`,
+            titleWithHighlight: `<em>${name}@${rawSpec}</em>${version.slice(
+                rawSpec.length,
+            )}`,
+            packageName: name,
+        }),
+    );
 }
 
 export default getAutocompleteVersions;
