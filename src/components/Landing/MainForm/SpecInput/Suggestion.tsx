@@ -4,36 +4,50 @@ import {
     HeadingProps,
     HStack,
     Tag,
+    TagProps,
     Text,
     useColorModeValue,
 } from "@chakra-ui/react";
-import React, { FunctionComponent } from "react";
+import { FunctionComponent, memo } from "react";
 import Span from "^/components/theme/Span";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 
-// const Title = chakra("h3", {
-//     baseStyle: ({ theme }) => ({
-//         fontSize: "1.2rem",
-//         fontFamily: theme.fonts.mono,
-//     }),
-// });
+const Title: FunctionComponent<
+    HeadingProps & { name?: string; version?: string }
+> = ({ name, version, ...props }) => {
+    const color = useColorModeValue("gray.800", "whiteAlpha.900");
+    const fadedColor = useColorModeValue("gray.400", "whiteAlpha.400");
 
-const Title: FunctionComponent<{ faded?: boolean } & HeadingProps> = ({
-    faded,
-    ...props
-}) => {
     return (
         <Heading
             as="h3"
             size="sm"
             fontWeight="normal"
             fontFamily="mono"
+            color={version ? fadedColor : color}
             {...props}
-        />
+        >
+            {version ? (
+                <>
+                    {name}@<Span color={color}>{emphasized(version)}</Span>
+                </>
+            ) : (
+                emphasized(name)
+            )}
+        </Heading>
     );
 };
 
-const Version = Span;
+const TitleMemo = memo(Title);
+
+const VersionTag: FunctionComponent<TagProps & { value: string }> = ({
+    value,
+    ...props
+}) => {
+    return <Tag variant="outline">{emphasized(value)}</Tag>;
+};
+
+const VersionTagMemo = memo(VersionTag);
 
 const Em = chakra("em", {
     baseStyle: {
@@ -64,26 +78,14 @@ export interface SuggestionProps {
 const Suggestion: FunctionComponent<SuggestionProps> = ({
     item: { name, body, tags = [], version } = {},
 }) => {
-    const color = useColorModeValue("gray.800", "whiteAlpha.900");
-    const fadedColor = useColorModeValue("gray.400", "whiteAlpha.400");
-
     return (
         <>
-            {version ? (
-                <Title color={fadedColor}>
-                    {name}@
-                    <Version color={color}>{emphasized(version)}</Version>
-                </Title>
-            ) : (
-                <Title color={color}>{emphasized(name)}</Title>
-            )}
+            <TitleMemo name={name} version={version} />
 
-            {body && <Text>{body}</Text>}
+            {body && <Text fontSize="xs">{body}</Text>}
             <HStack marginTop="4px">
                 {tags.map((tag) => (
-                    <Tag key={tag} variant="outline">
-                        {emphasized(tag)}
-                    </Tag>
+                    <VersionTagMemo key={tag} value={tag} />
                 ))}
             </HStack>
         </>
