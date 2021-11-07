@@ -5,15 +5,12 @@ interface AutocompleteSuggestion {
     /** The value that the item represents, what will be in the input if selected */
     value: string;
     /** The title to show for the item. e.g. Packagename or Packagename@1.2.3 */
-    title: string;
-    /** The title to show, with `em` tags to show what part of the title that matched.
-     * e.g. query: "rea" -> title: "react" -> titleWithHighlight: "<em>rea</em>ct"
-     */
-    titleWithHighlight?: string;
+    name: string;
+    /** The version of the package, if available */
+    version?: string;
     /** A small description to show below the title in the dropdown */
     body?: string;
     tags?: string[];
-    packageName?: string;
 }
 
 export default AutocompleteSuggestion;

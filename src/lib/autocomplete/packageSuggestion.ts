@@ -6,22 +6,12 @@ import AutocompleteSuggestionTypes from "./AutocompleteSuggestionTypes";
 const packageSuggestion = ({
     package: { name, description },
     highlight,
-}: Result & Suggestion): AutocompleteSuggestion =>
-    highlight
-        ? {
-              type: AutocompleteSuggestionTypes.Package,
-              // @ suffix to start selecting version right away
-              value: `${name}@`,
-              title: name,
-              body: description,
-              titleWithHighlight: highlight,
-          }
-        : {
-              type: AutocompleteSuggestionTypes.Package,
-              // @ suffix to start selecting version right away
-              value: `${name}@`,
-              title: name,
-              body: description,
-          };
+}: Result & Suggestion): AutocompleteSuggestion => ({
+    type: AutocompleteSuggestionTypes.Package,
+    // @ suffix to start selecting version right away
+    value: `${name}@`,
+    name: highlight || name,
+    body: description,
+});
 
 export default packageSuggestion;

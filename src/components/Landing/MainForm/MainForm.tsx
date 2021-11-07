@@ -59,7 +59,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                         borderEndRadius: { lg: 0 },
                     }}
                     versionSelected={(item) => {
-                        bRef.current?.setValue(`${item.packageName}@`);
+                        bRef.current?.setValue(`${item.name}@`);
                         setTimeout(() => {
                             bRef.current?.focus();
                         });

@@ -1,32 +1,59 @@
-import { chakra, Code, HStack, Tag, Text } from "@chakra-ui/react";
-import { FunctionComponent } from "react";
+import {
+    chakra,
+    Heading,
+    HeadingProps,
+    HStack,
+    Tag,
+    Text,
+    useColorModeValue,
+} from "@chakra-ui/react";
+import React, { FunctionComponent } from "react";
+import Span from "^/components/theme/Span";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
+
+// const Title = chakra("h3", {
+//     baseStyle: ({ theme }) => ({
+//         fontSize: "1.2rem",
+//         fontFamily: theme.fonts.mono,
+//     }),
+// });
+
+const Title: FunctionComponent<{ faded?: boolean } & HeadingProps> = ({
+    faded,
+    ...props
+}) => {
+    return (
+        <Heading
+            as="h3"
+            size="sm"
+            fontWeight="normal"
+            fontFamily="mono"
+            {...props}
+        />
+    );
+};
+
+const Version = Span;
 
 const Em = chakra("em", {
     baseStyle: {
         fontStyle: "normal",
-        fontWeight: "bold",
         textDecoration: "underline",
     },
 });
 
-const Emphasized: FunctionComponent<{ text?: string }> = ({
-    text = "NO_TEXT",
-}) => {
-    const [before, rest] = text.split("<em>");
-    if (rest == null) {
-        // If there is no emphasis, just return the text
-        return <>{text}</>;
-    }
-    const [em, after] = rest.split("</em>");
-
-    return (
-        <>
-            {before}
-            <Em>{em}</Em>
-            {after}
-        </>
-    );
+const emphasized = (text = "NO_TEXT") => {
+    return Array.from(
+        text.matchAll(
+            /(?<before>[^<]*)(?:<em>(?<em>[^<]*)<\/em>(?<after>[^<]*))?/g,
+        ),
+    )
+        .map(({ groups: { before, em, after } = {} }, index) => [
+            before,
+            em && <Em key={index}>{em}</Em>,
+            after,
+        ])
+        .flat();
 };
 
 export interface SuggestionProps {
@@ -35,24 +62,32 @@ export interface SuggestionProps {
 }
 
 const Suggestion: FunctionComponent<SuggestionProps> = ({
-    item: { title, body, titleWithHighlight, tags } = {},
-}) => (
-    <>
-        <Code>
-            <Emphasized text={titleWithHighlight ?? title} />
-        </Code>
+    item: { name, body, tags = [], version } = {},
+}) => {
+    const color = useColorModeValue("gray.800", "whiteAlpha.900");
+    const fadedColor = useColorModeValue("gray.400", "whiteAlpha.400");
 
-        {body && <Text>{body}</Text>}
-        {tags && (
-            <HStack marginTop="5px">
+    return (
+        <>
+            {version ? (
+                <Title color={fadedColor}>
+                    {name}@
+                    <Version color={color}>{emphasized(version)}</Version>
+                </Title>
+            ) : (
+                <Title color={color}>{emphasized(name)}</Title>
+            )}
+
+            {body && <Text>{body}</Text>}
+            <HStack marginTop="4px">
                 {tags.map((tag) => (
                     <Tag key={tag} variant="outline">
-                        <Emphasized text={tag} />
+                        {emphasized(tag)}
                     </Tag>
                 ))}
             </HStack>
-        )}
-    </>
-);
+        </>
+    );
+};
 
 export default Suggestion;

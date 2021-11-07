@@ -27,15 +27,12 @@ async function getAutocompleteVersions(
         versions,
         size: AUTOCOMPLETE_SIZE,
     }).map(({ version, tags }) => {
-        const value = `${name}@${version}`;
-
         return {
             type: AutocompleteSuggestionTypes.Version,
-            value,
-            title: value,
-            titleWithHighlight: value,
+            value: `${name}@${version}`,
+            name,
+            version,
             tags,
-            packageName: name,
         };
     });
 }
