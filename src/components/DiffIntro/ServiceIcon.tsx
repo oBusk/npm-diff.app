@@ -1,10 +1,9 @@
-import { chakra, Icon } from "@chakra-ui/react";
+import { forwardRef, Icon, IconProps } from "@chakra-ui/react";
 
-const ServiceIcon = chakra(Icon, {
-    baseStyle: {
-        width: "14px",
-        height: "14px",
-    },
+export interface ServiceIconProps extends IconProps {}
+
+const ServiceIcon = forwardRef<ServiceIconProps, "div">((props, ref) => {
+    return <Icon width="14px" height="14px" ref={ref} {...props} />;
 });
 
 export default ServiceIcon;
