@@ -39,13 +39,10 @@ export function matchVersions({
             });
         } else if (tags?.length) {
             // Matched tag
-            const matchIndex = tags.findIndex((tag) => tag.includes(rawSpec));
-            if (matchIndex !== -1) {
+            if (tags.some((tag) => tag.includes(rawSpec))) {
                 matches.push({
                     version,
-                    tags: tags.map((tag, index) =>
-                        index === matchIndex ? emphasize(tag, rawSpec) : tag,
-                    ),
+                    tags: tags.map((tag) => emphasize(tag, rawSpec)),
                 });
             }
         }
