@@ -1,5 +1,9 @@
 import npa from "npm-package-arg";
-import { VersionsEndpointResponse } from "^/lib/middleware";
+import {
+    SpecsEndpointResponse,
+    VERSIONS_PARAMETER_SPEC,
+    VERSIONS_PATH,
+} from "^/lib/middleware";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
@@ -14,20 +18,26 @@ async function getAutocompleteVersions(
         throw new Error("No package name provided");
     }
 
-    const response = await fetch(`/api/versions?spec=${name}`);
-    const versions: VersionsEndpointResponse = await response.json();
+    const url = `${VERSIONS_PATH}?${VERSIONS_PARAMETER_SPEC}=${name}` as const;
+    const response = await fetch(url);
+    const versions: SpecsEndpointResponse = await response.json();
 
-    return matchVersions({ rawSpec, versions, size: AUTOCOMPLETE_SIZE }).map(
-        (version) => ({
+    return matchVersions({
+        rawSpec,
+        versions,
+        size: AUTOCOMPLETE_SIZE,
+    }).map(({ version, tags }) => {
+        const value = `${name}@${version}`;
+
+        return {
             type: AutocompleteSuggestionTypes.Version,
-            value: `${name}@${version}`,
-            title: `${name}@${version}`,
-            titleWithHighlight: `<em>${name}@${rawSpec}</em>${version.slice(
-                rawSpec.length,
-            )}`,
+            value,
+            title: value,
+            titleWithHighlight: value,
+            tags,
             packageName: name,
-        }),
-    );
+        };
+    });
 }
 
 export default getAutocompleteVersions;

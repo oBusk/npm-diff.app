@@ -1,4 +1,4 @@
-import { chakra, Code, Text } from "@chakra-ui/react";
+import { chakra, Code, HStack, Tag, Text } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 
@@ -14,13 +14,22 @@ const SuggestionTitle = chakra(Code, {
     },
 });
 
+const SuggestionTag = chakra(Tag, {
+    baseStyle: {
+        em: {
+            fontStyle: "normal",
+            fontWeight: "bold",
+        },
+    },
+});
+
 export interface SuggestionProps {
     item?: AutocompleteSuggestion;
     index?: number;
 }
 
 const Suggestion: FunctionComponent<SuggestionProps> = ({
-    item: { title, body, titleWithHighlight } = {},
+    item: { title, body, titleWithHighlight, tags } = {},
 }) => (
     <>
         {titleWithHighlight ? (
@@ -34,6 +43,19 @@ const Suggestion: FunctionComponent<SuggestionProps> = ({
         )}
 
         {body && <Text>{body}</Text>}
+        {tags && (
+            <HStack marginTop="5px">
+                {tags.map((tag) => (
+                    <SuggestionTag
+                        key={tag}
+                        variant="outline"
+                        dangerouslySetInnerHTML={{
+                            __html: tag,
+                        }}
+                    />
+                ))}
+            </HStack>
+        )}
     </>
 );
 

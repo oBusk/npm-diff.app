@@ -1,5 +1,5 @@
 export default function filterUntil<T>(
-    items: T[],
+    items: ReadonlyArray<T>,
     predicate: (item: T, index: number) => boolean,
     maxNumHits: number,
 ): T[] {
