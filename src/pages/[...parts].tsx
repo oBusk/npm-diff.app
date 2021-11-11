@@ -112,7 +112,10 @@ const DiffPage: NextPage<Props> = ({
         .reduce((a, b) => a + b);
 
     return (
-        <Layout title={`Comparing ${a}...${b}`}>
+        <Layout
+            title={`Comparing ${a}...${b}`}
+            description={`A diff between the npm packages "${a}" and "${b}"`}
+        >
             <DiffIntro
                 a={a}
                 b={b}

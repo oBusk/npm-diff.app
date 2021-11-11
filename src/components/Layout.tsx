@@ -6,6 +6,7 @@ import Header from "./Header";
 
 export interface LayoutProps extends StackProps {
     title?: string;
+    description?: string;
 }
 
 const BACKGROUND_COLOR = undefined;
@@ -14,6 +15,7 @@ const PADDING = "1em";
 const Layout: FunctionComponent<LayoutProps> = ({
     children,
     title = "",
+    description,
     ...props
 }) => {
     // https://github.com/chakra-ui/chakra-ui/blob/%40chakra-ui/react%401.6.5/packages/theme/src/styles.ts#L8
@@ -23,6 +25,14 @@ const Layout: FunctionComponent<LayoutProps> = ({
         <>
             <Head>
                 <title>{title ? `${title} • ` : ""}npm-diff.app 📦🔃</title>
+                <meta
+                    name="description"
+                    content={
+                        description
+                            ? description
+                            : "Inspect changes between npm packages in a webapp"
+                    }
+                />
             </Head>
             <Stack
                 minHeight="100vh"
