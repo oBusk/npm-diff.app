@@ -70,6 +70,12 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
             packagephobiaResults = null;
         }
 
+        if (bundlephobiaResults === TIMED_OUT) {
+            // If bundlephobia timed out, we don't want to cache forever, instead use SWR cachin
+            setSwrCaching(res);
+            bundlephobiaResults = null;
+        }
+
         console.log({
             specs: immutableSpecs,
             timings: {
