@@ -1,3 +1,4 @@
+import TIMED_OUT, { resultOrTimedOut } from "../TimedOut";
 import PackagephobiaResponse from "./PackagephobiaResponse";
 import PackagephobiaResults from "./PackagephobiaResult";
 
@@ -9,11 +10,18 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse> {
     return json;
 }
 
+async function getPackages(
+    aSpec: string,
+    bSpec: string,
+): Promise<PackagephobiaResults | null> {
+    const [a, b] = await Promise.all([getPackage(aSpec), getPackage(bSpec)]);
+
+    return (a && b && { a, b }) || null;
+}
+
 export default async function packagephobia([aSpec, bSpec]: [
     string,
     string,
-]): Promise<PackagephobiaResults> {
-    const [a, b] = await Promise.all([getPackage(aSpec), getPackage(bSpec)]);
-
-    return { a, b };
+]): Promise<PackagephobiaResults | null | TIMED_OUT> {
+    return resultOrTimedOut(getPackages(aSpec, bSpec));
 }

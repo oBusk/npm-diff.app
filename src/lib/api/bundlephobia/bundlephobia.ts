@@ -1,3 +1,4 @@
+import TIMED_OUT, { resultOrTimedOut } from "../TimedOut";
 import BundlephobiaResponse from "./BundlephobiaResponse";
 import BundlephobiaResults from "./BundlephobiaResults";
 
@@ -20,22 +21,30 @@ async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
     }
 }
 
-async function bundlephobia([aSpec, bSpec]: [
-    string,
-    string,
-]): Promise<BundlephobiaResults | null> {
+async function getPackages(
+    aSpec: string,
+    bSpec: string,
+): Promise<BundlephobiaResults | null> {
     try {
         const [a, b] = await Promise.all([
             getPackage(aSpec),
             getPackage(bSpec),
         ]);
 
-        return a && b && { a, b };
+        if (a && b) {
+            return { a, b };
+        }
     } catch (e) {
         console.error(e);
     }
 
     return null;
+}
+
+async function bundlephobia([aSpec, bSpec]: [string, string]): Promise<
+    BundlephobiaResults | null | TIMED_OUT
+> {
+    return resultOrTimedOut(getPackages(aSpec, bSpec));
 }
 
 export default bundlephobia;
