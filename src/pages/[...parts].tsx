@@ -7,13 +7,14 @@ import DiffIntro from "^/components/DiffIntro";
 import Layout from "^/components/Layout";
 import bundlephobia, { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import packagephobia, { PackagephobiaResults } from "^/lib/api/packagephobia";
+import TIMED_OUT from "^/lib/api/TimedOut";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
 import DiffOptions from "^/lib/DiffOptions";
 import measuredPromise from "^/lib/measuredPromise";
 import { parseQuery, QueryParams, rawQuery } from "^/lib/query";
 import countChanges from "^/lib/utils/countChanges";
-import { setDefaultPageCaching } from "^/lib/utils/headers";
+import { setDefaultPageCaching, setSwrCaching } from "^/lib/utils/headers";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
 
@@ -53,7 +54,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
             ...optionsQuery,
         });
 
-        const [
+        let [
             { result: diff, time: diffTime },
             { result: packagephobiaResults, time: packagephobiaTime },
             { result: bundlephobiaResults, time: bundlephobiaTime },
@@ -63,6 +64,12 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
             measuredPromise(bundlephobia(immutableSpecs)),
         ]);
 
+        if (packagephobiaResults === TIMED_OUT) {
+            // If packagephobia timed out, we don't want to cache forever, instead use SWR caching
+            setSwrCaching(res);
+            packagephobiaResults = null;
+        }
+
         console.log({
             specs: immutableSpecs,
             timings: {
@@ -70,6 +77,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
                 packagephobia: packagephobiaTime,
                 bundlephobia: bundlephobiaTime,
             },
+            caching: res.getHeader("Cache-Control"),
         });
 
         return {

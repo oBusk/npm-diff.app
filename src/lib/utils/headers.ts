@@ -21,8 +21,8 @@ export function setSwrCaching(res: ServerResponse): void {
         "cache-control",
         [
             "public",
-            // Cache up to 5 minutes client side
-            `max-age=${5 * minute}`,
+            // Don't cache clientside
+            `max-age=0`,
             `stale-while-revalidate`,
         ].join(", "),
     );
