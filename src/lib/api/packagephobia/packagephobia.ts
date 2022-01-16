@@ -1,6 +1,4 @@
-import DEFAULT_TIMEOUT from "^/lib/default-timeout";
-import wait from "^/lib/wait";
-import TIMED_OUT from "../TimedOut";
+import TIMED_OUT, { resultOrTimedOut } from "../TimedOut";
 import PackagephobiaResponse from "./PackagephobiaResponse";
 import PackagephobiaResults from "./PackagephobiaResult";
 
@@ -21,13 +19,9 @@ async function getPackages(
     return (a && b && { a, b }) || null;
 }
 
-function timedOut() {
-    return wait(DEFAULT_TIMEOUT).then(() => TIMED_OUT);
-}
-
 export default async function packagephobia([aSpec, bSpec]: [
     string,
     string,
 ]): Promise<PackagephobiaResults | null | TIMED_OUT> {
-    return Promise.race([timedOut(), getPackages(aSpec, bSpec)]);
+    return resultOrTimedOut(getPackages(aSpec, bSpec));
 }
