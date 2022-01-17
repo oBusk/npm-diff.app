@@ -27,8 +27,13 @@ jobs:
                   key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
                       ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}
+            - name: Cache node_modules
+              uses: actions/cache@v2
+              with:
+                  path: "**/node_modules"
+                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
             - name: Install
-              run: npm ci
+              run: npm install
             - name: Check Linting
               run: npm run lint
 
@@ -56,8 +61,13 @@ jobs:
                   key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
                       ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}
+            - name: Cache node_modules
+              uses: actions/cache@v2
+              with:
+                  path: "**/node_modules"
+                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
             - name: Install
-              run: npm ci
+              run: npm install
             - name: Run tests
               run: npm run test-ci
 
@@ -92,8 +102,13 @@ jobs:
                   key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.[jt]sx?') }}
                   restore-keys: |
                       ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
+            - name: Cache node_modules
+              uses: actions/cache@v2
+              with:
+                  path: "**/node_modules"
+                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
             - name: Install
-              run: npm ci
+              run: npm install
             - name: Build
               run: npm run build
             - name: Check for uncommitted changes
