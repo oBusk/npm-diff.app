@@ -27,8 +27,6 @@ jobs:
                   key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
                       ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}
-                      ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}
-                      ${{ runner.os }}
             - name: Install
               run: npm ci
             - name: Check Linting
@@ -87,8 +85,6 @@ jobs:
                   key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
                       ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}
-                      ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}
-                      ${{ runner.os }}
             - name: Cache next.js build cache
               uses: actions/cache@v2
               with:
