@@ -1,4 +1,18 @@
-import libnpmdiff, { Error404, ErrorETARGET, Options } from "libnpmdiff";
+import libnpmdiff, { Options } from "libnpmdiff";
+
+interface ErrorETARGET extends Error {
+    code: "ETARGET";
+    type: "version";
+    wanted: string;
+    versions: string[];
+    distTags: Record<string, string>;
+    defaultTag: string;
+}
+
+interface Error404 extends Error {
+    code: "E404";
+    pkgid: string;
+}
 
 export interface DiffError {
     code: number;

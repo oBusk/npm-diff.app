@@ -1,5 +1,4 @@
-import { Center, Code, useColorModeValue } from "@chakra-ui/react";
-import libnpmdiff, { Error404, ErrorETARGET } from "libnpmdiff";
+import { Center } from "@chakra-ui/react";
 import { GetServerSideProps, NextPage } from "next";
 import { ParsedUrlQuery } from "querystring";
 import { parseDiff } from "react-diff-view";
@@ -7,7 +6,6 @@ import DiffFiles from "^/components/Diff/DiffFiles";
 import DiffIntro from "^/components/DiffIntro";
 import ErrorBox from "^/components/ErrorBox";
 import Layout from "^/components/Layout";
-import BorderBox from "^/components/theme/BorderBox";
 import bundlephobia, { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import packagephobia, { PackagephobiaResults } from "^/lib/api/packagephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
