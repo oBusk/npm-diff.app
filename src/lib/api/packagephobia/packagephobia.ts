@@ -2,12 +2,24 @@ import TIMED_OUT, { resultOrTimedOut } from "../TimedOut";
 import PackagephobiaResponse from "./PackagephobiaResponse";
 import PackagephobiaResults from "./PackagephobiaResult";
 
-async function getPackage(spec: string): Promise<PackagephobiaResponse> {
-    const response = await fetch(
-        `https://packagephobia.com/v2/api.json?p=${spec}`,
-    );
-    const json: PackagephobiaResponse = await response.json();
-    return json;
+async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
+    try {
+        const response = await fetch(
+            `https://packagephobia.com/v2/api.json?p=${spec}`,
+        );
+
+        if (response.status !== 200) {
+            throw new Error(`${response.status} ${response.statusText}`);
+        }
+
+        const json: PackagephobiaResponse = await response.json();
+
+        return json;
+    } catch (e) {
+        console.error(`[${spec}] Packagephobia error:`, e);
+    }
+
+    return null;
 }
 
 async function getPackages(
