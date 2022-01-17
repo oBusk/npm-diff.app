@@ -1,6 +1,6 @@
 import libnpmdiff, { Options } from "libnpmdiff";
 
-interface ErrorETARGET extends Error {
+interface ErrorETARGET {
     code: "ETARGET";
     type: "version";
     wanted: string;
@@ -9,7 +9,7 @@ interface ErrorETARGET extends Error {
     defaultTag: string;
 }
 
-interface Error404 extends Error {
+interface Error404 {
     code: "E404";
     pkgid: string;
 }
