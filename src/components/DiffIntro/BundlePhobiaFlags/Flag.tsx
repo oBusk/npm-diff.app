@@ -22,8 +22,8 @@ const Flag = forwardRef<FlagProps, "div">(
                 colorScheme={colorScheme}
                 cursor="help"
                 margin="10px 0"
-                ref={ref}
                 {...props}
+                ref={ref}
             >
                 <TagLeftIcon boxSize="16px" as={icon} fill="currentColor" />
                 <TagLabel>{label}</TagLabel>

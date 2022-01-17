@@ -15,13 +15,16 @@ function toKebabCase(input: string): string {
 }
 
 const Command = forwardRef<CommandProps, typeof Code>(
-    ({
-        aName,
-        aVersion,
-        bName,
-        bVersion,
-        options: { diffFiles = "", ...options },
-    }) => {
+    (
+        {
+            aName,
+            aVersion,
+            bName,
+            bVersion,
+            options: { diffFiles = "", ...options },
+        },
+        ref,
+    ) => {
         const optionStrings = Object.entries(options)
             .filter(([_, value]) => value != null)
             .map(([key, value]) => `--${toKebabCase(key)}='${value}'`);
@@ -35,7 +38,7 @@ const Command = forwardRef<CommandProps, typeof Code>(
         }
 
         return (
-            <Code>
+            <Code ref={ref}>
                 npm diff --diff={aName}@{aVersion} --diff={bName}@{bVersion}
                 {optionStrings?.length > 0 ? ` ${optionStrings.join(" ")}` : ""}
             </Code>

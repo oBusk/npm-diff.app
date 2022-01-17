@@ -23,8 +23,8 @@ const CollapsableBorderBoxHeader = forwardRef<
             borderBottomWidth={1}
             alignItems="center"
             padding="8px"
-            ref={ref}
             {...props}
+            ref={ref}
         >
             <Tooltip label={label}>
                 <IconButton

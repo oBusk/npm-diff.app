@@ -26,3 +26,19 @@ export const responseCacheSwr = {
 export const requestCache30min = {
     "Cache-Control": `max-age=${30 * minute}`,
 } as const;
+
+export function setSwrCaching(res: ServerResponse): void {
+    res.setHeader(
+        "cache-control",
+        [
+            "public",
+            // Don't cache clientside
+            `max-age=0`,
+            `stale-while-revalidate`,
+        ].join(", "),
+    );
+}
+
+export const headersCache30min = {
+    "cache-control": `max-age=${30 * minute}`,
+} as const;
