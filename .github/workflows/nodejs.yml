@@ -55,11 +55,9 @@ jobs:
               uses: actions/cache@v2
               with:
                   path: ${{ steps.node-config.outputs.dir }}
-                  key: ${{ runner.os }}-node_{{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
                   restore-keys: |
-                      ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm$_{{ steps.node-config.outputs.npmv }}
-                      ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}
-                      ${{ runner.os }}
+                      ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}
             - name: Install
               run: npm ci
             - name: Run tests
