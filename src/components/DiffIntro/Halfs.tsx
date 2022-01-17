@@ -10,7 +10,7 @@ interface ComparisonViewProps {
 
 const Halfs = forwardRef<ComparisonViewProps, typeof Flex>(
     ({ left, center, right, ...props }, ref) => (
-        <Flex ref={ref} {...props}>
+        <Flex {...props} ref={ref}>
             <Flex flex="1 0 0px" justifyContent="flex-end">
                 {/* Left half */}
                 {left}

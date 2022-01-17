@@ -30,8 +30,8 @@ const ButtonExpandBox = forwardRef<CollapseBlockProps, "div">(
                 margin="16px"
                 direction="column"
                 alignItems="center"
-                ref={ref}
                 {...props}
+                ref={ref}
             >
                 {isExpanded && (
                     <BorderBox overflow="auto">{children}</BorderBox>

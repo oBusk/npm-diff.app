@@ -16,9 +16,9 @@ export interface ServiceTooltipProps extends TooltipProps {
 const ServiceTooltip = forwardRef<ServiceTooltipProps, any>(
     ({ packageName, packageVersion, serviceName, ...props }, ref) => (
         <Tooltip
-            ref={ref}
             textAlign="center"
             {...props}
+            ref={ref}
             label={
                 <>
                     <Text whiteSpace="nowrap">

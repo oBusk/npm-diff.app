@@ -17,7 +17,7 @@ import {
 import CenterInputAddon from "./CenterInputAddon";
 
 const SpecInput = forwardRef<InputProps, "input">((props, ref) => (
-    <Input type="text" maxWidth="20em" ref={ref} {...props} />
+    <Input type="text" maxWidth="20em" {...props} ref={ref} />
 ));
 
 export interface MainFormProps extends StackProps {

@@ -127,8 +127,8 @@ const COMMON_PADDING = "8px";
 const SizeComparison = forwardRef<SizeComparisonProps, typeof Halfs>(
     ({ a, b, sizeRows, serviceName, serviceLink, ...props }, ref) => (
         <Halfs
-            ref={ref}
             {...props}
+            ref={ref}
             left={
                 <LinkButton
                     padding={COMMON_PADDING}

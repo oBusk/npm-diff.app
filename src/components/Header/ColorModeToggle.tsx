@@ -23,8 +23,8 @@ const ColorModeToggle = forwardRef<ColorModeToggleProps, "button">(
                     onClick={toggleColorMode}
                     aria-label={label}
                     icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
-                    ref={ref}
                     {...props}
+                    ref={ref}
                 />
             </Tooltip>
         );
