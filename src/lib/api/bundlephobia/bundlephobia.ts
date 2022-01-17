@@ -3,48 +3,36 @@ import BundlephobiaResponse from "./BundlephobiaResponse";
 import BundlephobiaResults from "./BundlephobiaResults";
 
 async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
-    const response = await fetch(
-        `https://bundlephobia.com/api/size?package=${spec}`,
-    );
-    if (response.status === 200) {
-        const json: BundlephobiaResponse = await response.json();
-        return json;
-    } else if (response.status === 403) {
-        // The package is blacklisted or not supported
-        return null;
-    } else {
-        throw new Error(
-            `Error fetching ${spec}, status: ${response.status}, message: ${
-                (await response.json())?.message
-            }`,
-        );
-    }
-}
-
-async function getPackages(
-    aSpec: string,
-    bSpec: string,
-): Promise<BundlephobiaResults | null> {
     try {
-        const [a, b] = await Promise.all([
-            getPackage(aSpec),
-            getPackage(bSpec),
-        ]);
+        const response = await fetch(
+            `https://bundlephobia.com/api/size?package=${spec}`,
+        );
 
-        if (a && b) {
-            return { a, b };
+        if (response.status !== 200) {
+            throw new Error(`${response.status} ${response.statusText}`);
         }
+
+        const json: BundlephobiaResponse = await response.json();
+
+        return json;
     } catch (e) {
-        console.error(e);
+        console.error(`[${spec}] Bundlephobia error:`, e);
     }
 
     return null;
 }
+async function getPackages(
+    aSpec: string,
+    bSpec: string,
+): Promise<BundlephobiaResults | null> {
+    const [a, b] = await Promise.all([getPackage(aSpec), getPackage(bSpec)]);
 
-async function bundlephobia([aSpec, bSpec]: [string, string]): Promise<
-    BundlephobiaResults | null | TIMED_OUT
-> {
-    return resultOrTimedOut(getPackages(aSpec, bSpec));
+    return (a && b && { a, b }) || null;
 }
 
-export default bundlephobia;
+export default async function bundlephobia([aSpec, bSpec]: [
+    string,
+    string,
+]): Promise<BundlephobiaResults | null | TIMED_OUT> {
+    return resultOrTimedOut(getPackages(aSpec, bSpec));
+}

@@ -1,6 +1,7 @@
 import libnpmdiff from "libnpmdiff";
 import { NextApiHandler } from "next";
 import destination from "^/lib/destination";
+import doDiff, { DiffError } from "^/lib/diff";
 import { parseQuery, rawQuery } from "^/lib/query";
 import { setDefaultPageCaching } from "^/lib/utils/headers";
 import specsToDiff from "^/lib/utils/specsToDiff";
@@ -23,9 +24,15 @@ const apiEndpoint: NextApiHandler<string> = async (req, res) => {
     }
 
     if (redirect === false) {
-        const diff = await libnpmdiff(immutableSpecs, parseQuery(options));
+        try {
+            const diff = await doDiff(immutableSpecs, parseQuery(options));
 
-        res.status(200).send(diff);
+            res.status(200).send(diff);
+        } catch (e) {
+            const { code, error } = e as DiffError;
+
+            res.status(code).send(error);
+        }
     } else {
         res.redirect(
             redirect === "permanent"
