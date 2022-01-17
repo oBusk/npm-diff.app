@@ -75,7 +75,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
         }
 
         return (
-            <Flex direction="column" alignItems="center" ref={ref} {...props}>
+            <Flex direction="column" alignItems="center" {...props} ref={ref}>
                 <Heading as="h2" size="sm" width="100%" textAlign="center">
                     <Text>Comparing </Text>
                     <Halfs

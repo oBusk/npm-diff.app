@@ -4,7 +4,7 @@ import ExternalLink from "^/components/theme/ExternalLink";
 export interface IntroProps extends BoxProps {}
 
 const Intro = forwardRef<IntroProps, "div">((props, ref) => (
-    <Box ref={ref} {...props}>
+    <Box {...props} ref={ref}>
         <Text align="center">
             <ExternalLink href="https://docs.npmjs.com/cli/v7/commands/npm-diff">
                 <Code>npm diff</Code>

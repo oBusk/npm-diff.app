@@ -8,13 +8,13 @@ interface OptionsProps {
 }
 
 const Options = forwardRef<OptionsProps, typeof BorderBox>(
-    ({ options: { diffFiles = [], ...options } = {} }) => {
+    ({ options: { diffFiles = [], ...options } = {} }, ref) => {
         const specifiedOptions = Object.entries(options).filter(
             ([, value]) => value != null,
         );
 
         return (
-            <BorderBox margin="10px 0">
+            <BorderBox margin="10px 0" ref={ref}>
                 <Heading size="xs" marginBottom="1em">
                     Options
                 </Heading>

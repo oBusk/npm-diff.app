@@ -37,8 +37,8 @@ const CenterInputAddon = forwardRef<InputAddonProps, "div">((props, ref) => {
 
     return (
         <StyledAddon
-            ref={ref}
             {...rest}
+            ref={ref}
             sx={{
                 ...addonStyles,
                 ...placementStyles,
