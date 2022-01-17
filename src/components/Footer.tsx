@@ -1,9 +1,10 @@
-import { forwardRef, HStack, StackProps } from "@chakra-ui/react";
+import { HStack, StackProps } from "@chakra-ui/react";
+import { FunctionComponent } from "react";
 
 export interface FooterProps extends StackProps {}
 
-const Footer = forwardRef<FooterProps, "footer">((props, ref) => {
-    return <HStack as="footer" {...props} ref={ref} />;
-});
+const Footer: FunctionComponent<FooterProps> = (props) => {
+    return <HStack as="footer" {...props} />;
+};
 
 export default Footer;
