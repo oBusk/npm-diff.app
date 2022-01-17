@@ -28,7 +28,7 @@ async function doDiff(
 
         return result;
     } catch (e: any) {
-        console.error("DIFF ERROR", e);
+        console.error(`[${specs[0]},${specs[1]}] Diff error:`, e);
 
         const isEtarget = (e: any): e is ErrorETARGET => e.code === "ETARGET";
         const isE404 = (e: any): e is Error404 => e.code === "E404";
