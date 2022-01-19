@@ -82,6 +82,6 @@
         "typescript": "4.5.4"
     },
     "overrides": {
-        "@chakra-ui/system": "1.9.1"
+        "@chakra-ui/system": "1.9.0"
     }
 }
