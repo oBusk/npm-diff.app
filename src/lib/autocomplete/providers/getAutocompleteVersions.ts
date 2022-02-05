@@ -26,12 +26,12 @@ async function getAutocompleteVersions(
         rawSpec,
         versions,
         size: AUTOCOMPLETE_SIZE,
-    }).map(({ version, tags }) => {
+    }).map(({ version, versionEmphasized, tags }) => {
         return {
             type: AutocompleteSuggestionTypes.Version,
             value: `${name}@${version}`,
             name,
-            version,
+            version: versionEmphasized,
             tags,
         };
     });

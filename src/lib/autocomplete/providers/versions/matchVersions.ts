@@ -3,6 +3,7 @@ import { Version } from "^/lib/middleware";
 
 export interface Matched {
     version: string;
+    versionEmphasized: string;
     tags?: string[];
 }
 
@@ -89,7 +90,8 @@ export function matchVersions({
     return matches
         .sort((a, b) => rcompare(a.version, b.version))
         .map(({ version, tags }) => ({
-            version: emphasize(version, rawSpec),
+            version,
+            versionEmphasized: emphasize(version, rawSpec),
             ...(tags
                 ? { tags: tags.map((tag) => emphasize(tag, rawSpec)) }
                 : undefined),
