@@ -7,7 +7,7 @@ describe("matchVersions", () => {
     let fn: (rawSpec: string) => Matched[];
 
     beforeEach(() => {
-        size = 3;
+        size = 4;
         versions = [
             ...[
                 "0.0.1",
@@ -25,13 +25,11 @@ describe("matchVersions", () => {
                 "11.0.2",
                 "11.0.3",
                 "11.0.4",
-                "11.0.5",
-                "11.0.6",
-                "11.0.7",
-                "11.0.8",
-                "11.0.9",
+                "11.1.0",
+                "11.1.1",
+                "11.1.2",
             ].map((version) => ({ version })),
-            { version: "11.0.10", tags: ["latest"] },
+            { version: "11.2.0", tags: ["latest"] },
         ];
         fn = (rawSpec: string) => matchVersions({ rawSpec, versions, size });
     });
@@ -44,43 +42,88 @@ describe("matchVersions", () => {
         expect(versions).toEqual(original);
     });
 
-    it("Returns latest-tag + latest versions if no input", () =>
+    it("Empty Input. (latest, previous patch, previous minor, previous major)", () =>
         expect(fn("")).toEqual([
             {
-                version: "11.0.10",
+                version: "11.2.0",
                 tags: ["latest"],
             },
-            { version: "11.0.9" },
-            { version: "11.0.8" },
+            // previous patch
+            { version: "11.1.2" },
+            // Previous minor (from the previous patch)
+            { version: "11.0.4" },
+            // // Previous major (from the previous minor)
+            { version: "10.0.0" },
         ]));
 
-    it("Returns latest versions that starts with input", () => {
-        expect(fn("la")).toEqual([
-            { version: "11.0.10", tags: ["<em>la</em>test"] },
-        ]);
+    it("Input: 1", () =>
         expect(fn("1")).toEqual([
             {
-                version: "<em>1</em>1.0.10",
+                version: "<em>1</em>1.2.0",
                 tags: ["latest"],
             },
-            { version: "<em>1</em>1.0.9" },
-            { version: "<em>1</em>1.0.8" },
-        ]);
-        expect(fn("1.")).toEqual([
-            { version: "<em>1.</em>2.3" },
-            { version: "<em>1.</em>2.2" },
-            { version: "<em>1.</em>2.1" },
-        ]);
-        expect(fn("1.1")).toEqual([{ version: "<em>1.1</em>.0" }]);
-        expect(fn("2")).toEqual([{ version: "<em>2</em>.0.0" }]);
-        expect(fn("0")).toEqual([
-            { version: "<em>0</em>.0.3" },
-            { version: "<em>0</em>.0.2" },
-            { version: "<em>0</em>.0.1" },
-        ]);
-    });
+            // previous patch
+            { version: "<em>1</em>1.1.2" },
+            // Previous minor (from the previous patch)
+            { version: "<em>1</em>1.0.4" },
+            // // Previous major (from the previous minor)
+            { version: "<em>1</em>0.0.0" },
+        ]));
 
-    it("Returns empty array if there is no match", () => {
-        expect(fn("99")).toEqual([]);
-    });
+    it("Input: 11", () =>
+        expect(fn("11")).toEqual([
+            {
+                version: "<em>11</em>.2.0",
+                tags: ["latest"],
+            },
+            // previous patch
+            { version: "<em>11</em>.1.2" },
+            // Filler to get to size
+            { version: "<em>11</em>.1.1" },
+            // Previous minor (from the previous patch)
+            { version: "<em>11</em>.0.4" },
+        ]));
+
+    it("Input: 11.", () =>
+        expect(fn("11.")).toEqual([
+            {
+                version: "<em>11.</em>2.0",
+                tags: ["latest"],
+            },
+            // previous patch
+            { version: "<em>11.</em>1.2" },
+            // Filler to get to size
+            { version: "<em>11.</em>1.1" },
+            // Previous minor (from the previous patch)
+            { version: "<em>11.</em>0.4" },
+        ]));
+
+    it("Input: 11.1", () =>
+        expect(fn("11.1")).toEqual([
+            { version: "<em>11.1</em>.2" },
+            { version: "<em>11.1</em>.1" },
+            { version: "<em>11.1</em>.0" },
+        ]));
+
+    it("Input: 11.1.", () =>
+        expect(fn("11.1.")).toEqual([
+            { version: "<em>11.1.</em>2" },
+            { version: "<em>11.1.</em>1" },
+            { version: "<em>11.1.</em>0" },
+        ]));
+
+    it("Input: 11.1.1", () =>
+        expect(fn("11.1.1")).toEqual([{ version: "<em>11.1.1</em>" }]));
+
+    it("Input: 99 (no matches)", () => expect(fn("99")).toEqual([]));
+
+    it("Input: la", () =>
+        expect(fn("la")).toEqual([
+            { version: "11.2.0", tags: ["<em>la</em>test"] },
+        ]));
+
+    it("Input: late", () =>
+        expect(fn("late")).toEqual([
+            { version: "11.2.0", tags: ["<em>late</em>st"] },
+        ]));
 });
