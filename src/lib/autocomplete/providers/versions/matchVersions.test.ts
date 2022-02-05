@@ -39,6 +39,8 @@ describe("matchVersions", () => {
     it("Does not mutate versions array parameter", () => {
         const original = [...versions];
         fn("1.0.0");
+        // Equal but not the same instance
+        expect(versions).not.toBe(original);
         expect(versions).toEqual(original);
     });
 
