@@ -1,5 +1,6 @@
 import { Code, forwardRef, HStack, StackProps, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
+import TooltipCode from "^/components/theme/TooltipCode";
 import {
     BundlephobiaResults,
     hasSideEffects,
@@ -16,14 +17,14 @@ export interface BundlephobiaFlagsProps extends StackProps {
 const BundlephobiaFlags = forwardRef<BundlephobiaFlagsProps, "div">(
     ({ data: { a, b }, ...props }, ref) => {
         const aTag = (
-            <Code>
+            <TooltipCode>
                 {a.name}@{a.version}
-            </Code>
+            </TooltipCode>
         );
         const bTag = (
-            <Code>
+            <TooltipCode>
                 {b.name}@{b.version}
-            </Code>
+            </TooltipCode>
         );
 
         const treeShakeable = () => {

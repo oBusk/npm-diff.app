@@ -4,8 +4,10 @@ import {
     Text,
     Tooltip,
     TooltipProps,
+    useColorModeValue,
 } from "@chakra-ui/react";
 import B from "^/components/theme/B";
+import TooltipCode from "../theme/TooltipCode";
 
 export interface ServiceTooltipProps extends TooltipProps {
     packageName: string;
@@ -14,26 +16,28 @@ export interface ServiceTooltipProps extends TooltipProps {
 }
 
 const ServiceTooltip = forwardRef<ServiceTooltipProps, any>(
-    ({ packageName, packageVersion, serviceName, ...props }, ref) => (
-        <Tooltip
-            textAlign="center"
-            {...props}
-            ref={ref}
-            label={
-                <>
-                    <Text whiteSpace="nowrap">
-                        View{" "}
-                        <Code>
-                            {packageName}@{packageVersion}
-                        </Code>
-                    </Text>
-                    <Text>
-                        on <B>{serviceName}</B>
-                    </Text>
-                </>
-            }
-        />
-    ),
+    ({ packageName, packageVersion, serviceName, ...props }, ref) => {
+        return (
+            <Tooltip
+                textAlign="center"
+                {...props}
+                ref={ref}
+                label={
+                    <>
+                        <Text whiteSpace="nowrap">
+                            View{" "}
+                            <TooltipCode>
+                                {packageName}@{packageVersion}
+                            </TooltipCode>
+                        </Text>
+                        <Text>
+                            on <B>{serviceName}</B>
+                        </Text>
+                    </>
+                }
+            />
+        );
+    },
 );
 
 export default ServiceTooltip;
