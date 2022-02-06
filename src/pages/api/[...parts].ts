@@ -1,4 +1,3 @@
-import libnpmdiff from "libnpmdiff";
 import { NextApiHandler } from "next";
 import destination from "^/lib/destination";
 import doDiff, { DiffError } from "^/lib/diff";
