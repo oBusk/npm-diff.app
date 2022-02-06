@@ -1,10 +1,11 @@
+import exp from "constants";
 import { Version } from "^/lib/middleware";
 import { Matched, matchVersions } from "./matchVersions";
 
 describe("matchVersions", () => {
     let size: number;
     let versions: Version[];
-    let fn: (rawSpec: string) => Matched[];
+    let fn: (rawSpec: string, minVersion?: string) => Matched[];
 
     beforeEach(() => {
         size = 4;
@@ -31,7 +32,8 @@ describe("matchVersions", () => {
             ].map((version) => ({ version })),
             { version: "11.2.0", tags: ["latest"] },
         ];
-        fn = (rawSpec: string) => matchVersions({ rawSpec, versions, size });
+        fn = (rawSpec: string, minVersion) =>
+            matchVersions({ rawSpec, versions, size, minVersion });
     });
 
     it("Does not mutate versions array parameter", () => {
@@ -141,6 +143,56 @@ describe("matchVersions", () => {
                     tags: ["<em>late</em>st"],
                 },
             ]));
+    });
+
+    describe("Min version", () => {
+        describe("Input: ''", () => {
+            it("minVersion: '2.0.0'", () =>
+                expect(fn("", "2.0.0")).toEqual<Matched[]>([
+                    {
+                        tags: ["latest"],
+                        version: "11.2.0",
+                        versionEmphasized: "11.2.0",
+                    },
+                    {
+                        version: "11.1.2",
+                        versionEmphasized: "11.1.2",
+                    },
+                    {
+                        version: "11.0.4",
+                        versionEmphasized: "11.0.4",
+                    },
+                    {
+                        version: "10.0.0",
+                        versionEmphasized: "10.0.0",
+                    },
+                ]));
+
+            it("minVersion: '11.1.1'", () =>
+                expect(fn("", "11.1.1")).toEqual<Matched[]>([
+                    {
+                        tags: ["latest"],
+                        version: "11.2.0",
+                        versionEmphasized: "11.2.0",
+                    },
+                    {
+                        version: "11.1.2",
+                        versionEmphasized: "11.1.2",
+                    },
+                ]));
+        });
+
+        describe("Input: '1.'", () => {
+            it("minVersion: '2.0.0' (Should match nothing)", () =>
+                expect(fn("1.", "2.0.0")).toEqual<Matched[]>([]));
+
+            it("minVersion: '1.1.0'", () =>
+                expect(fn("1.", "1.1.0")).toEqual<Matched[]>([
+                    { version: "1.2.3", versionEmphasized: "<em>1.</em>2.3" },
+                    { version: "1.2.2", versionEmphasized: "<em>1.</em>2.2" },
+                    { version: "1.2.1", versionEmphasized: "<em>1.</em>2.1" },
+                ]));
+        });
     });
 
     it("Input: 99 (no matches)", () => expect(fn("99")).toEqual<Matched[]>([]));
