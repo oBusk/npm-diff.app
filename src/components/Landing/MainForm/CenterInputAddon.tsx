@@ -1,6 +1,7 @@
 import {
     chakra,
     forwardRef,
+    InputAddon,
     InputAddonProps,
     useMultiStyleConfig,
 } from "@chakra-ui/react";
@@ -21,30 +22,32 @@ const StyledAddon = chakra("div", {
 // https://github.com/chakra-ui/chakra-ui/blob/%40chakra-ui/react%401.6.5/packages/input/src/input-group.tsx
 // Goal is to have a InputAddon that fits between two input elements without having to be wrapped in a
 // InputGroup.
-const CenterInputAddon = forwardRef<InputAddonProps, "div">((props, ref) => {
-    const { addon: addonStyles } = useMultiStyleConfig("Input", props);
+const CenterInputAddon = forwardRef<InputAddonProps, typeof InputAddon>(
+    (props, ref) => {
+        const { addon: addonStyles } = useMultiStyleConfig("Input", props);
 
-    const { placement: _, ...rest } = props;
-    const placementStyles = {
-        // Do both what placement=left and placement=right do
-        marginEnd: "-1px",
-        borderEndRadius: 0,
-        borderEndColor: "transparent",
-        maringStart: "-1px",
-        borderStartRadius: 0,
-        borderStartColor: "transparent",
-    } as const;
+        const { placement: _, ...rest } = props;
+        const placementStyles = {
+            // Do both what placement=left and placement=right do
+            marginEnd: "-1px",
+            borderEndRadius: 0,
+            borderEndColor: "transparent",
+            maringStart: "-1px",
+            borderStartRadius: 0,
+            borderStartColor: "transparent",
+        } as const;
 
-    return (
-        <StyledAddon
-            {...rest}
-            ref={ref}
-            sx={{
-                ...addonStyles,
-                ...placementStyles,
-            }}
-        />
-    );
-});
+        return (
+            <StyledAddon
+                {...rest}
+                ref={ref}
+                sx={{
+                    ...addonStyles,
+                    ...placementStyles,
+                }}
+            />
+        );
+    },
+);
 
 export default CenterInputAddon;
