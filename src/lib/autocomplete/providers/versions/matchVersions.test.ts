@@ -57,87 +57,91 @@ describe("matchVersions", () => {
             { version: "10.0.0", versionEmphasized: "10.0.0" },
         ]));
 
-    it("Input: 1", () =>
-        expect(fn("1")).toEqual<Matched[]>([
-            {
-                version: "11.2.0",
-                versionEmphasized: "<em>1</em>1.2.0",
-                tags: ["latest"],
-            },
-            // previous patch
-            { version: "11.1.2", versionEmphasized: "<em>1</em>1.1.2" },
-            // Previous minor (from the previous patch)
-            { version: "11.0.4", versionEmphasized: "<em>1</em>1.0.4" },
-            // // Previous major (from the previous minor)
-            { version: "10.0.0", versionEmphasized: "<em>1</em>0.0.0" },
-        ]));
+    describe("Version matching", () => {
+        it("Input: 1", () =>
+            expect(fn("1")).toEqual<Matched[]>([
+                {
+                    version: "11.2.0",
+                    versionEmphasized: "<em>1</em>1.2.0",
+                    tags: ["latest"],
+                },
+                // previous patch
+                { version: "11.1.2", versionEmphasized: "<em>1</em>1.1.2" },
+                // Previous minor (from the previous patch)
+                { version: "11.0.4", versionEmphasized: "<em>1</em>1.0.4" },
+                // // Previous major (from the previous minor)
+                { version: "10.0.0", versionEmphasized: "<em>1</em>0.0.0" },
+            ]));
 
-    it("Input: 11", () =>
-        expect(fn("11")).toEqual<Matched[]>([
-            {
-                version: "11.2.0",
-                versionEmphasized: "<em>11</em>.2.0",
-                tags: ["latest"],
-            },
-            // previous patch
-            { version: "11.1.2", versionEmphasized: "<em>11</em>.1.2" },
-            // Filler to get to size
-            { version: "11.1.1", versionEmphasized: "<em>11</em>.1.1" },
-            // Previous minor (from the previous patch)
-            { version: "11.0.4", versionEmphasized: "<em>11</em>.0.4" },
-        ]));
+        it("Input: 11", () =>
+            expect(fn("11")).toEqual<Matched[]>([
+                {
+                    version: "11.2.0",
+                    versionEmphasized: "<em>11</em>.2.0",
+                    tags: ["latest"],
+                },
+                // previous patch
+                { version: "11.1.2", versionEmphasized: "<em>11</em>.1.2" },
+                // Filler to get to size
+                { version: "11.1.1", versionEmphasized: "<em>11</em>.1.1" },
+                // Previous minor (from the previous patch)
+                { version: "11.0.4", versionEmphasized: "<em>11</em>.0.4" },
+            ]));
 
-    it("Input: 11.", () =>
-        expect(fn("11.")).toEqual<Matched[]>([
-            {
-                version: "11.2.0",
-                versionEmphasized: "<em>11.</em>2.0",
-                tags: ["latest"],
-            },
-            // previous patch
-            { version: "11.1.2", versionEmphasized: "<em>11.</em>1.2" },
-            // Filler to get to size
-            { version: "11.1.1", versionEmphasized: "<em>11.</em>1.1" },
-            // Previous minor (from the previous patch)
-            { version: "11.0.4", versionEmphasized: "<em>11.</em>0.4" },
-        ]));
+        it("Input: 11.", () =>
+            expect(fn("11.")).toEqual<Matched[]>([
+                {
+                    version: "11.2.0",
+                    versionEmphasized: "<em>11.</em>2.0",
+                    tags: ["latest"],
+                },
+                // previous patch
+                { version: "11.1.2", versionEmphasized: "<em>11.</em>1.2" },
+                // Filler to get to size
+                { version: "11.1.1", versionEmphasized: "<em>11.</em>1.1" },
+                // Previous minor (from the previous patch)
+                { version: "11.0.4", versionEmphasized: "<em>11.</em>0.4" },
+            ]));
 
-    it("Input: 11.1", () =>
-        expect(fn("11.1")).toEqual<Matched[]>([
-            { version: "11.1.2", versionEmphasized: "<em>11.1</em>.2" },
-            { version: "11.1.1", versionEmphasized: "<em>11.1</em>.1" },
-            { version: "11.1.0", versionEmphasized: "<em>11.1</em>.0" },
-        ]));
+        it("Input: 11.1", () =>
+            expect(fn("11.1")).toEqual<Matched[]>([
+                { version: "11.1.2", versionEmphasized: "<em>11.1</em>.2" },
+                { version: "11.1.1", versionEmphasized: "<em>11.1</em>.1" },
+                { version: "11.1.0", versionEmphasized: "<em>11.1</em>.0" },
+            ]));
 
-    it("Input: 11.1.", () =>
-        expect(fn("11.1.")).toEqual<Matched[]>([
-            { version: "11.1.2", versionEmphasized: "<em>11.1.</em>2" },
-            { version: "11.1.1", versionEmphasized: "<em>11.1.</em>1" },
-            { version: "11.1.0", versionEmphasized: "<em>11.1.</em>0" },
-        ]));
+        it("Input: 11.1.", () =>
+            expect(fn("11.1.")).toEqual<Matched[]>([
+                { version: "11.1.2", versionEmphasized: "<em>11.1.</em>2" },
+                { version: "11.1.1", versionEmphasized: "<em>11.1.</em>1" },
+                { version: "11.1.0", versionEmphasized: "<em>11.1.</em>0" },
+            ]));
 
-    it("Input: 11.1.1", () =>
-        expect(fn("11.1.1")).toEqual<Matched[]>([
-            { version: "11.1.1", versionEmphasized: "<em>11.1.1</em>" },
-        ]));
+        it("Input: 11.1.1", () =>
+            expect(fn("11.1.1")).toEqual<Matched[]>([
+                { version: "11.1.1", versionEmphasized: "<em>11.1.1</em>" },
+            ]));
+    });
+
+    describe("Match tags", () => {
+        it("Input: la", () =>
+            expect(fn("la")).toEqual<Matched[]>([
+                {
+                    version: "11.2.0",
+                    versionEmphasized: "11.2.0",
+                    tags: ["<em>la</em>test"],
+                },
+            ]));
+
+        it("Input: late", () =>
+            expect(fn("late")).toEqual<Matched[]>([
+                {
+                    version: "11.2.0",
+                    versionEmphasized: "11.2.0",
+                    tags: ["<em>late</em>st"],
+                },
+            ]));
+    });
 
     it("Input: 99 (no matches)", () => expect(fn("99")).toEqual<Matched[]>([]));
-
-    it("Input: la", () =>
-        expect(fn("la")).toEqual<Matched[]>([
-            {
-                version: "11.2.0",
-                versionEmphasized: "11.2.0",
-                tags: ["<em>la</em>test"],
-            },
-        ]));
-
-    it("Input: late", () =>
-        expect(fn("late")).toEqual<Matched[]>([
-            {
-                version: "11.2.0",
-                versionEmphasized: "11.2.0",
-                tags: ["<em>late</em>st"],
-            },
-        ]));
 });
