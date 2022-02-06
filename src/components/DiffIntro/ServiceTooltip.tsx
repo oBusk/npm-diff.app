@@ -7,6 +7,7 @@ import {
     useColorModeValue,
 } from "@chakra-ui/react";
 import B from "^/components/theme/B";
+import TooltipCode from "../theme/TooltipCode";
 
 export interface ServiceTooltipProps extends TooltipProps {
     packageName: string;
@@ -16,11 +17,6 @@ export interface ServiceTooltipProps extends TooltipProps {
 
 const ServiceTooltip = forwardRef<ServiceTooltipProps, any>(
     ({ packageName, packageVersion, serviceName, ...props }, ref) => {
-        // Since the tooltip is dark in light mode and dark in light mode, we invert the colors
-        // Looking at colors in https://github.com/chakra-ui/chakra-ui/blob/%40chakra-ui/react%401.8.3/packages/theme/src/components/badge.ts
-        const codeBg = useColorModeValue("gray.200", "gray.700");
-        const codeColor = useColorModeValue("gray.800", "gray.200");
-
         return (
             <Tooltip
                 textAlign="center"
@@ -30,9 +26,9 @@ const ServiceTooltip = forwardRef<ServiceTooltipProps, any>(
                     <>
                         <Text whiteSpace="nowrap">
                             View{" "}
-                            <Code bg={codeBg} color={codeColor}>
+                            <TooltipCode>
                                 {packageName}@{packageVersion}
-                            </Code>
+                            </TooltipCode>
                         </Text>
                         <Text>
                             on <B>{serviceName}</B>
