@@ -1,4 +1,4 @@
-import { Code, forwardRef, HStack, StackProps, Text } from "@chakra-ui/react";
+import { forwardRef, HStack, StackProps, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import TooltipCode from "^/components/theme/TooltipCode";
 import {

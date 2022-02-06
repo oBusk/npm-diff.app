@@ -1,11 +1,4 @@
-import {
-    Code,
-    forwardRef,
-    Text,
-    Tooltip,
-    TooltipProps,
-    useColorModeValue,
-} from "@chakra-ui/react";
+import { forwardRef, Text, Tooltip, TooltipProps } from "@chakra-ui/react";
 import B from "^/components/theme/B";
 import TooltipCode from "../theme/TooltipCode";
 
