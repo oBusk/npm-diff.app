@@ -50,7 +50,7 @@ const DiffFile: FunctionComponent<DiffFileProps> = ({
                 gutterType="anchor"
                 generateAnchorID={({ lineNumber }) => `${hash}-L${lineNumber}`}
             >
-                {(hunks: HunkData[]) =>
+                {(hunks) =>
                     hunks.map((hunk) => (
                         <DiffHunk
                             key={"decoration-" + hunk.content}
