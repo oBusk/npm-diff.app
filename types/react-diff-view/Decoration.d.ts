@@ -1,5 +1,6 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, PropsWithChildren } from "react";
 
+// https://github.com/otakustay/react-diff-view/blob/v2.4.7/src/Decoration/index.js#L33-L38
 export interface DecorationProps {
     hideGutter?: boolean;
     className?: string;
@@ -7,4 +8,6 @@ export interface DecorationProps {
     contentClassName?: string;
 }
 
-export declare const Decoration: FunctionComponent<DecorationProps>;
+export declare const Decoration: FunctionComponent<
+    PropsWithChildren<DecorationProps>
+>;

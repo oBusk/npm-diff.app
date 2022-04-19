@@ -1,5 +1,6 @@
 import { Change, File, Hunk } from "gitdiff-parser";
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactNode } from "react";
+import { HunkData } from "react-diff-view";
 
 export type DiffType = File["type"];
 export type ViewType = "unified" | "split";
@@ -28,6 +29,7 @@ export interface DiffProps {
     className?: string;
     renderToken?: (token: any, defaultRender: DefaultRender) => JSX.Element;
     renderGutter?: (props: RenderGutterProp) => JSX.Element;
+    children?: (hunks: HunkData[]) => ReactNode;
 }
 
 export declare const Diff: FunctionComponent<DiffProps>;

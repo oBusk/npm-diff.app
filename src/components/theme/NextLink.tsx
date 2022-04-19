@@ -1,9 +1,11 @@
 import Link, { LinkProps } from "next/link";
-import { FunctionComponent } from "react";
+import { FunctionComponent, PropsWithChildren } from "react";
 
 export interface NextLinkProps extends LinkProps {}
 
-const NextLink: FunctionComponent<NextLinkProps> = ({ ...props }) => {
+const NextLink: FunctionComponent<PropsWithChildren<NextLinkProps>> = ({
+    ...props
+}) => {
     return <Link passHref {...props} />;
 };
 
