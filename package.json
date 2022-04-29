@@ -42,7 +42,7 @@
         "@chakra-ui/react": "^1.8.8",
         "@emotion/react": "^11.9.0",
         "@emotion/styled": "^11.8.1",
-        "jest": "^27.5.1",
+        "jest": "^28.0.3",
         "libnpmdiff": "^4.0.3",
         "next": "^12.1.5",
         "npm-package-arg": "^9.0.2",
