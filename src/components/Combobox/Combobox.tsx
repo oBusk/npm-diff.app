@@ -7,7 +7,7 @@ import {
 import { MutableRefObject, ReactNode, RefObject, useRef } from "react";
 import useAsyncState from "^/lib/hooks/useAsyncState";
 import useThrottle from "^/lib/hooks/useThrottle";
-import ComboboxBox, { ComboboxBoxProps } from "./ComboboxBox";
+import ComboboxBox from "./ComboboxBox";
 import ComboboxButton from "./ComboboxButton";
 import ComboboxInput, { ComboboxInputProps } from "./ComboboxInput";
 import ComboboxLabel from "./ComboboxLabel";
@@ -61,7 +61,7 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
      * The chakra-ui "size" to set the input field as.
      * @default "md"
      */
-    size?: ComboboxBoxProps["size"];
+    size?: "lg" | "md" | "sm" | "xs";
 }
 
 const Combobox = <T,>({
@@ -161,14 +161,12 @@ const Combobox = <T,>({
                     <ComboboxButton
                         aria-label="toggle-menu"
                         size={
-                            (
-                                {
-                                    xs: "xs",
-                                    sm: "xs",
-                                    md: "sm",
-                                    lg: "md",
-                                } as Record<string, string>
-                            )[size] || "sm"
+                            {
+                                xs: "xs",
+                                sm: "xs",
+                                md: "sm",
+                                lg: "md",
+                            }[size] || "sm"
                         }
                         {...getToggleButtonProps()}
                     />
