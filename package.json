@@ -46,7 +46,7 @@
         "libnpmdiff": "^4.0.3",
         "next": "^12.1.6",
         "npm-package-arg": "^9.0.2",
-        "pacote": "^13.5.0",
+        "pacote": "^13.6.0",
         "react": "^18.1.0",
         "react-diff-view": "^2.4.10",
         "react-dom": "^18.1.0",
