@@ -130,10 +130,10 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
                 },
             };
         }
-    } catch (e: { message: string }) {
+    } catch (e: any) {
         return {
             props: {
-                error: e?.message ?? "Unknown error",
+                error: e?.message ?? e ?? "Unknown error",
             },
         };
     }
