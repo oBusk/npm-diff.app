@@ -3,7 +3,6 @@ import libnpmdiff from "libnpmdiff";
 import { GetStaticProps, NextPage } from "next";
 import Layout from "^/components/Layout";
 import ExternalLink from "^/components/theme/ExternalLink";
-import NextLink from "^/components/theme/NextLink";
 import EXAMPLES from "^/lib/examples";
 import splitParts from "^/lib/utils/splitParts";
 
@@ -48,11 +47,9 @@ const ApiPage: NextPage<Props> = ({ diff, specs }) => {
                     <Code>
                         GET{" "}
                         <Tooltip label="Click to view the response from the API">
-                            <NextLink href={EXAMPLE_ABSOLUTE_URL}>
-                                <ExternalLink>
-                                    {EXAMPLE_ABSOLUTE_URL}
-                                </ExternalLink>
-                            </NextLink>
+                            <ExternalLink href={EXAMPLE_ABSOLUTE_URL}>
+                                {EXAMPLE_ABSOLUTE_URL}
+                            </ExternalLink>
                         </Tooltip>
                     </Code>
                     <br />
