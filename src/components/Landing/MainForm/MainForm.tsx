@@ -18,14 +18,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         { overrideA, overrideB, children, isLoading, handleSubmit, ...props },
         ref,
     ) => {
-        // const aRef = useRef<HTMLInputElement>(null);
         // const [a, setA] = useState("");
         // const [b, setB] = useState("");
-
-        // useEffect(() => {
-        //     // Focus the input on initial load (only)
-        //     aRef.current?.focus();
-        // }, []);
 
         const bRef = useRef<ComboboxRef | null>(null);
 
