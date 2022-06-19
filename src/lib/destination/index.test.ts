@@ -11,7 +11,7 @@ interface ExpectedResults<T = string> {
 
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["t"] }] */
 async function t(
-    input: [string, string],
+    input: [string, string] | [string],
     expectedSpecs?: [string, string],
     expectedRedirect?: Redirect,
 ) {
@@ -166,5 +166,25 @@ describe("destination()", () => {
                     "One of the spec",
                 ));
         });
+    });
+
+    describe("provide single spec, compare with latest always", () => {
+        it("specific version", () =>
+            t(["chalk@3.0.1"], ["chalk@3.0.1", specs.latest], "temporary"));
+
+        it("specific tag", () =>
+            t(["chalk@latest"], [specs.latest, specs.latest], "temporary"));
+
+        it("semver", () =>
+            t(["chalk@^2.1"], [specs["^2.1"], specs.latest], "temporary"));
+
+        it("no version (fallback to latest)", () =>
+            t(["chalk"], [specs.latest, specs.latest], "temporary"));
+
+        it("Throws on only semver", () =>
+            expect(() => t(["^2.1"])).rejects.toThrow(/package name/i));
+
+        it("Throws on only version", () =>
+            expect(() => t(["3.0.1"])).rejects.toThrow(/package name/i));
     });
 });

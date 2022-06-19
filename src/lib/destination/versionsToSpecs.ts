@@ -15,8 +15,19 @@ import semver from "semver";
  *
  * > Based on: https://github.com/npm/cli/blob/v7.19.1/lib/diff.js#L235-L264
  */
-function versionsToSpecs([a, b]: readonly [string, string]): [string, string] {
+function versionsToSpecs([a, b]:
+    | readonly [string, string]
+    | readonly [string]): [string, string] {
     const semverA = semver.validRange(a);
+
+    if (!b) {
+        if (semverA) {
+            throw new Error("Missing package name");
+        }
+
+        return [a, `${npa(a).name}@latest`];
+    }
+
     const semverB = semver.validRange(b);
 
     // We cannot support both args being only versions, we need a package name
