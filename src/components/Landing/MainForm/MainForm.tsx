@@ -1,6 +1,9 @@
 import { Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
-import { FormEvent, useRef } from "react";
+import { FormEvent } from "react";
+import { useCallbackRef } from "use-callback-ref";
 import { ComboboxRef } from "^/components/Combobox/Combobox";
+import Tooltip from "^/components/theme/Tooltip";
+import useForceUpdate from "^/lib/hooks/useForceUpdate";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
 
@@ -18,10 +21,11 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         { overrideA, overrideB, children, isLoading, handleSubmit, ...props },
         ref,
     ) => {
-        // const [a, setA] = useState("");
-        // const [b, setB] = useState("");
-
-        const bRef = useRef<ComboboxRef | null>(null);
+        const forceUpdate = useForceUpdate();
+        const aRef = useCallbackRef<ComboboxRef | null>(null, forceUpdate);
+        const bRef = useCallbackRef<ComboboxRef | null>(null, forceUpdate);
+        const a = aRef?.current?.value ?? "";
+        const b = bRef?.current?.value ?? "";
 
         const internalHandleSubmit = (event: FormEvent): void => {
             event.preventDefault();
@@ -47,6 +51,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                 <SpecInput
                     size={SIZE}
                     id="a"
+                    comboboxRef={aRef}
                     initialIsOpen={true}
                     inputProps={{
                         placeholder: "package@1.2.3 or package@^1",
@@ -75,7 +80,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     }}
                     marginTop={{ base: "0.5rem", lg: 0 }}
                 ></SpecInput>
-                {/* <Tooltip
+                <Tooltip
                     label={
                         !a || !b
                             ? "Neither field can be emtpy"
@@ -83,18 +88,18 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     }
                     background={!a || !b ? "red.700" : undefined}
                     shouldWrapChildren
-                > */}
-                <Button
-                    isLoading={isLoading}
-                    type="submit"
-                    size={SIZE}
-                    // disabled={!b || !a}
-                    marginInlineStart={{ lg: "2rem" }}
-                    marginTop={{ base: "0.5rem", lg: 0 }}
                 >
-                    npm diff! 📦🔃
-                </Button>
-                {/* </Tooltip> */}
+                    <Button
+                        isLoading={isLoading}
+                        type="submit"
+                        size={SIZE}
+                        disabled={!b || !a}
+                        marginInlineStart={{ lg: "2rem" }}
+                        marginTop={{ base: "0.5rem", lg: 0 }}
+                    >
+                        npm diff! 📦🔃
+                    </Button>
+                </Tooltip>
             </Flex>
         );
     },

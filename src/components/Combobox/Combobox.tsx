@@ -4,7 +4,8 @@ import {
     UseComboboxState,
     UseComboboxStateChangeOptions,
 } from "downshift";
-import { MutableRefObject, ReactNode, RefObject, useRef } from "react";
+import { ReactNode, RefObject, useCallback, useEffect, useRef } from "react";
+import { assignRef } from "use-callback-ref";
 import useAsyncState from "^/lib/hooks/useAsyncState";
 import useThrottle from "^/lib/hooks/useThrottle";
 import ComboboxBox from "./ComboboxBox";
@@ -16,8 +17,9 @@ import ComboboxSuggestionList from "./ComboboxSuggestionList";
 import ComboboxWrapper, { ComboboxWrapperProps } from "./ComboboxWrapper";
 
 export interface ComboboxRef {
-    setValue: (input: string) => void;
-    focus: () => void;
+    readonly setValue: (input: string) => void;
+    readonly value: string;
+    readonly focus: () => void;
 }
 
 export interface ComboboxProps<I> extends ComboboxWrapperProps {
@@ -125,6 +127,7 @@ const Combobox = <T,>({
         isOpen,
         openMenu,
         setInputValue,
+        inputValue,
     } = useCombobox({
         id,
         items,
@@ -138,12 +141,17 @@ const Combobox = <T,>({
             : undefined,
     });
 
-    if (comboboxRef) {
-        (comboboxRef as MutableRefObject<ComboboxRef>).current = {
-            setValue: setInputValue,
-            focus: () => inputRef.current?.focus(),
-        };
-    }
+    const focusInput = useCallback(() => inputRef.current?.focus(), [inputRef]);
+
+    useEffect(() => {
+        if (comboboxRef) {
+            assignRef(comboboxRef, {
+                setValue: setInputValue,
+                value: inputValue,
+                focus: focusInput,
+            });
+        }
+    }, [comboboxRef, setInputValue, inputValue, focusInput]);
 
     return (
         <ComboboxWrapper {...props}>
