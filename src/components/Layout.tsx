@@ -24,7 +24,9 @@ const Layout: FunctionComponent<LayoutProps> = ({
     return (
         <>
             <Head>
-                <title>{title ? `${title} • ` : ""}npm-diff.app 📦🔃</title>
+                <title>
+                    {[title, "npm-diff.app 📦🔃"].filter(Boolean).join(" • ")}
+                </title>
                 <meta
                     name="description"
                     content={

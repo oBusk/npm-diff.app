@@ -142,7 +142,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
 const DiffPage: NextPage<Props> = ({ error, result }) => {
     if (error != null) {
         return (
-            <Layout>
+            <Layout title="Error">
                 <Center>
                     <ErrorBox>{error}</ErrorBox>
                 </Center>
