@@ -33,7 +33,7 @@ export const getStaticProps: GetStaticProps<Props> = async ({}) => {
 
 const ApiPage: NextPage<Props> = ({ diff, specs }) => {
     return (
-        <Layout>
+        <Layout title="API">
             <VStack p={5} shadow="md" borderWidth="1px" spacing={8}>
                 <Heading as="h2" size="lg">
                     npm-diff.app API
