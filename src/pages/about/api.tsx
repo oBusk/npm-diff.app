@@ -1,9 +1,10 @@
 import { Code, Heading, Text, Tooltip, VStack } from "@chakra-ui/react";
-import libnpmdiff from "libnpmdiff";
 import { GetStaticProps, NextPage } from "next";
 import Layout from "^/components/Layout";
 import ExternalLink from "^/components/theme/ExternalLink";
 import NextLink from "^/components/theme/NextLink";
+import destination from "^/lib/destination";
+import doDiff from "^/lib/diff";
 import EXAMPLES from "^/lib/examples";
 import splitParts from "^/lib/utils/splitParts";
 
@@ -22,10 +23,12 @@ type Props = {
 };
 
 export const getStaticProps: GetStaticProps<Props> = async ({}) => {
-    const specs = splitParts(EXAMPLE_QUERY);
-    const diff = await libnpmdiff(specs);
+    const specsOrVersions = splitParts(EXAMPLE_QUERY);
+    const { immutableSpecs } = await destination(specsOrVersions);
 
-    return { props: { diff, specs } };
+    const diff = await doDiff(immutableSpecs, {});
+
+    return { props: { diff, specs: immutableSpecs } };
 };
 
 const ApiPage: NextPage<Props> = ({ diff, specs }) => {

@@ -12,20 +12,32 @@ function isTupleOfTwo<T>(t: T[]): t is [T, T] {
  *
  * `['@types', 'package@^1...@types', 'package@^2']` ➡ `['@types/package@^1', '@types/package@^2']`
  */
-function splitParts(parts?: string | string[]): [string, string] {
-    if (!parts || (typeof parts !== "string" && !Array.isArray(parts))) {
-        throw new Error("Invalid query");
+function splitParts(parts?: string | string[]): [string] | [string, string] {
+    const invalidQueryError = () => new Error("Invalid query");
+
+    if (
+        !(
+            typeof parts === "string" ||
+            (Array.isArray(parts) &&
+                parts.every((p) => typeof p === "string") &&
+                // two scoped specs "@a/p@1...@a/p@2".split('/') -> ["@a", "p@1...@a", "p@2"]
+                parts.length <= 3)
+        )
+    ) {
+        throw invalidQueryError();
     }
 
     const query = typeof parts === "string" ? parts : parts.join("/");
 
     const splitted = query.split("...");
 
-    if (!isTupleOfTwo(splitted)) {
-        throw new Error("Invalid query");
+    if (splitted.length == 1) {
+        return [splitted[0]];
+    } else if (splitted.length === 2) {
+        return [splitted[0], splitted[1]];
+    } else {
+        throw invalidQueryError();
     }
-
-    return splitted;
 }
 
 export default splitParts;

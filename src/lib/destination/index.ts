@@ -15,7 +15,7 @@ export interface Destination {
  * and redirect information, information if and what type of redirect we can use.
  */
 async function destination(
-    specsOrVersions: [string, string],
+    specsOrVersions: [string] | [string, string],
 ): Promise<Destination> {
     // This part is done in npm/cli
     // https://github.com/npm/cli/blob/v7.19.1/lib/diff.js#L118

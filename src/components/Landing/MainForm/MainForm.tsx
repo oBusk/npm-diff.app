@@ -7,13 +7,16 @@ import {
     StackProps,
     Tooltip,
 } from "@chakra-ui/react";
+import npa from "npm-package-arg";
 import {
     FormEvent,
     FunctionComponent,
     useEffect,
+    useMemo,
     useRef,
     useState,
 } from "react";
+import TooltipCode from "^/components/theme/TooltipCode";
 import CenterInputAddon from "./CenterInputAddon";
 
 const SpecInput = forwardRef<InputProps, "input">((props, ref) => (
@@ -38,6 +41,26 @@ const MainForm: FunctionComponent<MainFormProps> = ({
     const aRef = useRef<HTMLInputElement>(null);
     const [a, setA] = useState("");
     const [b, setB] = useState("");
+
+    /**
+     * A placeholder value for `B` if nothing is entered in `B`.
+     *
+     * This will be the package of `A` with the `latest` tag.
+     */
+    const automaticB = useMemo(() => {
+        try {
+            if (b) {
+                return null;
+            }
+            const aName = npa(a)?.name;
+            if (!aName) {
+                return null;
+            }
+            return `${aName}@latest`;
+        } catch (e) {
+            return null;
+        }
+    }, [a, b]);
 
     useEffect(() => {
         // Focus the input on initial load (only)
@@ -88,7 +111,7 @@ const MainForm: FunctionComponent<MainFormProps> = ({
             >
                 <SpecInput
                     name="b"
-                    placeholder="^3.0.1 or package-b@3.X"
+                    placeholder={automaticB || undefined}
                     disabled={overrideB != null || isLoading}
                     value={overrideB ?? b ?? ""}
                     onChange={(event) => setB(event.target.value)}
@@ -97,17 +120,22 @@ const MainForm: FunctionComponent<MainFormProps> = ({
             </Tooltip>
             <Tooltip
                 label={
-                    !a || !b
-                        ? "Neither field can be emtpy"
-                        : `Compare "${a}" and "${b}" now!`
+                    !a ? (
+                        "Enter a package specification to compare"
+                    ) : (
+                        <>
+                            Compare <TooltipCode>{a}</TooltipCode> and{" "}
+                            <TooltipCode>{automaticB || b}</TooltipCode> now!
+                        </>
+                    )
                 }
-                background={!a || !b ? "red.700" : undefined}
+                background={!a ? "red.700" : undefined}
                 shouldWrapChildren
             >
                 <Button
                     isLoading={isLoading}
                     type="submit"
-                    disabled={!b || !a}
+                    disabled={!a}
                     marginInlineStart={{ lg: "2rem" }}
                 >
                     npm diff! 📦🔃
