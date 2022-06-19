@@ -12,13 +12,11 @@ import Suggestion from "./Suggestion";
 export interface SpecInputProps
     extends Omit<ComboboxProps<AutocompleteSuggestion>, "suggestionFinder"> {
     versionSelected?: (item: AutocompleteSuggestion) => void;
-    comboboxRef?: RefObject<ComboboxRef>;
 }
 
 const SpecInput: FunctionComponent<SpecInputProps> = ({
     id,
     versionSelected,
-    comboboxRef,
     ...props
 }) => {
     const fallback = useContext(FallbackSuggestionsContext);
@@ -45,7 +43,6 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
                 item.type === AutocompleteSuggestionTypes.Version &&
                     versionSelected?.(item);
             }}
-            comboboxRef={comboboxRef}
             {...props}
         />
     );
