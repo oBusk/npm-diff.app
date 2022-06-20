@@ -22,11 +22,6 @@ const getEligbleVersions = ({
     rawSpec: string;
     minVersion?: string;
 }): Version[] => {
-    // if (rawSpec === "" && minVersion == null) {
-    //     // Shortcut
-    //     return versions.slice();
-    // }
-
     if (minVersion != null) {
         versions = versions.filter(({ version }) => gt(version, minVersion));
     }
