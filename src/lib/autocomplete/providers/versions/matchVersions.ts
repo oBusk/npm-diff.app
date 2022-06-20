@@ -1,5 +1,5 @@
 import { lte } from "lodash";
-import { gt, lt, major, minor, patch, prerelease, rcompare } from "semver";
+import { gt, major, minor, patch, prerelease, rcompare } from "semver";
 import { Version } from "^/lib/middleware";
 
 export interface Matched {
@@ -118,7 +118,7 @@ export function matchVersions({
     const previousMajor =
         previousMinor &&
         eligibleVersions.find(({ version }) =>
-            lt(
+            lte(
                 version,
                 [
                     major(previousMinor.version) - 1,
