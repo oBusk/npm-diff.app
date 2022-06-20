@@ -5,6 +5,7 @@ const hour = 60 * minute;
 const day = 24 * hour;
 
 const defaultPageCaching = [
+    "public",
     // Let's cache 5 minutes on client side
     `max-age=${5 * minute}`,
     // And the maximum supported vercel 31 days
@@ -12,11 +13,11 @@ const defaultPageCaching = [
 ].join(", ");
 
 export function setDefaultPageCaching(res: ServerResponse): void {
-    res.setHeader("Cache-Control", defaultPageCaching);
+    res.setHeader("cache-control", defaultPageCaching);
 }
 
 export const responseCacheSwr = {
-    "Cache-Control": [
+    "cache-control": [
         // Cache up to 5 minutes client side
         `max-age=${5 * minute}`,
         `stale-while-revalidate`,
@@ -24,7 +25,7 @@ export const responseCacheSwr = {
 } as const;
 
 export const requestCache30min = {
-    "Cache-Control": `max-age=${30 * minute}`,
+    "cache-control": `max-age=${30 * minute}`,
 } as const;
 
 export function setSwrCaching(res: ServerResponse): void {
