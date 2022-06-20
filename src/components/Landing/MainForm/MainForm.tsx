@@ -2,7 +2,7 @@ import { Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
 import npa from "npm-package-arg";
 import { FormEvent, useMemo } from "react";
 import { useCallbackRef } from "use-callback-ref";
-import { ComboboxRef } from "^/components/Combobox/Combobox";
+import { ComboboxRef } from "^/components/Landing/MainForm/SpecInput/Combobox/Combobox";
 import Tooltip from "^/components/theme/Tooltip";
 import TooltipCode from "^/components/theme/TooltipCode";
 import useForceUpdate from "^/lib/hooks/useForceUpdate";

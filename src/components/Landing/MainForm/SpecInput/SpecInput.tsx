@@ -1,12 +1,11 @@
-import { FunctionComponent, RefObject, useContext, useMemo } from "react";
-import Combobox, { ComboboxProps } from "^/components/Combobox";
-import { ComboboxRef } from "^/components/Combobox/Combobox";
+import { FunctionComponent, useContext, useMemo } from "react";
 import {
     AutocompleteSuggestion,
     AutocompleteSuggestionTypes,
     getAutocompleter,
 } from "^/lib/autocomplete";
 import { FallbackSuggestionsContext } from "^/lib/contexts/FallbackSuggestions";
+import Combobox, { ComboboxProps } from "./Combobox";
 import Suggestion from "./Suggestion";
 
 export interface SpecInputProps
