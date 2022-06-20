@@ -16,16 +16,12 @@ const emphasize = (fullStr: string, subStr?: string) =>
 const getEligbleVersions = ({
     versions,
     rawSpec,
-    minVersion,
+    greaterThan,
 }: {
     versions: ReadonlyArray<Version>;
     rawSpec: string;
-    minVersion?: string;
+    greaterThan?: string;
 }): Version[] => {
-    if (minVersion != null) {
-        versions = versions.filter(({ version }) => gt(version, minVersion));
-    }
-
     if (rawSpec !== "") {
         // If there is a spec, filter all version/tags that matches
         versions = versions.filter(
@@ -44,6 +40,18 @@ const getEligbleVersions = ({
         versions = nonPrereleaseVersions;
     }
 
+    if (greaterThan != null) {
+        const greaterThanVersions = versions.filter(({ version }) =>
+            gt(version, greaterThan),
+        );
+
+        if (greaterThanVersions.length > 0) {
+            // There is at least one version that is greater than the greaterThan, so only show those
+            versions = greaterThanVersions;
+        }
+        // If there is no version that is greater than the greaterThan, then show all versions
+    }
+
     // Slice to guarantee new array
     return versions.slice();
 };
@@ -56,20 +64,25 @@ export function matchVersions({
     rawSpec,
     versions,
     size,
-    minVersion,
+    greaterThan,
 }: {
     /** from `npa`. Like `1`, `1.2`, `1.2.3`, or `latest` */
     rawSpec: string;
     versions: ReadonlyArray<Version>;
     size: number;
-    /** Only show suggestions that are `gt` than this version. */
-    minVersion?: string;
+    /**
+     * If specified, will only consider versions that are `semver.gt` as eligble.
+     *
+     * Just like other filtering, if we can find no versions that are `semver.gt`,
+     * we ignore this filtering.
+     */
+    greaterThan?: string;
 }): Matched[] {
     /** Array of all versions that matches the string */
     const eligibleVersions = getEligbleVersions({
         versions,
         rawSpec,
-        minVersion,
+        greaterThan,
     }).reverse();
 
     if (eligibleVersions.length === 0) {

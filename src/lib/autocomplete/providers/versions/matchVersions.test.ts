@@ -4,7 +4,7 @@ import { Matched, matchVersions } from "./matchVersions";
 describe("matchVersions", () => {
     let size: number;
     let versions: Version[];
-    let fn: (rawSpec: string, minVersion?: string) => Matched[];
+    let fn: (rawSpec: string, greaterThan?: string) => Matched[];
 
     beforeEach(() => {
         size = 4;
@@ -34,8 +34,13 @@ describe("matchVersions", () => {
             ].map((version) => ({ version })),
             { version: "11.2.0", tags: ["latest"] },
         ];
-        fn = (rawSpec: string, minVersion) =>
-            matchVersions({ rawSpec, versions, size, minVersion });
+        fn = (rawSpec: string, greaterThan) =>
+            matchVersions({
+                rawSpec,
+                versions,
+                size,
+                greaterThan,
+            });
     });
 
     it("Does not mutate versions array parameter", () => {
@@ -169,7 +174,7 @@ describe("matchVersions", () => {
 
     describe("Min version", () => {
         describe("Input: ''", () => {
-            it("minVersion: '2.0.0'", () =>
+            it("greaterThan: '2.0.0'", () =>
                 expect(fn("", "2.0.0")).toEqual<Matched[]>([
                     {
                         tags: ["latest"],
@@ -190,7 +195,7 @@ describe("matchVersions", () => {
                     },
                 ]));
 
-            it("minVersion: '11.1.1'", () =>
+            it("greaterThan: '11.1.1'", () =>
                 expect(fn("", "11.1.1")).toEqual<Matched[]>([
                     {
                         tags: ["latest"],
@@ -205,10 +210,15 @@ describe("matchVersions", () => {
         });
 
         describe("Input: '1.'", () => {
-            it("minVersion: '2.0.0' (Should match nothing)", () =>
-                expect(fn("1.", "2.0.0")).toEqual<Matched[]>([]));
+            it("greaterThan: '2.0.0' (Returns matching anyway)", () =>
+                expect(fn("1.", "2.0.0")).toEqual<Matched[]>([
+                    { version: "1.2.3", versionEmphasized: "<em>1.</em>2.3" },
+                    { version: "1.2.2", versionEmphasized: "<em>1.</em>2.2" },
+                    { version: "1.2.1", versionEmphasized: "<em>1.</em>2.1" },
+                    { version: "1.1.0", versionEmphasized: "<em>1.</em>1.0" },
+                ]));
 
-            it("minVersion: '1.1.0'", () =>
+            it("greaterThan: '1.1.0'", () =>
                 expect(fn("1.", "1.1.0")).toEqual<Matched[]>([
                     { version: "1.2.3", versionEmphasized: "<em>1.</em>2.3" },
                     { version: "1.2.2", versionEmphasized: "<em>1.</em>2.2" },
