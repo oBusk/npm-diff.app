@@ -4,7 +4,7 @@ import { Matched, matchVersions } from "./matchVersions";
 describe("matchVersions", () => {
     let size: number;
     let versions: Version[];
-    let fn: (rawSpec: string, greaterThan?: string) => Matched[];
+    let fn: (rawSpec: string, optionalFilter?: string) => Matched[];
 
     beforeEach(() => {
         size = 4;
@@ -34,12 +34,12 @@ describe("matchVersions", () => {
             ].map((version) => ({ version })),
             { version: "11.2.0", tags: ["latest"] },
         ];
-        fn = (rawSpec: string, greaterThan) =>
+        fn = (rawSpec, optionalFilter) =>
             matchVersions({
                 rawSpec,
                 versions,
                 size,
-                greaterThan,
+                optionalFilter,
             });
     });
 
@@ -172,10 +172,10 @@ describe("matchVersions", () => {
             ]));
     });
 
-    describe("Min version", () => {
+    describe("Optional filter", () => {
         describe("Input: ''", () => {
-            it("greaterThan: '2.0.0'", () =>
-                expect(fn("", "2.0.0")).toEqual<Matched[]>([
+            it("optionalFilter: '>2.0.0'", () =>
+                expect(fn("", ">2.0.0>")).toEqual<Matched[]>([
                     {
                         tags: ["latest"],
                         version: "11.2.0",
@@ -195,8 +195,8 @@ describe("matchVersions", () => {
                     },
                 ]));
 
-            it("greaterThan: '11.1.1'", () =>
-                expect(fn("", "11.1.1")).toEqual<Matched[]>([
+            it("optionalFilter: '>11.1.1'", () =>
+                expect(fn("", ">11.1.1")).toEqual<Matched[]>([
                     {
                         tags: ["latest"],
                         version: "11.2.0",
@@ -207,22 +207,45 @@ describe("matchVersions", () => {
                         versionEmphasized: "11.1.2",
                     },
                 ]));
+
+            it("optionalFilter: '^0'", () =>
+                expect(fn("", "^0")).toEqual<Matched[]>([
+                    {
+                        version: "0.0.3",
+                        versionEmphasized: "0.0.3",
+                    },
+
+                    {
+                        version: "0.0.2",
+                        versionEmphasized: "0.0.2",
+                    },
+
+                    {
+                        version: "0.0.1",
+                        versionEmphasized: "0.0.1",
+                    },
+                ]));
         });
 
         describe("Input: '1.'", () => {
-            it("greaterThan: '2.0.0' (Returns matching anyway)", () =>
-                expect(fn("1.", "2.0.0")).toEqual<Matched[]>([
+            it("optionalFilter: '>2.0.0' (No hits so ignore filter)", () =>
+                expect(fn("1.", ">2.0.0")).toEqual<Matched[]>([
                     { version: "1.2.3", versionEmphasized: "<em>1.</em>2.3" },
                     { version: "1.2.2", versionEmphasized: "<em>1.</em>2.2" },
                     { version: "1.2.1", versionEmphasized: "<em>1.</em>2.1" },
                     { version: "1.1.0", versionEmphasized: "<em>1.</em>1.0" },
                 ]));
 
-            it("greaterThan: '1.1.0'", () =>
-                expect(fn("1.", "1.1.0")).toEqual<Matched[]>([
+            it("optionalFilter: '>1.1.0'", () =>
+                expect(fn("1.", ">1.1.0")).toEqual<Matched[]>([
                     { version: "1.2.3", versionEmphasized: "<em>1.</em>2.3" },
                     { version: "1.2.2", versionEmphasized: "<em>1.</em>2.2" },
                     { version: "1.2.1", versionEmphasized: "<em>1.</em>2.1" },
+                ]));
+
+            it("optionalFilter: '1.2.3'", () =>
+                expect(fn("1.", "1.2.3")).toEqual<Matched[]>([
+                    { version: "1.2.3", versionEmphasized: "<em>1.</em>2.3" },
                 ]));
         });
     });

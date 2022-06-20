@@ -1,5 +1,5 @@
 import { lte } from "lodash";
-import { gt, major, minor, patch, prerelease, rcompare } from "semver";
+import { major, minor, patch, prerelease, rcompare, satisfies } from "semver";
 import { Version } from "^/lib/middleware";
 
 export interface Matched {
@@ -16,11 +16,11 @@ const emphasize = (fullStr: string, subStr?: string) =>
 const getEligbleVersions = ({
     versions,
     rawSpec,
-    greaterThan,
+    optionalFilter,
 }: {
     versions: ReadonlyArray<Version>;
     rawSpec: string;
-    greaterThan?: string;
+    optionalFilter?: string;
 }): Version[] => {
     if (rawSpec !== "") {
         // If there is a spec, filter all version/tags that matches
@@ -40,16 +40,16 @@ const getEligbleVersions = ({
         versions = nonPrereleaseVersions;
     }
 
-    if (greaterThan != null) {
+    if (optionalFilter != null) {
         const greaterThanVersions = versions.filter(({ version }) =>
-            gt(version, greaterThan),
+            satisfies(version, optionalFilter),
         );
 
         if (greaterThanVersions.length > 0) {
-            // There is at least one version that is greater than the greaterThan, so only show those
+            // There is at least one version that matches the optional filter
             versions = greaterThanVersions;
         }
-        // If there is no version that is greater than the greaterThan, then show all versions
+        // If there is no version that matches the optional filter, ignore it
     }
 
     // Slice to guarantee new array
@@ -64,25 +64,25 @@ export function matchVersions({
     rawSpec,
     versions,
     size,
-    greaterThan,
+    optionalFilter,
 }: {
     /** from `npa`. Like `1`, `1.2`, `1.2.3`, or `latest` */
     rawSpec: string;
     versions: ReadonlyArray<Version>;
     size: number;
     /**
-     * If specified, will only consider versions that are `semver.gt` as eligble.
+     * Semver filter, to be passed into `semver.satisfies()`. If specified,
+     * will try to find versions that are within semver range.
      *
-     * Just like other filtering, if we can find no versions that are `semver.gt`,
-     * we ignore this filtering.
+     * "Optional" because if there are no matches, filter is ignored.
      */
-    greaterThan?: string;
+    optionalFilter?: string;
 }): Matched[] {
     /** Array of all versions that matches the string */
     const eligibleVersions = getEligbleVersions({
         versions,
         rawSpec,
-        greaterThan,
+        optionalFilter,
     }).reverse();
 
     if (eligibleVersions.length === 0) {
