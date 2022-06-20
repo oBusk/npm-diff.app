@@ -29,6 +29,28 @@ describe("versionsToSpecs", () => {
         expect(vts(specAndVersion)).toEqual(expected);
     });
 
+    it("A as spec (get B from A)", () => {
+        const specs = ["example@1.0.0"] as const;
+        const expected = ["example@1.0.0", "example@latest"] as const;
+        expect(vts(specs)).toEqual(expected);
+    });
+
+    it("A as X syntax (get B from A)", () => {
+        const specs = ["example@1.X"] as const;
+        const expected = ["example@1.X", "example@latest"] as const;
+        expect(vts(specs)).toEqual(expected);
+    });
+
+    it("Throws on single version-only input", () => {
+        const specs = ["1.0.0"] as const;
+        expect(() => vts(specs)).toThrow(/package name/i);
+    });
+
+    it("Throws on single X syntax input", () => {
+        const specs = ["1.X"] as const;
+        expect(() => vts(specs)).toThrow(/package name/i);
+    });
+
     it("Throw on two version-only inputs", () => {
         expect(() => vts(["1.0.0", "2.0.0"] as const)).toThrow();
     });

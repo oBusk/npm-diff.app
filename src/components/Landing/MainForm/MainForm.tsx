@@ -1,8 +1,10 @@
 import { Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
-import { FormEvent } from "react";
+import npa from "npm-package-arg";
+import { FormEvent, useMemo } from "react";
 import { useCallbackRef } from "use-callback-ref";
 import { ComboboxRef } from "^/components/Combobox/Combobox";
 import Tooltip from "^/components/theme/Tooltip";
+import TooltipCode from "^/components/theme/TooltipCode";
 import useForceUpdate from "^/lib/hooks/useForceUpdate";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
@@ -26,6 +28,26 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         const bRef = useCallbackRef<ComboboxRef | null>(null, forceUpdate);
         const a = aRef?.current?.value ?? "";
         const b = bRef?.current?.value ?? "";
+
+        /**
+         * A placeholder value for `B` if nothing is entered in `B`.
+         *
+         * This will be the package of `A` with the `latest` tag.
+         */
+        const automaticB = useMemo(() => {
+            try {
+                if (b) {
+                    return null;
+                }
+                const aName = npa(a)?.name;
+                if (!aName) {
+                    return null;
+                }
+                return `${aName}@latest`;
+            } catch (e) {
+                return null;
+            }
+        }, [a, b]);
 
         const internalHandleSubmit = (event: FormEvent): void => {
             event.preventDefault();
@@ -75,25 +97,31 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     id="b"
                     comboboxRef={bRef}
                     inputProps={{
-                        placeholder: "^3.0.1 or package-b@3.X",
+                        placeholder: automaticB || undefined,
                         borderStartRadius: { lg: 0 },
                     }}
                     marginTop={{ base: "0.5rem", lg: 0 }}
                 ></SpecInput>
                 <Tooltip
                     label={
-                        !a || !b
-                            ? "Neither field can be emtpy"
-                            : `Compare "${a}" and "${b}" now!`
+                        !a ? (
+                            "Enter a package specification to compare"
+                        ) : (
+                            <>
+                                Compare <TooltipCode>{a}</TooltipCode> and{" "}
+                                <TooltipCode>{automaticB || b}</TooltipCode>{" "}
+                                now!
+                            </>
+                        )
                     }
-                    background={!a || !b ? "red.700" : undefined}
+                    background={!a ? "red.700" : undefined}
                     shouldWrapChildren
                 >
                     <Button
                         isLoading={isLoading}
                         type="submit"
                         size={SIZE}
-                        disabled={!b || !a}
+                        disabled={!a}
                         marginInlineStart={{ lg: "2rem" }}
                         marginTop={{ base: "0.5rem", lg: 0 }}
                     >
