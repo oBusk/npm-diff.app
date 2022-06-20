@@ -3,7 +3,6 @@
  */
 
 import { renderHook } from "@testing-library/react";
-import { useCallback } from "react";
 import * as throttle from "../utils/throttle";
 import useThrottle from "./useThrottle";
 
