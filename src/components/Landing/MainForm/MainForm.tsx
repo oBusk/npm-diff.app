@@ -6,17 +6,10 @@ import {
     InputProps,
     Stack,
     StackProps,
-    Tooltip,
 } from "@chakra-ui/react";
 import npa from "npm-package-arg";
-import {
-    FormEvent,
-    FunctionComponent,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
+import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import Tooltip from "^/components/theme/Tooltip";
 import TooltipCode from "^/components/theme/TooltipCode";
 import CenterInputAddon from "./CenterInputAddon";
 
