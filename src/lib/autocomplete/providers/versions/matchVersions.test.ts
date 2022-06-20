@@ -27,8 +27,11 @@ describe("matchVersions", () => {
                 "11.0.3",
                 "11.0.4",
                 "11.1.0",
+                "11.1.1-alpha.1",
                 "11.1.1",
                 "11.1.2",
+                "11.1.3-beta.1",
+                "11.1.3-beta.2",
             ].map((version) => ({ version })),
             { version: "11.2.0", tags: ["latest"] },
         ];
@@ -122,6 +125,26 @@ describe("matchVersions", () => {
         it("Input: 11.1.1", () =>
             expect(fn("11.1.1")).toEqual<Matched[]>([
                 { version: "11.1.1", versionEmphasized: "<em>11.1.1</em>" },
+            ]));
+
+        it("Input: 11.1.1-", () =>
+            expect(fn("11.1.1-")).toEqual<Matched[]>([
+                {
+                    version: "11.1.1-alpha.1",
+                    versionEmphasized: "<em>11.1.1-</em>alpha.1",
+                },
+            ]));
+
+        it("Input: 11.1.3", () =>
+            expect(fn("11.1.3")).toEqual<Matched[]>([
+                {
+                    version: "11.1.3-beta.2",
+                    versionEmphasized: "<em>11.1.3</em>-beta.2",
+                },
+                {
+                    version: "11.1.3-beta.1",
+                    versionEmphasized: "<em>11.1.3</em>-beta.1",
+                },
             ]));
     });
 
