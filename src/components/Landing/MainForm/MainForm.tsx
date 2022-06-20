@@ -29,6 +29,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         const a = aRef?.current?.value ?? "";
         const b = bRef?.current?.value ?? "";
 
+        const aNpa = useMemo(() => npa(a), [a]);
+
         /**
          * A placeholder value for `B` if nothing is entered in `B`.
          *
@@ -39,15 +41,24 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                 if (b) {
                     return null;
                 }
-                const aName = npa(a)?.name;
-                if (!aName) {
+                if (!aNpa.name) {
                     return null;
                 }
-                return `${aName}@latest`;
+                return `${aNpa.name}@latest`;
             } catch (e) {
                 return null;
             }
-        }, [a, b]);
+        }, [aNpa.name, b]);
+
+        const bPackageFilter = useMemo(
+            () =>
+                aNpa.type === "version" &&
+                aNpa.name?.length &&
+                aNpa.rawSpec?.length >= 5
+                    ? `${aNpa.name}@>${aNpa.rawSpec}`
+                    : undefined,
+            [aNpa.type, aNpa.name, aNpa.rawSpec],
+        );
 
         const internalHandleSubmit = (event: FormEvent): void => {
             event.preventDefault();
@@ -80,8 +91,9 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                         borderEndRadius: { lg: 0 },
                     }}
                     versionSelected={(item) => {
-                        bRef.current?.setValue(`${item.name}@`);
+                        // Wait for bPackageFilter to be set
                         setTimeout(() => {
+                            bRef.current?.setValue(`${item.name}@`);
                             bRef.current?.focus();
                         });
                     }}
@@ -101,6 +113,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                         borderStartRadius: { lg: 0 },
                     }}
                     marginTop={{ base: "0.5rem", lg: 0 }}
+                    optionalPackageFilter={bPackageFilter}
                 ></SpecInput>
                 <Tooltip
                     label={

@@ -3,11 +3,13 @@
  */
 
 import { renderHook } from "@testing-library/react";
+import { useCallback } from "react";
 import * as throttle from "../utils/throttle";
 import useThrottle from "./useThrottle";
 
 describe("useThrottle", () => {
     let fn: (n: number) => void;
+    const noop = () => {};
 
     beforeEach(() => {
         jest.useFakeTimers();
@@ -20,7 +22,7 @@ describe("useThrottle", () => {
 
     it("returns the same object between renders", () => {
         const { result, rerender } = renderHook(() =>
-            useThrottle(() => {}, 100, false),
+            useThrottle(noop, 100, []),
         );
         const first = result.current;
         rerender();
@@ -32,7 +34,7 @@ describe("useThrottle", () => {
         const mock = jest.spyOn(throttle, "default");
 
         const { result, rerender } = renderHook(() =>
-            useThrottle(() => {}, 100, false),
+            useThrottle(noop, 100, []),
         );
         const first = result.current;
         rerender();
@@ -45,9 +47,7 @@ describe("useThrottle", () => {
     });
 
     it(`Triggers instantly when "clean", otherwise delays.`, () => {
-        const { result, rerender } = renderHook(() =>
-            useThrottle(fn, 100, false),
-        );
+        const { result, rerender } = renderHook(() => useThrottle(fn, 100, []));
 
         // Triggers ONCE synchronously
         result.current(1);

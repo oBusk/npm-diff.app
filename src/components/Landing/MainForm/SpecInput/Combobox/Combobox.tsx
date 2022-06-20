@@ -6,7 +6,6 @@ import {
 } from "downshift";
 import { ReactNode, RefObject, useCallback, useEffect, useRef } from "react";
 import { assignRef } from "use-callback-ref";
-import useAsyncState from "^/lib/hooks/useAsyncState";
 import useThrottle from "^/lib/hooks/useThrottle";
 import ComboboxBox from "./ComboboxBox";
 import ComboboxButton from "./ComboboxButton";
@@ -27,9 +26,10 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
     comboboxRef?: RefObject<ComboboxRef>;
     /** @default "Find a package" */
     label?: string | null;
-    suggestionFinder: (input: string | undefined) => I[] | Promise<I[]>;
-    initialSuggestions?: I[];
-    throttle?: number;
+    items: I[];
+    updateQuery: (input: string) => void;
+    /** The number of ms to throttle updates to query */
+    queryThrottle?: number;
     initialIsOpen?: boolean;
     emptyState?: ReactNode;
     /**
@@ -70,9 +70,9 @@ const Combobox = <T,>({
     id,
     comboboxRef,
     label = "Find a package",
-    suggestionFinder,
-    initialSuggestions = [],
-    throttle = 250,
+    items,
+    updateQuery,
+    queryThrottle = 250,
     initialIsOpen = false,
     emptyState = (
         <Text padding="16px" align="center" color="gray.200">
@@ -89,12 +89,12 @@ const Combobox = <T,>({
     size = "md",
     ...props
 }: ComboboxProps<T>) => {
-    const [items, setItems] = useAsyncState(initialSuggestions);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const updateSuggestions = useThrottle(
-        (inputValue = "") => setItems(suggestionFinder(inputValue)),
-        throttle,
+        (inputValue = "") => updateQuery(inputValue),
+        queryThrottle,
+        [updateQuery],
     );
 
     const shouldKeepOpen =

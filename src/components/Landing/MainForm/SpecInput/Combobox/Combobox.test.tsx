@@ -1,27 +1,20 @@
 /** @jest-environment jsdom */
 
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import Combobox from "./Combobox";
 
 describe("Combobox", () => {
     const setup = async () => {
-        const suggestionPromise = new Promise<{ value: string }[]>((resolve) =>
-            resolve([{ value: "a" }, { value: "b" }]),
-        );
-
-        const suggestionFinder = jest.fn(
-            (query: string | undefined) => suggestionPromise,
-        );
+        const updateQuery = jest.fn((query: string | undefined) => {});
 
         const utils = render(
-            <Combobox id="test" suggestionFinder={suggestionFinder} />,
+            <Combobox id="test" items={[]} updateQuery={updateQuery} />,
         );
 
         const input: HTMLInputElement = await screen.findByRole("textbox");
 
         return {
-            suggestionPromise,
-            suggestionFinder,
+            updateQuery,
             input,
             ...utils,
         };
@@ -34,14 +27,12 @@ describe("Combobox", () => {
     });
 
     it("Calls suggestionFinder on input", async () => {
-        const { suggestionPromise, suggestionFinder, input } = await setup();
+        const { updateQuery, input } = await setup();
 
         fireEvent.focus(input);
         fireEvent.input(input, { target: { value: "a" } });
 
-        expect(suggestionFinder).toHaveBeenCalledTimes(1);
-        expect(suggestionFinder).toHaveBeenCalledWith("a");
-
-        await act(() => suggestionPromise.then(() => {}));
+        expect(updateQuery).toHaveBeenCalledTimes(1);
+        expect(updateQuery).toHaveBeenCalledWith("a");
     });
 });

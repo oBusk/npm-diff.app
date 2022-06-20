@@ -1,9 +1,12 @@
-import { useMemo } from "react";
+import { DependencyList, useMemo } from "react";
 import throttle from "../utils/throttle";
 
-function useThrottle<F extends (...args: any) => void>(fn: F, wait: number): F {
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    return useMemo(() => throttle(fn, wait), []);
+function useThrottle<F extends (...args: any) => void>(
+    fn: F,
+    wait: number,
+    deps: DependencyList | undefined,
+): F {
+    return useMemo(() => throttle(fn, wait), [fn, wait, ...(deps || [])]);
 }
 
 export default useThrottle;

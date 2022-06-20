@@ -11,8 +11,19 @@ import { matchVersions } from "./versions/matchVersions";
 
 async function getAutocompleteVersions(
     input: string,
+    /**
+     * E.g `package@^1.2.3` or `package@>1.2.3`
+     *
+     * To help pick better results when showing versions for `package`.
+     *
+     * If `input` is a different package, _or_ no matching versions are found,
+     * this filter is ignored
+     */
+    optionalPackageFilter?: string,
 ): Promise<AutocompleteSuggestion[]> {
     const { name, rawSpec } = npa(input);
+    const optionalFilterNpa =
+        optionalPackageFilter && npa(optionalPackageFilter);
 
     if (!name) {
         throw new Error("No package name provided");
@@ -26,6 +37,12 @@ async function getAutocompleteVersions(
         rawSpec,
         versions,
         size: AUTOCOMPLETE_SIZE,
+        // Only provide `optionalFilter` if `optionalFilter` is same package as `input`
+        optionalFilter:
+            (optionalFilterNpa &&
+                optionalFilterNpa?.name === name &&
+                optionalFilterNpa.rawSpec) ||
+            undefined,
     }).map(({ version, versionEmphasized, tags }) => {
         return {
             type: AutocompleteSuggestionTypes.Version,
