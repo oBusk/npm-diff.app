@@ -129,6 +129,7 @@ const Combobox = <T,>({
         setInputValue,
         inputValue,
     } = useCombobox({
+        defaultHighlightedIndex: 0,
         id,
         items,
         initialIsOpen,
