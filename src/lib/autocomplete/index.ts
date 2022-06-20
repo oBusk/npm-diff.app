@@ -1,7 +1,7 @@
 import AutocompleteSuggestion from "./AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "./AutocompleteSuggestionTypes";
 import fallback from "./fallback";
-import getAutocompleter from "./getAutocompleter";
+import useAutocompleter from "./useAutocompleter";
 
 export type { AutocompleteSuggestion };
-export { getAutocompleter, AutocompleteSuggestionTypes, fallback };
+export { useAutocompleter, AutocompleteSuggestionTypes, fallback };

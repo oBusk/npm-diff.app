@@ -1,8 +1,8 @@
-import { FunctionComponent, useContext, useMemo } from "react";
+import { FunctionComponent, useContext } from "react";
 import {
     AutocompleteSuggestion,
     AutocompleteSuggestionTypes,
-    getAutocompleter,
+    useAutocompleter,
 } from "^/lib/autocomplete";
 import { FallbackSuggestionsContext } from "^/lib/contexts/FallbackSuggestions";
 import Combobox, { ComboboxProps } from "./Combobox";
@@ -19,10 +19,6 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
     ...props
 }) => {
     const fallback = useContext(FallbackSuggestionsContext);
-    const suggestionFinder = useMemo(
-        () => getAutocompleter(fallback),
-        [fallback],
-    );
 
     return (
         <Combobox
@@ -31,7 +27,7 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
             id={id}
             label={null}
             initialSuggestions={fallback}
-            suggestionFinder={suggestionFinder}
+            suggestionFinder={useAutocompleter(fallback)}
             itemToString={(suggestion) => suggestion?.value || ""}
             renderItem={Suggestion}
             keepOpen={({ selectedItem }) =>
