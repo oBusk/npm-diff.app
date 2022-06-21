@@ -1,6 +1,5 @@
-import { useEffect } from "react";
+import { useAsync } from "react-use";
 import useThrottle from "^/lib/hooks/useThrottle";
-import useAsyncState from "../hooks/useAsyncState";
 import autocomplete from "./autocomplete";
 import AutocompleteSuggestion from "./AutocompleteSuggestion";
 
@@ -17,7 +16,8 @@ export interface UseAutocompleteProps {
 
 export interface UseAutocompleteState {
     items: AutocompleteSuggestion[];
-    isLoading: boolean;
+    loading: boolean;
+    error: Error | undefined;
 }
 
 function useAutocomplete({
@@ -25,32 +25,25 @@ function useAutocomplete({
     query,
     queryThrottle = 0,
     optionalPackageFilter,
-}: UseAutocompleteProps): UseAutocompleteState {
+}: UseAutocompleteProps) {
     const throttledQuery = useThrottle(query, queryThrottle);
 
-    const [state, setState] = useAsyncState<UseAutocompleteState>({
-        items: fallback,
-        isLoading: false,
-    });
-
-    useEffect(() => {
-        // Update synchronously to set isLoading
-        setState(({ items }) => ({ items, isLoading: true }));
-        // Update asynchronously to set items and isLoading = false
-        setState(
+    const { loading, value, error } = useAsync(
+        async () =>
             throttledQuery === ""
-                ? {
-                      items: fallback,
-                      isLoading: false,
-                  }
-                : autocomplete({
+                ? fallback
+                : await autocomplete({
                       query: throttledQuery,
                       optionalPackageFilter,
-                  }).then((items) => ({ items, isLoading: false })),
-        );
-    }, [setState, throttledQuery, fallback, optionalPackageFilter]);
+                  }),
+        [throttledQuery, fallback, optionalPackageFilter],
+    );
 
-    return state;
+    return {
+        items: value ?? fallback,
+        loading,
+        error,
+    };
 }
 
 export default useAutocomplete;

@@ -37,7 +37,7 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
     const localRef = useCallbackRef<ComboboxRef | null>(null, update);
     const query = comboboxRef?.current?.value ?? "";
 
-    const { items, isLoading } = useAutocomplete({
+    const { items, loading } = useAutocomplete({
         query,
         queryThrottle: 250,
         fallback,
@@ -61,7 +61,7 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
                 item.type === AutocompleteSuggestionTypes.Version &&
                     versionSelected?.(item);
             }}
-            isLoading={isLoading}
+            isLoading={loading}
             comboboxRef={useMergeRefs(
                 comboboxRef ? [comboboxRef, localRef] : [localRef],
             )}
