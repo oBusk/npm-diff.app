@@ -22,8 +22,6 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         { overrideA, overrideB, children, isLoading, handleSubmit, ...props },
         ref,
     ) => {
-        console.log({ overrideA, overrideB });
-
         const forceUpdate = useForceUpdate();
         const aRef = useCallbackRef<ComboboxRef | null>(null, forceUpdate);
         const bRef = useCallbackRef<ComboboxRef | null>(null, forceUpdate);
