@@ -5,7 +5,7 @@ import {
     useColorModeValue,
 } from "@chakra-ui/react";
 
-export type TooltipCodeProps = CodeProps;
+export interface TooltipCodeProps extends CodeProps {}
 
 /** Small wrapper for https://chakra-ui.com/code for better colors in Tooltip */
 const TooltipCode = forwardRef<TooltipCodeProps, typeof Code>((props, ref) => {
