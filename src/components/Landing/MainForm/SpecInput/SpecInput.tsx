@@ -1,4 +1,5 @@
 import { FunctionComponent, useContext } from "react";
+import { useUpdate } from "react-use";
 import { useCallbackRef, useMergeRefs } from "use-callback-ref";
 import {
     AutocompleteSuggestion,
@@ -6,7 +7,6 @@ import {
 } from "^/lib/autocomplete";
 import useAutocomplete from "^/lib/autocomplete/useAutocomplete";
 import { FallbackSuggestionsContext } from "^/lib/contexts/FallbackSuggestions";
-import useForceUpdate from "^/lib/hooks/useForceUpdate";
 import Combobox, { ComboboxProps } from "./Combobox";
 import { ComboboxRef } from "./Combobox/Combobox";
 import Suggestion from "./Suggestion";
@@ -32,7 +32,7 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
     comboboxRef,
     ...props
 }) => {
-    const update = useForceUpdate();
+    const update = useUpdate();
     const fallback = useContext(FallbackSuggestionsContext);
     const localRef = useCallbackRef<ComboboxRef | null>(null, update);
     const query = comboboxRef?.current?.value ?? "";

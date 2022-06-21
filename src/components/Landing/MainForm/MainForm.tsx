@@ -1,10 +1,10 @@
 import { Box, Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
 import npa from "npm-package-arg";
 import { FormEvent, useMemo } from "react";
+import { useUpdate } from "react-use";
 import { useCallbackRef } from "use-callback-ref";
 import { ComboboxRef } from "^/components/Landing/MainForm/SpecInput/Combobox/Combobox";
 import { Tooltip, TooltipCode } from "^/components/theme";
-import useForceUpdate from "^/lib/hooks/useForceUpdate";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
 
@@ -22,9 +22,9 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         { overrideA, overrideB, children, isLoading, handleSubmit, ...props },
         ref,
     ) => {
-        const forceUpdate = useForceUpdate();
-        const aRef = useCallbackRef<ComboboxRef | null>(null, forceUpdate);
-        const bRef = useCallbackRef<ComboboxRef | null>(null, forceUpdate);
+        const update = useUpdate();
+        const aRef = useCallbackRef<ComboboxRef | null>(null, update);
+        const bRef = useCallbackRef<ComboboxRef | null>(null, update);
         const a = aRef?.current?.value ?? "";
         const b = bRef?.current?.value ?? "";
 
