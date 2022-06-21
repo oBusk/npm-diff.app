@@ -1,17 +1,28 @@
-import { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Landing from "^/components/Landing";
+import AutocompleteSuggestion from "^/lib/autocomplete/AutocompleteSuggestion";
+import fallback from "^/lib/autocomplete/fallback";
+import { FallbackSuggestionsContext } from "^/lib/contexts/FallbackSuggestions";
 
-export interface IndexProps {}
-
-export interface IndexState {
-    isLoading: boolean;
-    overrideA: string | null;
-    overrideB: string | null;
-    diffFiles: string;
+export interface IndexProps {
+    fallbackSuggestions: AutocompleteSuggestion[];
 }
 
-const IndexPage: NextPage<IndexProps> = () => {
-    return <Landing />;
+export const getStaticProps: GetStaticProps<IndexProps> = async () => {
+    return {
+        props: {
+            fallbackSuggestions: await fallback(),
+        },
+        revalidate: 60 * 60,
+    };
+};
+
+const IndexPage: NextPage<IndexProps> = ({ fallbackSuggestions }) => {
+    return (
+        <FallbackSuggestionsContext.Provider value={fallbackSuggestions}>
+            <Landing />
+        </FallbackSuggestionsContext.Provider>
+    );
 };
 
 export default IndexPage;

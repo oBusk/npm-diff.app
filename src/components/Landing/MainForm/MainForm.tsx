@@ -1,20 +1,12 @@
-import {
-    Button,
-    Flex,
-    forwardRef,
-    Input,
-    InputProps,
-    Stack,
-    StackProps,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
 import npa from "npm-package-arg";
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
 import { Tooltip, TooltipCode } from "^/components/theme";
 import CenterInputAddon from "./CenterInputAddon";
+import SpecInput from "./SpecInput";
+import { ComboboxRef } from "./SpecInput/Combobox/Combobox";
 
-const SpecInput = forwardRef<InputProps, "input">((props, ref) => (
-    <Input type="text" maxWidth="20em" {...props} ref={ref} />
-));
+const SIZE = "md";
 
 export interface MainFormProps extends StackProps {
     overrideA: string | null;
@@ -28,112 +20,136 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         { overrideA, overrideB, children, isLoading, handleSubmit, ...props },
         ref,
     ) => {
-        const aRef = useRef<HTMLInputElement>(null);
-        const [a, setA] = useState("");
-        const [b, setB] = useState("");
+        const bRef = useRef<ComboboxRef>(null);
+        const [a, setA] = useState<string | undefined>("");
+        const [b, setB] = useState<string | undefined>("");
 
-        /**
-         * A placeholder value for `B` if nothing is entered in `B`.
-         *
-         * This will be the package of `A` with the `latest` tag.
-         */
-        const automaticB = useMemo(() => {
-            try {
-                if (b) {
-                    return null;
-                }
-                const aName = npa(a)?.name;
-                if (!aName) {
-                    return null;
-                }
-                return `${aName}@latest`;
-            } catch (e) {
-                return null;
+        const bPackageFilter = useMemo(() => {
+            if (!a) {
+                return undefined;
             }
-        }, [a, b]);
 
-        useEffect(() => {
-            // Focus the input on initial load (only)
-            aRef.current?.focus();
-        }, []);
+            let aNpa: npa.Result | undefined;
 
-        const internalHandleSubmit = (event: FormEvent): void => {
-            event.preventDefault();
+            try {
+                // We don't really care if npa can't parse the input
+                aNpa = npa(a);
+            } catch (e) {
+                //
+            }
 
-            const target = event.target as typeof event.target & {
-                a: HTMLInputElement;
-                b: HTMLInputElement;
-            };
+            return aNpa?.type === "version" &&
+                aNpa?.name?.length &&
+                aNpa?.rawSpec?.length >= 5
+                ? `${aNpa.name}@>${aNpa?.rawSpec}`
+                : undefined;
+        }, [a]);
 
-            handleSubmit(target.a.value, target.b.value);
-        };
+        const internalHandleSubmit = useCallback(
+            (event: FormEvent): void => {
+                event.preventDefault();
+
+                const target = event.target as typeof event.target & {
+                    ["a-input"]: HTMLInputElement;
+                    ["b-input"]: HTMLInputElement;
+                };
+
+                handleSubmit(target["a-input"].value, target["b-input"].value);
+            },
+            [handleSubmit],
+        );
 
         return (
-            <Stack
+            <Flex
                 as="form"
                 onSubmit={internalHandleSubmit}
                 align="center"
                 justify="center"
                 direction={{ base: "column", lg: "row" }}
-                spacing={{ base: "0.5rem", lg: 0 }}
                 ref={ref}
                 {...props}
             >
-                <Tooltip
-                    label={`The specification of the base, like "package@1.2.3"`}
-                    closeOnClick={false}
+                <SpecInput
+                    size={SIZE}
+                    id="a"
+                    inputValue={a}
+                    inputValueChange={setA}
+                    initialIsOpen={true}
+                    inputProps={{
+                        borderEndRadius: { lg: 0 },
+                        ...(overrideA
+                            ? {
+                                  value: overrideA,
+                                  isDisabled: true,
+                              }
+                            : undefined),
+                    }}
+                    versionSelected={(item) => {
+                        setB(`${item.name}@`);
+                        setTimeout(() => bRef.current?.focus());
+                    }}
+                ></SpecInput>
+                <CenterInputAddon
+                    size={SIZE}
+                    display={{ base: "none", lg: "flex" }}
                 >
-                    <SpecInput
-                        name="a"
-                        placeholder="package@1.2.3 or package@^1"
-                        disabled={overrideA != null || isLoading}
-                        value={overrideA ?? a ?? ""}
-                        onChange={(event) => setA(event.target.value)}
-                        ref={aRef}
-                        borderEndRadius={{ lg: 0 }}
-                    ></SpecInput>
-                </Tooltip>
-                <CenterInputAddon display={{ base: "none", lg: "flex" }}>
                     ...
                 </CenterInputAddon>
-                <Tooltip
-                    label={`The specification of the compare, like "package"`}
-                    closeOnClick={false}
+                <SpecInput
+                    size={SIZE}
+                    id="b"
+                    comboboxRef={bRef}
+                    inputValue={b}
+                    inputValueChange={setB}
+                    inputProps={{
+                        borderStartRadius: { lg: 0 },
+                        ...(overrideB
+                            ? {
+                                  value: overrideB,
+                                  isDisabled: true,
+                              }
+                            : undefined),
+                    }}
+                    marginTop={{ base: "0.5rem", lg: 0 }}
+                    optionalPackageFilter={bPackageFilter}
+                ></SpecInput>
+                <Box
+                    marginInlineStart={{ lg: "2rem" }}
+                    marginTop={{ base: "0.5rem", lg: 0 }}
                 >
-                    <SpecInput
-                        name="b"
-                        placeholder={automaticB || undefined}
-                        disabled={overrideB != null || isLoading}
-                        value={overrideB ?? b ?? ""}
-                        onChange={(event) => setB(event.target.value)}
-                        borderStartRadius={{ lg: 0 }}
-                    ></SpecInput>
-                </Tooltip>
-                <Tooltip
-                    label={
-                        !a ? (
-                            "Enter a package specification to compare"
-                        ) : (
-                            <>
-                                Compare <TooltipCode>{a}</TooltipCode> and{" "}
-                                <TooltipCode>{automaticB || b}</TooltipCode>{" "}
-                                now!
-                            </>
-                        )
-                    }
-                    background={!a ? "red.700" : undefined}
-                    shouldWrapChildren
-                >
-                    <Button
-                        isLoading={isLoading}
-                        type="submit"
-                        disabled={!a}
-                        marginInlineStart={{ lg: "2rem" }}
+                    <Tooltip
+                        label={
+                            !a ? (
+                                "Enter a package specification to compare"
+                            ) : (
+                                <>
+                                    Compare <TooltipCode>{a}</TooltipCode>{" "}
+                                    {b ? (
+                                        <>
+                                            and <TooltipCode>{b}</TooltipCode>
+                                        </>
+                                    ) : (
+                                        ""
+                                    )}{" "}
+                                    now!
+                                </>
+                            )
+                        }
+                        background={!a ? "red.700" : undefined}
                     >
-                        npm diff! 📦🔃
-                    </Button>
-                </Tooltip>
-            </Stack>
+                        <Box>
+                            <Button
+                                isLoading={isLoading}
+                                type="submit"
+                                size={SIZE}
+                                disabled={!a}
+                            >
+                                npm diff! 📦🔃
+                            </Button>
+                        </Box>
+                    </Tooltip>
+                </Box>
+            </Flex>
         );
     },
 );

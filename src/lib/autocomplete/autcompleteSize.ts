@@ -1,0 +1,3 @@
+const AUTOCOMPLETE_SIZE = 4;
+
+export default AUTOCOMPLETE_SIZE;
