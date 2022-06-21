@@ -166,8 +166,8 @@ const Combobox = <T,>({
                 <ComboboxInput
                     isOpen={isOpen}
                     onFocus={openMenu}
-                    {...inputProps}
                     {...getInputProps({ ref: inputRef })}
+                    {...inputProps}
                 />
                 {showToggleButton && (
                     <ComboboxButton

@@ -22,6 +22,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         { overrideA, overrideB, children, isLoading, handleSubmit, ...props },
         ref,
     ) => {
+        console.log({ overrideA, overrideB });
+
         const forceUpdate = useForceUpdate();
         const aRef = useCallbackRef<ComboboxRef | null>(null, forceUpdate);
         const bRef = useCallbackRef<ComboboxRef | null>(null, forceUpdate);
@@ -81,6 +83,12 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     inputProps={{
                         placeholder: "package@1.2.3 or package@^1",
                         borderEndRadius: { lg: 0 },
+                        ...(overrideA
+                            ? {
+                                  value: overrideA,
+                                  isDisabled: true,
+                              }
+                            : undefined),
                     }}
                     versionSelected={(item) => {
                         // Wait for bPackageFilter to be set
@@ -103,6 +111,12 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     inputProps={{
                         placeholder: bPlaceholder || undefined,
                         borderStartRadius: { lg: 0 },
+                        ...(overrideB
+                            ? {
+                                  value: overrideB,
+                                  isDisabled: true,
+                              }
+                            : undefined),
                     }}
                     marginTop={{ base: "0.5rem", lg: 0 }}
                     optionalPackageFilter={bPackageFilter}
