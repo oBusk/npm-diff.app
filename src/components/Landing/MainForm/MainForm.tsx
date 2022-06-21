@@ -29,36 +29,29 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         const a = aRef?.current?.value ?? "";
         const b = bRef?.current?.value ?? "";
 
-        const aNpa = useMemo(() => npa(a), [a]);
+        const aNpa = useMemo(() => {
+            try {
+                // We don't really care if npa can't parse the input
+                return npa(a);
+            } catch (e) {
+                return undefined;
+            }
+        }, [a]);
 
         /**
          * A placeholder value for `B` if nothing is entered in `B`.
          *
          * This will be the package of `A` with the `latest` tag.
          */
-        const automaticB = useMemo(() => {
-            try {
-                if (b) {
-                    return null;
-                }
-                if (!aNpa.name) {
-                    return null;
-                }
-                return `${aNpa.name}@latest`;
-            } catch (e) {
-                return null;
-            }
-        }, [aNpa.name, b]);
+        const bPlaceholder =
+            !b && aNpa?.name ? `${aNpa.name}@latest` : undefined;
 
-        const bPackageFilter = useMemo(
-            () =>
-                aNpa.type === "version" &&
-                aNpa.name?.length &&
-                aNpa.rawSpec?.length >= 5
-                    ? `${aNpa.name}@>${aNpa.rawSpec}`
-                    : undefined,
-            [aNpa.type, aNpa.name, aNpa.rawSpec],
-        );
+        const bPackageFilter =
+            aNpa?.type === "version" &&
+            aNpa?.name?.length &&
+            aNpa?.rawSpec?.length >= 5
+                ? `${aNpa.name}@>${aNpa?.rawSpec}`
+                : undefined;
 
         const internalHandleSubmit = (event: FormEvent): void => {
             event.preventDefault();
@@ -109,7 +102,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     id="b"
                     comboboxRef={bRef}
                     inputProps={{
-                        placeholder: automaticB || undefined,
+                        placeholder: bPlaceholder || undefined,
                         borderStartRadius: { lg: 0 },
                     }}
                     marginTop={{ base: "0.5rem", lg: 0 }}
@@ -122,7 +115,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                         ) : (
                             <>
                                 Compare <TooltipCode>{a}</TooltipCode> and{" "}
-                                <TooltipCode>{automaticB || b}</TooltipCode>{" "}
+                                <TooltipCode>{bPlaceholder || b}</TooltipCode>{" "}
                                 now!
                             </>
                         )
