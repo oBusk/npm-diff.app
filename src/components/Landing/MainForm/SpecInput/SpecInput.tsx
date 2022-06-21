@@ -1,6 +1,4 @@
 import { FunctionComponent, useContext } from "react";
-import { useUpdate } from "react-use";
-import { useCallbackRef, useMergeRefs } from "use-callback-ref";
 import {
     AutocompleteSuggestion,
     AutocompleteSuggestionTypes,
@@ -8,14 +6,10 @@ import {
 import useAutocomplete from "^/lib/autocomplete/useAutocomplete";
 import { FallbackSuggestionsContext } from "^/lib/contexts/FallbackSuggestions";
 import Combobox, { ComboboxProps } from "./Combobox";
-import { ComboboxRef } from "./Combobox/Combobox";
 import Suggestion from "./Suggestion";
 
 export interface SpecInputProps
-    extends Omit<
-        ComboboxProps<AutocompleteSuggestion>,
-        "updateQuery" | "items"
-    > {
+    extends Omit<ComboboxProps<AutocompleteSuggestion>, "items"> {
     versionSelected?: (item: AutocompleteSuggestion) => void;
     /**
      * If specified, `SpecInput` will try to find versions that matches this spec.
@@ -29,16 +23,13 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
     id,
     versionSelected,
     optionalPackageFilter,
-    comboboxRef,
+    inputValue,
     ...props
 }) => {
-    const update = useUpdate();
     const fallback = useContext(FallbackSuggestionsContext);
-    const localRef = useCallbackRef<ComboboxRef | null>(null, update);
-    const query = comboboxRef?.current?.value ?? "";
 
     const { items, loading } = useAutocomplete({
-        query,
+        query: inputValue ?? "",
         queryThrottle: 250,
         fallback,
         optionalPackageFilter,
@@ -49,6 +40,7 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
             width="100%"
             maxWidth="20em"
             id={id}
+            inputValue={inputValue}
             label={null}
             items={items}
             itemToString={(suggestion) => suggestion?.value || ""}
@@ -62,9 +54,6 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
                     versionSelected?.(item);
             }}
             isLoading={loading}
-            comboboxRef={useMergeRefs(
-                comboboxRef ? [comboboxRef, localRef] : [localRef],
-            )}
             {...props}
         />
     );

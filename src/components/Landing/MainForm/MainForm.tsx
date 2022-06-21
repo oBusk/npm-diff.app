@@ -1,12 +1,10 @@
 import { Box, Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
 import npa from "npm-package-arg";
-import { FormEvent, useCallback, useMemo } from "react";
-import { useUpdate } from "react-use";
-import { useCallbackRef } from "use-callback-ref";
-import { ComboboxRef } from "^/components/Landing/MainForm/SpecInput/Combobox/Combobox";
+import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
 import { Tooltip, TooltipCode } from "^/components/theme";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
+import { ComboboxRef } from "./SpecInput/Combobox/Combobox";
 
 const SIZE = "md";
 
@@ -22,27 +20,30 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         { overrideA, overrideB, children, isLoading, handleSubmit, ...props },
         ref,
     ) => {
-        const update = useUpdate();
-        const aRef = useCallbackRef<ComboboxRef | null>(null, update);
-        const bRef = useCallbackRef<ComboboxRef | null>(null, update);
-        const a = aRef?.current?.value ?? "";
-        const b = bRef?.current?.value ?? "";
+        const bRef = useRef<ComboboxRef>(null);
+        const [a, setA] = useState<string | undefined>("");
+        const [b, setB] = useState<string | undefined>("");
 
-        const aNpa = useMemo(() => {
-            try {
-                // We don't really care if npa can't parse the input
-                return npa(a);
-            } catch (e) {
+        const bPackageFilter = useMemo(() => {
+            if (!a) {
                 return undefined;
             }
-        }, [a]);
 
-        const bPackageFilter =
-            aNpa?.type === "version" &&
-            aNpa?.name?.length &&
-            aNpa?.rawSpec?.length >= 5
+            let aNpa: npa.Result | undefined;
+
+            try {
+                // We don't really care if npa can't parse the input
+                aNpa = npa(a);
+            } catch (e) {
+                //
+            }
+
+            return aNpa?.type === "version" &&
+                aNpa?.name?.length &&
+                aNpa?.rawSpec?.length >= 5
                 ? `${aNpa.name}@>${aNpa?.rawSpec}`
                 : undefined;
+        }, [a]);
 
         const internalHandleSubmit = useCallback(
             (event: FormEvent): void => {
@@ -71,7 +72,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                 <SpecInput
                     size={SIZE}
                     id="a"
-                    comboboxRef={aRef}
+                    inputValue={a}
+                    inputValueChange={setA}
                     initialIsOpen={true}
                     inputProps={{
                         borderEndRadius: { lg: 0 },
@@ -83,11 +85,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                             : undefined),
                     }}
                     versionSelected={(item) => {
-                        // Wait for bPackageFilter to be set
-                        setTimeout(() => {
-                            bRef.current?.setValue(`${item.name}@`);
-                            bRef.current?.focus();
-                        });
+                        setB(`${item.name}@`);
+                        setTimeout(() => bRef.current?.focus());
                     }}
                 ></SpecInput>
                 <CenterInputAddon
@@ -100,6 +99,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     size={SIZE}
                     id="b"
                     comboboxRef={bRef}
+                    inputValue={b}
+                    inputValueChange={setB}
                     inputProps={{
                         borderStartRadius: { lg: 0 },
                         ...(overrideB

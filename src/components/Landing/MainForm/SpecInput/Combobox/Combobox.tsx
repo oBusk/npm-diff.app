@@ -4,8 +4,7 @@ import {
     UseComboboxState,
     UseComboboxStateChangeOptions,
 } from "downshift";
-import { ReactNode, RefObject, useCallback, useEffect, useRef } from "react";
-import { assignRef } from "use-callback-ref";
+import { MutableRefObject, ReactNode, RefObject, useRef } from "react";
 import ComboboxBox from "./ComboboxBox";
 import ComboboxButton from "./ComboboxButton";
 import ComboboxInput, { ComboboxInputProps } from "./ComboboxInput";
@@ -15,14 +14,14 @@ import ComboboxSuggestionList from "./ComboboxSuggestionList";
 import ComboboxWrapper, { ComboboxWrapperProps } from "./ComboboxWrapper";
 
 export interface ComboboxRef {
-    readonly setValue: (input: string) => void;
-    readonly value: string;
     readonly focus: () => void;
 }
 
 export interface ComboboxProps<I> extends ComboboxWrapperProps {
     id: string;
     comboboxRef?: RefObject<ComboboxRef>;
+    inputValue: string | undefined;
+    inputValueChange: (input: string | undefined) => void;
     /** @default "Find a package" */
     label?: string | null;
     items: I[];
@@ -67,6 +66,8 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
 const Combobox = <T,>({
     id,
     comboboxRef,
+    inputValue,
+    inputValueChange = () => {},
     label = "Find a package",
     items,
     initialIsOpen = false,
@@ -87,6 +88,14 @@ const Combobox = <T,>({
     ...props
 }: ComboboxProps<T>) => {
     const inputRef = useRef<HTMLInputElement>(null);
+
+    if (comboboxRef) {
+        (comboboxRef as MutableRefObject<ComboboxRef>).current = {
+            focus() {
+                inputRef?.current?.focus();
+            },
+        };
+    }
 
     const shouldKeepOpen =
         typeof keepOpen === "function" ? keepOpen : () => keepOpen;
@@ -117,9 +126,9 @@ const Combobox = <T,>({
         highlightedIndex,
         isOpen,
         openMenu,
-        setInputValue,
-        inputValue,
     } = useCombobox({
+        inputValue,
+        onInputValueChange: ({ inputValue }) => inputValueChange(inputValue),
         defaultHighlightedIndex: 0,
         id,
         items,
@@ -131,18 +140,6 @@ const Combobox = <T,>({
                   selectedItem != null && onItemSelected(selectedItem)
             : undefined,
     });
-
-    const focusInput = useCallback(() => inputRef.current?.focus(), [inputRef]);
-
-    useEffect(() => {
-        if (comboboxRef) {
-            assignRef(comboboxRef, {
-                setValue: setInputValue,
-                value: inputValue,
-                focus: focusInput,
-            });
-        }
-    }, [comboboxRef, setInputValue, inputValue, focusInput]);
 
     return (
         <ComboboxWrapper {...props}>
