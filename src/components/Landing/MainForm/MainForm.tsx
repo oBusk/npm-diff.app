@@ -37,14 +37,6 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
             }
         }, [a]);
 
-        /**
-         * A placeholder value for `B` if nothing is entered in `B`.
-         *
-         * This will be the package of `A` with the `latest` tag.
-         */
-        const bPlaceholder =
-            !b && aNpa?.name ? `${aNpa.name}@latest` : undefined;
-
         const bPackageFilter =
             aNpa?.type === "version" &&
             aNpa?.name?.length &&
@@ -79,7 +71,6 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     comboboxRef={aRef}
                     initialIsOpen={true}
                     inputProps={{
-                        placeholder: "package@1.2.3 or package@^1",
                         borderEndRadius: { lg: 0 },
                         ...(overrideA
                             ? {
@@ -107,7 +98,6 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     id="b"
                     comboboxRef={bRef}
                     inputProps={{
-                        placeholder: bPlaceholder || undefined,
                         borderStartRadius: { lg: 0 },
                         ...(overrideB
                             ? {
@@ -129,10 +119,14 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                                 "Enter a package specification to compare"
                             ) : (
                                 <>
-                                    Compare <TooltipCode>{a}</TooltipCode> and{" "}
-                                    <TooltipCode>
-                                        {bPlaceholder || b}
-                                    </TooltipCode>{" "}
+                                    Compare <TooltipCode>{a}</TooltipCode>{" "}
+                                    {b ? (
+                                        <>
+                                            and <TooltipCode>{b}</TooltipCode>
+                                        </>
+                                    ) : (
+                                        ""
+                                    )}{" "}
                                     now!
                                 </>
                             )
