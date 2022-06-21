@@ -1,6 +1,5 @@
-import { forwardRef, Text, Tooltip, TooltipProps } from "@chakra-ui/react";
-import B from "^/components/theme/B";
-import TooltipCode from "../theme/TooltipCode";
+import { forwardRef, Text } from "@chakra-ui/react";
+import { B, Tooltip, TooltipCode, TooltipProps } from "^/components/theme";
 
 export interface ServiceTooltipProps extends TooltipProps {
     packageName: string;

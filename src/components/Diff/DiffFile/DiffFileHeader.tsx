@@ -1,5 +1,6 @@
-import { Heading, HeadingProps, Text, Tooltip } from "@chakra-ui/react";
+import { Heading, HeadingProps, Text } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
+import { Tooltip } from "^/components/theme";
 
 export interface DiffFileHeaderProps extends HeadingProps {
     additions: number;

@@ -3,9 +3,10 @@ import { FunctionComponent } from "react";
 import { DiffType, HunkData, ViewType } from "react-diff-view";
 import "react-diff-view/style/index.css";
 import { Diff } from "^/components/react-diff-view";
-import CollapsableBorderBox, {
+import {
+    CollapsableBorderBox,
     CollapsableBorderBoxProps,
-} from "^/components/theme/CollapsableBorderBox";
+} from "^/components/theme";
 import countChanges from "^/lib/utils/countChanges";
 import DiffHunk from "../DiffHunk";
 import DiffFileHeader from "./DiffFileHeader";

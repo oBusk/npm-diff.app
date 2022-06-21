@@ -4,12 +4,12 @@ import {
     Flex,
     FlexProps,
     forwardRef,
-    Tooltip,
     useBoolean,
 } from "@chakra-ui/react";
 import BorderBox from "./BorderBox";
+import Tooltip from "./Tooltip";
 
-export interface CollapseBlockProps extends FlexProps {
+export interface ButtonExpandBoxProps extends FlexProps {
     buttonContent: string;
     buttonLabel: string;
 }
@@ -21,7 +21,7 @@ export interface CollapseBlockProps extends FlexProps {
  * Use `buttonText` to set the text of the button and `buttonLabel`
  * to set the tooltip of the button
  */
-const ButtonExpandBox = forwardRef<CollapseBlockProps, "div">(
+const ButtonExpandBox = forwardRef<ButtonExpandBoxProps, "div">(
     ({ buttonContent, buttonLabel, children, ...props }, ref) => {
         const [isExpanded, setExpanded] = useBoolean(false);
 
