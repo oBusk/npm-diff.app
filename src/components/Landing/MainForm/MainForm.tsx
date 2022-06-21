@@ -1,6 +1,6 @@
 import { Box, Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
 import npa from "npm-package-arg";
-import { FormEvent, useMemo } from "react";
+import { FormEvent, useCallback, useMemo } from "react";
 import { useUpdate } from "react-use";
 import { useCallbackRef } from "use-callback-ref";
 import { ComboboxRef } from "^/components/Landing/MainForm/SpecInput/Combobox/Combobox";
@@ -44,16 +44,19 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                 ? `${aNpa.name}@>${aNpa?.rawSpec}`
                 : undefined;
 
-        const internalHandleSubmit = (event: FormEvent): void => {
-            event.preventDefault();
+        const internalHandleSubmit = useCallback(
+            (event: FormEvent): void => {
+                event.preventDefault();
 
-            const target = event.target as typeof event.target & {
-                ["a-input"]: HTMLInputElement;
-                ["b-input"]: HTMLInputElement;
-            };
+                const target = event.target as typeof event.target & {
+                    ["a-input"]: HTMLInputElement;
+                    ["b-input"]: HTMLInputElement;
+                };
 
-            handleSubmit(target["a-input"].value, target["b-input"].value);
-        };
+                handleSubmit(target["a-input"].value, target["b-input"].value);
+            },
+            [handleSubmit],
+        );
 
         return (
             <Flex
