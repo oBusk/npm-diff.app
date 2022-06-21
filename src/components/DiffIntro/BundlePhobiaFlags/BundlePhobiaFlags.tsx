@@ -1,6 +1,6 @@
 import { forwardRef, HStack, StackProps, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import TooltipCode from "^/components/theme/TooltipCode";
+import { TooltipCode } from "^/components/theme";
 import {
     BundlephobiaResults,
     hasSideEffects,

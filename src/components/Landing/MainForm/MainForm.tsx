@@ -9,8 +9,7 @@ import {
 } from "@chakra-ui/react";
 import npa from "npm-package-arg";
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
-import Tooltip from "^/components/theme/Tooltip";
-import TooltipCode from "^/components/theme/TooltipCode";
+import { Tooltip, TooltipCode } from "^/components/theme";
 import CenterInputAddon from "./CenterInputAddon";
 
 const SpecInput = forwardRef<InputProps, "input">((props, ref) => (
