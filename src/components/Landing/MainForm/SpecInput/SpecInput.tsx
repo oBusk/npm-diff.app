@@ -1,12 +1,14 @@
-import { FunctionComponent, useContext, useEffect, useState } from "react";
+import { FunctionComponent, useContext } from "react";
+import { useCallbackRef, useMergeRefs } from "use-callback-ref";
 import {
-    autocomplete,
     AutocompleteSuggestion,
     AutocompleteSuggestionTypes,
 } from "^/lib/autocomplete";
+import useAutocomplete from "^/lib/autocomplete/useAutocomplete";
 import { FallbackSuggestionsContext } from "^/lib/contexts/FallbackSuggestions";
-import useAsyncState from "^/lib/hooks/useAsyncState";
+import useForceUpdate from "^/lib/hooks/useForceUpdate";
 import Combobox, { ComboboxProps } from "./Combobox";
+import { ComboboxRef } from "./Combobox/Combobox";
 import Suggestion from "./Suggestion";
 
 export interface SpecInputProps
@@ -27,34 +29,20 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
     id,
     versionSelected,
     optionalPackageFilter,
+    comboboxRef,
     ...props
 }) => {
+    const update = useForceUpdate();
     const fallback = useContext(FallbackSuggestionsContext);
-    const [query, setQuery] = useState("");
-    const [{ items, isLoading }, setState] = useAsyncState({
-        items: fallback,
-        isLoading: false,
+    const localRef = useCallbackRef<ComboboxRef | null>(null, update);
+    const query = comboboxRef?.current?.value ?? "";
+
+    const { items, isLoading } = useAutocomplete({
+        query,
+        queryThrottle: 250,
+        fallback,
+        optionalPackageFilter,
     });
-
-    useEffect(() => {
-        async function loadData() {
-            // Update synchronously to set isLoading
-            setState(({ items }) => ({ items, isLoading: true }));
-            // Update asynchronously to set items and isLoading = false
-            setState(
-                query === ""
-                    ? {
-                          items: fallback,
-                          isLoading: false,
-                      }
-                    : autocomplete({ query, optionalPackageFilter }).then(
-                          (items) => ({ items, isLoading: false }),
-                      ),
-            );
-        }
-
-        loadData();
-    }, [fallback, query, optionalPackageFilter]);
 
     return (
         <Combobox
@@ -63,8 +51,6 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
             id={id}
             label={null}
             items={items}
-            updateQuery={setQuery}
-            queryThrottle={250}
             itemToString={(suggestion) => suggestion?.value || ""}
             renderItem={Suggestion}
             keepOpen={({ selectedItem }) =>
@@ -76,6 +62,9 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
                     versionSelected?.(item);
             }}
             isLoading={isLoading}
+            comboboxRef={useMergeRefs(
+                comboboxRef ? [comboboxRef, localRef] : [localRef],
+            )}
             {...props}
         />
     );
