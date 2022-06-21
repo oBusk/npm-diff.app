@@ -9,6 +9,18 @@ import AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
 import { matchVersions } from "./versions/matchVersions";
 
+const npaSafe = (input: string): npa.Result => {
+    try {
+        return npa(input);
+    } catch (e) {
+        if (input.length > 1) {
+            return npaSafe(input.slice(0, -1));
+        } else {
+            return npa("");
+        }
+    }
+};
+
 async function getAutocompleteVersions(
     input: string,
     /**
@@ -21,9 +33,10 @@ async function getAutocompleteVersions(
      */
     optionalPackageFilter?: string,
 ): Promise<AutocompleteSuggestion[]> {
-    const { name, rawSpec } = npa(input);
+    const { name, rawSpec } = npaSafe(input);
+
     const optionalFilterNpa =
-        optionalPackageFilter && npa(optionalPackageFilter);
+        optionalPackageFilter && npaSafe(optionalPackageFilter);
 
     if (!name) {
         throw new Error("No package name provided");

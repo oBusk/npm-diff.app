@@ -1,5 +1,4 @@
-import { lte } from "lodash";
-import { major, minor, patch, prerelease, rcompare, satisfies } from "semver";
+import { lt, major, minor, prerelease, rcompare, satisfies } from "semver";
 import { Version } from "^/lib/middleware";
 
 export interface Matched {
@@ -8,9 +7,12 @@ export interface Matched {
     tags?: string[];
 }
 
+const escapeRegex = (string: string) =>
+    string.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
+
 const emphasize = (fullStr: string, subStr?: string) =>
     subStr?.length
-        ? fullStr.replace(new RegExp(subStr), `<em>${subStr}</em>`)
+        ? fullStr.replace(new RegExp(escapeRegex(subStr)), `<em>${subStr}</em>`)
         : fullStr;
 
 const getEligbleVersions = ({
@@ -27,6 +29,7 @@ const getEligbleVersions = ({
         versions = versions.filter(
             ({ version, tags }) =>
                 version.startsWith(rawSpec) ||
+                satisfies(version, rawSpec) ||
                 tags?.some((tag) => tag.startsWith(rawSpec)),
         );
     }
@@ -56,7 +59,63 @@ const getEligbleVersions = ({
     return versions.slice();
 };
 
-// TODO: This method is very badly optimized.
+/**
+ * Loops over `versions` and extracts
+ *
+ * - `0` The latest version
+ * - `1` The version before `[0]`
+ * - `2` The previous minor before `[1]`
+ * - `3` The previous major before `[2]`
+ */
+function findPreviousReleases(versions: readonly Version[]): Version[] {
+    const result: Version[] = [];
+
+    versionsLoop: for (let entry of versions) {
+        switch (result.length) {
+            case 0:
+            // We have no entries, so this is the first entry
+            case 1:
+                // We have one entry, this is the release before it
+                result.push(entry);
+                break;
+            case 2:
+                // We have two entries (release and last version before it)
+                // We want to find a release that is less than the last versions minor
+                if (
+                    lt(
+                        entry.version,
+                        [
+                            major(result[1].version),
+                            minor(result[1].version),
+                            0,
+                        ].join("."),
+                    )
+                ) {
+                    // Current minor is less than the previous entry
+                    result.push(entry);
+                }
+                break;
+            case 3:
+                // We have three entries, (release, last version before it, last minor before previous)
+                // We want to find a release that is less than the last versions major
+                if (
+                    lt(
+                        entry.version,
+                        [major(result[2].version), 0, 0].join("."),
+                    )
+                ) {
+                    // Current major is less than the previous entry
+                    result.push(entry);
+                }
+                break;
+            default:
+                break versionsLoop;
+        }
+    }
+
+    return result;
+}
+
 /**
  * Takes input parameters and and source and returns a subset of the source.
  */
@@ -89,65 +148,20 @@ export function matchVersions({
         return [];
     }
 
-    const latestMatch = eligibleVersions[0];
+    const matches = findPreviousReleases(eligibleVersions);
 
-    const previousPatch = eligibleVersions.find(({ version }) =>
-        lte(
-            version,
-            [
-                major(latestMatch.version),
-                minor(latestMatch.version),
-                patch(latestMatch.version) - 1,
-            ].join("."),
-        ),
-    );
-
-    const previousMinor =
-        previousPatch &&
-        eligibleVersions.find(({ version }) =>
-            lte(
-                version,
-                [
-                    major(previousPatch.version),
-                    minor(previousPatch.version) - 1,
-                    Number.MAX_SAFE_INTEGER,
-                ].join("."),
-            ),
-        );
-
-    const previousMajor =
-        previousMinor &&
-        eligibleVersions.find(({ version }) =>
-            lte(
-                version,
-                [
-                    major(previousMinor.version) - 1,
-                    Number.MAX_SAFE_INTEGER,
-                    Number.MAX_SAFE_INTEGER,
-                ].join("."),
-            ),
-        );
-
-    const matches = [
-        latestMatch,
-        previousPatch,
-        previousMinor,
-        previousMajor,
-    ].filter((x): x is Version => x != null);
-
-    while (matches.length < size) {
+    if (matches.length < size) {
         // There wasn't enough matches from the previous mechanics, lets add some more.
 
-        // Any entry that startswith the rawSpec and isn't already in the array.
-        const found = eligibleVersions.find(
-            (entry) => !matches.includes(entry),
-        );
+        for (let entry of eligibleVersions) {
+            if (!matches.includes(entry)) {
+                matches.push(entry);
+            }
 
-        if (found) {
-            matches.push(found);
-        } else {
-            // We've exhausted all the options.
-            break;
+            if (matches.length >= size) {
+                // we have enough
+                break;
+            }
         }
     }
 
