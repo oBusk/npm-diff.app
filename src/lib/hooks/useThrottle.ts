@@ -1,12 +1,14 @@
-import { DependencyList, useMemo } from "react";
+import { useMemo } from "react";
 import throttle from "../utils/throttle";
 
-function useThrottle<F extends (...args: any) => void>(
-    fn: F,
-    wait: number,
-    deps: DependencyList | undefined,
-): F {
-    return useMemo(() => throttle(fn, wait), [fn, wait, ...(deps || [])]);
+/**
+ * Memoizes a throttled function.
+ *
+ * Throttled functions can be called how many times you like,
+ * but will only execute `fn` at most every `wait` ms.
+ */
+function useThrottle<F extends (...args: any) => void>(fn: F, wait: number): F {
+    return useMemo(() => throttle(fn, wait), [fn, wait]);
 }
 
 export default useThrottle;

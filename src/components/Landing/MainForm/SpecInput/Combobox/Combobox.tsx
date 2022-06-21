@@ -95,9 +95,11 @@ const Combobox = <T,>({
     const inputRef = useRef<HTMLInputElement>(null);
 
     const updateSuggestions = useThrottle(
-        (inputValue = "") => updateQuery(inputValue),
+        useCallback(
+            (inputValue = "") => updateQuery(inputValue),
+            [updateQuery],
+        ),
         queryThrottle,
-        [updateQuery],
     );
 
     const shouldKeepOpen =

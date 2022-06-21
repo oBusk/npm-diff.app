@@ -20,9 +20,7 @@ describe("useThrottle", () => {
     });
 
     it("returns the same object between renders", () => {
-        const { result, rerender } = renderHook(() =>
-            useThrottle(noop, 100, []),
-        );
+        const { result, rerender } = renderHook(() => useThrottle(noop, 100));
         const first = result.current;
         rerender();
         const second = result.current;
@@ -32,9 +30,7 @@ describe("useThrottle", () => {
     it("doesn't call 'throttle' multiple times", () => {
         const mock = jest.spyOn(throttle, "default");
 
-        const { result, rerender } = renderHook(() =>
-            useThrottle(noop, 100, []),
-        );
+        const { result, rerender } = renderHook(() => useThrottle(noop, 100));
         const first = result.current;
         rerender();
         const second = result.current;
@@ -46,7 +42,7 @@ describe("useThrottle", () => {
     });
 
     it(`Triggers instantly when "clean", otherwise delays.`, () => {
-        const { result, rerender } = renderHook(() => useThrottle(fn, 100, []));
+        const { result, rerender } = renderHook(() => useThrottle(fn, 100));
 
         // Triggers ONCE synchronously
         result.current(1);
