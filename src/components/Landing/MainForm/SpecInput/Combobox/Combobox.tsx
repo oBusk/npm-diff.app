@@ -6,9 +6,7 @@ import {
 } from "downshift";
 import { MutableRefObject, ReactNode, RefObject, useRef } from "react";
 import ComboboxBox from "./ComboboxBox";
-import ComboboxButton from "./ComboboxButton";
 import ComboboxInput, { ComboboxInputProps } from "./ComboboxInput";
-import ComboboxLabel from "./ComboboxLabel";
 import ComboboxSuggestion from "./ComboboxSuggestion";
 import ComboboxSuggestionList from "./ComboboxSuggestionList";
 import ComboboxWrapper, { ComboboxWrapperProps } from "./ComboboxWrapper";
@@ -48,10 +46,6 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
     keepOpen?: boolean | ((changes: Partial<UseComboboxState<I>>) => boolean);
     /** Callback to run whenever an item is selected. */
     onItemSelected?: (item: I) => void;
-    /** If a small 🔽 toggle should be shown in the comboBox
-     * @default false
-     */
-    showToggleButton?: boolean;
     /** Props that will be forwarded to the `<Input type="text" />` */
     inputProps?: Omit<ComboboxInputProps, "isOpen">;
     /**
@@ -81,7 +75,6 @@ const Combobox = <T,>({
     renderItem = ({ item }) => itemToString(item ?? null),
     keepOpen = false,
     onItemSelected,
-    showToggleButton = false,
     inputProps,
     size = "md",
     isLoading = false,
@@ -122,7 +115,7 @@ const Combobox = <T,>({
         getItemProps,
         getLabelProps,
         getMenuProps,
-        getToggleButtonProps,
+        // getToggleButtonProps,
         highlightedIndex,
         isOpen,
         openMenu,
@@ -143,9 +136,6 @@ const Combobox = <T,>({
 
     return (
         <ComboboxWrapper {...props}>
-            {label && (
-                <ComboboxLabel {...getLabelProps()}>{label}</ComboboxLabel>
-            )}
             <ComboboxBox size={size} {...getComboboxProps()}>
                 <ComboboxInput
                     isOpen={isOpen}
@@ -153,20 +143,6 @@ const Combobox = <T,>({
                     {...getInputProps({ ref: inputRef })}
                     {...inputProps}
                 />
-                {showToggleButton && (
-                    <ComboboxButton
-                        aria-label="toggle-menu"
-                        size={
-                            {
-                                xs: "xs",
-                                sm: "xs",
-                                md: "sm",
-                                lg: "md",
-                            }[size] || "sm"
-                        }
-                        {...getToggleButtonProps()}
-                    />
-                )}
             </ComboboxBox>
             <ComboboxSuggestionList {...getMenuProps()}>
                 {isOpen &&
