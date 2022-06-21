@@ -1,4 +1,4 @@
-import { Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
+import { Box, Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
 import npa from "npm-package-arg";
 import { FormEvent, useMemo } from "react";
 import { useCallbackRef } from "use-callback-ref";
@@ -108,32 +108,38 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     marginTop={{ base: "0.5rem", lg: 0 }}
                     optionalPackageFilter={bPackageFilter}
                 ></SpecInput>
-                <Tooltip
-                    label={
-                        !a ? (
-                            "Enter a package specification to compare"
-                        ) : (
-                            <>
-                                Compare <TooltipCode>{a}</TooltipCode> and{" "}
-                                <TooltipCode>{bPlaceholder || b}</TooltipCode>{" "}
-                                now!
-                            </>
-                        )
-                    }
-                    background={!a ? "red.700" : undefined}
-                    shouldWrapChildren
+                <Box
+                    marginInlineStart={{ lg: "2rem" }}
+                    marginTop={{ base: "0.5rem", lg: 0 }}
                 >
-                    <Button
-                        isLoading={isLoading}
-                        type="submit"
-                        size={SIZE}
-                        disabled={!a}
-                        marginInlineStart={{ lg: "2rem" }}
-                        marginTop={{ base: "0.5rem", lg: 0 }}
+                    <Tooltip
+                        label={
+                            !a ? (
+                                "Enter a package specification to compare"
+                            ) : (
+                                <>
+                                    Compare <TooltipCode>{a}</TooltipCode> and{" "}
+                                    <TooltipCode>
+                                        {bPlaceholder || b}
+                                    </TooltipCode>{" "}
+                                    now!
+                                </>
+                            )
+                        }
+                        background={!a ? "red.700" : undefined}
                     >
-                        npm diff! 📦🔃
-                    </Button>
-                </Tooltip>
+                        <Box>
+                            <Button
+                                isLoading={isLoading}
+                                type="submit"
+                                size={SIZE}
+                                disabled={!a}
+                            >
+                                npm diff! 📦🔃
+                            </Button>
+                        </Box>
+                    </Tooltip>
+                </Box>
             </Flex>
         );
     },
