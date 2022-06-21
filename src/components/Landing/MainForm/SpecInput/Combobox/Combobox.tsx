@@ -1,4 +1,4 @@
-import { Text } from "@chakra-ui/react";
+import { Spinner, Text } from "@chakra-ui/react";
 import {
     useCombobox,
     UseComboboxState,
@@ -64,6 +64,8 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
      * @default "md"
      */
     size?: "lg" | "md" | "sm" | "xs";
+    /** If a spinner should show inside the suggestion dropdown or not */
+    isLoading?: boolean;
 }
 
 const Combobox = <T,>({
@@ -87,6 +89,7 @@ const Combobox = <T,>({
     showToggleButton = false,
     inputProps,
     size = "md",
+    isLoading = false,
     ...props
 }: ComboboxProps<T>) => {
     const inputRef = useRef<HTMLInputElement>(null);
@@ -182,8 +185,8 @@ const Combobox = <T,>({
                 )}
             </ComboboxBox>
             <ComboboxSuggestionList {...getMenuProps()}>
-                {isOpen &&
-                    (items.length === 0
+                {isOpen && [
+                    items.length === 0
                         ? emptyState
                         : items.map((item, index) => (
                               <ComboboxSuggestion
@@ -193,7 +196,16 @@ const Combobox = <T,>({
                               >
                                   {renderItem({ item, index })}
                               </ComboboxSuggestion>
-                          )))}
+                          )),
+                    isLoading && (
+                        <Spinner
+                            key="spinner"
+                            position="absolute"
+                            right={2}
+                            bottom={2}
+                        />
+                    ),
+                ]}
             </ComboboxSuggestionList>
         </ComboboxWrapper>
     );

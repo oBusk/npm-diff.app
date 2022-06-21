@@ -31,14 +31,29 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
 }) => {
     const fallback = useContext(FallbackSuggestionsContext);
     const [query, setQuery] = useState("");
-    const [items, setItems] = useAsyncState(fallback);
+    const [{ items, isLoading }, setState] = useAsyncState({
+        items: fallback,
+        isLoading: false,
+    });
 
     useEffect(() => {
-        setItems(
-            query === ""
-                ? fallback
-                : autocomplete({ query, optionalPackageFilter }),
-        );
+        async function loadData() {
+            // Update synchronously to set isLoading
+            setState(({ items }) => ({ items, isLoading: true }));
+            // Update asynchronously to set items and isLoading = false
+            setState(
+                query === ""
+                    ? {
+                          items: fallback,
+                          isLoading: false,
+                      }
+                    : autocomplete({ query, optionalPackageFilter }).then(
+                          (items) => ({ items, isLoading: false }),
+                      ),
+            );
+        }
+
+        loadData();
     }, [fallback, query, optionalPackageFilter]);
 
     return (
@@ -60,6 +75,7 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
                 item.type === AutocompleteSuggestionTypes.Version &&
                     versionSelected?.(item);
             }}
+            isLoading={isLoading}
             {...props}
         />
     );
