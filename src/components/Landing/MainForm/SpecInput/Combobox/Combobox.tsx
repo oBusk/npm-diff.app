@@ -185,8 +185,8 @@ const Combobox = <T,>({
                 )}
             </ComboboxBox>
             <ComboboxSuggestionList {...getMenuProps()}>
-                {isOpen && [
-                    items.length === 0
+                {isOpen &&
+                    (items.length === 0
                         ? emptyState
                         : items.map((item, index) => (
                               <ComboboxSuggestion
@@ -196,16 +196,10 @@ const Combobox = <T,>({
                               >
                                   {renderItem({ item, index })}
                               </ComboboxSuggestion>
-                          )),
-                    isLoading && (
-                        <Spinner
-                            key="spinner"
-                            position="absolute"
-                            right={2}
-                            bottom={2}
-                        />
-                    ),
-                ]}
+                          )))}
+                {isOpen && isLoading && (
+                    <Spinner position="absolute" right={2} bottom={2} />
+                )}
             </ComboboxSuggestionList>
         </ComboboxWrapper>
     );
