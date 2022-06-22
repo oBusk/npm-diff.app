@@ -9,3 +9,6 @@ export * from "./Decoration";
 export * from "./Diff";
 export * from "./Hunk";
 export * from "./utils";
+export * from "./tokenize";
+export * from "./hocs";
+export * from "./hooks";

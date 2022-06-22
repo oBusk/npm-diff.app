@@ -1,6 +1,7 @@
 {
     "private": true,
     "dependencies": {
-        "gitdiff-parser": "^0.2.2"
+        "gitdiff-parser": "^0.2.2",
+        "refractor": "^4.7.0"
     }
 }
