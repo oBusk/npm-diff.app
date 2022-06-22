@@ -65,7 +65,7 @@
         "@types/npm-package-arg": "^6.1.1",
         "@types/pacote": "^11.1.5",
         "@types/react": "^18.0.14",
-        "@types/react-diff-view": "./types/react-diff-view",
+        "@types/react-diff-view": "^2.4.0",
         "@types/react-dom": "^18.0.5",
         "@types/semver": "^7.3.10",
         "@types/validate-npm-package-name": "./types/validate-npm-package-name",
