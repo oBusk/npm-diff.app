@@ -1,6 +1,6 @@
 import { Change, File, Hunk } from "gitdiff-parser";
 import { FunctionComponent, ReactHTML, ReactNode } from "react";
-import { HunkData } from "react-diff-view";
+import { HunkData } from ".";
 
 /** ({@link https://github.com/otakustay/react-diff-view/blob/v2.4.10/src/Diff/index.js#L107 Source}) */
 export type DiffType = File["type"];
@@ -126,4 +126,4 @@ export interface DiffProps {
 /**
  * {@link https://github.com/otakustay/react-diff-view/blob/v2.4.10/src/Diff/index.js Source}
  */
-export declare const Diff: FunctionComponent<DiffProps>;
+export const Diff: FunctionComponent<DiffProps>;
