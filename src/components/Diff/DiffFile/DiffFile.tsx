@@ -8,8 +8,8 @@ import {
     CollapsableBorderBoxProps,
 } from "^/components/theme";
 import countChanges from "^/lib/utils/countChanges";
-import DiffHunk from "../DiffHunk";
 import DiffFileHeader from "./DiffFileHeader";
+import DiffHunk from "./DiffHunk";
 
 interface DiffFileProps extends CollapsableBorderBoxProps {
     hunks: HunkData[];
