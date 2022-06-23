@@ -6,6 +6,7 @@ import DiffFiles from "^/components/Diff/DiffFiles";
 import DiffIntro from "^/components/DiffIntro";
 import ErrorBox from "^/components/ErrorBox";
 import Layout from "^/components/Layout";
+import adjustDiff from "^/lib/adjustDiff";
 import bundlephobia, { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import packagephobia, { PackagephobiaResults } from "^/lib/api/packagephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
@@ -158,7 +159,8 @@ const DiffPage: NextPage<Props> = ({ error, result }) => {
         options,
     } = result!;
 
-    const files = parseDiff(diff);
+    const adjustedDiff = adjustDiff(diff);
+    const files = parseDiff(adjustedDiff);
 
     const changedFiles = files.length;
 
