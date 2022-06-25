@@ -1,4 +1,4 @@
-import { useBreakpointValue } from "@chakra-ui/react";
+import { forwardRef, useBreakpointValue } from "@chakra-ui/react";
 import { FunctionComponent, useState } from "react";
 import { DiffType, HunkData, ViewType } from "react-diff-view";
 import "react-diff-view/style/index.css";
@@ -19,61 +19,60 @@ interface DiffFileProps extends CollapsableBorderBoxProps {
     title: string;
 }
 
-const DiffFile: FunctionComponent<DiffFileProps> = ({
-    type,
-    hunks,
-    hash,
-    title,
-    ...props
-}) => {
-    const viewType =
-        useBreakpointValue<ViewType>({
-            base: "unified",
-            lg: "split",
-        }) ?? "split";
-    const { additions, deletions } = countChanges(hunks);
-    const [render, setRender] = useState(type !== "delete");
+const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
+    ({ type, hunks, hash, title, ...props }, ref) => {
+        const viewType =
+            useBreakpointValue<ViewType>({
+                base: "unified",
+                lg: "split",
+            }) ?? "split";
+        const { additions, deletions } = countChanges(hunks);
+        const [render, setRender] = useState(type !== "delete");
 
-    return (
-        <CollapsableBorderBox
-            margin="1em 0"
-            header={
-                <DiffFileHeader additions={additions} deletions={deletions}>
-                    {title}
-                </DiffFileHeader>
-            }
-            {...props}
-        >
-            {render ? (
-                <Diff
-                    minWidth="50em"
-                    viewType={viewType}
-                    diffType={type}
-                    hunks={hunks}
-                    gutterType="anchor"
-                    generateAnchorID={({ lineNumber }) =>
-                        `${hash}-L${lineNumber}`
-                    }
-                >
-                    {(hunks) =>
-                        hunks.map((hunk) => (
-                            <DiffHunk
-                                key={"decoration-" + hunk.content}
-                                hunk={hunk}
-                            />
-                        ))
-                    }
-                </Diff>
-            ) : (
-                <DiffPlaceholder
-                    reason={
-                        type === "delete" ? "This file was deleted." : undefined
-                    }
-                    onClick={() => setRender(true)}
-                />
-            )}
-        </CollapsableBorderBox>
-    );
-};
+        return (
+            <CollapsableBorderBox
+                margin="1em 0"
+                header={
+                    <DiffFileHeader additions={additions} deletions={deletions}>
+                        {title}
+                    </DiffFileHeader>
+                }
+                {...props}
+                ref={ref}
+            >
+                {render ? (
+                    <Diff
+                        minWidth="50em"
+                        viewType={viewType}
+                        diffType={type}
+                        hunks={hunks}
+                        gutterType="anchor"
+                        generateAnchorID={({ lineNumber }) =>
+                            `${hash}-L${lineNumber}`
+                        }
+                    >
+                        {(hunks) =>
+                            hunks.map((hunk) => (
+                                <DiffHunk
+                                    key={"decoration-" + hunk.content}
+                                    hunk={hunk}
+                                />
+                            ))
+                        }
+                    </Diff>
+                ) : (
+                    <DiffPlaceholder
+                        reason={
+                            type === "delete"
+                                ? "This file was deleted."
+                                : undefined
+                        }
+                        onClick={() => setRender(true)}
+                    />
+                )}
+            </CollapsableBorderBox>
+        );
+    },
+);
 
 export default DiffFile;
