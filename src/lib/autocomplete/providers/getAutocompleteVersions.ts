@@ -2,8 +2,7 @@ import npa from "npm-package-arg";
 import {
     SpecsEndpointResponse,
     VERSIONS_PARAMETER_SPEC,
-    VERSIONS_PATH,
-} from "^/lib/middleware";
+} from "^/pages/api/versions";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
@@ -42,7 +41,9 @@ async function getAutocompleteVersions(
         throw new Error("No package name provided");
     }
 
-    const url = `${VERSIONS_PATH}?${VERSIONS_PARAMETER_SPEC}=${name}` as const;
+    const url = `/api/versions?${new URLSearchParams({
+        [VERSIONS_PARAMETER_SPEC]: name,
+    }).toString()}`;
     const response = await fetch(url);
     const versions: SpecsEndpointResponse = await response.json();
 

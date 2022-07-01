@@ -1,5 +1,5 @@
 import { lt, major, minor, prerelease, rcompare, satisfies } from "semver";
-import { Version } from "^/lib/middleware";
+import { Version } from "^/pages/api/versions";
 
 export interface Matched {
     version: string;
