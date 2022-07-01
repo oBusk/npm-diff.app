@@ -1,4 +1,3 @@
-import { INTERNALS } from "next/dist/server/web/spec-extension/request";
 import { type NextRequest } from "next/server";
 import packument from "^/lib/api/npm/packument";
 
