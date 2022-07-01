@@ -1,7 +1,7 @@
 import npa from "npm-package-arg";
 import {
     SpecsEndpointResponse,
-    VERSIONS_PARAMETER_SPEC,
+    VERSIONS_PARAMETER_PACKAGE,
 } from "^/pages/api/versions";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import AutocompleteSuggestion from "../AutocompleteSuggestion";
@@ -42,7 +42,7 @@ async function getAutocompleteVersions(
     }
 
     const url = `/api/versions?${new URLSearchParams({
-        [VERSIONS_PARAMETER_SPEC]: name,
+        [VERSIONS_PARAMETER_PACKAGE]: name,
     }).toString()}`;
     const response = await fetch(url);
     const versions: SpecsEndpointResponse = await response.json();

@@ -1,7 +1,7 @@
 import { type NextRequest } from "next/server";
 import packument from "^/lib/api/npm/packument";
 
-export const VERSIONS_PARAMETER_SPEC = "spec";
+export const VERSIONS_PARAMETER_PACKAGE = "package";
 export type Version = { version: string; tags?: string[] };
 export type SpecsEndpointResponse = Version[];
 
@@ -13,7 +13,7 @@ export default async function versions(req: NextRequest) {
     const start = Date.now();
 
     const { searchParams } = new URL(req.url);
-    const spec = searchParams.get(VERSIONS_PARAMETER_SPEC);
+    const spec = searchParams.get(VERSIONS_PARAMETER_PACKAGE);
 
     if (spec == null) {
         return new Response("spec is required", { status: 400 });
