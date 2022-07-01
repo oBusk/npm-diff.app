@@ -1,4 +1,4 @@
-import { Version } from "^/lib/middleware";
+import { Version } from "^/pages/api/versions";
 import { Matched, matchVersions } from "./matchVersions";
 
 describe("matchVersions", () => {

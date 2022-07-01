@@ -1,18 +1,26 @@
+import { type NextRequest } from "next/server";
 import packument from "^/lib/api/npm/packument";
-import { responseCacheSwr } from "^/lib/utils/headers";
-import { Middleware } from "./Middleware";
 
-export const VERSIONS_PATH = "/api/versions";
-export const VERSIONS_PARAMETER_SPEC = "spec";
+export const VERSIONS_PARAMETER_PACKAGE = "package";
 export type Version = { version: string; tags?: string[] };
 export type SpecsEndpointResponse = Version[];
 
-export const versionsEndpoint: Middleware = async (request) => {
+export const config = {
+    runtime: "experimental-edge",
+};
+
+export default async function versions(req: NextRequest) {
     const start = Date.now();
-    const spec = request.nextUrl.searchParams.get(VERSIONS_PARAMETER_SPEC);
+
+    const { searchParams } = new URL(req.url);
+    const spec = searchParams.get(VERSIONS_PARAMETER_PACKAGE);
 
     if (spec == null) {
         return new Response("spec is required", { status: 400 });
+    }
+
+    if (Array.isArray(spec)) {
+        return new Response("spec must be a string", { status: 400 });
     }
 
     const result = await packument(spec);
@@ -47,7 +55,13 @@ export const versionsEndpoint: Middleware = async (request) => {
         headers: {
             "Content-Type": "application/json",
             "x-request-time-ms": `${Date.now() - start}`,
-            ...responseCacheSwr,
+            "cache-control": [
+                "public",
+                // Cache 5 minutes
+                `max-age=${5 * 60}`,
+                // Serve up to 1d old data, while revalidating
+                `stale-while-revalidate=${24 * 60 * 60}`,
+            ].join(", "),
         },
     });
-};
+}
