@@ -1,6 +1,14 @@
 import { Box } from "@chakra-ui/react";
-import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { FunctionComponent } from "react";
+import {
+    observeWindowOffset as defaultObserveWindowOffset,
+    useWindowVirtualizer,
+} from "@tanstack/react-virtual";
+import {
+    FunctionComponent,
+    MutableRefObject,
+    useCallback,
+    useRef,
+} from "react";
 import { File } from "react-diff-view";
 import DiffFileComponent from "./DiffFile";
 
@@ -22,10 +30,14 @@ const FILE_HEADER_HEIGHT = 49;
 const HUNK_HEADER_HEIGHT = 44;
 const LINE_HEIGHT = 24;
 const FILE_PADDING = 16;
+/** The offset of the scroll-list from the top of the document */
+const ESTIMATED_OFFSET_TOP = 574;
 
 const DiffFiles: FunctionComponent<Props> = ({ files }) => {
+    const scrollHolderOffset = useRef<number | undefined>(undefined);
     const rowVirtualizer = useWindowVirtualizer({
         count: files.length,
+        initialOffset: 0 - ESTIMATED_OFFSET_TOP,
         initialRect: {
             width: 1920,
             height: 1080,
@@ -55,13 +67,36 @@ const DiffFiles: FunctionComponent<Props> = ({ files }) => {
             const { oldPath, newPath } = files[index];
             return `${oldPath}➡${newPath}`;
         },
+        observeElementOffset: (instance, cb) =>
+            defaultObserveWindowOffset(instance, (scrollX) => {
+                /**
+                 * The distance of the scrollHolder from the top of the document
+                 *
+                 * This is subtracted from the ScrollX to account for header/intro
+                 */
+                // TODO: Is this bad perfomance?
+                const offsetTop =
+                    scrollHolderOffset.current ?? ESTIMATED_OFFSET_TOP;
+                const newOffset = scrollX - offsetTop;
+                console.log(newOffset);
+                return cb(newOffset);
+            }),
     });
+
+    // We make an assumption that the offsetWill never change
+    const measureScrollHolderOffset = useCallback((el: HTMLDivElement) => {
+        (scrollHolderOffset as MutableRefObject<number | undefined>).current =
+            el?.offsetTop;
+    }, []);
 
     return (
         <Box
+            ref={measureScrollHolderOffset}
             minWidth="100%"
-            height={rowVirtualizer.getTotalSize()}
             position="relative"
+            style={{
+                height: rowVirtualizer.getTotalSize(),
+            }}
         >
             {rowVirtualizer
                 .getVirtualItems()
@@ -75,8 +110,10 @@ const DiffFiles: FunctionComponent<Props> = ({ files }) => {
                             top={0}
                             left={0}
                             width="100%"
-                            transform={`translateY(${start}px)`}
                             padding={`0 0 ${FILE_PADDING}px 0`}
+                            style={{
+                                transform: `translateY(${start}px)`,
+                            }}
                         >
                             <DiffFileComponent
                                 title={newPath}
