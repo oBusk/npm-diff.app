@@ -10,6 +10,7 @@ import {
     useRef,
 } from "react";
 import { File } from "react-diff-view";
+import { useWindowSize } from "react-use";
 import DiffFileComponent from "./DiffFile";
 
 interface Props {
@@ -74,16 +75,16 @@ const DiffFiles: FunctionComponent<Props> = ({ files }) => {
                  *
                  * This is subtracted from the ScrollX to account for header/intro
                  */
-                // TODO: Is this bad perfomance?
                 const offsetTop =
                     scrollHolderOffset.current ?? ESTIMATED_OFFSET_TOP;
                 const newOffset = scrollX - offsetTop;
-                console.log(newOffset);
                 return cb(newOffset);
             }),
     });
 
     // We make an assumption that the offsetWill never change
+    // TODO: Run this on mount and every time the window is resized to
+    //       not have to worry about assumption
     const measureScrollHolderOffset = useCallback((el: HTMLDivElement) => {
         (scrollHolderOffset as MutableRefObject<number | undefined>).current =
             el?.offsetTop;
