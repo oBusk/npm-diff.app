@@ -31,7 +31,6 @@ const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
 
         return (
             <CollapsableBorderBox
-                margin="1em 0"
                 header={
                     <DiffFileHeader additions={additions} deletions={deletions}>
                         {title}
