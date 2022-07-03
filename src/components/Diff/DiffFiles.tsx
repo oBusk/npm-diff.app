@@ -19,9 +19,10 @@ const DiffFiles: FunctionComponent<DiffFilesProps> = ({
 }) => {
     return (
         <Box minWidth="100%">
-            {files.map((file) => (
+            {files.map((file, index) => (
                 <DiffFileComponent
                     key={`${file.oldPath}➡${file.newPath}`}
+                    index={index}
                     a={a}
                     b={b}
                     file={file}

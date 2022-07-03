@@ -5,71 +5,69 @@ import type { File } from "react-diff-view";
 import ServiceIcon from "^/components/ServiceIcon";
 import { Tooltip, TooltipCode } from "^/components/theme";
 import { unpkg } from "^/lib/Services";
-import countChanges from "^/lib/utils/countChanges";
+import type { CountedChanges } from "^/lib/utils/countChanges";
 
 export interface DiffFileHeaderProps extends StackProps {
     a: NpaResult;
     b: NpaResult;
     file: File;
+    countedChanges: CountedChanges;
 }
 
 const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
     a: { name: aName, rawSpec: aVersion },
     b: { name: bName, rawSpec: bVersion },
-    file: { type, oldPath, newPath, hunks },
+    file: { type, oldPath, newPath },
+    countedChanges: { additions, deletions },
     children,
     ...props
-}) => {
-    const { additions, deletions } = countChanges(hunks);
-
-    return (
-        <HStack justifyContent="space-between" width="100%" {...props}>
-            <Heading size="sm">
-                {type === "delete" ? oldPath : newPath}{" "}
-                <Tooltip
-                    label={`${
-                        additions + deletions
-                    } changes: ${additions} additions & ${deletions} deletions`}
-                >
-                    <Text as="span">
-                        <Text as="span" color="green.200" padding="0 4px">
-                            +++{additions}
-                        </Text>
-                        <Text as="span" color="red.200" padding="0 4px">
-                            ---{deletions}
-                        </Text>
-                    </Text>
-                </Tooltip>
-            </Heading>
+}) => (
+    <HStack justifyContent="space-between" width="100%" {...props}>
+        <Heading size="sm">
+            {type === "delete" ? oldPath : newPath}{" "}
             <Tooltip
-                label={
-                    <>
-                        View{" "}
-                        <TooltipCode>
-                            {type === "delete" ? oldPath : newPath}
-                        </TooltipCode>{" "}
-                        on <TooltipCode>unpkg.com</TooltipCode>
-                    </>
-                }
+                label={`${
+                    additions + deletions
+                } changes: ${additions} additions & ${deletions} deletions`}
             >
-                <Button
-                    size="sm"
-                    variant="ghost"
-                    rightIcon={<ServiceIcon service={unpkg} />}
-                    as="a"
-                    href={
-                        type === "delete"
-                            ? unpkg.url(aName, aVersion, oldPath)
-                            : unpkg.url(bName, bVersion, newPath)
-                    }
-                    rel="noopener noreferrer"
-                    target="_blank"
-                >
-                    View file
-                </Button>
+                <Text as="span">
+                    <Text as="span" color="green.200" padding="0 4px">
+                        +++{additions}
+                    </Text>
+                    <Text as="span" color="red.200" padding="0 4px">
+                        ---{deletions}
+                    </Text>
+                </Text>
             </Tooltip>
-        </HStack>
-    );
-};
+        </Heading>
+        <Tooltip
+            label={
+                <>
+                    View{" "}
+                    <TooltipCode>
+                        {type === "delete" ? oldPath : newPath}
+                    </TooltipCode>{" "}
+                    on <TooltipCode>unpkg.com</TooltipCode>
+                </>
+            }
+        >
+            <Button
+                size="sm"
+                variant="ghost"
+                rightIcon={<ServiceIcon service={unpkg} />}
+                as="a"
+                href={
+                    type === "delete"
+                        ? unpkg.url(aName, aVersion, oldPath)
+                        : unpkg.url(bName, bVersion, newPath)
+                }
+                rel="noopener noreferrer"
+                target="_blank"
+            >
+                View file
+            </Button>
+        </Tooltip>
+    </HStack>
+);
 
 export default DiffFileHeader;
