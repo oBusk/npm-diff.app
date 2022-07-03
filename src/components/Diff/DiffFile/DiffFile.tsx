@@ -1,37 +1,47 @@
 import { forwardRef } from "@chakra-ui/react";
-import { useState } from "react";
-import { DiffType, HunkData, ViewType } from "react-diff-view";
+import type { Result as NpaResult } from "npm-package-arg";
+import { useCallback, useState } from "react";
+import type { Change, File, ViewType } from "react-diff-view";
 import "react-diff-view/style/index.css";
 import { Diff } from "^/components/react-diff-view";
 import {
     CollapsableBorderBox,
     CollapsableBorderBoxProps,
 } from "^/components/theme";
-import countChanges from "^/lib/utils/countChanges";
 import DiffFileHeader from "./DiffFileHeader";
 import DiffHunk from "./DiffHunk";
 import DiffPlaceholder from "./DiffPlaceholder";
 
+function hashFromString(s: string): string {
+    return s
+        .split("")
+        .reduce((a, b) => {
+            a = (a << 5) - a + b.charCodeAt(0);
+            return a & a;
+        }, 0)
+        .toString(36);
+}
+
 interface DiffFileProps extends CollapsableBorderBoxProps {
-    hunks: HunkData[];
-    type: DiffType;
-    hash: string;
-    title: string;
+    a: NpaResult;
+    b: NpaResult;
+    file: File;
     viewType: ViewType;
 }
 
 const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
-    ({ type, hunks, hash, title, viewType, ...props }, ref) => {
-        const { additions, deletions } = countChanges(hunks);
+    ({ a, b, file, viewType, ...props }, ref) => {
+        const { type, hunks, oldPath, newPath } = file;
         const [render, setRender] = useState(type !== "delete");
+        const generateAnchorID = useCallback(
+            ({ lineNumber }: Change) =>
+                `${hashFromString(`${oldPath}➡${newPath}`)}-L${lineNumber}`,
+            [newPath, oldPath],
+        );
 
         return (
             <CollapsableBorderBox
-                header={
-                    <DiffFileHeader additions={additions} deletions={deletions}>
-                        {title}
-                    </DiffFileHeader>
-                }
+                header={<DiffFileHeader a={a} b={b} file={file} />}
                 {...props}
                 ref={ref}
             >
@@ -42,9 +52,7 @@ const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
                         diffType={type}
                         hunks={hunks}
                         gutterType="anchor"
-                        generateAnchorID={({ lineNumber }) =>
-                            `${hash}-L${lineNumber}`
-                        }
+                        generateAnchorID={generateAnchorID}
                     >
                         {(hunks) =>
                             hunks.map((hunk) => (

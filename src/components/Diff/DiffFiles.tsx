@@ -3,6 +3,7 @@ import {
     observeWindowOffset as defaultObserveWindowOffset,
     useWindowVirtualizer,
 } from "@tanstack/react-virtual";
+import type { Result as NpaResult } from "npm-package-arg";
 import {
     FunctionComponent,
     MutableRefObject,
@@ -13,18 +14,10 @@ import { File, ViewType } from "react-diff-view";
 import DiffFileComponent from "./DiffFile";
 
 interface DiffFilesProps {
+    a: NpaResult;
+    b: NpaResult;
     files: File[];
     viewType: ViewType;
-}
-
-function hashFromString(s: string): string {
-    return s
-        .split("")
-        .reduce((a, b) => {
-            a = (a << 5) - a + b.charCodeAt(0);
-            return a & a;
-        }, 0)
-        .toString(36);
 }
 
 const FILE_HEADER_HEIGHT = 49;
@@ -34,7 +27,12 @@ const FILE_PADDING = 16;
 /** The offset of the scroll-list from the top of the document */
 const ESTIMATED_OFFSET_TOP = 574;
 
-const DiffFiles: FunctionComponent<DiffFilesProps> = ({ files, viewType }) => {
+const DiffFiles: FunctionComponent<DiffFilesProps> = ({
+    a,
+    b,
+    files,
+    viewType,
+}) => {
     const scrollHolderOffset = useRef<number | undefined>(undefined);
     const rowVirtualizer = useWindowVirtualizer({
         count: files.length,
@@ -101,32 +99,28 @@ const DiffFiles: FunctionComponent<DiffFilesProps> = ({ files, viewType }) => {
         >
             {rowVirtualizer
                 .getVirtualItems()
-                .map(({ key, index, start, measureElement }) => {
-                    const { newPath, oldPath, type, hunks } = files[index];
-                    return (
-                        <Box
-                            key={key}
-                            ref={measureElement}
-                            position="absolute"
-                            top={0}
-                            left={0}
+                .map(({ key, index, start, measureElement }) => (
+                    <Box
+                        key={key}
+                        ref={measureElement}
+                        position="absolute"
+                        top={0}
+                        left={0}
+                        width="100%"
+                        padding={`0 0 ${FILE_PADDING}px 0`}
+                        style={{
+                            transform: `translateY(${start}px)`,
+                        }}
+                    >
+                        <DiffFileComponent
+                            a={a}
+                            b={b}
+                            file={files[index]}
+                            viewType={viewType}
                             width="100%"
-                            padding={`0 0 ${FILE_PADDING}px 0`}
-                            style={{
-                                transform: `translateY(${start}px)`,
-                            }}
-                        >
-                            <DiffFileComponent
-                                title={type === "delete" ? oldPath : newPath}
-                                type={type}
-                                hunks={hunks}
-                                hash={hashFromString(newPath)}
-                                viewType={viewType}
-                                width="100%"
-                            />
-                        </Box>
-                    );
-                })}
+                        />
+                    </Box>
+                ))}
         </Box>
     );
 };

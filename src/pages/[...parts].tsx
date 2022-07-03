@@ -1,7 +1,9 @@
 import { Center, useBreakpointValue } from "@chakra-ui/react";
 import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
+import npa from "npm-package-arg";
 import { ParsedUrlQuery } from "querystring";
+import { useMemo } from "react";
 import { parseDiff, ViewType } from "react-diff-view";
 import DiffFiles from "^/components/Diff/DiffFiles";
 import DiffIntro from "^/components/DiffIntro";
@@ -17,7 +19,6 @@ import doDiff, { DiffError } from "^/lib/diff";
 import DiffOptions from "^/lib/DiffOptions";
 import measuredPromise from "^/lib/measuredPromise";
 import { parseQuery, QueryParams, rawQuery } from "^/lib/query";
-import countChanges from "^/lib/utils/countChanges";
 import { setDefaultPageCaching, setSwrCaching } from "^/lib/utils/headers";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
@@ -150,6 +151,17 @@ const DiffPage: NextPage<Props> = ({ error, result }) => {
         base: "unified",
         lg: "split",
     })!;
+    const [a, b] = result?.specs ?? [];
+    const aNpa = useMemo(() => (a ? npa(a) : undefined), [a]);
+    const bNpa = useMemo(() => (b ? npa(b) : undefined), [b]);
+
+    if (aNpa === undefined || bNpa === undefined) {
+        return (
+            <Layout title="Error">
+                <ErrorBox>Specs could not be parsed</ErrorBox>
+            </Layout>
+        );
+    }
 
     if (error != null) {
         return (
@@ -161,26 +173,11 @@ const DiffPage: NextPage<Props> = ({ error, result }) => {
         );
     }
 
-    const {
-        diff,
-        specs: [a, b],
-        packagephobiaResults,
-        bundlephobiaResults,
-        options,
-    } = result!;
+    const { diff, packagephobiaResults, bundlephobiaResults, options } =
+        result!;
 
     const adjustedDiff = adjustDiff(diff);
     const files = parseDiff(adjustedDiff);
-
-    const changedFiles = files.length;
-
-    const changes = files.map((file) => countChanges(file.hunks));
-    const additions = changes
-        .map(({ additions }) => additions)
-        .reduce((a, b) => a + b);
-    const deletions = changes
-        .map(({ deletions }) => deletions)
-        .reduce((a, b) => a + b);
 
     const viewType =
         // If specified in URL, use that
@@ -197,18 +194,16 @@ const DiffPage: NextPage<Props> = ({ error, result }) => {
             description={`A diff between the npm packages "${a}" and "${b}"`}
         >
             <DiffIntro
-                a={a}
-                b={b}
-                changedFiles={changedFiles}
-                additions={additions}
-                deletions={deletions}
+                a={aNpa}
+                b={bNpa}
+                files={files}
                 packagephobiaResults={packagephobiaResults}
                 bundlephobiaResults={bundlephobiaResults}
                 options={options}
                 viewType={viewType}
                 alignSelf="stretch"
             />
-            <DiffFiles files={files} viewType={viewType} />
+            <DiffFiles a={aNpa} b={bNpa} files={files} viewType={viewType} />
         </Layout>
     );
 };
