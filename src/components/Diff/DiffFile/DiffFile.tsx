@@ -13,8 +13,8 @@ import DiffFileHeader from "./DiffFileHeader";
 import DiffHunk from "./DiffHunk";
 import DiffPlaceholder from "./DiffPlaceholder";
 
-const FILES_TO_RENDER = 10;
-const CHANGES_TO_RENDER = 10;
+const FILES_TO_RENDER = 2 ^ 6;
+const CHANGES_TO_RENDER = 2 ^ 7;
 
 function hashFromString(s: string): string {
     return s
