@@ -1,34 +1,37 @@
 import { Box } from "@chakra-ui/react";
+import type { Result as NpaResult } from "npm-package-arg";
 import { FunctionComponent } from "react";
-import { File } from "react-diff-view";
+import { File, ViewType } from "react-diff-view";
 import DiffFileComponent from "./DiffFile";
 
-interface Props {
+interface DiffFilesProps {
+    a: NpaResult;
+    b: NpaResult;
     files: File[];
+    viewType: ViewType;
 }
 
-function hashFromString(s: string): string {
-    return s
-        .split("")
-        .reduce((a, b) => {
-            a = (a << 5) - a + b.charCodeAt(0);
-            return a & a;
-        }, 0)
-        .toString(36);
-}
-
-const DiffFiles: FunctionComponent<Props> = ({ files }) => (
-    <Box minWidth="100%">
-        {files.map(({ newPath, newRevision, type, hunks }) => (
-            <DiffFileComponent
-                key={`${newPath}|${newRevision}`}
-                title={newPath}
-                type={type}
-                hunks={hunks}
-                hash={hashFromString(newPath)}
-            />
-        ))}
-    </Box>
-);
+const DiffFiles: FunctionComponent<DiffFilesProps> = ({
+    a,
+    b,
+    files,
+    viewType,
+}) => {
+    return (
+        <Box minWidth="100%">
+            {files.map((file, index) => (
+                <DiffFileComponent
+                    key={`${file.oldPath}➡${file.newPath}`}
+                    index={index}
+                    a={a}
+                    b={b}
+                    file={file}
+                    viewType={viewType}
+                    width="100%"
+                />
+            ))}
+        </Box>
+    );
+};
 
 export default DiffFiles;

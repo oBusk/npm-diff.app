@@ -5,73 +5,63 @@ import {
     FlexProps,
     forwardRef,
     Heading,
+    HStack,
     Text,
 } from "@chakra-ui/react";
-import npa from "npm-package-arg";
-import { FunctionComponent } from "react";
-import { B, BorderBox } from "^/components/theme";
+import type { Result as NpaResult } from "npm-package-arg";
+import type { File } from "react-diff-view";
+import { ViewType } from "react-diff-view";
+import { B, Span } from "^/components/theme";
 import { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import { PackagephobiaResults } from "^/lib/api/packagephobia";
 import DiffOptions from "^/lib/DiffOptions";
-import { serviceLinks } from "^/lib/serviceLinks";
+import { Bundlephobia, Packagephobia } from "^/lib/Services";
+import countChanges from "^/lib/utils/countChanges";
 import BundlephobiaFlags from "./BundlePhobiaFlags/BundlePhobiaFlags";
 import Halfs from "./Halfs";
 import Options from "./Options";
-import ServiceLinks from "./ServiceLinks";
 import SizeComparison from "./SizeComparison";
-
-const SpecBox: FunctionComponent<{
-    packageName: string;
-    packageVersion: string;
-}> = ({ packageName, packageVersion }) => (
-    <Box>
-        <Code>
-            {packageName}@{packageVersion}
-        </Code>
-        <Text>
-            <ServiceLinks
-                packageName={packageName}
-                packageVersion={packageVersion}
-            />
-        </Text>
-    </Box>
-);
+import SpecBox from "./SpecBox";
+import ViewTypeSwitch from "./ViewTypeSwitch";
 
 export interface DiffIntroProps extends FlexProps {
-    a: string;
-    b: string;
-    changedFiles: number;
-    additions: number;
-    deletions: number;
+    a: NpaResult;
+    b: NpaResult;
+    files: File[];
     packagephobiaResults: PackagephobiaResults | null;
     bundlephobiaResults: BundlephobiaResults | null;
     options: DiffOptions;
+    viewType: ViewType;
 }
 
 const DiffIntro = forwardRef<DiffIntroProps, "h2">(
     (
         {
-            a,
-            b,
-            changedFiles,
-            additions,
-            deletions,
+            a: { name: aName, rawSpec: aVersion },
+            b: { name: bName, rawSpec: bVersion },
+            files,
             packagephobiaResults,
             bundlephobiaResults,
             options,
+            viewType,
             ...props
         },
         ref,
     ) => {
-        let { name: aName, rawSpec: aVersion } = npa(a);
-        let { name: bName, rawSpec: bVersion } = npa(b);
-
         if (aName == null) {
             aName = "ERROR";
         }
         if (bName == null) {
             bName = "ERROR";
         }
+
+        const changes = files.map((file) => countChanges(file.hunks));
+        const additions = changes
+            .map(({ additions }) => additions)
+            .reduce((a, b) => a + b);
+        const deletions = changes
+            .map(({ deletions }) => deletions)
+            .reduce((a, b) => a + b);
 
         return (
             <Flex direction="column" alignItems="center" {...props} ref={ref}>
@@ -101,11 +91,10 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                 {packagephobiaResults && (
                     <>
                         <Heading marginTop="8px" size="xs">
-                            Packagephobia
+                            {Packagephobia.name}
                         </Heading>
                         <SizeComparison
-                            serviceName="Packagephobia"
-                            serviceLink={serviceLinks.Packagephobia}
+                            service={Packagephobia}
                             a={{ name: aName ?? "ERROR", version: aVersion }}
                             b={{ name: bName ?? "ERROR", version: bVersion }}
                             sizeRows={[
@@ -146,11 +135,10 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                 )}
                 {bundlephobiaResults && (
                     <>
-                        <Heading size="xs">Bundlephobia</Heading>
+                        <Heading size="xs">{Bundlephobia.name}</Heading>
                         <BundlephobiaFlags data={bundlephobiaResults} />
                         <SizeComparison
-                            serviceName="Bundlephobia"
-                            serviceLink={serviceLinks.Bundlephobia}
+                            service={Bundlephobia}
                             a={{ name: aName, version: aVersion }}
                             b={{ name: bName, version: bVersion }}
                             sizeRows={[
@@ -197,11 +185,14 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                     bVersion={bVersion}
                     options={options}
                 /> */}
-                <BorderBox textAlign="center" margin="10px 0">
-                    Showing {changedFiles} files with{" "}
-                    <B>{additions} additions</B> and{" "}
-                    <B>{deletions} deletions</B>
-                </BorderBox>
+                <HStack width="100%" justifyContent="space-between">
+                    <Span>
+                        Showing <B>{files.length} changed files</B> with{" "}
+                        <B>{additions} additions</B> and{" "}
+                        <B>{deletions} deletions</B>
+                    </Span>
+                    <ViewTypeSwitch currentViewType={viewType} />
+                </HStack>
             </Flex>
         );
     },

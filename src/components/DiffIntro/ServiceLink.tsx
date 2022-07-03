@@ -1,35 +1,33 @@
-import { IconProps, Link } from "@chakra-ui/react";
-import { FunctionComponent } from "react";
+import { forwardRef, IconButton, Link, LinkProps } from "@chakra-ui/react";
+import { Service } from "^/lib/Services";
+import ServiceIcon from "../ServiceIcon";
 import ServiceTooltip from "./ServiceTooltip";
 
-export interface ServiceLinkProps extends IconProps {
-    name: string;
-    href: string;
+export interface ServiceLinkProps extends LinkProps {
+    service: Service;
     packageName: string;
     packageVersion: string;
 }
 
-const ServiceLink: FunctionComponent<ServiceLinkProps> = ({
-    name,
-    href,
-    packageName,
-    packageVersion,
-    children,
-}) => (
-    <ServiceTooltip
-        serviceName={name}
-        packageName={packageName}
-        packageVersion={packageVersion}
-    >
-        <Link
-            margin="0 2px"
-            href={href}
-            rel="noopener noreferrer"
-            target="_blank"
+const ServiceLink = forwardRef<ServiceLinkProps, typeof IconButton>(
+    ({ service, packageName, packageVersion, ...props }, ref) => (
+        <ServiceTooltip
+            serviceName={service.name}
+            packageName={packageName}
+            packageVersion={packageVersion}
         >
-            {children}
-        </Link>
-    </ServiceTooltip>
+            <Link
+                href={service.url(packageName, packageVersion)}
+                rel="noopener noreferrer"
+                target="_blank"
+                padding="0.1em"
+                {...props}
+                ref={ref}
+            >
+                <ServiceIcon service={service} />
+            </Link>
+        </ServiceTooltip>
+    ),
 );
 
 export default ServiceLink;

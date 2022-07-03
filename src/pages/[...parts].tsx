@@ -1,11 +1,15 @@
-import { Center } from "@chakra-ui/react";
-import { GetServerSideProps, NextPage, Redirect } from "next";
+import { Center, useBreakpointValue } from "@chakra-ui/react";
+import { GetServerSideProps, NextPage } from "next";
+import { useRouter } from "next/router";
+import npa from "npm-package-arg";
 import { ParsedUrlQuery } from "querystring";
-import { parseDiff } from "react-diff-view";
+import { useMemo } from "react";
+import { parseDiff, ViewType } from "react-diff-view";
 import DiffFiles from "^/components/Diff/DiffFiles";
 import DiffIntro from "^/components/DiffIntro";
 import ErrorBox from "^/components/ErrorBox";
 import Layout from "^/components/Layout";
+import adjustDiff from "^/lib/adjustDiff";
 import bundlephobia, { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import packagephobia, { PackagephobiaResults } from "^/lib/api/packagephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
@@ -15,7 +19,6 @@ import doDiff, { DiffError } from "^/lib/diff";
 import DiffOptions from "^/lib/DiffOptions";
 import measuredPromise from "^/lib/measuredPromise";
 import { parseQuery, QueryParams, rawQuery } from "^/lib/query";
-import countChanges from "^/lib/utils/countChanges";
 import { setDefaultPageCaching, setSwrCaching } from "^/lib/utils/headers";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
@@ -31,8 +34,11 @@ type Props = {
     };
 };
 
+export const DIFF_TYPE_PARAM_NAME = "diff";
+
 interface Params extends ParsedUrlQuery {
     parts: string | string[];
+    [DIFF_TYPE_PARAM_NAME]: ViewType;
 }
 
 export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
@@ -140,6 +146,23 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
 };
 
 const DiffPage: NextPage<Props> = ({ error, result }) => {
+    const router = useRouter();
+    const defaultViewType: ViewType = useBreakpointValue({
+        base: "unified",
+        lg: "split",
+    })!;
+    const [a, b] = result?.specs ?? [];
+    const aNpa = useMemo(() => (a ? npa(a) : undefined), [a]);
+    const bNpa = useMemo(() => (b ? npa(b) : undefined), [b]);
+
+    if (aNpa === undefined || bNpa === undefined) {
+        return (
+            <Layout title="Error">
+                <ErrorBox>Specs could not be parsed</ErrorBox>
+            </Layout>
+        );
+    }
+
     if (error != null) {
         return (
             <Layout title="Error">
@@ -150,25 +173,20 @@ const DiffPage: NextPage<Props> = ({ error, result }) => {
         );
     }
 
-    const {
-        diff,
-        specs: [a, b],
-        packagephobiaResults,
-        bundlephobiaResults,
-        options,
-    } = result!;
+    const { diff, packagephobiaResults, bundlephobiaResults, options } =
+        result!;
 
-    const files = parseDiff(diff);
+    const adjustedDiff = adjustDiff(diff);
+    const files = parseDiff(adjustedDiff);
 
-    const changedFiles = files.length;
-
-    const changes = files.map((file) => countChanges(file.hunks));
-    const additions = changes
-        .map(({ additions }) => additions)
-        .reduce((a, b) => a + b);
-    const deletions = changes
-        .map(({ deletions }) => deletions)
-        .reduce((a, b) => a + b);
+    const viewType =
+        // If specified in URL, use that
+        router.query[DIFF_TYPE_PARAM_NAME] === "split"
+            ? "split"
+            : router.query[DIFF_TYPE_PARAM_NAME] === "unified"
+            ? "unified"
+            : // If not, use default based on screen size
+              defaultViewType;
 
     return (
         <Layout
@@ -176,17 +194,16 @@ const DiffPage: NextPage<Props> = ({ error, result }) => {
             description={`A diff between the npm packages "${a}" and "${b}"`}
         >
             <DiffIntro
-                a={a}
-                b={b}
-                changedFiles={changedFiles}
-                additions={additions}
-                deletions={deletions}
+                a={aNpa}
+                b={bNpa}
+                files={files}
                 packagephobiaResults={packagephobiaResults}
                 bundlephobiaResults={bundlephobiaResults}
                 options={options}
+                viewType={viewType}
                 alignSelf="stretch"
             />
-            <DiffFiles files={files} />
+            <DiffFiles a={aNpa} b={bNpa} files={files} viewType={viewType} />
         </Layout>
     );
 };
