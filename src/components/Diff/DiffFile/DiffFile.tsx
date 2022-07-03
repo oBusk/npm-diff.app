@@ -43,10 +43,10 @@ const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
         const [avoidRender, setAvoidRender] = useState(
             type === "delete"
                 ? "This file was deleted."
-                : index > FILES_TO_RENDER
-                ? true
                 : countedChanges.changes > CHANGES_TO_RENDER
                 ? "Large diffs are not rendered by default."
+                : index > FILES_TO_RENDER
+                ? true
                 : null,
         );
         const render = useCallback(
