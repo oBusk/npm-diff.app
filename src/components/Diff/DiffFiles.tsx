@@ -102,7 +102,7 @@ const DiffFiles: FunctionComponent<DiffFilesProps> = ({ files, viewType }) => {
             {rowVirtualizer
                 .getVirtualItems()
                 .map(({ key, index, start, measureElement }) => {
-                    const { newPath, type, hunks } = files[index];
+                    const { newPath, oldPath, type, hunks } = files[index];
                     return (
                         <Box
                             key={key}
@@ -117,7 +117,7 @@ const DiffFiles: FunctionComponent<DiffFilesProps> = ({ files, viewType }) => {
                             }}
                         >
                             <DiffFileComponent
-                                title={newPath}
+                                title={type === "delete" ? oldPath : newPath}
                                 type={type}
                                 hunks={hunks}
                                 hash={hashFromString(newPath)}
