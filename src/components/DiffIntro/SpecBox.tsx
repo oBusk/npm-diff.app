@@ -7,8 +7,8 @@ interface SpecBoxProps extends BoxProps {
 }
 
 const SpecBox = forwardRef<SpecBoxProps, "div">(
-    ({ packageName, packageVersion }) => (
-        <Box>
+    ({ packageName, packageVersion, ...props }, ref) => (
+        <Box {...props} ref={ref}>
             <Code>
                 {packageName}@{packageVersion}
             </Code>
