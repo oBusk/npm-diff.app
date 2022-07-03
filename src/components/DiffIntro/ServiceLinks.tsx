@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { ButtonGroup, ButtonGroupProps, forwardRef } from "@chakra-ui/react";
 import {
     BundlephobiaIcon,
     NpmIcon,
@@ -6,55 +6,49 @@ import {
     UNPKGIcon,
 } from "^/components/icons";
 import { serviceLinks } from "^/lib/serviceLinks";
-import ServiceIcon from "./ServiceIcon";
 import ServiceLink from "./ServiceLink";
 
-export interface ServiceLinksProps {
+export interface ServiceLinksProps extends ButtonGroupProps {
     packageName: string;
     packageVersion: string;
 }
 
-const ServiceLinks: FunctionComponent<ServiceLinksProps> = ({
-    packageName,
-    packageVersion,
-}) => (
-    <>
-        <ServiceLink
-            name="npmjs.com"
-            href={serviceLinks["npmjs.com"](packageName, packageVersion)}
-            packageName={packageName}
-            packageVersion={packageVersion}
-        >
-            <ServiceIcon width="22px" height="22px" as={NpmIcon} />
-        </ServiceLink>
+const ServiceLinks = forwardRef<ServiceLinksProps, typeof ButtonGroup>(
+    ({ packageName, packageVersion, ...props }, ref) => (
+        <ButtonGroup isAttached size="xs" variant="ghost" {...props} ref={ref}>
+            <ServiceLink
+                serviceName="npmjs.com"
+                packageName={packageName}
+                packageVersion={packageVersion}
+                serviceLink={serviceLinks["npmjs.com"]}
+                icon={<NpmIcon size="20" />}
+            />
 
-        <ServiceLink
-            name="UNPKG"
-            href={serviceLinks.UNPKG(packageName, packageVersion)}
-            packageName={packageName}
-            packageVersion={packageVersion}
-        >
-            <ServiceIcon as={UNPKGIcon} />
-        </ServiceLink>
+            <ServiceLink
+                serviceName="UNPKG"
+                packageName={packageName}
+                packageVersion={packageVersion}
+                serviceLink={serviceLinks.UNPKG}
+                icon={<UNPKGIcon />}
+            />
 
-        <ServiceLink
-            name="Packagephobia"
-            href={serviceLinks.Packagephobia(packageName, packageVersion)}
-            packageName={packageName}
-            packageVersion={packageVersion}
-        >
-            <ServiceIcon as={PackagephobiaIcon} />
-        </ServiceLink>
+            <ServiceLink
+                serviceName="Packagephobia"
+                packageName={packageName}
+                packageVersion={packageVersion}
+                serviceLink={serviceLinks.Packagephobia}
+                icon={<PackagephobiaIcon />}
+            />
 
-        <ServiceLink
-            name="Bundlephobia"
-            href={serviceLinks.Bundlephobia(packageName, packageVersion)}
-            packageName={packageName}
-            packageVersion={packageVersion}
-        >
-            <ServiceIcon as={BundlephobiaIcon} />
-        </ServiceLink>
-    </>
+            <ServiceLink
+                serviceName="Bundlephobia"
+                packageName={packageName}
+                packageVersion={packageVersion}
+                serviceLink={serviceLinks.Bundlephobia}
+                icon={<BundlephobiaIcon />}
+            />
+        </ButtonGroup>
+    ),
 );
 
 export default ServiceLinks;
