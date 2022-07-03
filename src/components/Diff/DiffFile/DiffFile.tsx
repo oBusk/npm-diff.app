@@ -1,4 +1,4 @@
-import { forwardRef, useBoolean } from "@chakra-ui/react";
+import { forwardRef } from "@chakra-ui/react";
 import type { Result as NpaResult } from "npm-package-arg";
 import { useCallback, useMemo, useState } from "react";
 import type { Change, File, ViewType } from "react-diff-view";
@@ -15,16 +15,6 @@ import DiffPlaceholder from "./DiffPlaceholder";
 
 const FILES_TO_RENDER = 2 ** 6;
 const CHANGES_TO_RENDER = 2 ** 7;
-
-function hashFromString(s: string): string {
-    return s
-        .split("")
-        .reduce((a, b) => {
-            a = (a << 5) - a + b.charCodeAt(0);
-            return a & a;
-        }, 0)
-        .toString(36);
-}
 
 interface DiffFileProps extends CollapsableBorderBoxProps {
     a: NpaResult;
@@ -55,9 +45,11 @@ const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
         );
 
         const generateAnchorID = useCallback(
-            ({ lineNumber }: Change) =>
-                `${hashFromString(`${oldPath}➡${newPath}`)}-L${lineNumber}`,
-            [newPath, oldPath],
+            ({ lineNumber, oldLineNumber }: Change) =>
+                `${type === "delete" ? oldPath : newPath}-L${
+                    lineNumber ?? oldLineNumber
+                }`,
+            [type, oldPath, newPath],
         );
 
         return (
