@@ -1,6 +1,10 @@
 import { FunctionComponent } from "react";
-import { DiNpm } from "react-icons/di";
-import { FaBox, FaCloud, FaRegFrownOpen } from "react-icons/fa";
+import {
+    BundlephobiaIcon,
+    NpmIcon,
+    PackagephobiaIcon,
+    UNPKGIcon,
+} from "^/components/icons";
 import { serviceLinks } from "^/lib/serviceLinks";
 import ServiceIcon from "./ServiceIcon";
 import ServiceLink from "./ServiceLink";
@@ -21,7 +25,7 @@ const ServiceLinks: FunctionComponent<ServiceLinksProps> = ({
             packageName={packageName}
             packageVersion={packageVersion}
         >
-            <ServiceIcon width="22px" height="22px" as={DiNpm} />
+            <ServiceIcon width="22px" height="22px" as={NpmIcon} />
         </ServiceLink>
 
         <ServiceLink
@@ -30,7 +34,7 @@ const ServiceLinks: FunctionComponent<ServiceLinksProps> = ({
             packageName={packageName}
             packageVersion={packageVersion}
         >
-            <ServiceIcon as={FaCloud} />
+            <ServiceIcon as={UNPKGIcon} />
         </ServiceLink>
 
         <ServiceLink
@@ -39,7 +43,7 @@ const ServiceLinks: FunctionComponent<ServiceLinksProps> = ({
             packageName={packageName}
             packageVersion={packageVersion}
         >
-            <ServiceIcon as={FaBox} />
+            <ServiceIcon as={PackagephobiaIcon} />
         </ServiceLink>
 
         <ServiceLink
@@ -48,7 +52,7 @@ const ServiceLinks: FunctionComponent<ServiceLinksProps> = ({
             packageName={packageName}
             packageVersion={packageVersion}
         >
-            <ServiceIcon as={FaRegFrownOpen} />
+            <ServiceIcon as={BundlephobiaIcon} />
         </ServiceLink>
     </>
 );
