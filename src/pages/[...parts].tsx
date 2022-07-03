@@ -184,9 +184,12 @@ const DiffPage: NextPage<Props> = ({ error, result }) => {
 
     const viewType =
         // If specified in URL, use that
-        (router.query[DIFF_TYPE_PARAM_NAME] as ViewType) ??
-        // If not, use default based on screen size
-        defaultViewType;
+        router.query[DIFF_TYPE_PARAM_NAME] === "split"
+            ? "split"
+            : router.query[DIFF_TYPE_PARAM_NAME] === "unified"
+            ? "unified"
+            : // If not, use default based on screen size
+              defaultViewType;
 
     return (
         <Layout
