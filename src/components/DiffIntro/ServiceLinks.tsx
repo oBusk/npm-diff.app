@@ -1,10 +1,4 @@
 import { ButtonGroup, ButtonGroupProps, forwardRef } from "@chakra-ui/react";
-import {
-    BundlephobiaIcon,
-    NpmIcon,
-    PackagephobiaIcon,
-    UNPKGIcon,
-} from "^/components/icons";
 import { serviceLinks } from "^/lib/serviceLinks";
 import ServiceLink from "./ServiceLink";
 
@@ -21,7 +15,6 @@ const ServiceLinks = forwardRef<ServiceLinksProps, typeof ButtonGroup>(
                 packageName={packageName}
                 packageVersion={packageVersion}
                 serviceLink={serviceLinks["npmjs.com"]}
-                icon={<NpmIcon size="20" />}
             />
 
             <ServiceLink
@@ -29,7 +22,6 @@ const ServiceLinks = forwardRef<ServiceLinksProps, typeof ButtonGroup>(
                 packageName={packageName}
                 packageVersion={packageVersion}
                 serviceLink={serviceLinks.UNPKG}
-                icon={<UNPKGIcon />}
             />
 
             <ServiceLink
@@ -37,7 +29,6 @@ const ServiceLinks = forwardRef<ServiceLinksProps, typeof ButtonGroup>(
                 packageName={packageName}
                 packageVersion={packageVersion}
                 serviceLink={serviceLinks.Packagephobia}
-                icon={<PackagephobiaIcon />}
             />
 
             <ServiceLink
@@ -45,7 +36,6 @@ const ServiceLinks = forwardRef<ServiceLinksProps, typeof ButtonGroup>(
                 packageName={packageName}
                 packageVersion={packageVersion}
                 serviceLink={serviceLinks.Bundlephobia}
-                icon={<BundlephobiaIcon />}
             />
         </ButtonGroup>
     ),

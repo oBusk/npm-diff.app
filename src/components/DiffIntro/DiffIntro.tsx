@@ -9,7 +9,6 @@ import {
     Text,
 } from "@chakra-ui/react";
 import type { Result as NpaResult } from "npm-package-arg";
-import { FunctionComponent } from "react";
 import type { File } from "react-diff-view";
 import { ViewType } from "react-diff-view";
 import { B, Span } from "^/components/theme";
@@ -21,26 +20,9 @@ import countChanges from "^/lib/utils/countChanges";
 import BundlephobiaFlags from "./BundlePhobiaFlags/BundlePhobiaFlags";
 import Halfs from "./Halfs";
 import Options from "./Options";
-import ServiceLinks from "./ServiceLinks";
 import SizeComparison from "./SizeComparison";
+import SpecBox from "./SpecBox";
 import ViewTypeSwitch from "./ViewTypeSwitch";
-
-const SpecBox: FunctionComponent<{
-    packageName: string;
-    packageVersion: string;
-}> = ({ packageName, packageVersion }) => (
-    <Box>
-        <Code>
-            {packageName}@{packageVersion}
-        </Code>
-        <Text>
-            <ServiceLinks
-                packageName={packageName}
-                packageVersion={packageVersion}
-            />
-        </Text>
-    </Box>
-);
 
 export interface DiffIntroProps extends FlexProps {
     a: NpaResult;

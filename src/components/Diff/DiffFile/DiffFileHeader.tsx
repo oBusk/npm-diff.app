@@ -2,7 +2,7 @@ import { Button, Heading, HStack, StackProps, Text } from "@chakra-ui/react";
 import type { Result as NpaResult } from "npm-package-arg";
 import { FunctionComponent } from "react";
 import type { File } from "react-diff-view";
-import { UNPKGIcon } from "^/components/icons";
+import ServiceIcon from "^/components/ServiceIcon";
 import { Tooltip, TooltipCode } from "^/components/theme";
 import { serviceLinks } from "^/lib/serviceLinks";
 import countChanges from "^/lib/utils/countChanges";
@@ -55,7 +55,7 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
                 <Button
                     size="sm"
                     variant="ghost"
-                    rightIcon={<UNPKGIcon />}
+                    rightIcon={<ServiceIcon serviceName="unpkg" />}
                     as="a"
                     href={
                         type === "delete"
