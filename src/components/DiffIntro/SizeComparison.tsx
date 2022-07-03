@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { FunctionComponent, ReactNode } from "react";
 import { ExternalLink, Span } from "^/components/theme";
+import { Service } from "^/lib/Services";
 import { prettyByte } from "^/lib/utils/prettyByte";
 import Halfs from "./Halfs";
 import ServiceTooltip from "./ServiceTooltip";
@@ -41,22 +42,21 @@ const LinkButton: FunctionComponent<
     LinkProps & {
         packageName: string;
         packageVersion: string;
-        serviceName: string;
-        serviceLink: (packageName: string, packageVersion: string) => string;
+        service: Service;
     }
-> = ({ packageName, packageVersion, serviceName, serviceLink, ...props }) => {
+> = ({ packageName, packageVersion, service, ...props }) => {
     const hoverBg = useColorModeValue("gray.100", "gray.700");
 
     return (
         <ServiceTooltip
-            serviceName={serviceName}
+            serviceName={service.name}
             packageName={packageName}
             packageVersion={packageVersion}
         >
             <ExternalLink
                 borderRadius="lg"
                 padding={COMMON_PADDING}
-                href={serviceLink(packageName, packageVersion)}
+                href={service.url(packageName, packageVersion)}
                 textAlign="center"
                 _hover={{
                     textDecoration: "none",
@@ -116,23 +116,21 @@ export interface SizeComparisonProps extends FlexProps {
     a: ComparedPackage;
     b: ComparedPackage;
     sizeRows: SizeComparisonRow[];
-    serviceName: string;
-    serviceLink: (packageName: string, packageVersion: string) => string;
+    service: Service;
 }
 
 /** The padding of the center column and the right/left half has to be the same to line up */
 const COMMON_PADDING = "8px";
 
 const SizeComparison = forwardRef<SizeComparisonProps, typeof Halfs>(
-    ({ a, b, sizeRows, serviceName, serviceLink, ...props }, ref) => (
+    ({ a, b, sizeRows, service, ...props }, ref) => (
         <Halfs
             {...props}
             ref={ref}
             left={
                 <LinkButton
                     padding={COMMON_PADDING}
-                    serviceName={serviceName}
-                    serviceLink={serviceLink}
+                    service={service}
                     packageName={a.name}
                     packageVersion={a.version}
                 >
@@ -164,8 +162,7 @@ const SizeComparison = forwardRef<SizeComparisonProps, typeof Halfs>(
                 <Flex flex="1 0 0px" justifyContent="flex-start">
                     <LinkButton
                         padding={COMMON_PADDING}
-                        serviceName={serviceName}
-                        serviceLink={serviceLink}
+                        service={service}
                         packageName={b.name}
                         packageVersion={b.version}
                     >

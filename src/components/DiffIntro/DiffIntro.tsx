@@ -15,7 +15,7 @@ import { B, Span } from "^/components/theme";
 import { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import { PackagephobiaResults } from "^/lib/api/packagephobia";
 import DiffOptions from "^/lib/DiffOptions";
-import { serviceLinks } from "^/lib/serviceLinks";
+import { Bundlephobia, Packagephobia } from "^/lib/Services";
 import countChanges from "^/lib/utils/countChanges";
 import BundlephobiaFlags from "./BundlePhobiaFlags/BundlePhobiaFlags";
 import Halfs from "./Halfs";
@@ -91,11 +91,10 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                 {packagephobiaResults && (
                     <>
                         <Heading marginTop="8px" size="xs">
-                            Packagephobia
+                            {Packagephobia.name}
                         </Heading>
                         <SizeComparison
-                            serviceName="Packagephobia"
-                            serviceLink={serviceLinks.Packagephobia}
+                            service={Packagephobia}
                             a={{ name: aName ?? "ERROR", version: aVersion }}
                             b={{ name: bName ?? "ERROR", version: bVersion }}
                             sizeRows={[
@@ -136,11 +135,10 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                 )}
                 {bundlephobiaResults && (
                     <>
-                        <Heading size="xs">Bundlephobia</Heading>
+                        <Heading size="xs">{Bundlephobia.name}</Heading>
                         <BundlephobiaFlags data={bundlephobiaResults} />
                         <SizeComparison
-                            serviceName="Bundlephobia"
-                            serviceLink={serviceLinks.Bundlephobia}
+                            service={Bundlephobia}
                             a={{ name: aName, version: aVersion }}
                             b={{ name: bName, version: bVersion }}
                             sizeRows={[

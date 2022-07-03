@@ -4,7 +4,7 @@ import { FunctionComponent } from "react";
 import type { File } from "react-diff-view";
 import ServiceIcon from "^/components/ServiceIcon";
 import { Tooltip, TooltipCode } from "^/components/theme";
-import { serviceLinks } from "^/lib/serviceLinks";
+import { unpkg } from "^/lib/Services";
 import countChanges from "^/lib/utils/countChanges";
 
 export interface DiffFileHeaderProps extends StackProps {
@@ -55,12 +55,12 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
                 <Button
                     size="sm"
                     variant="ghost"
-                    rightIcon={<ServiceIcon serviceName="unpkg" />}
+                    rightIcon={<ServiceIcon service={unpkg} />}
                     as="a"
                     href={
                         type === "delete"
-                            ? serviceLinks.UNPKG(aName, aVersion, oldPath)
-                            : serviceLinks.UNPKG(bName, bVersion, newPath)
+                            ? unpkg.url(aName, aVersion, oldPath)
+                            : unpkg.url(bName, bVersion, newPath)
                     }
                     rel="noopener noreferrer"
                     target="_blank"
