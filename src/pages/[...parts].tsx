@@ -1,7 +1,8 @@
-import { Center } from "@chakra-ui/react";
-import { GetServerSideProps, NextPage, Redirect } from "next";
+import { Center, useBreakpointValue } from "@chakra-ui/react";
+import { GetServerSideProps, NextPage } from "next";
+import { useRouter } from "next/router";
 import { ParsedUrlQuery } from "querystring";
-import { parseDiff } from "react-diff-view";
+import { parseDiff, ViewType } from "react-diff-view";
 import DiffFiles from "^/components/Diff/DiffFiles";
 import DiffIntro from "^/components/DiffIntro";
 import ErrorBox from "^/components/ErrorBox";
@@ -32,8 +33,11 @@ type Props = {
     };
 };
 
+export const DIFF_TYPE_PARAM_NAME = "diff";
+
 interface Params extends ParsedUrlQuery {
     parts: string | string[];
+    [DIFF_TYPE_PARAM_NAME]: ViewType;
 }
 
 export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
@@ -141,6 +145,12 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
 };
 
 const DiffPage: NextPage<Props> = ({ error, result }) => {
+    const router = useRouter();
+    const defaultViewType: ViewType = useBreakpointValue({
+        base: "unified",
+        lg: "split",
+    })!;
+
     if (error != null) {
         return (
             <Layout title="Error">
@@ -172,6 +182,12 @@ const DiffPage: NextPage<Props> = ({ error, result }) => {
         .map(({ deletions }) => deletions)
         .reduce((a, b) => a + b);
 
+    const viewType =
+        // If specified in URL, use that
+        (router.query[DIFF_TYPE_PARAM_NAME] as ViewType) ??
+        // If not, use default based on screen size
+        defaultViewType;
+
     return (
         <Layout
             title={`Comparing ${a}...${b}`}
@@ -186,9 +202,10 @@ const DiffPage: NextPage<Props> = ({ error, result }) => {
                 packagephobiaResults={packagephobiaResults}
                 bundlephobiaResults={bundlephobiaResults}
                 options={options}
+                viewType={viewType}
                 alignSelf="stretch"
             />
-            <DiffFiles files={files} />
+            <DiffFiles files={files} viewType={viewType} />
         </Layout>
     );
 };

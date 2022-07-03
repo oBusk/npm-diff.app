@@ -5,11 +5,13 @@ import {
     FlexProps,
     forwardRef,
     Heading,
+    HStack,
     Text,
 } from "@chakra-ui/react";
 import npa from "npm-package-arg";
 import { FunctionComponent } from "react";
-import { B, BorderBox } from "^/components/theme";
+import { ViewType } from "react-diff-view";
+import { B, Span } from "^/components/theme";
 import { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import { PackagephobiaResults } from "^/lib/api/packagephobia";
 import DiffOptions from "^/lib/DiffOptions";
@@ -19,6 +21,7 @@ import Halfs from "./Halfs";
 import Options from "./Options";
 import ServiceLinks from "./ServiceLinks";
 import SizeComparison from "./SizeComparison";
+import ViewTypeSwitch from "./ViewTypeSwitch";
 
 const SpecBox: FunctionComponent<{
     packageName: string;
@@ -46,6 +49,7 @@ export interface DiffIntroProps extends FlexProps {
     packagephobiaResults: PackagephobiaResults | null;
     bundlephobiaResults: BundlephobiaResults | null;
     options: DiffOptions;
+    viewType: ViewType;
 }
 
 const DiffIntro = forwardRef<DiffIntroProps, "h2">(
@@ -59,6 +63,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
             packagephobiaResults,
             bundlephobiaResults,
             options,
+            viewType,
             ...props
         },
         ref,
@@ -197,11 +202,14 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                     bVersion={bVersion}
                     options={options}
                 /> */}
-                <BorderBox textAlign="center" margin="10px 0">
-                    Showing {changedFiles} files with{" "}
-                    <B>{additions} additions</B> and{" "}
-                    <B>{deletions} deletions</B>
-                </BorderBox>
+                <HStack width="100%" justifyContent="space-between">
+                    <Span>
+                        Showing <B>{changedFiles} changed files</B> with{" "}
+                        <B>{additions} additions</B> and{" "}
+                        <B>{deletions} deletions</B>
+                    </Span>
+                    <ViewTypeSwitch currentViewType={viewType} />
+                </HStack>
             </Flex>
         );
     },

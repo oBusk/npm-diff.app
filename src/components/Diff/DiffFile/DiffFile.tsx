@@ -1,5 +1,5 @@
-import { forwardRef, useBreakpointValue } from "@chakra-ui/react";
-import { FunctionComponent, useState } from "react";
+import { forwardRef } from "@chakra-ui/react";
+import { useState } from "react";
 import { DiffType, HunkData, ViewType } from "react-diff-view";
 import "react-diff-view/style/index.css";
 import { Diff } from "^/components/react-diff-view";
@@ -17,15 +17,11 @@ interface DiffFileProps extends CollapsableBorderBoxProps {
     type: DiffType;
     hash: string;
     title: string;
+    viewType: ViewType;
 }
 
 const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
-    ({ type, hunks, hash, title, ...props }, ref) => {
-        const viewType =
-            useBreakpointValue<ViewType>({
-                base: "unified",
-                lg: "split",
-            }) ?? "split";
+    ({ type, hunks, hash, title, viewType, ...props }, ref) => {
         const { additions, deletions } = countChanges(hunks);
         const [render, setRender] = useState(type !== "delete");
 

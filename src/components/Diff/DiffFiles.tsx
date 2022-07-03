@@ -9,12 +9,12 @@ import {
     useCallback,
     useRef,
 } from "react";
-import { File } from "react-diff-view";
-import { useWindowSize } from "react-use";
+import { File, ViewType } from "react-diff-view";
 import DiffFileComponent from "./DiffFile";
 
-interface Props {
+interface DiffFilesProps {
     files: File[];
+    viewType: ViewType;
 }
 
 function hashFromString(s: string): string {
@@ -34,7 +34,7 @@ const FILE_PADDING = 16;
 /** The offset of the scroll-list from the top of the document */
 const ESTIMATED_OFFSET_TOP = 574;
 
-const DiffFiles: FunctionComponent<Props> = ({ files }) => {
+const DiffFiles: FunctionComponent<DiffFilesProps> = ({ files, viewType }) => {
     const scrollHolderOffset = useRef<number | undefined>(undefined);
     const rowVirtualizer = useWindowVirtualizer({
         count: files.length,
@@ -121,6 +121,7 @@ const DiffFiles: FunctionComponent<Props> = ({ files }) => {
                                 type={type}
                                 hunks={hunks}
                                 hash={hashFromString(newPath)}
+                                viewType={viewType}
                                 width="100%"
                             />
                         </Box>
