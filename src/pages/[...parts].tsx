@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
         const { diffFiles, ...optionsQuery } = query as QueryParams;
 
         const specsOrVersions = splitParts(parts);
-        const { redirect, immutableSpecs } = await destination(specsOrVersions);
+        const { redirect, canonicalSpecs } = await destination(specsOrVersions);
 
         if (redirect !== "temporary") {
             setDefaultPageCaching(res);
@@ -67,14 +67,14 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
 
             // Start eagerly
             const servicesPromises = Promise.all([
-                measuredPromise(packagephobia(immutableSpecs)),
-                measuredPromise(bundlephobia(immutableSpecs)),
+                measuredPromise(packagephobia(canonicalSpecs)),
+                measuredPromise(bundlephobia(canonicalSpecs)),
             ]);
             let diff: string = "";
             let diffTime: number = -1;
             try {
                 ({ result: diff, time: diffTime } = await measuredPromise(
-                    doDiff(immutableSpecs, options),
+                    doDiff(canonicalSpecs, options),
                 ));
             } catch (e) {
                 const { code, error } = e as DiffError;
@@ -106,7 +106,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
             }
 
             console.log({
-                specs: immutableSpecs,
+                specs: canonicalSpecs,
                 timings: {
                     diff: diffTime,
                     packagephobia: packagephobiaTime,
@@ -118,7 +118,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
             return {
                 props: {
                     result: {
-                        specs: immutableSpecs,
+                        specs: canonicalSpecs,
                         diff,
                         packagephobiaResults,
                         bundlephobiaResults,
@@ -131,7 +131,7 @@ export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
                 redirect: {
                     permanent: redirect === "permanent",
                     destination:
-                        `/${specsToDiff(immutableSpecs)}` +
+                        `/${specsToDiff(canonicalSpecs)}` +
                         rawQuery(req, "parts"),
                 },
             };

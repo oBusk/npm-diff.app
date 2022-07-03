@@ -16,7 +16,7 @@ const apiEndpoint: NextApiHandler<string> = async (req, res) => {
 
     const specsOrVersions = splitParts(parts);
 
-    const { redirect, immutableSpecs } = await destination(specsOrVersions);
+    const { redirect, canonicalSpecs } = await destination(specsOrVersions);
 
     if (redirect !== "temporary") {
         setDefaultPageCaching(res);
@@ -24,7 +24,7 @@ const apiEndpoint: NextApiHandler<string> = async (req, res) => {
 
     if (redirect === false) {
         try {
-            const diff = await doDiff(immutableSpecs, parseQuery(options));
+            const diff = await doDiff(canonicalSpecs, parseQuery(options));
 
             res.status(200).send(diff);
         } catch (e) {
@@ -37,7 +37,7 @@ const apiEndpoint: NextApiHandler<string> = async (req, res) => {
             redirect === "permanent"
                 ? STATUS_CODES.PERMANENT_REDIRECT
                 : STATUS_CODES.TEMPORARY_REDIRECT,
-            `/api/${specsToDiff(immutableSpecs)}` + rawQuery(req, "parts"),
+            `/api/${specsToDiff(canonicalSpecs)}` + rawQuery(req, "parts"),
         );
     }
 };

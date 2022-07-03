@@ -16,7 +16,7 @@ async function t(
     expectedRedirect?: Redirect,
 ) {
     expect(await d(input)).toStrictEqual({
-        immutableSpecs: expectedSpecs,
+        canonicalSpecs: expectedSpecs,
         redirect: expectedRedirect,
     });
 }

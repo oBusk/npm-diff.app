@@ -1,17 +1,17 @@
 import arrayEquals from "^/lib/utils/arrayEquals";
-import immutableSpec from "./immutableSpec";
+import canonicalSpec from "./canonicalSpec";
 import versionsToSpecs from "./versionsToSpecs";
 
 export type Redirect = false | "temporary" | "permanent";
 
 export interface Destination {
     redirect: Redirect;
-    immutableSpecs: [string, string];
+    canonicalSpecs: [string, string];
 }
 
 /**
  * Takes specs or versions and returns the destination, which is a combination of
- * a "immutable" specs (specs that will for ever load the same version)
+ * a "canonical" specs (specs that will for ever load the same version)
  * and redirect information, information if and what type of redirect we can use.
  */
 async function destination(
@@ -23,30 +23,30 @@ async function destination(
 
     // Once we have specs, we could pass that to libnpmdiff, but we need to
     // resolve canonical absolute urls, so we do some of the resolving first.
-    const immutableSpecs = await Promise.all([
-        immutableSpec(specs[0]),
-        immutableSpec(specs[1]),
+    const canonicalSpecs = await Promise.all([
+        canonicalSpec(specs[0]),
+        canonicalSpec(specs[1]),
     ]);
 
-    if (arrayEquals(specsOrVersions, immutableSpecs)) {
+    if (arrayEquals(specsOrVersions, canonicalSpecs)) {
         // There was no change from the raw (`specsOrVersions`) input, so it
         // was already imutable.
 
         return {
             redirect: false,
-            immutableSpecs: specs,
+            canonicalSpecs: specs,
         };
     } else {
         // Input was resolved to different specs, return redirect
 
         return {
-            // If the specs (resolved versionsOrSpecs) were immutable, we can
+            // If the specs (resolved versionsOrSpecs) were canoncial, we can
             // use absolute redirect, since the redirect should always be the
             // same.
-            redirect: arrayEquals(specs, immutableSpecs)
+            redirect: arrayEquals(specs, canonicalSpecs)
                 ? "permanent"
                 : "temporary",
-            immutableSpecs,
+            canonicalSpecs,
         };
     }
 }

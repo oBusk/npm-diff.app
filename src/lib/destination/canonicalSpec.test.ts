@@ -1,11 +1,11 @@
 import pacote from "pacote";
-import immutableSpec from "./immutableSpec";
+import canonicalSpec from "./canonicalSpec";
 
 const hashFinder = /(?:\#.*)?$/;
 
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["t"] }] */
 async function t(input: string, expected: string = "DEFAULT_VALUE") {
-    expect(await immutableSpec(input)).toBe(expected);
+    expect(await canonicalSpec(input)).toBe(expected);
 }
 
 interface ExpectedResults<T = string> {
@@ -16,7 +16,7 @@ interface ExpectedResults<T = string> {
     readonly "^3.0.0-beta": T;
 }
 
-describe("immutableSpec", () => {
+describe("canonicalSpec", () => {
     let specs: ExpectedResults;
 
     beforeAll(async () => {
@@ -50,7 +50,7 @@ describe("immutableSpec", () => {
         });
     });
 
-    it("Takes registry specifier of type `version` and returns it instantly, it is already immutable.", () =>
+    it("Takes registry specifier of type `version` and returns it instantly, it is already canonical.", () =>
         Promise.all([
             t("example@1.0.0", "example@1.0.0"),
             t("example@1.2.3", "example@1.2.3"),

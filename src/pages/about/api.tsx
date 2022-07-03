@@ -23,11 +23,11 @@ type Props = {
 
 export const getStaticProps: GetStaticProps<Props> = async ({}) => {
     const specsOrVersions = splitParts(EXAMPLE_QUERY);
-    const { immutableSpecs } = await destination(specsOrVersions);
+    const { canonicalSpecs } = await destination(specsOrVersions);
 
-    const diff = await doDiff(immutableSpecs, {});
+    const diff = await doDiff(canonicalSpecs, {});
 
-    return { props: { diff, specs: immutableSpecs } };
+    return { props: { diff, specs: canonicalSpecs } };
 };
 
 const ApiPage: NextPage<Props> = ({ diff, specs }) => {

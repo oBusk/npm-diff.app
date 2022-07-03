@@ -40,13 +40,13 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
 }
 
 /**
- * Takes a single registry specifier ("spec") and returns a "immutable"
+ * Takes a single registry specifier ("spec") and returns a "canonical"
  * registry specifier.
  *
- * An "immutable" registry specifier is a registry specifer that will always
+ * An "canonical" registry specifier is a registry specifer that will always
  * return the same package.
  *
- * * Takes registry specifier of type `version` and returns it instantly, it is already immutable.
+ * * Takes registry specifier of type `version` and returns it instantly, it is already canonical.
  * * Takes registry specifier of type `tag` or `range` and returns with version.
  * * Takes registry specifier of type `git`, `remote` and returns with commit.
  * * Takes registry specifier of type `alias` and resolves sub spec.
@@ -57,10 +57,10 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
  * * https://github.com/npm/npm-package-arg#result-object
  * * https://docs.npmjs.com/cli/v7/commands/npm-install
  */
-async function immutableSpec(spec: string): Promise<string> {
+async function canonicalSpec(spec: string): Promise<string> {
     const result = npa(spec);
 
     return handleNpaResult(result);
 }
 
-export default immutableSpec;
+export default canonicalSpec;
