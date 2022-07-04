@@ -15,16 +15,18 @@ const NavLink: FunctionComponent<LinkProps> = ({
     const { asPath } = useRouter();
     const [isActive, setIsActive] = useState(false);
 
-    useEffect(
-        () =>
+    useEffect(() => {
+        if (asPath != null && location != null) {
             setIsActive(
-                asPath != null &&
-                    location != null &&
-                    new URL(href, location.href).pathname ===
-                        new URL(asPath, location.href).pathname,
-            ),
-        [asPath],
-    );
+                new URL(href, location.href).pathname ===
+                    new URL(asPath, location.href).pathname,
+            );
+        }
+
+        return () => {
+            setIsActive(false);
+        };
+    }, [asPath, href]);
 
     return (
         <NextLink href={href}>
