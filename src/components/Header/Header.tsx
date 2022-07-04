@@ -1,9 +1,9 @@
 import { Box, Flex, FlexProps, Heading, HStack } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { NextLink } from "^/components/theme";
-import { APILInk } from "./APILink";
 import ColorModeToggle from "./ColorModeToggle";
 import { GithubLink } from "./GithubLink";
+import NavLink from "./NavLink";
 
 const Header: FunctionComponent<FlexProps> = (props) => (
     <Flex
@@ -36,7 +36,8 @@ const Header: FunctionComponent<FlexProps> = (props) => (
             </Box>
         </NextLink>
         <Flex flex="1 0 0px" justifyContent="flex-end">
-            <APILInk />
+            <NavLink href="/about">about</NavLink>/
+            <NavLink href="/about/api">api</NavLink>
         </Flex>
     </Flex>
 );
