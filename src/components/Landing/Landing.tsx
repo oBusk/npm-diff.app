@@ -60,9 +60,9 @@ const Landing: FunctionComponent<LandingProps> = () => {
                 <OptionsForm files={diffFiles} filesChange={setDiffFiles} />
             </Stack>
             <ExamplesList
-                exampleMouseOver={(a, b) => setInput(a, b)}
-                exampleMouseOut={() => setInput(null, null)}
-                exampleClicked={exampleClicked}
+                exampleMouseOver={(a, b) => !isLoading && setInput(a, b)}
+                exampleMouseOut={() => !isLoading && setInput(null, null)}
+                exampleClicked={() => !isLoading && exampleClicked()}
                 queryParams={query}
             />
         </Layout>
