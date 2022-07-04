@@ -98,6 +98,14 @@ const Combobox = <T,>({
         actionAndChanges: UseComboboxStateChangeOptions<T>,
     ) => Partial<UseComboboxState<T>> = (state, { type, changes }) => {
         switch (type) {
+            case useCombobox.stateChangeTypes.InputBlur:
+                // https://github.com/downshift-js/downshift/issues/1010#issuecomment-626192383
+                if (changes.selectedItem != null) {
+                    const { selectedItem: _, ...changesWithoutSelectedItem } =
+                        changes;
+                    return changesWithoutSelectedItem;
+                }
+                break;
             case useCombobox.stateChangeTypes.InputKeyDownEnter:
             case useCombobox.stateChangeTypes.ItemClick:
                 return {
@@ -105,8 +113,10 @@ const Combobox = <T,>({
                     isOpen: shouldKeepOpen(changes),
                 };
             default:
-                return changes;
+                break;
         }
+
+        return changes;
     };
 
     const {
