@@ -17,6 +17,7 @@ export interface SpecInputProps
      * If no matches are found, this filter is ignored.
      */
     optionalPackageFilter?: string;
+    inputValue: string | undefined;
 }
 
 const SpecInput: FunctionComponent<SpecInputProps> = ({
@@ -40,7 +41,6 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
             width="100%"
             maxWidth="20em"
             id={id}
-            inputValue={inputValue}
             label={null}
             items={items}
             itemToString={(suggestion) => suggestion?.value || ""}

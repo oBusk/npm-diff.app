@@ -85,8 +85,11 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                             : undefined),
                     }}
                     versionSelected={(item) => {
-                        setB(`${item.name}@`);
-                        setTimeout(() => bRef.current?.focus());
+                        const bCombobox = bRef.current;
+                        if (bCombobox) {
+                            bCombobox.setInputValue(`${item.name}@`);
+                            setTimeout(() => bCombobox.focus());
+                        }
                     }}
                 ></SpecInput>
                 <CenterInputAddon

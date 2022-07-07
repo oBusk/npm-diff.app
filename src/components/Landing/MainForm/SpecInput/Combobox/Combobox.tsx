@@ -13,12 +13,12 @@ import ComboboxWrapper, { ComboboxWrapperProps } from "./ComboboxWrapper";
 
 export interface ComboboxRef {
     readonly focus: () => void;
+    readonly setInputValue: (value: string) => void;
 }
 
 export interface ComboboxProps<I> extends ComboboxWrapperProps {
     id: string;
     comboboxRef?: RefObject<ComboboxRef>;
-    inputValue: string | undefined;
     inputValueChange: (input: string | undefined) => void;
     /** @default "Find a package" */
     label?: string | null;
@@ -60,7 +60,6 @@ export interface ComboboxProps<I> extends ComboboxWrapperProps {
 const Combobox = <T,>({
     id,
     comboboxRef,
-    inputValue,
     inputValueChange = () => {},
     label = "Find a package",
     items,
@@ -82,14 +81,6 @@ const Combobox = <T,>({
 }: ComboboxProps<T>) => {
     const inputRef = useRef<HTMLInputElement>(null);
 
-    if (comboboxRef) {
-        (comboboxRef as MutableRefObject<ComboboxRef>).current = {
-            focus() {
-                inputRef?.current?.focus();
-            },
-        };
-    }
-
     const shouldKeepOpen =
         typeof keepOpen === "function" ? keepOpen : () => keepOpen;
 
@@ -101,9 +92,12 @@ const Combobox = <T,>({
             case useCombobox.stateChangeTypes.InputBlur:
                 // https://github.com/downshift-js/downshift/issues/1010#issuecomment-626192383
                 if (changes.selectedItem != null) {
-                    const { selectedItem: _, ...changesWithoutSelectedItem } =
+                    // Extract ignored changes
+                    const { selectedItem, inputValue, ...otherChanges } =
                         changes;
-                    return changesWithoutSelectedItem;
+
+                    // Return non-ignored changes
+                    return otherChanges;
                 }
                 break;
             case useCombobox.stateChangeTypes.InputKeyDownEnter:
@@ -127,8 +121,8 @@ const Combobox = <T,>({
         highlightedIndex,
         isOpen,
         openMenu,
+        setInputValue,
     } = useCombobox({
-        inputValue,
         onInputValueChange: ({ inputValue }) => inputValueChange(inputValue),
         defaultHighlightedIndex: 0,
         id,
@@ -142,6 +136,16 @@ const Combobox = <T,>({
             : undefined,
     });
 
+    if (comboboxRef) {
+        (comboboxRef as MutableRefObject<ComboboxRef>).current = {
+            focus() {
+                inputRef?.current?.focus();
+            },
+            setInputValue,
+        };
+    }
+
+    console.log(`>>[Combobox(${id})]`, {});
     return (
         <ComboboxWrapper {...props}>
             <ComboboxBox size={size} {...getComboboxProps()}>
