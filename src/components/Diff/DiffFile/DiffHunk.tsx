@@ -2,6 +2,7 @@ import { Text, useColorModeValue } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { HunkData } from "react-diff-view";
 import { Decoration, Hunk } from "^/components/react-diff-view";
+import contentVisibility from "^/lib/utils/contentVisibility";
 
 interface DiffHunkProps {
     hunk: HunkData;
@@ -14,14 +15,21 @@ const DiffHunk: FunctionComponent<DiffHunkProps> = ({ hunk }) => {
     return (
         <>
             <Decoration
-                borderTopWidth="1px"
-                borderBottomWidth="1px"
-                color={color}
-                background={background}
+                css={{
+                    label: "DiffHunk",
+                    borderTopWidth: "1px",
+                    borderBottomWidth: "1px",
+                    color,
+                    background,
+                    ...contentVisibility("800px"),
+                }}
             >
                 <Text padding="10px">{hunk.content}</Text>
             </Decoration>
-            <Hunk hunk={hunk}></Hunk>
+            <Hunk
+                hunk={hunk}
+                css={{ label: "Hunk", contain: "content" }}
+            ></Hunk>
         </>
     );
 };

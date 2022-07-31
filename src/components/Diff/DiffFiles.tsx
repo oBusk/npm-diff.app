@@ -18,7 +18,7 @@ const DiffFiles: FunctionComponent<DiffFilesProps> = ({
     viewType,
 }) => {
     return (
-        <Box minWidth="100%">
+        <Box css={{ label: "DiffFiles", contain: "content", minWidth: "100%" }}>
             {files.map((file, index) => (
                 <DiffFileComponent
                     key={`${file.oldPath}➡${file.newPath}`}

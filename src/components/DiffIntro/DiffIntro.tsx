@@ -16,6 +16,7 @@ import { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import { PackagephobiaResults } from "^/lib/api/packagephobia";
 import DiffOptions from "^/lib/DiffOptions";
 import { Bundlephobia, Packagephobia } from "^/lib/Services";
+import contentVisibility from "^/lib/utils/contentVisibility";
 import countChanges from "^/lib/utils/countChanges";
 import BundlephobiaFlags from "./BundlePhobiaFlags/BundlePhobiaFlags";
 import Halfs from "./Halfs";
@@ -64,7 +65,16 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
             .reduce((a, b) => a + b);
 
         return (
-            <Flex direction="column" alignItems="center" {...props} ref={ref}>
+            <Flex
+                direction="column"
+                alignItems="center"
+                css={{
+                    label: "DiffIntro",
+                    ...contentVisibility("700px"),
+                }}
+                {...props}
+                ref={ref}
+            >
                 <Heading as="h2" size="sm" width="100%" textAlign="center">
                     <Text>Comparing </Text>
                     <Halfs

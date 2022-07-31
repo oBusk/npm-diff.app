@@ -15,6 +15,7 @@ const Header: FunctionComponent<FlexProps> = (props) => (
         left="0"
         right="0"
         zIndex="2"
+        css={{ label: "Header", contain: "content" }}
         {...props}
     >
         <HStack flex="1 0 0px">

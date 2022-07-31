@@ -8,6 +8,7 @@ import {
     CollapsableBorderBox,
     CollapsableBorderBoxProps,
 } from "^/components/theme";
+import contentVisibility from "^/lib/utils/contentVisibility";
 import countChanges from "^/lib/utils/countChanges";
 import DiffFileHeader from "./DiffFileHeader";
 import DiffHunk from "./DiffHunk";
@@ -54,6 +55,11 @@ const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
 
         return (
             <CollapsableBorderBox
+                css={{
+                    label: "DiffFile",
+                    margin: "1em 0",
+                    ...contentVisibility("700px"),
+                }}
                 header={
                     <DiffFileHeader
                         a={a}
@@ -62,7 +68,6 @@ const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
                         countedChanges={countedChanges}
                     />
                 }
-                margin="1em 0"
                 {...props}
                 ref={ref}
             >
