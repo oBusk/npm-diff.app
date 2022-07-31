@@ -19,9 +19,9 @@
  */
 export default function contentVisibility(this: void, height = "", width = "") {
     return {
-        // contain: "content",
-        // contentVisibility: "auto",
-        // containIntrinsicHeight: `auto ${height}`,
-        // containIntrinsicWidth: `auto ${width}`,
+        contain: "content",
+        contentVisibility: "auto",
+        containIntrinsicHeight: `auto ${height}`,
+        containIntrinsicWidth: `auto ${width}`,
     } as const;
 }
