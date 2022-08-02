@@ -6,8 +6,8 @@ import {
     useColorModeValue,
     VStack,
 } from "@chakra-ui/react";
+import NextImage from "next/image";
 import Layout from "../Layout";
-import ChakraNextImage from "../theme/NextImage";
 import { externalServicesDarkmode, externalServicesLightmode } from "./assets";
 
 const description =
@@ -72,7 +72,7 @@ const About = () => {
                 <Heading as="h3" size="md">
                     External services
                 </Heading>
-                <ChakraNextImage
+                <NextImage
                     src={externalServicesImage}
                     alt="Screenshot of external services in npm-diff.app"
                 />
