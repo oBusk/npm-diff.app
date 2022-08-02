@@ -145,7 +145,6 @@ const Combobox = <T,>({
         };
     }
 
-    console.log(`>>[Combobox(${id})]`, {});
     return (
         <ComboboxWrapper {...props}>
             <ComboboxBox size={size} {...getComboboxProps()}>
