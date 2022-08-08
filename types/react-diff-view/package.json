@@ -1,7 +1,6 @@
 {
     "private": true,
     "dependencies": {
-        "@obusk/npm-diff.app": "file:../..",
         "gitdiff-parser": "^0.2.2"
     }
 }
