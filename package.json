@@ -42,7 +42,7 @@
         "@chakra-ui/react": "^2.3.2",
         "@emotion/react": "^11.10.4",
         "@emotion/styled": "^11.10.4",
-        "downshift": "^6.1.9",
+        "downshift": "^6.1.10",
         "jest": "^29.0.3",
         "libnpmdiff": "^4.0.5",
         "next": "^12.3.0",
