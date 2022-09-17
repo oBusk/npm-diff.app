@@ -20,7 +20,7 @@
         "npm": "8.x"
     },
     "simple-git-hooks": {
-        "pre-commit": "npm run lint-staged"
+        "pre-commit": "npm run lint-staged -- --quiet"
     },
     "scripts": {
         "dev": "next",
