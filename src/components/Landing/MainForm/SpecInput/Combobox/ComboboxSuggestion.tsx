@@ -5,7 +5,7 @@ import {
     useColorModeValue,
 } from "@chakra-ui/react";
 
-interface ComboboxSuggestionProps extends ListItemProps {
+export interface ComboboxSuggestionProps extends ListItemProps {
     highlighted: boolean;
 }
 

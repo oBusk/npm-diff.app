@@ -4,7 +4,6 @@ import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
 import { Tooltip, TooltipCode } from "^/components/theme";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
-import { ComboboxRef } from "./SpecInput/Combobox/Combobox";
 
 const SIZE = "md";
 
@@ -20,7 +19,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         { overrideA, overrideB, children, isLoading, handleSubmit, ...props },
         ref,
     ) => {
-        const bRef = useRef<ComboboxRef>(null);
+        const bRef = useRef<HTMLInputElement>(null);
         const [a, setA] = useState<string | undefined>("");
         const [b, setB] = useState<string | undefined>("");
 
@@ -73,7 +72,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     size={SIZE}
                     id="a"
                     inputValue={a}
-                    inputValueChange={setA}
+                    onInputValueChange={setA}
                     initialIsOpen={true}
                     inputProps={{
                         borderEndRadius: { lg: 0 },
@@ -87,7 +86,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     versionSelected={(item) => {
                         const bCombobox = bRef.current;
                         if (bCombobox) {
-                            bCombobox.setInputValue(`${item.name}@`);
+                            setB(`${item.name}@`);
                             setTimeout(() => bCombobox.focus());
                         }
                     }}
@@ -101,9 +100,9 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                 <SpecInput
                     size={SIZE}
                     id="b"
-                    comboboxRef={bRef}
+                    inputRef={bRef}
                     inputValue={b}
-                    inputValueChange={setB}
+                    onInputValueChange={setB}
                     inputProps={{
                         borderStartRadius: { lg: 0 },
                         ...(overrideB
