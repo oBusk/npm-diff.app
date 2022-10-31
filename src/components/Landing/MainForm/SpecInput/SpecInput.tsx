@@ -1,61 +1,107 @@
-import { FunctionComponent, useContext } from "react";
-import {
-    AutocompleteSuggestion,
-    AutocompleteSuggestionTypes,
-} from "^/lib/autocomplete";
-import useAutocomplete from "^/lib/autocomplete/useAutocomplete";
+import { Spinner, Text } from "@chakra-ui/react";
+import { FunctionComponent, RefObject, useContext } from "react";
 import { FallbackSuggestionsContext } from "^/lib/contexts/FallbackSuggestions";
-import Combobox, { ComboboxProps } from "./Combobox";
+import {
+    useNpmCombobox,
+    UseNpmComboboxProps,
+} from "^/lib/npm-combobox/useNpmCombobox";
+import {
+    ComboboxBox,
+    ComboboxBoxProps,
+    ComboboxInput,
+    ComboboxInputProps,
+    ComboboxSuggestion,
+    ComboboxSuggestionList,
+    ComboboxWrapper,
+    ComboboxWrapperProps,
+} from "./Combobox";
 import Suggestion from "./Suggestion";
 
-export interface SpecInputProps
-    extends Omit<ComboboxProps<AutocompleteSuggestion>, "items"> {
-    versionSelected?: (item: AutocompleteSuggestion) => void;
-    /**
-     * If specified, `SpecInput` will try to find versions that matches this spec.
-     *
-     * If no matches are found, this filter is ignored.
-     */
-    optionalPackageFilter?: string;
-    inputValue: string | undefined;
+export interface SpecInputProps extends Omit<UseNpmComboboxProps, "fallback"> {
+    wrapperProps?: ComboboxWrapperProps;
+    inputProps?: Omit<ComboboxInputProps, "isOpen">;
+    inputRef?: RefObject<HTMLInputElement>;
+    size: ComboboxBoxProps["size"];
 }
 
-const SpecInput: FunctionComponent<SpecInputProps> = ({
-    id,
-    versionSelected,
-    optionalPackageFilter,
-    inputValue,
-    ...props
-}) => {
-    const fallback = useContext(FallbackSuggestionsContext);
+const SuggestionListText = ({
+    children,
+    error = false,
+}: {
+    children: string;
+    error?: boolean;
+}) => (
+    <Text padding="2em" align="center" color={error ? "red.500" : "gray.500"}>
+        {children}
+    </Text>
+);
 
-    const { items, loading } = useAutocomplete({
-        query: inputValue ?? "",
-        queryThrottle: 250,
-        fallback,
-        optionalPackageFilter,
+const SpecInput: FunctionComponent<SpecInputProps> = ({
+    wrapperProps = {},
+    inputProps = {},
+    inputRef,
+    size,
+
+    ...useNpmComboboxProps
+}) => {
+    const {
+        getInputProps,
+        getItemProps,
+        getMenuProps,
+        highlightedIndex,
+        isOpen,
+        items,
+        loading,
+        error,
+    } = useNpmCombobox({
+        ...useNpmComboboxProps,
+        fallback: useContext(FallbackSuggestionsContext),
     });
 
     return (
-        <Combobox
-            width="100%"
-            maxWidth="20em"
-            id={id}
-            label={null}
-            items={items}
-            itemToString={(suggestion) => suggestion?.value || ""}
-            renderItem={Suggestion}
-            keepOpen={({ selectedItem }) =>
-                // If it is package suggestion ("react" ➡ "react@") is selected, keep the input open to suggest version
-                selectedItem?.type === AutocompleteSuggestionTypes.Package
-            }
-            onItemSelected={(item) => {
-                item.type === AutocompleteSuggestionTypes.Version &&
-                    versionSelected?.(item);
-            }}
-            isLoading={loading}
-            {...props}
-        />
+        <ComboboxWrapper width="100%" maxWidth="20em" {...wrapperProps}>
+            <ComboboxBox size={size}>
+                <ComboboxInput
+                    isOpen={isOpen}
+                    {...getInputProps({
+                        ref: inputRef,
+                    })}
+                    {...inputProps}
+                />
+            </ComboboxBox>
+            <ComboboxSuggestionList {...getMenuProps()}>
+                {isOpen
+                    ? [
+                          error ? (
+                              <SuggestionListText error={true}>
+                                  Something went wrong.
+                              </SuggestionListText>
+                          ) : items.length === 0 ? (
+                              <SuggestionListText>
+                                  No suggestions
+                              </SuggestionListText>
+                          ) : (
+                              items.map((item, index) => (
+                                  <ComboboxSuggestion
+                                      key={item.value}
+                                      highlighted={index === highlightedIndex}
+                                      {...getItemProps({ item, index })}
+                                  >
+                                      <Suggestion item={item} />
+                                  </ComboboxSuggestion>
+                              ))
+                          ),
+                          loading ? (
+                              <Spinner
+                                  position="absolute"
+                                  right={2}
+                                  bottom={2}
+                              />
+                          ) : null,
+                      ]
+                    : null}
+            </ComboboxSuggestionList>
+        </ComboboxWrapper>
     );
 };
 
