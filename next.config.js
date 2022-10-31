@@ -4,8 +4,4 @@ module.exports = {
     compiler: {
         emotion: true,
     },
-    experimental: {
-        browsersListForSwc: true,
-        legacyBrowsers: false,
-    },
 };
