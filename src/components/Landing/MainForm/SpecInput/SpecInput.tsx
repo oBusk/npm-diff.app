@@ -70,36 +70,32 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
                 />
             </ComboboxBox>
             <ComboboxSuggestionList {...getMenuProps()}>
-                {isOpen
-                    ? [
-                          error ? (
-                              <SuggestionListText error={true}>
-                                  Something went wrong.
-                              </SuggestionListText>
-                          ) : items.length === 0 ? (
-                              <SuggestionListText>
-                                  No suggestions
-                              </SuggestionListText>
-                          ) : (
-                              items.map((item, index) => (
-                                  <ComboboxSuggestion
-                                      key={item.value}
-                                      highlighted={index === highlightedIndex}
-                                      {...getItemProps({ item, index })}
-                                  >
-                                      <Suggestion item={item} />
-                                  </ComboboxSuggestion>
-                              ))
-                          ),
-                          loading ? (
-                              <Spinner
-                                  position="absolute"
-                                  right={2}
-                                  bottom={2}
-                              />
-                          ) : null,
-                      ]
-                    : null}
+                {isOpen ? (
+                    <>
+                        {error ? (
+                            <SuggestionListText error={true}>
+                                Something went wrong.
+                            </SuggestionListText>
+                        ) : items.length === 0 ? (
+                            <SuggestionListText>
+                                No suggestions
+                            </SuggestionListText>
+                        ) : (
+                            items.map((item, index) => (
+                                <ComboboxSuggestion
+                                    key={item.value}
+                                    highlighted={index === highlightedIndex}
+                                    {...getItemProps({ item, index })}
+                                >
+                                    <Suggestion item={item} />
+                                </ComboboxSuggestion>
+                            ))
+                        )}
+                        {loading ? (
+                            <Spinner position="absolute" right={2} bottom={2} />
+                        ) : null}
+                    </>
+                ) : null}
             </ComboboxSuggestionList>
         </ComboboxWrapper>
     );
