@@ -98,7 +98,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                         }
                     />
                 </Heading>
-                {packagephobiaResults && (
+                {packagephobiaResults ? (
                     <>
                         <Heading marginTop="8px" size="xs">
                             {Packagephobia.name}
@@ -142,8 +142,8 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                             width="100%"
                         />
                     </>
-                )}
-                {bundlephobiaResults && (
+                ) : null}
+                {bundlephobiaResults ? (
                     <>
                         <Heading size="xs">{Bundlephobia.name}</Heading>
                         <BundlephobiaFlags data={bundlephobiaResults} />
@@ -185,7 +185,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                             width="100%"
                         />
                     </>
-                )}
+                ) : null}
                 <Heading size="l">npm diff</Heading>
                 <Options options={options} />
                 {/* <Command

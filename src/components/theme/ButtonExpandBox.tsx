@@ -33,9 +33,9 @@ const ButtonExpandBox = forwardRef<ButtonExpandBoxProps, "div">(
                 {...props}
                 ref={ref}
             >
-                {isExpanded && (
+                {isExpanded ? (
                     <BorderBox overflow="auto">{children}</BorderBox>
-                )}
+                ) : null}
 
                 <Tooltip label={buttonLabel}>
                     <Button

@@ -18,12 +18,12 @@ const Options = forwardRef<OptionsProps, typeof BorderBox>(
                 <Heading size="xs" marginBottom="1em">
                     Options
                 </Heading>
-                {diffFiles && (
+                {diffFiles ? (
                     <Text>
                         <b>files:</b>{" "}
                         <Code>{diffFiles.join(" ") || "\u00A0"}</Code>
                     </Text>
-                )}
+                ) : null}
                 {specifiedOptions.map(([key, value]) => (
                     <Text key={key}>
                         <b>{key}:</b> <Code>{JSON.stringify(value)}</Code>

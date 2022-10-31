@@ -16,7 +16,7 @@ const DiffPlaceholder = forwardRef<DiffPlaceholderProps, "div">(
             <Button variant="ghost" colorScheme="blue">
                 Load Diff
             </Button>
-            {reason && <span>{reason}</span>}
+            {reason ? <span>{reason}</span> : null}
         </Stack>
     ),
 );

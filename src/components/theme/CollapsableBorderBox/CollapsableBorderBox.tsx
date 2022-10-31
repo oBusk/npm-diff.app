@@ -21,7 +21,7 @@ const CollapsableBorderBox = forwardRef<CollapsableBorderBoxProps, "div">(
                 >
                     {header}
                 </CollapsableBorderBoxHeader>
-                {isExpanded && <Box overflow="auto">{children}</Box>}
+                {isExpanded ? <Box overflow="auto">{children}</Box> : null}
             </BorderBox>
         );
     },

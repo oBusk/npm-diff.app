@@ -32,6 +32,7 @@
                 "warnOnUnassignedImports": true
             }
         ],
+        "react/jsx-no-leaked-render": "error",
         "sort-imports": [
             "error",
             { "ignoreCase": true, "ignoreDeclarationSort": true }

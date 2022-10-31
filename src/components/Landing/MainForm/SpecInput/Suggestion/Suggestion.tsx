@@ -16,7 +16,7 @@ const Suggestion: FunctionComponent<SuggestionProps> = ({
         <>
             <Title name={name} version={version} />
 
-            {body && <Text fontSize="xs">{body}</Text>}
+            {body ? <Text fontSize="xs">{body}</Text> : null}
             <HStack marginTop="4px">
                 {tags.map((tag) => (
                     <VersionTag key={tag} value={tag} />
