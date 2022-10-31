@@ -69,11 +69,18 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                 {...props}
             >
                 <SpecInput
-                    size={SIZE}
                     id="a"
                     inputValue={a}
                     onInputValueChange={setA}
                     initialIsOpen={true}
+                    versionSelected={(item) => {
+                        const bCombobox = bRef.current;
+                        if (bCombobox) {
+                            setB(`${item.name}@`);
+                            setTimeout(() => bCombobox.focus());
+                        }
+                    }}
+                    size={SIZE}
                     inputProps={{
                         borderEndRadius: { lg: 0 },
                         ...(overrideA
@@ -83,13 +90,6 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                               }
                             : undefined),
                     }}
-                    versionSelected={(item) => {
-                        const bCombobox = bRef.current;
-                        if (bCombobox) {
-                            setB(`${item.name}@`);
-                            setTimeout(() => bCombobox.focus());
-                        }
-                    }}
                 ></SpecInput>
                 <CenterInputAddon
                     size={SIZE}
@@ -98,11 +98,15 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     ...
                 </CenterInputAddon>
                 <SpecInput
-                    size={SIZE}
                     id="b"
                     inputRef={bRef}
                     inputValue={b}
                     onInputValueChange={setB}
+                    optionalPackageFilter={bPackageFilter}
+                    size={SIZE}
+                    wrapperProps={{
+                        marginTop: { base: "0.5rem", lg: 0 },
+                    }}
                     inputProps={{
                         borderStartRadius: { lg: 0 },
                         ...(overrideB
@@ -112,8 +116,6 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                               }
                             : undefined),
                     }}
-                    marginTop={{ base: "0.5rem", lg: 0 }}
-                    optionalPackageFilter={bPackageFilter}
                 ></SpecInput>
                 <Box
                     marginInlineStart={{ lg: "2rem" }}
