@@ -6,7 +6,7 @@ export interface NextLinkProps extends LinkProps {}
 const NextLink: FunctionComponent<PropsWithChildren<NextLinkProps>> = ({
     ...props
 }) => {
-    return <Link passHref {...props} />;
+    return <Link passHref legacyBehavior {...props} />;
 };
 
 export default NextLink;
