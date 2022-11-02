@@ -4,4 +4,5 @@ module.exports = {
     compiler: {
         emotion: true,
     },
+    experimental: { appDir: true },
 };
