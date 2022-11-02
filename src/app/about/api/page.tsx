@@ -1,3 +1,4 @@
+"use client";
 import { Code, Heading, Text, VStack } from "@chakra-ui/react";
 import { GetStaticProps, NextPage } from "next";
 import Layout from "^/components/Layout";
@@ -21,7 +22,7 @@ type Props = {
     specs: [string, string];
 };
 
-export const getStaticProps: GetStaticProps<Props> = async ({}) => {
+export const getProps: GetStaticProps<Props> = async ({}) => {
     const specsOrVersions = splitParts(EXAMPLE_QUERY);
     const { canonicalSpecs } = await destination(specsOrVersions);
 

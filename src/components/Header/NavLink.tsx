@@ -12,7 +12,7 @@ const NavLink: FunctionComponent<LinkProps> = ({
     children,
     ...props
 }) => {
-    const { asPath } = useRouter();
+    const { asPath } = useRouter() ?? {};
     const [isActive, setIsActive] = useState(false);
 
     useEffect(() => {
