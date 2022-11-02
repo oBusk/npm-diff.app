@@ -14,7 +14,6 @@ const ServiceIcon: FunctionComponent<ServiceIconProps> = ({
     <Image
         alt={service.name}
         src={service.icon}
-        layout="fixed"
         width={16}
         height={16}
         {...props}
