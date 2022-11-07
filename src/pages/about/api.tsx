@@ -1,7 +1,7 @@
-import { Code, Heading, Text, VStack } from "@chakra-ui/react";
+import { Code, Heading, Text, Tooltip, VStack } from "@chakra-ui/react";
 import { GetStaticProps, NextPage } from "next";
 import Layout from "^/components/Layout";
-import { ExternalLink, Tooltip } from "^/components/theme";
+import { ExternalLink } from "^/components/theme";
 import destination from "^/lib/destination";
 import doDiff from "^/lib/diff";
 import EXAMPLES from "^/lib/examples";

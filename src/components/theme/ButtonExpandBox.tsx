@@ -4,10 +4,10 @@ import {
     Flex,
     FlexProps,
     forwardRef,
+    Tooltip,
     useBoolean,
 } from "@chakra-ui/react";
 import BorderBox from "./BorderBox";
-import Tooltip from "./Tooltip";
 
 export interface ButtonExpandBoxProps extends FlexProps {
     buttonContent: string;

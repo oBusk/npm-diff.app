@@ -43,6 +43,17 @@ const themeOverride: ThemeOverride = {
             },
         }),
     },
+    components: {
+        Tooltip: {
+            baseStyle: {
+                maxWidth: "600px",
+                padding: "4px",
+            },
+            defaultProps: {
+                hasArrow: true,
+            },
+        },
+    },
 };
 
 const theme = extendTheme(themeOverride);

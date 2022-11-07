@@ -1,6 +1,11 @@
 import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { Flex, FlexProps, forwardRef, IconButton } from "@chakra-ui/react";
-import Tooltip from "../Tooltip";
+import {
+    Flex,
+    FlexProps,
+    forwardRef,
+    IconButton,
+    Tooltip,
+} from "@chakra-ui/react";
 
 export interface CollapsableBorderBoxHeaderProps extends FlexProps {
     isExpanded: boolean;
