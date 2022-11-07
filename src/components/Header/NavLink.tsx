@@ -29,7 +29,7 @@ const NavLink: FunctionComponent<LinkProps> = ({
     }, [asPath, href]);
 
     return (
-        <NextLink href={href}>
+        <NextLink href={href} prefetch={false}>
             <Link
                 opacity={isActive ? 0.4 : undefined}
                 transition="all 0.2s"
