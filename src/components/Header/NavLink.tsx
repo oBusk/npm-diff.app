@@ -1,5 +1,5 @@
 import { Link, LinkProps } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { usePathname } from "next/navigation";
 import { FunctionComponent, useEffect, useState } from "react";
 import { NextLink } from "^/components/theme";
 
@@ -12,7 +12,7 @@ const NavLink: FunctionComponent<LinkProps> = ({
     children,
     ...props
 }) => {
-    const { asPath } = useRouter() ?? {};
+    const asPath = usePathname();
     const [isActive, setIsActive] = useState(false);
 
     useEffect(() => {
