@@ -1,14 +1,7 @@
-import {
-    Box,
-    Button,
-    Flex,
-    forwardRef,
-    StackProps,
-    Tooltip,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
 import npa from "npm-package-arg";
 import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
-import { TooltipCode } from "^/components/theme";
+import { Tooltip, TooltipCode } from "^/components/theme";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
 

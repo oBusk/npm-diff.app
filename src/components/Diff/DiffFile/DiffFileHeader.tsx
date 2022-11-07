@@ -1,16 +1,9 @@
-import {
-    Button,
-    Heading,
-    HStack,
-    StackProps,
-    Text,
-    Tooltip,
-} from "@chakra-ui/react";
+import { Button, Heading, HStack, StackProps, Text } from "@chakra-ui/react";
 import type { Result as NpaResult } from "npm-package-arg";
 import { FunctionComponent } from "react";
 import type { File } from "react-diff-view";
 import ServiceIcon from "^/components/ServiceIcon";
-import { TooltipCode } from "^/components/theme";
+import { Tooltip, TooltipCode } from "^/components/theme";
 import { unpkg } from "^/lib/Services";
 import type { CountedChanges } from "^/lib/utils/countChanges";
 
