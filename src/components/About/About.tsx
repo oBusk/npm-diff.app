@@ -76,6 +76,8 @@ const About = () => {
                 <NextImage
                     src={externalServicesImage}
                     alt="Screenshot of external services in npm-diff.app"
+                    priority
+                    style={{ width: "auto", height: "auto" }}
                 />
                 <Text>
                     We also use external services{" "}
