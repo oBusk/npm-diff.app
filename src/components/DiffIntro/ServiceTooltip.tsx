@@ -1,5 +1,5 @@
-import { forwardRef, Text } from "@chakra-ui/react";
-import { B, Tooltip, TooltipCode, TooltipProps } from "^/components/theme";
+import { Code, forwardRef, Text } from "@chakra-ui/react";
+import { B, Tooltip, TooltipProps } from "^/components/theme";
 import { Service } from "^/lib/Services";
 
 export interface ServiceTooltipProps extends TooltipProps {
@@ -19,9 +19,9 @@ const ServiceTooltip = forwardRef<ServiceTooltipProps, any>(
                     <>
                         <Text whiteSpace="nowrap">
                             View{" "}
-                            <TooltipCode>
+                            <Code>
                                 {packageName}@{packageVersion}
-                            </TooltipCode>
+                            </Code>
                         </Text>
                         <Text>
                             on <B>{serviceName}</B>

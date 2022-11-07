@@ -1,9 +1,16 @@
-import { Button, Heading, HStack, StackProps, Text } from "@chakra-ui/react";
+import {
+    Button,
+    Code,
+    Heading,
+    HStack,
+    StackProps,
+    Text,
+} from "@chakra-ui/react";
 import type { Result as NpaResult } from "npm-package-arg";
 import { FunctionComponent } from "react";
 import type { File } from "react-diff-view";
 import ServiceIcon from "^/components/ServiceIcon";
-import { Tooltip, TooltipCode } from "^/components/theme";
+import { Tooltip } from "^/components/theme";
 import { unpkg } from "^/lib/Services";
 import type { CountedChanges } from "^/lib/utils/countChanges";
 
@@ -43,11 +50,8 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
         <Tooltip
             label={
                 <>
-                    View{" "}
-                    <TooltipCode>
-                        {type === "delete" ? oldPath : newPath}
-                    </TooltipCode>{" "}
-                    on <TooltipCode>unpkg.com</TooltipCode>
+                    View <Code>{type === "delete" ? oldPath : newPath}</Code> on{" "}
+                    <Code>unpkg.com</Code>
                 </>
             }
         >

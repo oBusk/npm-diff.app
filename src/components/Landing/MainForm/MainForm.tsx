@@ -1,7 +1,14 @@
-import { Box, Button, Flex, forwardRef, StackProps } from "@chakra-ui/react";
+import {
+    Box,
+    Button,
+    Code,
+    Flex,
+    forwardRef,
+    StackProps,
+} from "@chakra-ui/react";
 import npa from "npm-package-arg";
 import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
-import { Tooltip, TooltipCode } from "^/components/theme";
+import { Tooltip } from "^/components/theme";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
 
@@ -127,10 +134,10 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                                 "Enter a package specification to compare"
                             ) : (
                                 <>
-                                    Compare <TooltipCode>{a}</TooltipCode>{" "}
+                                    Compare <Code>{a}</Code>{" "}
                                     {b ? (
                                         <>
-                                            and <TooltipCode>{b}</TooltipCode>
+                                            and <Code>{b}</Code>
                                         </>
                                     ) : (
                                         ""

@@ -8,7 +8,6 @@ import ExternalLink, { ExternalLinkProps } from "./ExternalLink";
 import NextLink, { NextLinkProps } from "./NextLink";
 import Span, { SpanProps } from "./Span";
 import Tooltip, { TooltipProps } from "./Tooltip";
-import TooltipCode, { TooltipCodeProps } from "./TooltipCode";
 
 export type {
     BProps,
@@ -19,7 +18,6 @@ export type {
     NextLinkProps,
     SpanProps,
     TooltipProps,
-    TooltipCodeProps,
 };
 
 export {
@@ -31,5 +29,4 @@ export {
     NextLink,
     Span,
     Tooltip,
-    TooltipCode,
 };
