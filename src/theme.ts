@@ -21,19 +21,15 @@ const reactDiffViewDarkModeVariables = {
 
 const config: ThemeConfig = {
     initialColorMode: "dark",
-    // useSystemColorMode: true,
+    useSystemColorMode: true,
 };
 
 const themeOverride: ThemeOverride = {
     config,
     styles: {
-        global: ({ colorMode }) => ({
-            ":root": colorMode === "dark" ? reactDiffViewDarkModeVariables : {},
+        global: {
             html: {
-                // I find it less annoying to go from dark->ligth when loading, than flash of light
-                background: colorMode === "light" ? "white" : "gray.800",
-                // 360px
-                minWidth: "22em",
+                minWidth: "sm",
             },
             body: {
                 minHeight: "100vh",
@@ -41,16 +37,16 @@ const themeOverride: ThemeOverride = {
             ".diff-gutter": {
                 scrollMarginTop: "100px",
             },
-        }),
+            _dark: {
+                ":root": { ...reactDiffViewDarkModeVariables },
+            },
+        },
     },
     components: {
         Tooltip: {
             baseStyle: {
-                maxWidth: "600px",
                 padding: "4px",
-            },
-            defaultProps: {
-                hasArrow: true,
+                textAlign: "center",
             },
         },
     },

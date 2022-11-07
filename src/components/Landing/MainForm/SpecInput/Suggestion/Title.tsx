@@ -1,4 +1,4 @@
-import { Heading, HeadingProps, useColorModeValue } from "@chakra-ui/react";
+import { Heading, HeadingProps } from "@chakra-ui/react";
 import { FunctionComponent, memo } from "react";
 import Span from "^/components/theme/Span";
 import emphasized from "./emphasized";
@@ -6,8 +6,16 @@ import emphasized from "./emphasized";
 const Title: FunctionComponent<
     HeadingProps & { name?: string; version?: string }
 > = ({ name, version, ...props }) => {
-    const color = useColorModeValue("gray.800", "whiteAlpha.900");
-    const fadedColor = useColorModeValue("gray.400", "whiteAlpha.400");
+    const color = {
+        color: "gray.800",
+        _dark: {
+            color: "whiteAlpha.900",
+        },
+    } as const;
+    const fadedColor = {
+        color: "gray.400",
+        _dark: { color: "whiteAlpha.400" },
+    } as const;
 
     return (
         <Heading
@@ -15,12 +23,12 @@ const Title: FunctionComponent<
             size="sm"
             fontWeight="normal"
             fontFamily="mono"
-            color={version ? fadedColor : color}
+            {...(version ? fadedColor : color)}
             {...props}
         >
             {version ? (
                 <>
-                    {name}@<Span color={color}>{emphasized(version)}</Span>
+                    {name}@<Span {...color}>{emphasized(version)}</Span>
                 </>
             ) : (
                 emphasized(name)

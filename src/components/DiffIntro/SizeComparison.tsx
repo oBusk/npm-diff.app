@@ -5,7 +5,6 @@ import {
     forwardRef,
     LinkProps,
     Text,
-    useColorModeValue,
 } from "@chakra-ui/react";
 import { FunctionComponent, ReactNode } from "react";
 import { ExternalLink, Span } from "^/components/theme";
@@ -45,8 +44,6 @@ const LinkButton: FunctionComponent<
         service: Service;
     }
 > = ({ packageName, packageVersion, service, ...props }) => {
-    const hoverBg = useColorModeValue("gray.100", "gray.700");
-
     return (
         <ServiceTooltip
             serviceName={service.name}
@@ -60,7 +57,12 @@ const LinkButton: FunctionComponent<
                 textAlign="center"
                 _hover={{
                     textDecoration: "none",
-                    background: hoverBg,
+                    background: "gray.100",
+                }}
+                _dark={{
+                    _hover: {
+                        background: "gray.700",
+                    },
                 }}
                 {...props}
             />

@@ -11,19 +11,17 @@ export interface SuggestionProps {
 
 const Suggestion: FunctionComponent<SuggestionProps> = ({
     item: { name, body, tags = [], version } = {},
-}) => {
-    return (
-        <>
-            <Title name={name} version={version} />
+}) => (
+    <>
+        <Title name={name} version={version} />
 
-            {body ? <Text fontSize="xs">{body}</Text> : null}
-            <HStack marginTop="4px">
-                {tags.map((tag) => (
-                    <VersionTag key={tag} value={tag} />
-                ))}
-            </HStack>
-        </>
-    );
-};
+        {body ? <Text fontSize="xs">{body}</Text> : null}
+        <HStack marginTop="4px">
+            {tags.map((tag) => (
+                <VersionTag key={tag} value={tag} />
+            ))}
+        </HStack>
+    </>
+);
 
 export default Suggestion;
