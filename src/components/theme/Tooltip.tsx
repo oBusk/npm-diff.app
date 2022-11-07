@@ -7,13 +7,7 @@ import {
 export interface TooltipProps extends ChakraTooltipProps {}
 
 const Tooltip = forwardRef<TooltipProps, "div">((props, ref) => (
-    <ChakraTooltip
-        maxWidth="600px"
-        padding="4px"
-        hasArrow
-        {...props}
-        ref={ref}
-    />
+    <ChakraTooltip hasArrow {...props} ref={ref} />
 ));
 
 export default Tooltip;

@@ -42,6 +42,14 @@ const themeOverride: ThemeOverride = {
             },
         },
     },
+    components: {
+        Tooltip: {
+            baseStyle: {
+                padding: "4px",
+                textAlign: "center",
+            },
+        },
+    },
 };
 
 const theme = extendTheme(themeOverride);
