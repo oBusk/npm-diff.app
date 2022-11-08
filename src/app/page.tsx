@@ -1,5 +1,5 @@
-import Landing from "^/components/Landing";
 import fallback from "^/lib/autocomplete/fallback";
+import Landing from "./Landing";
 
 export interface IndexProps {}
 
