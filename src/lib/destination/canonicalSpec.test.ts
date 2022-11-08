@@ -1,6 +1,9 @@
 import pacote from "pacote";
 import canonicalSpec from "./canonicalSpec";
 
+// Increase the timeout for long running tests
+jest.setTimeout(15_000);
+
 const hashFinder = /(?:\#.*)?$/;
 
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["t"] }] */
