@@ -1,6 +1,6 @@
 import { Spinner, Text } from "@chakra-ui/react";
-import { FunctionComponent, RefObject, useContext } from "react";
-import { FallbackSuggestionsContext } from "^/lib/contexts/FallbackSuggestions";
+import { FunctionComponent, RefObject } from "react";
+import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import {
     useNpmCombobox,
     UseNpmComboboxProps,
@@ -22,6 +22,7 @@ export interface SpecInputProps extends Omit<UseNpmComboboxProps, "fallback"> {
     inputProps?: Omit<ComboboxInputProps, "isOpen">;
     inputRef?: RefObject<HTMLInputElement>;
     size: ComboboxBoxProps["size"];
+    fallbackSuggestions?: AutocompleteSuggestion[];
 }
 
 const SuggestionListText = ({
@@ -41,6 +42,7 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
     inputProps = {},
     inputRef,
     size,
+    fallbackSuggestions = [],
 
     ...useNpmComboboxProps
 }) => {
@@ -55,7 +57,7 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
         error,
     } = useNpmCombobox({
         ...useNpmComboboxProps,
-        fallback: useContext(FallbackSuggestionsContext),
+        fallback: fallbackSuggestions,
     });
 
     return (

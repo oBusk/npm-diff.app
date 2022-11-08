@@ -9,6 +9,7 @@ import {
 import npa from "npm-package-arg";
 import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
 import { Tooltip } from "^/components/theme";
+import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
 
@@ -19,11 +20,20 @@ export interface MainFormProps extends StackProps {
     overrideB: string | null;
     isLoading: boolean;
     handleSubmit: (a: string | undefined, b: string | undefined) => void;
+    fallbackSuggestions: AutocompleteSuggestion[];
 }
 
 const MainForm = forwardRef<MainFormProps, typeof Flex>(
     (
-        { overrideA, overrideB, children, isLoading, handleSubmit, ...props },
+        {
+            overrideA,
+            overrideB,
+            children,
+            isLoading,
+            handleSubmit,
+            fallbackSuggestions,
+            ...props
+        },
         ref,
     ) => {
         const bRef = useRef<HTMLInputElement>(null);
@@ -98,6 +108,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                               }
                             : undefined),
                     }}
+                    fallbackSuggestions={fallbackSuggestions}
                 ></SpecInput>
                 <CenterInputAddon
                     size={SIZE}
@@ -125,6 +136,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                               }
                             : undefined),
                     }}
+                    fallbackSuggestions={fallbackSuggestions}
                 ></SpecInput>
                 <Box
                     marginInlineStart={{ lg: "2rem" }}

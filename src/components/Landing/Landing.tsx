@@ -1,16 +1,20 @@
+"use client";
 import { Stack, useBoolean } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { FunctionComponent, useState } from "react";
 import Layout from "^/components/Layout";
+import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import ExamplesList from "./ExamplesList";
 import Intro from "./Intro";
 import MainForm from "./MainForm/MainForm";
 import OptionsForm from "./OptionsForm";
 
-export interface LandingProps {}
+export interface LandingProps {
+    fallbackSuggestions: AutocompleteSuggestion[];
+}
 
-const Landing: FunctionComponent<LandingProps> = () => {
+const Landing: FunctionComponent<LandingProps> = ({ fallbackSuggestions }) => {
     const [overrides, setOverrides] = useState<{
         a: string | null;
         b: string | null;
@@ -41,10 +45,11 @@ const Landing: FunctionComponent<LandingProps> = () => {
     const goToDiff = (a: string | undefined, b: string | undefined): void => {
         setLoading.on();
 
-        router.push({
-            pathname: `/${a}...${b}`,
-            query,
-        });
+        router.push(
+            `/${a}...${b}?${Object.entries(query)
+                .map(([k, v]) => `${k}=${v}`)
+                .join("&")}`,
+        );
     };
 
     return (
@@ -56,6 +61,7 @@ const Landing: FunctionComponent<LandingProps> = () => {
                     overrideB={overrides.b}
                     isLoading={isLoading}
                     handleSubmit={goToDiff}
+                    fallbackSuggestions={fallbackSuggestions}
                 />
                 <OptionsForm files={diffFiles} filesChange={setDiffFiles} />
             </Stack>
