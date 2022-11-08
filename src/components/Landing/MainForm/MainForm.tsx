@@ -90,7 +90,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     size={SIZE}
                     inputProps={{
                         borderEndRadius: { lg: 0 },
-                        borderEndWidth: 0,
+                        borderEndWidth: { lg: 0 },
                         ...(overrideA
                             ? {
                                   value: overrideA,
@@ -117,7 +117,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     }}
                     inputProps={{
                         borderStartRadius: { lg: 0 },
-                        borderStartWidth: 0,
+                        borderStartWidth: { lg: 0 },
                         ...(overrideB
                             ? {
                                   value: overrideB,
