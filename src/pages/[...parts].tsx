@@ -188,6 +188,26 @@ const DiffPage: NextPage<Props> = ({ error, result }) => {
         );
     }
 
+    if (diff === "") {
+        return (
+            <Layout
+                title={`Comparing ${a}...${b}`}
+                description={`A diff between the npm packages "${a}" and "${b}"`}
+            >
+                <DiffIntro
+                    a={aNpa}
+                    b={bNpa}
+                    files={[]}
+                    packagephobiaResults={null}
+                    bundlephobiaResults={null}
+                    options={options}
+                    viewType="unified"
+                    alignSelf="stretch"
+                />
+            </Layout>
+        );
+    }
+
     if (files == null) {
         return (
             <Layout title="Error">
