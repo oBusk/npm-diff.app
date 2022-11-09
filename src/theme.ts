@@ -74,9 +74,6 @@ const themeOverride: ThemeOverride = {
             html: {
                 minWidth: "sm",
             },
-            body: {
-                minHeight: "100vh",
-            },
             ".diff-gutter": {
                 scrollMarginTop: "100px",
             },
