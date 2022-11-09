@@ -76,7 +76,7 @@
         "eslint-plugin-jest": "^27.1.4",
         "eslint-plugin-prettier": "^4.2.1",
         "eslint-plugin-testing-library": "^5.9.1",
-        "jest-environment-jsdom": "^29.3.0",
+        "jest-environment-jsdom": "^29.3.1",
         "lint-staged": "^13.0.3",
         "prettier": "^2.7.1",
         "simple-git-hooks": "^2.8.1",
