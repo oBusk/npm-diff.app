@@ -27,8 +27,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         ref,
     ) => {
         const bRef = useRef<HTMLInputElement>(null);
-        const [a, setA] = useState<string | undefined>("");
-        const [b, setB] = useState<string | undefined>("");
+        const [a, setA] = useState<string>("");
+        const [b, setB] = useState<string>("");
 
         const bPackageFilter = useMemo(() => {
             if (!a) {
