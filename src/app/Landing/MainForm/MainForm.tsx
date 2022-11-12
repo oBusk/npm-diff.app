@@ -37,8 +37,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         ref,
     ) => {
         const bRef = useRef<HTMLInputElement>(null);
-        const [a, setA] = useState<string | undefined>("");
-        const [b, setB] = useState<string | undefined>("");
+        const [a, setA] = useState<string>("");
+        const [b, setB] = useState<string>("");
 
         const bPackageFilter = useMemo(() => {
             if (!a) {
@@ -143,31 +143,39 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     marginTop={{ base: "0.5rem", lg: 0 }}
                 >
                     <Tooltip
-                        label={
-                            !a ? (
-                                "Enter a package specification to compare"
-                            ) : (
-                                <>
-                                    Compare <Code>{a}</Code>{" "}
-                                    {b ? (
-                                        <>
-                                            and <Code>{b}</Code>
-                                        </>
-                                    ) : (
-                                        ""
-                                    )}{" "}
-                                    now!
-                                </>
-                            )
-                        }
-                        background={!a ? "red.700" : undefined}
+                        {...(!a
+                            ? {
+                                  label: "Enter a package specification to compare",
+                                  background: "red.700",
+                              }
+                            : {
+                                  label: (
+                                      <>
+                                          Compare <Code>{a}</Code>{" "}
+                                          {!!b && (
+                                              <>
+                                                  and <Code>{b}</Code>
+                                              </>
+                                          )}{" "}
+                                          now!
+                                      </>
+                                  ),
+                              })}
+                        isOpen={isLoading ? false : undefined}
                     >
                         <Box>
                             <Button
                                 isLoading={isLoading}
-                                type="submit"
                                 size={SIZE}
-                                disabled={!a}
+                                {...(!a
+                                    ? {
+                                          type: "button",
+                                          variant: "solid-disabled",
+                                      }
+                                    : {
+                                          type: "submit",
+                                          variant: "solid",
+                                      })}
                             >
                                 npm diff! 📦🔃
                             </Button>

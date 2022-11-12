@@ -59,10 +59,10 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
         const changes = files.map((file) => countChanges(file.hunks));
         const additions = changes
             .map(({ additions }) => additions)
-            .reduce((a, b) => a + b);
+            .reduce((a, b) => a + b, 0);
         const deletions = changes
             .map(({ deletions }) => deletions)
-            .reduce((a, b) => a + b);
+            .reduce((a, b) => a + b, 0);
 
         return (
             <Flex
@@ -195,14 +195,31 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                     bVersion={bVersion}
                     options={options}
                 /> */}
-                <HStack width="100%" justifyContent="space-between">
-                    <Span>
-                        Showing <B>{files.length} changed files</B> with{" "}
-                        <B>{additions} additions</B> and{" "}
-                        <B>{deletions} deletions</B>
-                    </Span>
-                    <ViewTypeSwitch currentViewType={viewType} />
-                </HStack>
+                {files.length > 0 ? (
+                    <HStack width="100%" justifyContent="space-between">
+                        <Span>
+                            Showing <B>{files.length} changed files</B> with{" "}
+                            <B>{additions} additions</B> and{" "}
+                            <B>{deletions} deletions</B>
+                        </Span>
+                        <ViewTypeSwitch currentViewType={viewType} />
+                    </HStack>
+                ) : (
+                    <Box padding="3em" textAlign="center">
+                        <Text fontSize="32">📦🔃</Text>
+                        <Heading as="h3" marginBottom="1em">
+                            There&apos;s nothing to compare!
+                        </Heading>
+                        <Text as={Code}>
+                            {aName}@{aVersion}
+                        </Text>{" "}
+                        and{" "}
+                        <Text as={Code}>
+                            {bName}@{bVersion}
+                        </Text>{" "}
+                        are identical.
+                    </Box>
+                )}
             </Flex>
         );
     },

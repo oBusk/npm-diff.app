@@ -1,6 +1,7 @@
 import { Stack, StackProps } from "@chakra-ui/react";
 import Head from "next/head";
 import { FunctionComponent } from "react";
+import Div100vh from "react-div-100vh";
 import Footer from "./Footer";
 import Header from "./Header";
 
@@ -32,7 +33,7 @@ const Layout: FunctionComponent<LayoutProps> = ({
             />
         </Head>
         <Stack
-            minHeight="100vh"
+            as={Div100vh}
             justifyContent="space-between"
             padding={PADDING}
             {...props}
