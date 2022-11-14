@@ -38,7 +38,7 @@
         "test-ci": "jest --ci"
     },
     "dependencies": {
-        "@chakra-ui/icons": "^2.0.11",
+        "@chakra-ui/icons": "^2.0.12",
         "@chakra-ui/react": "^2.3.7",
         "@emotion/react": "^11.10.5",
         "@emotion/styled": "^11.10.5",
