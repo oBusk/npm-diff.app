@@ -80,6 +80,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                     <Halfs
                         left={
                             <SpecBox
+                                id="A"
                                 packageName={aName}
                                 packageVersion={aVersion}
                             />
@@ -92,6 +93,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                         }
                         right={
                             <SpecBox
+                                id="B"
                                 packageName={bName}
                                 packageVersion={bVersion}
                             />
