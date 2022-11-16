@@ -5,9 +5,9 @@ import {
     ButtonProps,
     forwardRef,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { usePathname, useSearchParams } from "next/navigation";
 import { ViewType } from "react-diff-view";
-import { DIFF_TYPE_PARAM_NAME } from "^/pages/[...parts]";
+import DIFF_TYPE_PARAM_NAME from "^/DIFF_TYPE_PARAM_NAME";
 import { NextLink } from "../theme";
 
 export interface ViewTypeButtonProps extends ButtonProps {
@@ -18,13 +18,15 @@ export interface ViewTypeButtonProps extends ButtonProps {
 
 const ViewTypeButton = forwardRef<ViewTypeButtonProps, typeof Button>(
     ({ viewType, title, currentViewType, ...props }, ref) => {
-        const router = useRouter();
+        const searchParams = useSearchParams();
+        const pathname = usePathname();
 
         return (
             <NextLink
                 href={{
+                    pathname,
                     query: {
-                        ...router.query,
+                        ...Object.fromEntries(searchParams.entries()),
                         [DIFF_TYPE_PARAM_NAME]: viewType,
                     },
                 }}
