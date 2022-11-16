@@ -1,7 +1,7 @@
 "use client";
 import { Code, Heading, Text, VStack } from "@chakra-ui/react";
-import Layout from "^/components/Layout";
 import { ExternalLink, Tooltip } from "^/components/theme";
+import { MetaData } from "^/lib/metaData";
 
 export interface AboutApiPageClientProps {
     diff: string;
@@ -14,7 +14,7 @@ const AboutApiPageClient = ({
     specs,
     exampleAbsoluteUrl,
 }: AboutApiPageClientProps) => (
-    <Layout title="API">
+    <MetaData title="API" description="API documentation for npm-diff.app">
         <VStack p={5} shadow="md" borderWidth="1px" spacing={8}>
             <Heading as="h2" size="lg">
                 npm-diff.app API
@@ -55,7 +55,7 @@ const AboutApiPageClient = ({
                 {diff}
             </Code>
         </VStack>
-    </Layout>
+    </MetaData>
 );
 
 export default AboutApiPageClient;

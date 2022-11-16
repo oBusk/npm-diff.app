@@ -2,9 +2,9 @@
 import { Stack, useBoolean } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
 import { FunctionComponent, useState } from "react";
-import Layout from "^/components/Layout";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
+import { MetaData } from "^/lib/metaData";
 import ExamplesList from "./ExamplesList";
 import Intro from "./Intro";
 import MainForm from "./MainForm/MainForm";
@@ -53,7 +53,7 @@ const Landing: FunctionComponent<LandingProps> = ({ fallbackSuggestions }) => {
     };
 
     return (
-        <Layout>
+        <MetaData>
             <Intro as={Stack} />
             <Stack>
                 <MainForm
@@ -71,7 +71,7 @@ const Landing: FunctionComponent<LandingProps> = ({ fallbackSuggestions }) => {
                 exampleClicked={() => !isLoading && exampleClicked()}
                 queryParams={query}
             />
-        </Layout>
+        </MetaData>
     );
 };
 

@@ -8,12 +8,12 @@ import { parseDiff, ViewType } from "react-diff-view";
 import DiffFiles from "^/components/Diff/DiffFiles";
 import DiffIntro from "^/components/DiffIntro";
 import ErrorBox from "^/components/ErrorBox";
-import Layout from "^/components/Layout";
 import DIFF_TYPE_PARAM_NAME from "^/DIFF_TYPE_PARAM_NAME";
 import adjustDiff from "^/lib/adjustDiff";
 import { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import { PackagephobiaResults } from "^/lib/api/packagephobia";
 import DiffOptions from "^/lib/DiffOptions";
+import { MetaData } from "^/lib/metaData";
 
 type Props = {
     error?: string;
@@ -62,15 +62,15 @@ const DiffView: FunctionComponent<Props> = ({ error, result } = {}) => {
 
     if (aNpa === undefined || bNpa === undefined) {
         return (
-            <Layout title="Error">
+            <MetaData title="Error">
                 <ErrorBox>Specs could not be parsed</ErrorBox>
-            </Layout>
+            </MetaData>
         );
     }
 
     if (diff === "") {
         return (
-            <Layout
+            <MetaData
                 title={`Comparing ${a}...${b}`}
                 description={`A diff between the npm packages "${a}" and "${b}"`}
             >
@@ -84,27 +84,27 @@ const DiffView: FunctionComponent<Props> = ({ error, result } = {}) => {
                     viewType="unified"
                     alignSelf="stretch"
                 />
-            </Layout>
+            </MetaData>
         );
     }
 
     if (files == null) {
         return (
-            <Layout title="Error">
+            <MetaData title="Error">
                 <Center>
                     <ErrorBox>Files could not be parsed</ErrorBox>
                 </Center>
-            </Layout>
+            </MetaData>
         );
     }
 
     if (error != null) {
         return (
-            <Layout title="Error">
+            <MetaData title="Error">
                 <Center>
                     <ErrorBox>{error}</ErrorBox>
                 </Center>
-            </Layout>
+            </MetaData>
         );
     }
 
@@ -118,7 +118,7 @@ const DiffView: FunctionComponent<Props> = ({ error, result } = {}) => {
               defaultViewType;
 
     return (
-        <Layout
+        <MetaData
             title={`Comparing ${a}...${b}`}
             description={`A diff between the npm packages "${a}" and "${b}"`}
         >
@@ -131,7 +131,7 @@ const DiffView: FunctionComponent<Props> = ({ error, result } = {}) => {
                 options={options}
                 viewType={viewType}
             />
-        </Layout>
+        </MetaData>
     );
 };
 

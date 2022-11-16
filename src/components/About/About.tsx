@@ -8,11 +8,8 @@ import {
     VStack,
 } from "@chakra-ui/react";
 import NextImage from "next/image";
-import Layout from "../Layout";
+import { defaultMetaData, MetaData } from "^/lib/metaData";
 import { externalServicesDarkmode, externalServicesLightmode } from "./assets";
-
-const description =
-    "npm-diff.app is a online service to compare the changes between versions of packages or forks of packages.";
 
 const About = () => {
     const externalServicesImage = useColorModeValue(
@@ -21,12 +18,12 @@ const About = () => {
     );
 
     return (
-        <Layout title="about" description={description}>
+        <MetaData title="About">
             <VStack p={5} shadow="md" borderWidth="1px" spacing={8}>
                 <Heading as="h2" size="lg">
                     About npm-diff.app
                 </Heading>
-                <Text>{description}</Text>
+                <Text>{defaultMetaData.description}</Text>
                 <Text>
                     The comparing matches the behaviour of the CLI by using the
                     official{" "}
@@ -88,7 +85,7 @@ const About = () => {
                     measured in install and bundle size.
                 </Text>
             </VStack>
-        </Layout>
+        </MetaData>
     );
 };
 

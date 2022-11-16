@@ -1,4 +1,5 @@
-import Config from "./config";
+import defaultMetaData from "^/lib/metaData/defaultMetaData";
+import LayoutClient from "./layout.client";
 
 export default function RootLayout({
     children,
@@ -26,9 +27,15 @@ export default function RootLayout({
                     href="/favicon-16x16.png"
                 />
                 <link rel="manifest" href="/site.webmanifest" />
+
+                <title>{defaultMetaData.title}</title>
+                <meta
+                    name="description"
+                    content={defaultMetaData.description}
+                />
             </head>
             <body>
-                <Config>{children}</Config>
+                <LayoutClient>{children}</LayoutClient>
             </body>
         </html>
     );

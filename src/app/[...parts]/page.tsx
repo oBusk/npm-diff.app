@@ -15,6 +15,9 @@ import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
 import DiffView from "./view";
 
+// TODO: Don't use the same component for errors and diff page
+// TODO: Set title and description using `head.tsx` so that they
+//       are set before `useEffect()`
 const DiffPage = async ({
     params: { parts },
     searchParams,
