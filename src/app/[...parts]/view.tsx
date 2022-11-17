@@ -5,7 +5,6 @@ import npa, { Result as NpaResult } from "npm-package-arg";
 import { FunctionComponent, memo, useMemo } from "react";
 import type { File } from "react-diff-view";
 import { parseDiff, ViewType } from "react-diff-view";
-import DIFF_TYPE_PARAM_NAME from "^/DIFF_TYPE_PARAM_NAME";
 import adjustDiff from "^/lib/adjustDiff";
 import { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import { PackagephobiaResults } from "^/lib/api/packagephobia";
@@ -14,6 +13,7 @@ import { MetaData } from "^/lib/metaData";
 import DiffFiles from "./_page/DiffFiles";
 import DiffIntro from "./_page/DiffIntro";
 import ErrorBox from "./_page/ErrorBox";
+import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 
 type Props = {
     error?: string;

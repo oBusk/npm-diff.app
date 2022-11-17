@@ -8,7 +8,7 @@ import {
 import { usePathname, useSearchParams } from "next/navigation";
 import { ViewType } from "react-diff-view";
 import NextLink from "^/components/NextLink";
-import DIFF_TYPE_PARAM_NAME from "^/DIFF_TYPE_PARAM_NAME";
+import { DIFF_TYPE_PARAM_NAME } from "../paramNames";
 
 export interface ViewTypeButtonProps extends ButtonProps {
     title: string;

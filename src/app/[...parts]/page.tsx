@@ -2,7 +2,6 @@ import { REDIRECT_ERROR_CODE } from "next/dist/client/components/redirect";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ViewType } from "react-diff-view";
-import DIFF_TYPE_PARAM_NAME from "^/DIFF_TYPE_PARAM_NAME";
 import bundlephobia from "^/lib/api/bundlephobia";
 import packagephobia from "^/lib/api/packagephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
@@ -13,6 +12,7 @@ import measuredPromise from "^/lib/measuredPromise";
 import { parseQuery, QueryParams } from "^/lib/query";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
+import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 import DiffView from "./view";
 
 // TODO: Don't use the same component for errors and diff page
