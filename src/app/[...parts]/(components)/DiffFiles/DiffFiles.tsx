@@ -4,7 +4,7 @@ import { FunctionComponent } from "react";
 import { File, ViewType } from "react-diff-view";
 import DiffFileComponent from "./DiffFile";
 
-interface DiffFilesProps {
+export interface DiffFilesProps {
     a: NpaResult;
     b: NpaResult;
     files: File[];

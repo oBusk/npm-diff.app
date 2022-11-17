@@ -1,5 +1,5 @@
 import { Code, forwardRef } from "@chakra-ui/react";
-import BorderBox, { BorderBoxProps } from "./theme/BorderBox";
+import BorderBox, { BorderBoxProps } from "^/components/theme/BorderBox";
 
 export interface ErrorBoxProps extends BorderBoxProps {}
 

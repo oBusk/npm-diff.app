@@ -7,8 +7,8 @@ import {
 } from "@chakra-ui/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { ViewType } from "react-diff-view";
+import { NextLink } from "^/components/theme";
 import DIFF_TYPE_PARAM_NAME from "^/DIFF_TYPE_PARAM_NAME";
-import { NextLink } from "../theme";
 
 export interface ViewTypeButtonProps extends ButtonProps {
     title: string;
