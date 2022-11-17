@@ -1,11 +1,11 @@
 import fallback from "^/lib/autocomplete/fallback";
-import Landing from "./Landing";
+import IndexPageClient from "./page.client";
 
 export interface IndexProps {}
 
 const IndexPage = async ({}: IndexProps) => {
     const fallbackSuggestions = await fallback();
-    return <Landing fallbackSuggestions={fallbackSuggestions} />;
+    return <IndexPageClient fallbackSuggestions={fallbackSuggestions} />;
 };
 
 export default IndexPage;

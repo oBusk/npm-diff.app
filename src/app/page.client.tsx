@@ -5,16 +5,18 @@ import { FunctionComponent, useState } from "react";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import { MetaData } from "^/lib/metaData";
-import ExamplesList from "./ExamplesList";
-import Intro from "./Intro";
-import MainForm from "./MainForm/MainForm";
-import OptionsForm from "./OptionsForm";
+import ExamplesList from "./(components)/ExamplesList";
+import Intro from "./(components)/Intro";
+import MainForm from "./(components)/MainForm/MainForm";
+import OptionsForm from "./(components)/OptionsForm";
 
 export interface LandingProps {
     fallbackSuggestions: AutocompleteSuggestion[];
 }
 
-const Landing: FunctionComponent<LandingProps> = ({ fallbackSuggestions }) => {
+const IndexPageClient: FunctionComponent<LandingProps> = ({
+    fallbackSuggestions,
+}) => {
     const [overrides, setOverrides] = useState<{
         a: string | null;
         b: string | null;
@@ -75,4 +77,4 @@ const Landing: FunctionComponent<LandingProps> = ({ fallbackSuggestions }) => {
     );
 };
 
-export default Landing;
+export default IndexPageClient;
