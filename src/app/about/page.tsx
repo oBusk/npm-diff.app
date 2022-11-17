@@ -1,8 +1,8 @@
 import type { NextPage } from "next";
-import About from "^/components/About";
+import AboutPageClient from "./page.client";
 
 interface Props {}
 
-const AboutPage: NextPage<Props> = () => <About />;
+const AboutPage: NextPage<Props> = () => <AboutPageClient />;
 
 export default AboutPage;

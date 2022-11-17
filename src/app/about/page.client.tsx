@@ -9,9 +9,12 @@ import {
 } from "@chakra-ui/react";
 import NextImage from "next/image";
 import { defaultMetaData, MetaData } from "^/lib/metaData";
-import { externalServicesDarkmode, externalServicesLightmode } from "./assets";
+import {
+    externalServicesDarkmode,
+    externalServicesLightmode,
+} from "./(assets)";
 
-const About = () => {
+const AboutPageClient = () => {
     const externalServicesImage = useColorModeValue(
         externalServicesLightmode,
         externalServicesDarkmode,
@@ -89,4 +92,4 @@ const About = () => {
     );
 };
 
-export default About;
+export default AboutPageClient;
