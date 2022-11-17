@@ -6,12 +6,12 @@ import "react-diff-view/style/index.css";
 import CollapsableBorderBox, {
     CollapsableBorderBoxProps,
 } from "^/components/CollapsableBorderBox";
-import { Diff } from "^/components/react-diff-view";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import countChanges from "^/lib/utils/countChanges";
 import DiffFileHeader from "./DiffFileHeader";
 import DiffHunk from "./DiffHunk";
 import DiffPlaceholder from "./DiffPlaceholder";
+import { Diff } from "./react-diff-view";
 
 const FILES_TO_RENDER = 2 ** 6;
 const CHANGES_TO_RENDER = 2 ** 7;

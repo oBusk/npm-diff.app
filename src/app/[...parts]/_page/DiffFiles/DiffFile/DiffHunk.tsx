@@ -1,8 +1,8 @@
 import { Text } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { HunkData } from "react-diff-view";
-import { Decoration, Hunk } from "^/components/react-diff-view";
 import contentVisibility from "^/lib/utils/contentVisibility";
+import { Decoration, Hunk } from "./react-diff-view";
 
 interface DiffHunkProps {
     hunk: HunkData;
