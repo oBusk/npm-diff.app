@@ -7,7 +7,7 @@ import {
 } from "@chakra-ui/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import { ViewType } from "react-diff-view";
-import { NextLink } from "^/components/theme";
+import NextLink from "^/components/NextLink";
 import DIFF_TYPE_PARAM_NAME from "^/DIFF_TYPE_PARAM_NAME";
 
 export interface ViewTypeButtonProps extends ButtonProps {

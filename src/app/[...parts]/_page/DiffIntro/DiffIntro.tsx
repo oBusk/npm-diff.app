@@ -11,7 +11,8 @@ import {
 import type { Result as NpaResult } from "npm-package-arg";
 import type { File } from "react-diff-view";
 import { ViewType } from "react-diff-view";
-import { B, Span } from "^/components/theme";
+import B from "^/components/B";
+import Span from "^/components/Span";
 import { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import { PackagephobiaResults } from "^/lib/api/packagephobia";
 import DiffOptions from "^/lib/DiffOptions";

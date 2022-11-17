@@ -1,6 +1,6 @@
 import { Heading, HeadingProps } from "@chakra-ui/react";
 import { FunctionComponent, memo } from "react";
-import Span from "^/components/theme/Span";
+import Span from "^/components/Span";
 import emphasized from "./emphasized";
 
 const Title: FunctionComponent<

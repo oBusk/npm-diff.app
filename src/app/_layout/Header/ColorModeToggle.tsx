@@ -5,7 +5,7 @@ import {
     IconButtonProps,
     useColorMode,
 } from "@chakra-ui/react";
-import { Tooltip } from "^/components/theme";
+import Tooltip from "^/components/Tooltip";
 
 export interface ColorModeToggleProps extends Partial<IconButtonProps> {}
 

@@ -1,7 +1,7 @@
 import { Link, LinkProps } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import { FunctionComponent, useEffect, useState } from "react";
-import { NextLink } from "^/components/theme";
+import NextLink from "^/components/NextLink";
 
 export interface NavLinkProps extends LinkProps {
     href: string;

@@ -1,6 +1,7 @@
 "use client";
 import { Code, Heading, Text, VStack } from "@chakra-ui/react";
-import { ExternalLink, Tooltip } from "^/components/theme";
+import ExternalLink from "^/components/ExternalLink";
+import Tooltip from "^/components/Tooltip";
 import { MetaData } from "^/lib/metaData";
 
 export interface AboutApiPageClientProps {

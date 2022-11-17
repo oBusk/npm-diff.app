@@ -1,7 +1,8 @@
 import { IconButton, IconButtonProps } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { DiGithubBadge } from "react-icons/di";
-import { ExternalLink, Tooltip } from "^/components/theme";
+import ExternalLink from "^/components/ExternalLink";
+import Tooltip from "^/components/Tooltip";
 
 export interface GithubLinkProps extends Omit<IconButtonProps, "aria-label"> {}
 

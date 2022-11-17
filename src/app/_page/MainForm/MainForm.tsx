@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import npa from "npm-package-arg";
 import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
-import { Tooltip } from "^/components/theme";
+import Tooltip from "^/components/Tooltip";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";

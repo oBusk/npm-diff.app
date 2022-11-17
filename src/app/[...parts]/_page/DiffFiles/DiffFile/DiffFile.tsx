@@ -3,11 +3,10 @@ import type { Result as NpaResult } from "npm-package-arg";
 import { useCallback, useMemo, useState } from "react";
 import type { Change, File, ViewType } from "react-diff-view";
 import "react-diff-view/style/index.css";
-import { Diff } from "^/components/react-diff-view";
-import {
-    CollapsableBorderBox,
+import CollapsableBorderBox, {
     CollapsableBorderBoxProps,
-} from "^/components/theme";
+} from "^/components/CollapsableBorderBox";
+import { Diff } from "^/components/react-diff-view";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import countChanges from "^/lib/utils/countChanges";
 import DiffFileHeader from "./DiffFileHeader";

@@ -9,7 +9,7 @@ import {
 import type { Result as NpaResult } from "npm-package-arg";
 import { FunctionComponent } from "react";
 import type { File } from "react-diff-view";
-import { Tooltip } from "^/components/theme";
+import Tooltip from "^/components/Tooltip";
 import { unpkg } from "^/lib/Services";
 import type { CountedChanges } from "^/lib/utils/countChanges";
 import ServiceIcon from "../../ServiceIcon";

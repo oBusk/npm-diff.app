@@ -7,7 +7,8 @@ import {
     Text,
 } from "@chakra-ui/react";
 import { FunctionComponent, ReactNode } from "react";
-import { ExternalLink, Span } from "^/components/theme";
+import ExternalLink from "^/components/ExternalLink";
+import Span from "^/components/Span";
 import { Service } from "^/lib/Services";
 import { prettyByte } from "^/lib/utils/prettyByte";
 import Halfs from "./Halfs";
