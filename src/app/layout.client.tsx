@@ -3,9 +3,9 @@
 import { ChakraProvider, ColorModeScript, Stack } from "@chakra-ui/react";
 import { PropsWithChildren } from "react";
 import Div100vh from "react-div-100vh";
-import Footer from "^/components/Footer";
-import Header from "^/components/Header";
 import theme from "^/theme";
+import Footer from "./_layout/Footer";
+import Header from "./_layout/Header";
 
 const PADDING = "1em";
 
