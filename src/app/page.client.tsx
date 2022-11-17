@@ -5,10 +5,10 @@ import { FunctionComponent, useState } from "react";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import { MetaData } from "^/lib/metaData";
-import ExamplesList from "./(components)/ExamplesList";
-import Intro from "./(components)/Intro";
-import MainForm from "./(components)/MainForm/MainForm";
-import OptionsForm from "./(components)/OptionsForm";
+import ExamplesList from "./_page/ExamplesList";
+import Intro from "./_page/Intro";
+import MainForm from "./_page/MainForm/MainForm";
+import OptionsForm from "./_page/OptionsForm";
 
 export interface LandingProps {
     fallbackSuggestions: AutocompleteSuggestion[];

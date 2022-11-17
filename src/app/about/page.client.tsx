@@ -12,7 +12,7 @@ import { defaultMetaData, MetaData } from "^/lib/metaData";
 import {
     externalServicesDarkmode,
     externalServicesLightmode,
-} from "./(assets)";
+} from "./_page/assets";
 
 const AboutPageClient = () => {
     const externalServicesImage = useColorModeValue(

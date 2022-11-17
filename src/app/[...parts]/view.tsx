@@ -11,9 +11,9 @@ import { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import { PackagephobiaResults } from "^/lib/api/packagephobia";
 import DiffOptions from "^/lib/DiffOptions";
 import { MetaData } from "^/lib/metaData";
-import DiffFiles from "./(components)/DiffFiles";
-import DiffIntro from "./(components)/DiffIntro";
-import ErrorBox from "./(components)/ErrorBox";
+import DiffFiles from "./_page/DiffFiles";
+import DiffIntro from "./_page/DiffIntro";
+import ErrorBox from "./_page/ErrorBox";
 
 type Props = {
     error?: string;
