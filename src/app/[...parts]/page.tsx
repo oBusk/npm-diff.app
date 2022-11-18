@@ -5,6 +5,7 @@ import { ViewType } from "react-diff-view";
 import bundlephobia from "^/lib/api/bundlephobia";
 import packagephobia from "^/lib/api/packagephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
+import decodePartts from "^/lib/decodeParts";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
 import doDiff, { DiffError } from "^/lib/diff";
@@ -29,7 +30,7 @@ const DiffPage = async ({
         const headersList = headers();
         const { diffFiles, ...optionsQuery } = searchParams;
 
-        const specsOrVersions = splitParts(parts);
+        const specsOrVersions = splitParts(decodePartts(parts));
         const { redirect: redirectTarget, canonicalSpecs } = await destination(
             specsOrVersions,
         );
