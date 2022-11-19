@@ -121,6 +121,10 @@ const DiffPage = async ({
         // TODO(#703) How to do permanent?
         redirect(
             `/${specsToDiff(canonicalSpecs)}?${Object.entries(searchParams)
+                // On vercel, the redirect added "parts=..." to the query
+                // I suspect it's because it appears as searchParams for
+                // some reason
+                .filter(([key]) => key !== "parts")
                 .map(([key, value]) => `${key}=${value}`)
                 .join("&")}`,
         );
