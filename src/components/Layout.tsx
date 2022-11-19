@@ -1,4 +1,4 @@
-import { Stack, StackProps } from "@chakra-ui/react";
+import { Box, Stack, StackProps } from "@chakra-ui/react";
 import Head from "next/head";
 import { FunctionComponent } from "react";
 import Div100vh from "react-div-100vh";
@@ -9,8 +9,6 @@ export interface LayoutProps extends StackProps {
     title?: string;
     description?: string;
 }
-
-const PADDING = "1em";
 
 const Layout: FunctionComponent<LayoutProps> = ({
     children,
@@ -35,12 +33,12 @@ const Layout: FunctionComponent<LayoutProps> = ({
         <Stack
             as={Div100vh}
             justifyContent="space-between"
-            padding={PADDING}
+            overflow="auto"
             {...props}
         >
             <Header background="chakra-body-bg" />
-            {children}
-            <Footer margin={`-${PADDING}`} background="chakra-body-bg" />
+            <Box padding="1em">{children}</Box>
+            <Footer background="chakra-body-bg" />
         </Stack>
     </>
 );
