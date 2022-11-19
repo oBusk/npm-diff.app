@@ -1,5 +1,5 @@
 "use client";
-import { Center, useBreakpointValue } from "@chakra-ui/react";
+import { useBreakpointValue } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import npa, { Result as NpaResult } from "npm-package-arg";
 import { FunctionComponent, memo, useMemo } from "react";
@@ -12,12 +12,10 @@ import DiffOptions from "^/lib/DiffOptions";
 import { MetaData } from "^/lib/metaData";
 import DiffFiles from "./_page/DiffFiles";
 import DiffIntro from "./_page/DiffIntro";
-import ErrorBox from "./_page/ErrorBox";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 
 export interface DiffPageClientProps {
-    error?: string;
-    result?: {
+    result: {
         diff: string;
         specs: [string, string];
         packagephobiaResults: PackagephobiaResults | null;
@@ -26,12 +24,8 @@ export interface DiffPageClientProps {
     };
 }
 
-const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
-    error,
-    result,
-} = {}) => {
-    const { diff, packagephobiaResults, bundlephobiaResults, options } =
-        result! ?? {};
+const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({ result }) => {
+    const { diff, packagephobiaResults, bundlephobiaResults, options } = result;
 
     const searchParams = useSearchParams();
     // Even if the initial value and the first breakpoint value is the same,
@@ -64,11 +58,7 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
     }, [diff]);
 
     if (aNpa === undefined || bNpa === undefined) {
-        return (
-            <MetaData title="Error">
-                <ErrorBox>Specs could not be parsed</ErrorBox>
-            </MetaData>
-        );
+        throw new Error("Specs could not be parsed");
     }
 
     if (diff === "") {
@@ -92,23 +82,7 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
     }
 
     if (files == null) {
-        return (
-            <MetaData title="Error">
-                <Center>
-                    <ErrorBox>Files could not be parsed</ErrorBox>
-                </Center>
-            </MetaData>
-        );
-    }
-
-    if (error != null) {
-        return (
-            <MetaData title="Error">
-                <Center>
-                    <ErrorBox>{error}</ErrorBox>
-                </Center>
-            </MetaData>
-        );
+        throw new Error("Files could not be parsed");
     }
 
     const viewType =
