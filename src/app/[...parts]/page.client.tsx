@@ -1,32 +1,31 @@
 "use client";
+
 import { useBreakpointValue } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import npa, { Result as NpaResult } from "npm-package-arg";
-import { FunctionComponent, memo, useMemo } from "react";
-import type { File } from "react-diff-view";
+import npa from "npm-package-arg";
+import { FunctionComponent, memo, ReactNode, useMemo } from "react";
 import { parseDiff, ViewType } from "react-diff-view";
 import adjustDiff from "^/lib/adjustDiff";
-import { BundlephobiaResults } from "^/lib/api/bundlephobia";
-import { PackagephobiaResults } from "^/lib/api/packagephobia";
 import DiffOptions from "^/lib/DiffOptions";
 import { MetaData } from "^/lib/metaData";
-import DiffFiles from "./_page/DiffFiles";
+import DiffFiles, { DiffFilesProps } from "./_page/DiffFiles";
 import DiffIntro from "./_page/DiffIntro";
+import { DiffIntroProps } from "./_page/DiffIntro/DiffIntro";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 
 export interface DiffPageClientProps {
-    result: {
-        diff: string;
-        specs: [string, string];
-        packagephobiaResults: PackagephobiaResults | null;
-        bundlephobiaResults: BundlephobiaResults | null;
-        options: DiffOptions;
-    };
+    diff: string;
+    specs: [string, string];
+    services: ReactNode;
+    options: DiffOptions;
 }
 
-const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({ result }) => {
-    const { diff, packagephobiaResults, bundlephobiaResults, options } = result;
-
+const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
+    specs,
+    diff,
+    options,
+    services,
+}) => {
     const searchParams = useSearchParams();
     // Even if the initial value and the first breakpoint value is the same,
     // the component will re-render. This means it will _always_ render twice
@@ -43,7 +42,7 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({ result }) => {
         "lg",
     )!;
 
-    const [a, b] = result?.specs ?? [];
+    const [a, b] = specs ?? [];
     const aNpa = useMemo(() => (a ? npa(a) : undefined), [a]);
     const bNpa = useMemo(() => (b ? npa(b) : undefined), [b]);
     const files = useMemo(() => {
@@ -71,8 +70,7 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({ result }) => {
                     a={aNpa}
                     b={bNpa}
                     files={[]}
-                    packagephobiaResults={null}
-                    bundlephobiaResults={null}
+                    services={services}
                     options={options}
                     viewType="unified"
                     alignSelf="stretch"
@@ -100,11 +98,10 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({ result }) => {
             description={`A diff between the npm packages "${a}" and "${b}"`}
         >
             <MemoizedDiffPageContent
-                aNpa={aNpa}
-                bNpa={bNpa}
+                a={aNpa}
+                b={bNpa}
                 files={files}
-                packagephobiaResults={packagephobiaResults}
-                bundlephobiaResults={bundlephobiaResults}
+                services={services}
                 options={options}
                 viewType={viewType}
             />
@@ -112,35 +109,10 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({ result }) => {
     );
 };
 
-const DiffPageContent = ({
-    aNpa,
-    bNpa,
-    files,
-    packagephobiaResults,
-    bundlephobiaResults,
-    options,
-    viewType,
-}: {
-    aNpa: NpaResult;
-    bNpa: NpaResult;
-    files: File[];
-    packagephobiaResults: PackagephobiaResults | null;
-    bundlephobiaResults: BundlephobiaResults | null;
-    options: DiffOptions;
-    viewType: ViewType;
-}) => (
+const DiffPageContent = (props: DiffIntroProps & DiffFilesProps) => (
     <>
-        <DiffIntro
-            a={aNpa}
-            b={bNpa}
-            files={files}
-            packagephobiaResults={packagephobiaResults}
-            bundlephobiaResults={bundlephobiaResults}
-            options={options}
-            viewType={viewType}
-            alignSelf="stretch"
-        />
-        <DiffFiles a={aNpa} b={bNpa} files={files} viewType={viewType as any} />
+        <DiffIntro alignSelf="stretch" {...props} />
+        <DiffFiles {...props} />
     </>
 );
 

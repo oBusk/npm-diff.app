@@ -1,9 +1,8 @@
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import npa from "npm-package-arg";
+import { Suspense } from "react";
 import { ViewType } from "react-diff-view";
-import bundlephobia from "^/lib/api/bundlephobia";
-import packagephobia from "^/lib/api/packagephobia";
-import TIMED_OUT from "^/lib/api/TimedOut";
 import decodePartts from "^/lib/decodeParts";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
@@ -12,6 +11,8 @@ import measuredPromise from "^/lib/measuredPromise";
 import { parseQuery, QueryParams } from "^/lib/query";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
+import BundlephobiaDiff from "./_page/BundlephobiaDiff";
+import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 import DiffPageClient from "./page.client";
 
@@ -46,11 +47,6 @@ const DiffPage = async ({
             ...optionsQuery,
         });
 
-        // Start eagerly
-        const servicesPromises = Promise.all([
-            measuredPromise(packagephobia(canonicalSpecs)),
-            measuredPromise(bundlephobia(canonicalSpecs)),
-        ]);
         let diff: string = "";
         let diffTime: number = -1;
 
@@ -67,44 +63,50 @@ const DiffPage = async ({
         //     return <DiffPageClient error={error} />;
         // }
 
-        let [
-            { result: packagephobiaResults, time: packagephobiaTime },
-            { result: bundlephobiaResults, time: bundlephobiaTime },
-        ] = await servicesPromises;
-
-        if (packagephobiaResults === TIMED_OUT) {
-            // If packagephobia timed out, we don't want to cache forever, instead use SWR caching
-            // TODO(#703) - implement correct caching
-            // setSwrCaching(res);
-            packagephobiaResults = null;
-        }
-
-        if (bundlephobiaResults === TIMED_OUT) {
-            // If bundlephobia timed out, we don't want to cache forever, instead use SWR cachin
-            // TODO(#703) - implement correct caching
-            // setSwrCaching(res);
-            bundlephobiaResults = null;
-        }
-
         console.log({
             specs: canonicalSpecs,
             timings: {
                 diff: diffTime,
-                packagephobia: packagephobiaTime,
-                bundlephobia: bundlephobiaTime,
             },
             caching: headersList.get("Cache-Control"),
         });
 
+        const aNpa = npa(canonicalSpecs[0]);
+        const a = {
+            name: aNpa.name!,
+            version: aNpa.rawSpec!,
+        };
+        const bNpa = npa(canonicalSpecs[1]);
+        const b = {
+            name: bNpa.name!,
+            version: bNpa.rawSpec!,
+        };
+
         return (
             <DiffPageClient
-                result={{
-                    specs: canonicalSpecs,
-                    diff,
-                    packagephobiaResults,
-                    bundlephobiaResults,
-                    options,
-                }}
+                specs={canonicalSpecs}
+                diff={diff}
+                options={options}
+                services={
+                    <>
+                        <Suspense>
+                            {/* @ts-expect-error Server Component */}
+                            <BundlephobiaDiff
+                                a={a}
+                                b={b}
+                                specs={canonicalSpecs}
+                            />
+                        </Suspense>
+                        <Suspense>
+                            {/* @ts-expect-error Server Component */}
+                            <PackagephobiaDiff
+                                a={a}
+                                b={b}
+                                specs={canonicalSpecs}
+                            />
+                        </Suspense>
+                    </>
+                }
             />
         );
     } else {

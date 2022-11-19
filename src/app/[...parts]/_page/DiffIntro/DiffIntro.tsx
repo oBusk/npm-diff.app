@@ -9,20 +9,16 @@ import {
     Text,
 } from "@chakra-ui/react";
 import type { Result as NpaResult } from "npm-package-arg";
+import { ReactNode } from "react";
 import type { File } from "react-diff-view";
 import { ViewType } from "react-diff-view";
 import B from "^/components/B";
 import Span from "^/components/Span";
-import { BundlephobiaResults } from "^/lib/api/bundlephobia";
-import { PackagephobiaResults } from "^/lib/api/packagephobia";
 import DiffOptions from "^/lib/DiffOptions";
-import { Bundlephobia, Packagephobia } from "^/lib/Services";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import countChanges from "^/lib/utils/countChanges";
-import BundlephobiaFlags from "./BundlePhobiaFlags/BundlePhobiaFlags";
 import Halfs from "./Halfs";
 import Options from "./Options";
-import SizeComparison from "./SizeComparison";
 import SpecBox from "./SpecBox";
 import ViewTypeSwitch from "./ViewTypeSwitch";
 
@@ -30,8 +26,7 @@ export interface DiffIntroProps extends FlexProps {
     a: NpaResult;
     b: NpaResult;
     files: File[];
-    packagephobiaResults: PackagephobiaResults | null;
-    bundlephobiaResults: BundlephobiaResults | null;
+    services: ReactNode;
     options: DiffOptions;
     viewType: ViewType;
 }
@@ -42,8 +37,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
             a: { name: aName, rawSpec: aVersion },
             b: { name: bName, rawSpec: bVersion },
             files,
-            packagephobiaResults,
-            bundlephobiaResults,
+            services,
             options,
             viewType,
             ...props
@@ -76,7 +70,13 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                 {...props}
                 ref={ref}
             >
-                <Heading as="h2" size="sm" width="100%" textAlign="center">
+                <Heading
+                    as="h2"
+                    size="sm"
+                    width="100%"
+                    textAlign="center"
+                    marginBottom="1.5em"
+                >
                     <Text>Comparing </Text>
                     <Halfs
                         left={
@@ -99,94 +99,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                         }
                     />
                 </Heading>
-                {packagephobiaResults ? (
-                    <>
-                        <Heading marginTop="8px" size="xs">
-                            {Packagephobia.name}
-                        </Heading>
-                        <SizeComparison
-                            service={Packagephobia}
-                            a={{ name: aName ?? "ERROR", version: aVersion }}
-                            b={{ name: bName ?? "ERROR", version: bVersion }}
-                            sizeRows={[
-                                {
-                                    name: "Publish",
-                                    a: {
-                                        bytes: packagephobiaResults.a.publish
-                                            .bytes,
-                                        color: packagephobiaResults.a.publish
-                                            .color,
-                                    },
-                                    b: {
-                                        bytes: packagephobiaResults.b.publish
-                                            .bytes,
-                                        color: packagephobiaResults.b.publish
-                                            .color,
-                                    },
-                                },
-                                {
-                                    name: "Install",
-                                    a: {
-                                        bytes: packagephobiaResults.a.install
-                                            .bytes,
-                                        color: packagephobiaResults.a.install
-                                            .color,
-                                    },
-                                    b: {
-                                        bytes: packagephobiaResults.b.install
-                                            .bytes,
-                                        color: packagephobiaResults.b.install
-                                            .color,
-                                    },
-                                },
-                            ]}
-                            width="100%"
-                        />
-                    </>
-                ) : null}
-                {bundlephobiaResults ? (
-                    <>
-                        <Heading size="xs">{Bundlephobia.name}</Heading>
-                        <BundlephobiaFlags data={bundlephobiaResults} />
-                        <SizeComparison
-                            service={Bundlephobia}
-                            a={{ name: aName, version: aVersion }}
-                            b={{ name: bName, version: bVersion }}
-                            sizeRows={[
-                                {
-                                    name: "Size",
-                                    a: {
-                                        bytes: bundlephobiaResults.a.size,
-                                    },
-                                    b: {
-                                        bytes: bundlephobiaResults.b.size,
-                                    },
-                                },
-                                {
-                                    name: "Gzip",
-                                    a: {
-                                        bytes: bundlephobiaResults.a.gzip,
-                                    },
-                                    b: {
-                                        bytes: bundlephobiaResults.b.gzip,
-                                    },
-                                },
-                                {
-                                    name: "Dependencies",
-                                    a: {
-                                        count: bundlephobiaResults.a
-                                            .dependencyCount,
-                                    },
-                                    b: {
-                                        count: bundlephobiaResults.b
-                                            .dependencyCount,
-                                    },
-                                },
-                            ]}
-                            width="100%"
-                        />
-                    </>
-                ) : null}
+                {services}
                 <Heading size="l">npm diff</Heading>
                 <Options options={options} />
                 {/* <Command

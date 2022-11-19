@@ -1,3 +1,5 @@
+"use client";
+
 import { Code, forwardRef, HStack, StackProps, Text } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import {
