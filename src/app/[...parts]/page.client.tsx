@@ -15,7 +15,7 @@ import DiffIntro from "./_page/DiffIntro";
 import ErrorBox from "./_page/ErrorBox";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 
-type Props = {
+export interface DiffPageClientProps {
     error?: string;
     result?: {
         diff: string;
@@ -24,9 +24,12 @@ type Props = {
         bundlephobiaResults: BundlephobiaResults | null;
         options: DiffOptions;
     };
-};
+}
 
-const DiffView: FunctionComponent<Props> = ({ error, result } = {}) => {
+const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
+    error,
+    result,
+} = {}) => {
     const { diff, packagephobiaResults, bundlephobiaResults, options } =
         result! ?? {};
 
@@ -169,4 +172,4 @@ const DiffPageContent = ({
 
 const MemoizedDiffPageContent = memo(DiffPageContent);
 
-export default DiffView;
+export default DiffPageClient;

@@ -14,7 +14,7 @@ import { parseQuery, QueryParams } from "^/lib/query";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
-import DiffView from "./view";
+import DiffPageClient from "./page.client";
 
 // TODO: Don't use the same component for errors and diff page
 // TODO: Set title and description using `head.tsx` so that they
@@ -65,7 +65,7 @@ const DiffPage = async ({
                 // TODO(#703) - statuscode?
                 // res.statusCode = code;
 
-                return <DiffView error={error} />;
+                return <DiffPageClient error={error} />;
             }
 
             let [
@@ -98,7 +98,7 @@ const DiffPage = async ({
             });
 
             return (
-                <DiffView
+                <DiffPageClient
                     result={{
                         specs: canonicalSpecs,
                         diff,
@@ -129,7 +129,7 @@ const DiffPage = async ({
             // We need to propagate the error to the worker
             throw e;
         }
-        return <DiffView error={e?.message ?? e ?? "Unknown error"} />;
+        return <DiffPageClient error={e?.message ?? e ?? "Unknown error"} />;
     }
 };
 
