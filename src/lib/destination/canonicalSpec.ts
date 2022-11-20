@@ -58,12 +58,12 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
  * * https://github.com/npm/npm-package-arg#result-object
  * * https://docs.npmjs.com/cli/v7/commands/npm-install
  */
-export async function uncachedCanonicalSpec(spec: string): Promise<string> {
+const canonicalSpec = cache(async function _canonicalSpecs(
+    spec: string,
+): Promise<string> {
     const result = npa(spec);
 
     return handleNpaResult(result);
-}
-
-const canonicalSpec = cache(uncachedCanonicalSpec);
+});
 
 export default canonicalSpec;
