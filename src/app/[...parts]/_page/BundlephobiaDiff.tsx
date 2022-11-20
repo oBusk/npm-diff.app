@@ -1,12 +1,13 @@
 import bundlephobia from "^/lib/api/bundlephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
 import measuredPromise from "^/lib/measuredPromise";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import BundlephobiaFlags from "./DiffIntro/BundlePhobiaFlags";
-import SizeComparison, { ComparedPackage } from "./DiffIntro/SizeComparison";
+import SizeComparison from "./DiffIntro/SizeComparison";
 
 export interface BundlephobiaDiffProps {
-    a: ComparedPackage;
-    b: ComparedPackage;
+    a: SimplePackageSpec;
+    b: SimplePackageSpec;
     specs: [string, string];
 }
 

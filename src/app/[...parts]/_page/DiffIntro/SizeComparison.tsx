@@ -109,16 +109,11 @@ export interface SizeComparisonRow {
     b: Size;
 }
 
-export interface ComparedPackage {
-    name: string;
-    version: string;
-}
-
 export interface SizeComparisonProps extends FlexProps {
     serviceName: "bundlephobia" | "packagephobia";
     flags?: ReactNode;
-    a: ComparedPackage;
-    b: ComparedPackage;
+    a: SimplePackageSpec;
+    b: SimplePackageSpec;
     sizeRows: SizeComparisonRow[];
 }
 
