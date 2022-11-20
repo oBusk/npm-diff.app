@@ -24,13 +24,25 @@ async function uncachedDoDiff(
     specs: [string, string],
     options: Options,
 ): Promise<string> {
-    console.log("Calling libnpmdiff with", { specs, options });
+    let startTime = 0;
     try {
+        startTime = Date.now();
         const result = await libnpmdiff(specs, options);
+
+        console.log("uncachedDoDiff", {
+            specs,
+            options,
+            duration: Date.now() - startTime,
+        });
 
         return result;
     } catch (e: any) {
-        console.error(`[${specs[0]},${specs[1]}] Diff error:`, e);
+        console.error("uncachedDoDiff", {
+            error: e,
+            specs,
+            options,
+            duration: Date.now() - startTime,
+        });
 
         const isEtarget = (e: any): e is ErrorETARGET => e.code === "ETARGET";
         const isE404 = (e: any): e is Error404 => e.code === "E404";
