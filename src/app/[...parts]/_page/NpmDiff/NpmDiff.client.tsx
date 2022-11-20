@@ -1,12 +1,15 @@
 "use client";
 
-import { HStack } from "@chakra-ui/react";
+import { HStack, useBreakpointValue } from "@chakra-ui/react";
+import { useSearchParams } from "next/navigation";
+import { ViewType } from "react-diff-view";
 import B from "^/components/B";
 import Span from "^/components/Span";
+import { DIFF_TYPE_PARAM_NAME } from "../paramNames";
 import DiffFiles, { DiffFilesProps } from "./DiffFiles";
 import ViewTypeSwitch from "./ViewTypeSwitch";
 
-export interface NpmDiffClientProps extends DiffFilesProps {
+export interface NpmDiffClientProps extends Omit<DiffFilesProps, "viewType"> {
     additions: number;
     deletions: number;
 }
@@ -16,6 +19,31 @@ const NpmDiffClient = ({
     deletions,
     ...props
 }: NpmDiffClientProps) => {
+    const searchParams = useSearchParams();
+    // Even if the initial value and the first breakpoint value is the same,
+    // the component will re-render. This means it will _always_ render twice
+    // even when it shouldn't have to.
+    // We work around this by memoizing the rendering of the component.
+    const defaultViewType = useBreakpointValue<ViewType>(
+        {
+            base: "unified",
+            lg: "split",
+        },
+        // We assume that most users are on a computer so default to "lg".
+        // We could use something like https://github.com/kaimallea/isMobile
+        // but that means cache should be different for desktop/mobile
+        "lg",
+    )!;
+
+    const viewType =
+        // If specified in URL, use that
+        searchParams.get(DIFF_TYPE_PARAM_NAME) === "split"
+            ? "split"
+            : searchParams.get(DIFF_TYPE_PARAM_NAME) === "unified"
+            ? "unified"
+            : // If not, use default based on screen size
+              defaultViewType;
+
     return (
         <>
             <HStack width="100%" justifyContent="space-between">
@@ -24,9 +52,9 @@ const NpmDiffClient = ({
                     <B>{additions} additions</B> and{" "}
                     <B>{deletions} deletions</B>
                 </Span>
-                <ViewTypeSwitch currentViewType={props.viewType} />
+                <ViewTypeSwitch currentViewType={viewType} />
             </HStack>
-            <DiffFiles {...props} />
+            <DiffFiles viewType={viewType} {...props} />
         </>
     );
 };

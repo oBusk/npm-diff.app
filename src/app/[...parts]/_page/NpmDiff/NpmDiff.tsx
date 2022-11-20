@@ -48,7 +48,6 @@ const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
             a={a}
             b={b}
             files={files}
-            viewType="split"
             additions={additions}
             deletions={deletions}
         />
