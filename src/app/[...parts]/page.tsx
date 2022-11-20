@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
-import npa from "npm-package-arg";
 import { Suspense } from "react";
 import { ViewType } from "react-diff-view";
 import decodePartts from "^/lib/decodeParts";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
+import parseSimplePackageSpec from "^/lib/parseSimplePackageSpec";
 import { parseQuery, QueryParams } from "^/lib/query";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
@@ -48,16 +48,9 @@ const DiffPage = async ({
             ...optionsQuery,
         });
 
-        const aNpa = npa(canonicalSpecs[0]);
-        const a = {
-            name: aNpa.name!,
-            version: aNpa.rawSpec!,
-        };
-        const bNpa = npa(canonicalSpecs[1]);
-        const b = {
-            name: bNpa.name!,
-            version: bNpa.rawSpec!,
-        };
+        const [a, b] = canonicalSpecs.map((spec) =>
+            parseSimplePackageSpec(spec),
+        );
 
         return (
             <DiffPageClient
