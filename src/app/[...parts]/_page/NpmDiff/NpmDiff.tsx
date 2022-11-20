@@ -6,7 +6,7 @@ import doDiff from "^/lib/diff";
 import measuredPromise from "^/lib/measuredPromise";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import countChanges from "^/lib/utils/countChanges";
-import NoDiff from "../NoDiff";
+import NoDiff from "./NoDiff";
 import NpmDiffClient from "./NpmDiff.client";
 
 export interface NpmDiffProps {

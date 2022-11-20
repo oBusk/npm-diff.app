@@ -3,8 +3,8 @@
 import { HStack } from "@chakra-ui/react";
 import B from "^/components/B";
 import Span from "^/components/Span";
-import DiffFiles, { DiffFilesProps } from "../DiffFiles";
-import ViewTypeSwitch from "../DiffIntro/ViewTypeSwitch";
+import DiffFiles, { DiffFilesProps } from "./DiffFiles";
+import ViewTypeSwitch from "./ViewTypeSwitch";
 
 export interface NpmDiffClientProps extends DiffFilesProps {
     additions: number;

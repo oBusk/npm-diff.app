@@ -12,7 +12,7 @@ import Tooltip from "^/components/Tooltip";
 import { unpkg } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import type { CountedChanges } from "^/lib/utils/countChanges";
-import ServiceIcon from "../../ServiceIcon";
+import ServiceIcon from "../../../ServiceIcon";
 
 export interface DiffFileHeaderProps extends StackProps {
     a: SimplePackageSpec;
