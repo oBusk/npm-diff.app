@@ -1,4 +1,5 @@
 import libnpmdiff, { Options } from "libnpmdiff";
+import { cache } from "react";
 
 interface ErrorETARGET {
     code: "ETARGET";
@@ -19,10 +20,11 @@ export interface DiffError {
     error: string;
 }
 
-async function doDiff(
+async function uncachedDoDiff(
     specs: [string, string],
     options: Options,
 ): Promise<string> {
+    console.log("Calling libnpmdiff with", { specs, options });
     try {
         const result = await libnpmdiff(specs, options);
 
@@ -64,5 +66,7 @@ async function doDiff(
         };
     }
 }
+
+const doDiff = cache(uncachedDoDiff);
 
 export default doDiff;
