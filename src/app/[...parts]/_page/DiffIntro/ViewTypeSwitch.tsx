@@ -32,6 +32,7 @@ const ViewTypeButton = forwardRef<ViewTypeButtonProps, typeof Button>(
                 }}
                 replace
                 shallow
+                prefetch={false}
             >
                 <Button
                     as="a"
