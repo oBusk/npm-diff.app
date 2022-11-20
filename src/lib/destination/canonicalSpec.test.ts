@@ -1,5 +1,5 @@
 import pacote from "pacote";
-import canonicalSpec from "./canonicalSpec";
+import { uncachedCanonicalSpec } from "./canonicalSpec";
 
 // Increase the timeout for long running tests
 jest.setTimeout(15_000);
@@ -8,7 +8,7 @@ const hashFinder = /(?:\#.*)?$/;
 
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["t"] }] */
 async function t(input: string, expected: string = "DEFAULT_VALUE") {
-    expect(await canonicalSpec(input)).toBe(expected);
+    expect(await uncachedCanonicalSpec(input)).toBe(expected);
 }
 
 interface ExpectedResults<T = string> {
