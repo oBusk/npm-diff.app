@@ -1,16 +1,20 @@
 "use client";
 
-import { useBreakpointValue } from "@chakra-ui/react";
+import { HStack, useBreakpointValue } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import npa from "npm-package-arg";
 import { FunctionComponent, memo, ReactNode, useMemo } from "react";
 import { parseDiff, ViewType } from "react-diff-view";
+import B from "^/components/B";
+import Span from "^/components/Span";
 import adjustDiff from "^/lib/adjustDiff";
 import DiffOptions from "^/lib/DiffOptions";
 import { MetaData } from "^/lib/metaData";
+import countChanges from "^/lib/utils/countChanges";
 import DiffFiles, { DiffFilesProps } from "./_page/DiffFiles";
 import DiffIntro from "./_page/DiffIntro";
-import { DiffIntroProps } from "./_page/DiffIntro/DiffIntro";
+import ViewTypeSwitch from "./_page/DiffIntro/ViewTypeSwitch";
+import NoDiff from "./_page/NoDiff";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 
 export interface DiffPageClientProps {
@@ -46,37 +50,20 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
     const aNpa = useMemo(() => (a ? npa(a) : undefined), [a]);
     const bNpa = useMemo(() => (b ? npa(b) : undefined), [b]);
     const files = useMemo(() => {
-        if (diff) {
+        if (diff == null) {
+            throw new Error("diff is null");
+        } else if (diff == "") {
+            return [];
+        } else {
             const adjustedDiff = adjustDiff(diff);
             if (adjustedDiff) {
                 return parseDiff(adjustedDiff);
             }
         }
-
-        return null;
     }, [diff]);
 
-    if (aNpa === undefined || bNpa === undefined) {
+    if (aNpa == null || bNpa == null) {
         throw new Error("Specs could not be parsed");
-    }
-
-    if (diff === "") {
-        return (
-            <MetaData
-                title={`Comparing ${a}...${b}`}
-                description={`A diff between the npm packages "${a}" and "${b}"`}
-            >
-                <DiffIntro
-                    a={aNpa}
-                    b={bNpa}
-                    files={[]}
-                    services={services}
-                    options={options}
-                    viewType="unified"
-                    alignSelf="stretch"
-                />
-            </MetaData>
-        );
     }
 
     if (files == null) {
@@ -97,25 +84,58 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
             title={`Comparing ${a}...${b}`}
             description={`A diff between the npm packages "${a}" and "${b}"`}
         >
-            <MemoizedDiffPageContent
+            <DiffIntro
+                alignSelf="stretch"
                 a={aNpa}
                 b={bNpa}
-                files={files}
                 services={services}
                 options={options}
-                viewType={viewType}
             />
+            {files?.length > 0 ? (
+                <MemoizedDiffFilesContent
+                    a={aNpa}
+                    b={bNpa}
+                    files={files}
+                    viewType={viewType}
+                />
+            ) : (
+                <NoDiff
+                    aName={aNpa.name!}
+                    aVersion={aNpa.fetchSpec!}
+                    bName={bNpa.name!}
+                    bVersion={bNpa.fetchSpec!}
+                />
+            )}
         </MetaData>
     );
 };
 
-const DiffPageContent = (props: DiffIntroProps & DiffFilesProps) => (
-    <>
-        <DiffIntro alignSelf="stretch" {...props} />
-        <DiffFiles {...props} />
-    </>
-);
+const DiffFilesContent = (props: DiffFilesProps) => {
+    const { files, viewType } = props;
 
-const MemoizedDiffPageContent = memo(DiffPageContent);
+    const changes = files.map((file) => countChanges(file.hunks));
+    const additions = changes
+        .map(({ additions }) => additions)
+        .reduce((a, b) => a + b, 0);
+    const deletions = changes
+        .map(({ deletions }) => deletions)
+        .reduce((a, b) => a + b, 0);
+
+    return (
+        <>
+            <HStack width="100%" justifyContent="space-between">
+                <Span>
+                    Showing <B>{files.length} changed files</B> with{" "}
+                    <B>{additions} additions</B> and{" "}
+                    <B>{deletions} deletions</B>
+                </Span>
+                <ViewTypeSwitch currentViewType={viewType} />
+            </HStack>
+            <DiffFiles {...props} />
+        </>
+    );
+};
+
+const MemoizedDiffFilesContent = memo(DiffFilesContent);
 
 export default DiffPageClient;
