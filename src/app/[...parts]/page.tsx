@@ -14,7 +14,6 @@ import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 import DiffPageClient from "./page.client";
 
-// TODO: Don't use the same component for errors and diff page
 // TODO: Set title and description using `head.tsx` so that they
 //       are set before `useEffect()`
 const DiffPage = async ({
@@ -31,7 +30,17 @@ const DiffPage = async ({
         specsOrVersions,
     );
 
-    if (redirectTarget === false) {
+    if (redirectTarget !== false) {
+        redirect(
+            `/${specsToDiff(canonicalSpecs)}?${Object.entries(searchParams)
+                // On vercel, the redirect added "parts=..." to the query
+                // I suspect it's because it appears as searchParams for
+                // some reason
+                .filter(([key]) => key !== "parts")
+                .map(([key, value]) => `${key}=${value}`)
+                .join("&")}`,
+        );
+    } else {
         const options = parseQuery({
             // If no diffFiles is passed, use the default.
             // This is done here, since we don't want a fall back in the API
@@ -87,25 +96,6 @@ const DiffPage = async ({
                     </Suspense>
                 }
             />
-        );
-    } else {
-        // return {
-        //     redirect: {
-        //         permanent: redirect === "permanent",
-        //         destination:
-        //             `/${specsToDiff(canonicalSpecs)}` +
-        //             rawQuery(req, "parts"),
-        //     },
-        // };
-        // TODO(#703) How to do permanent?
-        redirect(
-            `/${specsToDiff(canonicalSpecs)}?${Object.entries(searchParams)
-                // On vercel, the redirect added "parts=..." to the query
-                // I suspect it's because it appears as searchParams for
-                // some reason
-                .filter(([key]) => key !== "parts")
-                .map(([key, value]) => `${key}=${value}`)
-                .join("&")}`,
         );
     }
 };
