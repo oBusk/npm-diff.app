@@ -13,6 +13,7 @@ import { FunctionComponent, ReactNode } from "react";
 import ExternalLink from "^/components/ExternalLink";
 import Span from "^/components/Span";
 import { Bundlephobia, Packagephobia, Service } from "^/lib/Services";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { prettyByte } from "^/lib/utils/prettyByte";
 import Halfs from "./Halfs";
 import ServiceTooltip from "./ServiceTooltip";
@@ -43,21 +44,16 @@ function byteDifferance(a: number, b: number): ReactNode {
 
 const LinkButton: FunctionComponent<
     LinkProps & {
-        packageName: string;
-        packageVersion: string;
+        pkg: SimplePackageSpec;
         service: Service;
     }
-> = ({ packageName, packageVersion, service, ...props }) => {
+> = ({ pkg, service, ...props }) => {
     return (
-        <ServiceTooltip
-            serviceName={service.name}
-            packageName={packageName}
-            packageVersion={packageVersion}
-        >
+        <ServiceTooltip serviceName={service.name} pkg={pkg}>
             <ExternalLink
                 borderRadius="lg"
                 padding={COMMON_PADDING}
-                href={service.url(packageName, packageVersion)}
+                href={service.url(pkg)}
                 textAlign="center"
                 _hover={{
                     textDecoration: "none",
@@ -144,8 +140,7 @@ const SizeComparison = forwardRef<SizeComparisonProps, typeof Halfs>(
                         <LinkButton
                             padding={COMMON_PADDING}
                             service={service}
-                            packageName={a.name}
-                            packageVersion={a.version}
+                            pkg={a}
                         >
                             {sizeRows.map(({ name, a }) => {
                                 if (a.bytes != null) {
@@ -178,8 +173,7 @@ const SizeComparison = forwardRef<SizeComparisonProps, typeof Halfs>(
                             <LinkButton
                                 padding={COMMON_PADDING}
                                 service={service}
-                                packageName={b.name}
-                                packageVersion={b.version}
+                                pkg={b}
                             >
                                 {sizeRows.map(({ name, a, b }) => {
                                     if (b.bytes != null) {

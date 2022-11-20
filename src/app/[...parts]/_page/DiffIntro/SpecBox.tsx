@@ -1,25 +1,19 @@
-import { Box, BoxProps, Code, forwardRef, Text } from "@chakra-ui/react";
+import { Box, BoxProps, forwardRef } from "@chakra-ui/react";
+import Pkg from "^/components/Pkg";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import ServiceLinks from "./ServiceLinks";
 
 interface SpecBoxProps extends BoxProps {
-    packageName: string;
-    packageVersion: string;
+    pkg: SimplePackageSpec;
 }
 
-const SpecBox = forwardRef<SpecBoxProps, "div">(
-    ({ packageName, packageVersion, ...props }, ref) => (
-        <Box {...props} ref={ref}>
-            <Code>
-                {packageName}@{packageVersion}
-            </Code>
-            <Box>
-                <ServiceLinks
-                    packageName={packageName}
-                    packageVersion={packageVersion}
-                />
-            </Box>
+const SpecBox = forwardRef<SpecBoxProps, "div">(({ pkg, ...props }, ref) => (
+    <Box {...props} ref={ref}>
+        <Pkg pkg={pkg} />
+        <Box>
+            <ServiceLinks pkg={pkg} />
         </Box>
-    ),
-);
+    </Box>
+));
 
 export default SpecBox;

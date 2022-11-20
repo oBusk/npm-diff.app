@@ -7,37 +7,28 @@ import {
     Heading,
     Text,
 } from "@chakra-ui/react";
-import type { Result as NpaResult } from "npm-package-arg";
 import { ReactNode } from "react";
 import DiffOptions from "^/lib/DiffOptions";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import Halfs from "./Halfs";
 import Options from "./Options";
 import SpecBox from "./SpecBox";
 
 export interface DiffIntroProps extends FlexProps {
-    a: NpaResult;
-    b: NpaResult;
+    a: SimplePackageSpec;
+    b: SimplePackageSpec;
     services: ReactNode;
     options: DiffOptions;
 }
 
 const DiffIntro = forwardRef<DiffIntroProps, "h2">(
-    (
-        {
-            a: { name: aName, rawSpec: aVersion },
-            b: { name: bName, rawSpec: bVersion },
-            services,
-            options,
-            ...props
-        },
-        ref,
-    ) => {
-        if (aName == null) {
-            aName = "ERROR";
+    ({ a, b, services, options, ...props }, ref) => {
+        if (a.name == null) {
+            a.name = "ERROR";
         }
-        if (bName == null) {
-            bName = "ERROR";
+        if (b.name == null) {
+            b.name = "ERROR";
         }
 
         return (
@@ -60,24 +51,14 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                 >
                     <Text>Comparing </Text>
                     <Halfs
-                        left={
-                            <SpecBox
-                                packageName={aName}
-                                packageVersion={aVersion}
-                            />
-                        }
+                        left={<SpecBox pkg={a} />}
                         center={
                             <Box>
                                 {/* Center column */}
                                 <Code>...</Code>
                             </Box>
                         }
-                        right={
-                            <SpecBox
-                                packageName={bName}
-                                packageVersion={bVersion}
-                            />
-                        }
+                        right={<SpecBox pkg={b} />}
                     />
                 </Heading>
                 {services}

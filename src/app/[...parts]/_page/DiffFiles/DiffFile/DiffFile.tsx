@@ -1,11 +1,11 @@
 import { forwardRef } from "@chakra-ui/react";
-import type { Result as NpaResult } from "npm-package-arg";
 import { useCallback, useMemo, useState } from "react";
 import type { Change, File, ViewType } from "react-diff-view";
 import "react-diff-view/style/index.css";
 import CollapsableBorderBox, {
     CollapsableBorderBoxProps,
 } from "^/components/CollapsableBorderBox";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import countChanges from "^/lib/utils/countChanges";
 import DiffFileHeader from "./DiffFileHeader";
@@ -17,8 +17,8 @@ const FILES_TO_RENDER = 2 ** 6;
 const CHANGES_TO_RENDER = 2 ** 7;
 
 interface DiffFileProps extends CollapsableBorderBoxProps {
-    a: NpaResult;
-    b: NpaResult;
+    a: SimplePackageSpec;
+    b: SimplePackageSpec;
     file: File;
     viewType: ViewType;
     index: number;

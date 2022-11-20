@@ -2,7 +2,6 @@
 
 import { HStack, useBreakpointValue } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import npa from "npm-package-arg";
 import { FunctionComponent, memo, ReactNode, useMemo } from "react";
 import { parseDiff, ViewType } from "react-diff-view";
 import B from "^/components/B";
@@ -10,6 +9,7 @@ import Span from "^/components/Span";
 import adjustDiff from "^/lib/adjustDiff";
 import DiffOptions from "^/lib/DiffOptions";
 import { MetaData } from "^/lib/metaData";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import countChanges from "^/lib/utils/countChanges";
 import DiffFiles, { DiffFilesProps } from "./_page/DiffFiles";
 import DiffIntro from "./_page/DiffIntro";
@@ -18,14 +18,16 @@ import NoDiff from "./_page/NoDiff";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 
 export interface DiffPageClientProps {
+    a: SimplePackageSpec;
+    b: SimplePackageSpec;
     diff: string;
-    specs: [string, string];
     services: ReactNode;
     options: DiffOptions;
 }
 
 const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
-    specs,
+    a,
+    b,
     diff,
     options,
     services,
@@ -46,9 +48,6 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
         "lg",
     )!;
 
-    const [a, b] = specs ?? [];
-    const aNpa = useMemo(() => (a ? npa(a) : undefined), [a]);
-    const bNpa = useMemo(() => (b ? npa(b) : undefined), [b]);
     const files = useMemo(() => {
         if (diff == null) {
             throw new Error("diff is null");
@@ -62,7 +61,7 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
         }
     }, [diff]);
 
-    if (aNpa == null || bNpa == null) {
+    if (a == null || b == null) {
         throw new Error("Specs could not be parsed");
     }
 
@@ -81,30 +80,25 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
 
     return (
         <MetaData
-            title={`Comparing ${a}...${b}`}
-            description={`A diff between the npm packages "${a}" and "${b}"`}
+            title={`Comparing ${a.name}@${a.version}...${b.name}@${b.version}`}
+            description={`A diff between the npm packages "${a.name}@${a.version}" and "${b.name}@${b.version}"`}
         >
             <DiffIntro
                 alignSelf="stretch"
-                a={aNpa}
-                b={bNpa}
+                a={a}
+                b={b}
                 services={services}
                 options={options}
             />
             {files?.length > 0 ? (
                 <MemoizedDiffFilesContent
-                    a={aNpa}
-                    b={bNpa}
+                    a={a}
+                    b={b}
                     files={files}
                     viewType={viewType}
                 />
             ) : (
-                <NoDiff
-                    aName={aNpa.name!}
-                    aVersion={aNpa.fetchSpec!}
-                    bName={bNpa.name!}
-                    bVersion={bNpa.fetchSpec!}
-                />
+                <NoDiff a={a} b={b} />
             )}
         </MetaData>
     );

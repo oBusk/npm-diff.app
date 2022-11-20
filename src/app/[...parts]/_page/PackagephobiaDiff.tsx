@@ -1,4 +1,3 @@
-import type { Result as NpaResult } from "npm-package-arg";
 import packagephobia from "^/lib/api/packagephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
 import measuredPromise from "^/lib/measuredPromise";

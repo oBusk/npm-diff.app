@@ -1,16 +1,17 @@
-import { Code, forwardRef, Text } from "@chakra-ui/react";
+import { forwardRef, Text } from "@chakra-ui/react";
 import B from "^/components/B";
+import Pkg from "^/components/Pkg";
 import Tooltip, { TooltipProps } from "^/components/Tooltip";
 import { Service } from "^/lib/Services";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 
 export interface ServiceTooltipProps extends TooltipProps {
-    packageName: string;
-    packageVersion: string;
+    pkg: SimplePackageSpec;
     serviceName: Service["name"];
 }
 
 const ServiceTooltip = forwardRef<ServiceTooltipProps, any>(
-    ({ packageName, packageVersion, serviceName, ...props }, ref) => {
+    ({ pkg, serviceName, ...props }, ref) => {
         return (
             <Tooltip
                 textAlign="center"
@@ -19,10 +20,7 @@ const ServiceTooltip = forwardRef<ServiceTooltipProps, any>(
                 label={
                     <>
                         <Text whiteSpace="nowrap">
-                            View{" "}
-                            <Code>
-                                {packageName}@{packageVersion}
-                            </Code>
+                            View <Pkg pkg={pkg} />
                         </Text>
                         <Text>
                             on <B>{serviceName}</B>

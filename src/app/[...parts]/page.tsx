@@ -84,7 +84,8 @@ const DiffPage = async ({
 
         return (
             <DiffPageClient
-                specs={canonicalSpecs}
+                a={a}
+                b={b}
                 diff={diff}
                 options={options}
                 services={
