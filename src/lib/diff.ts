@@ -29,7 +29,7 @@ const doDiff = cache(async function _doDiff(
         startTime = Date.now();
         const result = await libnpmdiff(specs, options);
 
-        console.log("uncachedDoDiff", {
+        console.log("_doDiff", {
             specs,
             options,
             duration: Date.now() - startTime,
@@ -37,7 +37,7 @@ const doDiff = cache(async function _doDiff(
 
         return result;
     } catch (e: any) {
-        console.error("uncachedDoDiff", {
+        console.error("_doDiff", {
             error: e,
             specs,
             options,
