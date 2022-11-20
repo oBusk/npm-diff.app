@@ -14,6 +14,10 @@ import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 import DiffPageClient from "./page.client";
 
+// Ensure static rendering https://beta.nextjs.org/docs/api-reference/segment-config#dynamic
+export const dynamic = "force-static";
+// We need nodejs since we use Npm libs https://beta.nextjs.org/docs/api-reference/segment-config#runtime
+export const runtime = "nodejs";
 // TODO: Set title and description using `head.tsx` so that they
 //       are set before `useEffect()`
 const DiffPage = async ({

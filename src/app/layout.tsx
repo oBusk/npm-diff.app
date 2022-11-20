@@ -1,6 +1,9 @@
 import defaultMetaData from "^/lib/metaData/defaultMetaData";
 import LayoutClient from "./layout.client";
 
+// Ensure static rendering https://beta.nextjs.org/docs/api-reference/segment-config#dynamic
+export const dynamic = "force-static";
+export const runtime = "experimental-edge";
 export default function RootLayout({
     children,
 }: {
