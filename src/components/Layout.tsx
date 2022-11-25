@@ -10,6 +10,8 @@ export interface LayoutProps extends StackProps {
     description?: string;
 }
 
+const PADDING = "1em" as const;
+
 const Layout: FunctionComponent<LayoutProps> = ({
     children,
     title = "",
@@ -34,11 +36,21 @@ const Layout: FunctionComponent<LayoutProps> = ({
             as={Div100vh}
             justifyContent="space-between"
             overflow="auto"
+            paddingRight={PADDING}
+            paddingLeft={PADDING}
             {...props}
         >
-            <Header background="chakra-body-bg" />
-            <Box padding="1em">{children}</Box>
-            <Footer background="chakra-body-bg" />
+            <Header
+                background="chakra-body-bg"
+                marginLeft={`-${PADDING}`}
+                marginRight={`-${PADDING}`}
+            />
+            {children}
+            <Footer
+                background="chakra-body-bg"
+                marginLeft={`-${PADDING}`}
+                marginRight={`-${PADDING}`}
+            />
         </Stack>
     </>
 );
