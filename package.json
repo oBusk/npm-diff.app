@@ -62,7 +62,7 @@
         "@testing-library/react": "^13.4.0",
         "@types/jest": "^29.2.3",
         "@types/libnpmdiff": "^2.0.0",
-        "@types/node": "^18.11.9",
+        "@types/node": "^18.11.11",
         "@types/npm-package-arg": "^6.1.1",
         "@types/pacote": "^11.1.5",
         "@types/react": "^18.0.25",
