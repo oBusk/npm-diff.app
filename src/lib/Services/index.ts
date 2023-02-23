@@ -12,4 +12,4 @@ export const Services = Object.freeze([
     Packagephobia,
 ]);
 
-export type Service = typeof Services[number];
+export type Service = (typeof Services)[number];
