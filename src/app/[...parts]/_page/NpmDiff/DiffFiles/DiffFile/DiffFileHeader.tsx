@@ -7,7 +7,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import type { File } from "react-diff-view";
+import type { FileData } from "react-diff-view";
 import Tooltip from "^/components/Tooltip";
 import { unpkg } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
@@ -17,7 +17,7 @@ import ServiceIcon from "../../../ServiceIcon";
 export interface DiffFileHeaderProps extends StackProps {
     a: SimplePackageSpec;
     b: SimplePackageSpec;
-    file: File;
+    file: FileData;
     countedChanges: CountedChanges;
 }
 
