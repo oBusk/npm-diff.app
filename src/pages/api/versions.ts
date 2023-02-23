@@ -6,7 +6,7 @@ export type Version = { version: string; tags?: string[] };
 export type SpecsEndpointResponse = Version[];
 
 export const config = {
-    runtime: "experimental-edge",
+    runtime: "edge",
 };
 
 export default async function versions(req: NextRequest) {
