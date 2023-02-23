@@ -1,14 +1,14 @@
 import { Box } from "@chakra-ui/react";
 import type { Result as NpaResult } from "npm-package-arg";
 import { FunctionComponent } from "react";
-import { File, ViewType } from "react-diff-view";
+import { DiffProps, FileData } from "react-diff-view";
 import DiffFileComponent from "./DiffFile";
 
 interface DiffFilesProps {
     a: NpaResult;
     b: NpaResult;
-    files: File[];
-    viewType: ViewType;
+    files: FileData[];
+    viewType: NonNullable<DiffProps["viewType"]>;
 }
 
 const DiffFiles: FunctionComponent<DiffFilesProps> = ({

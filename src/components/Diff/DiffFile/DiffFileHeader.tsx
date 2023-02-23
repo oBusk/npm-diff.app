@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import type { Result as NpaResult } from "npm-package-arg";
 import { FunctionComponent } from "react";
-import type { File } from "react-diff-view";
+import type { FileData } from "react-diff-view";
 import ServiceIcon from "^/components/ServiceIcon";
 import { Tooltip } from "^/components/theme";
 import { unpkg } from "^/lib/Services";
@@ -17,7 +17,7 @@ import type { CountedChanges } from "^/lib/utils/countChanges";
 export interface DiffFileHeaderProps extends StackProps {
     a: NpaResult;
     b: NpaResult;
-    file: File;
+    file: FileData;
     countedChanges: CountedChanges;
 }
 

@@ -3,9 +3,9 @@ import { GetServerSideProps, NextPage } from "next";
 import { useRouter } from "next/router";
 import npa, { Result as NpaResult } from "npm-package-arg";
 import { ParsedUrlQuery } from "querystring";
-import { memo, useMemo, useState } from "react";
-import type { File } from "react-diff-view";
-import { parseDiff, ViewType } from "react-diff-view";
+import { memo, useMemo } from "react";
+import type { DiffProps } from "react-diff-view";
+import { parseDiff } from "react-diff-view";
 import DiffFiles from "^/components/Diff/DiffFiles";
 import DiffIntro from "^/components/DiffIntro";
 import ErrorBox from "^/components/ErrorBox";
@@ -39,7 +39,7 @@ export const DIFF_TYPE_PARAM_NAME = "diff";
 
 interface Params extends ParsedUrlQuery {
     parts: string | string[];
-    [DIFF_TYPE_PARAM_NAME]: ViewType;
+    [DIFF_TYPE_PARAM_NAME]: NonNullable<DiffProps["viewType"]>;
 }
 
 export const getServerSideProps: GetServerSideProps<Props, Params> = async ({
@@ -155,7 +155,9 @@ const DiffPage: NextPage<Props> = ({ error, result }) => {
     // the component will re-render. This means it will _always_ render twice
     // even when it shouldn't have to.
     // We work around this by memoizing the rendering of the component.
-    const defaultViewType = useBreakpointValue<ViewType>(
+    const defaultViewType = useBreakpointValue<
+        NonNullable<DiffProps["viewType"]>
+    >(
         {
             base: "unified",
             lg: "split",
@@ -270,7 +272,7 @@ const DiffPageContent = ({
     packagephobiaResults: PackagephobiaResults | null;
     bundlephobiaResults: BundlephobiaResults | null;
     options: DiffOptions;
-    viewType: ViewType;
+    viewType: NonNullable<DiffProps["viewType"]>;
 }) => (
     <>
         <DiffIntro
