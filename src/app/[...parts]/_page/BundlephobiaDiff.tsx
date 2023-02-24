@@ -15,11 +15,13 @@ const BundlephobiaDiff = async ({ specs, a, b }: BundlephobiaDiffProps) => {
     const { result, time } = await measuredPromise(bundlephobia(specs));
 
     if (result == null) {
-        throw new Error("Bundlephobia result is null");
+        console.warn("Bundlephobia result is null", { specs });
+        return null;
     }
 
     if (result === TIMED_OUT) {
-        throw new Error("Bundlephobia timed out");
+        console.warn("Bundlephobia timed out", { specs });
+        return null;
     }
 
     console.log("Bundlephobia", { specs, time });

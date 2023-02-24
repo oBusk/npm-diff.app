@@ -14,11 +14,13 @@ const PackagephobiaDiff = async ({ specs, a, b }: PackagephobiaDiffProps) => {
     const { result, time } = await measuredPromise(packagephobia(specs));
 
     if (result == null) {
-        throw new Error("Packagephobia result is null");
+        console.warn("Packagephobia result is null", { specs });
+        return null;
     }
 
     if (result === TIMED_OUT) {
-        throw new Error("Packagephobia timed out");
+        console.warn("Packagephobia timed out", { specs });
+        return null;
     }
 
     console.log("Packagephobia", { specs, time });
