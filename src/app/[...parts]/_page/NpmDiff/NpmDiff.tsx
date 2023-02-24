@@ -1,6 +1,6 @@
 import parser from "gitdiff-parser";
 import type { Options } from "libnpmdiff";
-import type { File } from "react-diff-view";
+import type { FileData } from "react-diff-view";
 import adjustDiff from "^/lib/adjustDiff";
 import doDiff from "^/lib/diff";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
@@ -18,7 +18,7 @@ export interface NpmDiffProps {
 const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
     const diff = await doDiff(specs, options);
 
-    let files: File[] = [];
+    let files: FileData[] = [];
     if (diff == null) {
         throw new Error("diff is null");
     } else if (diff == "") {
