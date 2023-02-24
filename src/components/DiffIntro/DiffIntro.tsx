@@ -9,7 +9,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import type { Result as NpaResult } from "npm-package-arg";
-import type { DiffProps, FileData } from "react-diff-view";
+import type { FileData, ViewType } from "react-diff-view";
 import { B, Span } from "^/components/theme";
 import { BundlephobiaResults } from "^/lib/api/bundlephobia";
 import { PackagephobiaResults } from "^/lib/api/packagephobia";
@@ -31,7 +31,7 @@ export interface DiffIntroProps extends FlexProps {
     packagephobiaResults: PackagephobiaResults | null;
     bundlephobiaResults: BundlephobiaResults | null;
     options: DiffOptions;
-    viewType: NonNullable<DiffProps["viewType"]>;
+    viewType: ViewType;
 }
 
 const DiffIntro = forwardRef<DiffIntroProps, "h2">(

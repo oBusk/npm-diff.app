@@ -1,7 +1,7 @@
 import { forwardRef } from "@chakra-ui/react";
 import type { Result as NpaResult } from "npm-package-arg";
 import { useCallback, useMemo, useState } from "react";
-import type { ChangeData, DiffProps, FileData } from "react-diff-view";
+import type { ChangeData, FileData, ViewType } from "react-diff-view";
 import "react-diff-view/style/index.css";
 import { Diff } from "^/components/react-diff-view";
 import {
@@ -16,8 +16,6 @@ import DiffPlaceholder from "./DiffPlaceholder";
 
 const FILES_TO_RENDER = 2 ** 6;
 const CHANGES_TO_RENDER = 2 ** 7;
-
-type ViewType = NonNullable<DiffProps["viewType"]>;
 
 interface DiffFileProps extends CollapsableBorderBoxProps {
     a: NpaResult;

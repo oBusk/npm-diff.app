@@ -6,14 +6,14 @@ import {
     forwardRef,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import type { DiffProps } from "react-diff-view";
+import type { DiffProps, ViewType } from "react-diff-view";
 import { DIFF_TYPE_PARAM_NAME } from "^/pages/[...parts]";
 import { NextLink } from "../theme";
 
 export interface ViewTypeButtonProps extends ButtonProps {
     title: string;
-    viewType: NonNullable<DiffProps["viewType"]>;
-    currentViewType: NonNullable<DiffProps["viewType"]>;
+    viewType: ViewType;
+    currentViewType: ViewType;
 }
 
 const ViewTypeButton = forwardRef<ViewTypeButtonProps, typeof Button>(
@@ -45,7 +45,7 @@ const ViewTypeButton = forwardRef<ViewTypeButtonProps, typeof Button>(
 );
 
 export interface ViewTypeSwitchProps extends ButtonGroupProps {
-    currentViewType: NonNullable<DiffProps["viewType"]>;
+    currentViewType: ViewType;
 }
 
 const ViewTypeSwitch = forwardRef<ViewTypeSwitchProps, typeof ButtonGroup>(
