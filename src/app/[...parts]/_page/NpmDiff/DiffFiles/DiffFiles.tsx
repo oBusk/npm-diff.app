@@ -1,6 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import { DiffProps, FileData } from "react-diff-view";
+import { FileData, ViewType } from "react-diff-view";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import DiffFileComponent from "./DiffFile";
 
@@ -8,7 +8,7 @@ export interface DiffFilesProps {
     a: SimplePackageSpec;
     b: SimplePackageSpec;
     files: FileData[];
-    viewType: NonNullable<DiffProps["viewType"]>;
+    viewType: ViewType;
 }
 
 const DiffFiles: FunctionComponent<DiffFilesProps> = ({
