@@ -4,6 +4,7 @@ import { ViewType } from "react-diff-view";
 import decodePartts from "^/lib/decodeParts";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
+import EXAMPLES from "^/lib/examples";
 import parseSimplePackageSpec from "^/lib/parseSimplePackageSpec";
 import { parseQuery, QueryParams } from "^/lib/query";
 import specsToDiff from "^/lib/utils/specsToDiff";
@@ -16,6 +17,13 @@ import DiffPageClient from "./page.client";
 
 // Ensure static rendering https://beta.nextjs.org/docs/api-reference/segment-config#dynamic
 export const dynamic = "force-static";
+
+export function generateStaticParams() {
+    return EXAMPLES.map((parts) => ({
+        parts: parts.split("/"),
+    }));
+}
+
 // We need nodejs since we use Npm libs https://beta.nextjs.org/docs/api-reference/segment-config#runtime
 export const runtime = "nodejs";
 // TODO: Set title and description using `head.tsx` so that they
