@@ -40,17 +40,9 @@ const Layout: FunctionComponent<LayoutProps> = ({
             paddingLeft={PADDING}
             {...props}
         >
-            <Header
-                background="chakra-body-bg"
-                marginLeft={`-${PADDING}`}
-                marginRight={`-${PADDING}`}
-            />
+            <Header background="chakra-body-bg" />
             {children}
-            <Footer
-                background="chakra-body-bg"
-                marginLeft={`-${PADDING}`}
-                marginRight={`-${PADDING}`}
-            />
+            <Footer background="chakra-body-bg" />
         </Stack>
     </>
 );

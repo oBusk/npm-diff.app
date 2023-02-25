@@ -22,6 +22,8 @@ const ColorModeToggle = forwardRef<ColorModeToggleProps, "button">(
                 <IconButton
                     onClick={toggleColorMode}
                     aria-label={label}
+                    size="sm"
+                    fontSize="1.2em"
                     icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
                     {...props}
                     ref={ref}
