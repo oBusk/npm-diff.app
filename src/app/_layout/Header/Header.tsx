@@ -9,7 +9,7 @@ const Header: FunctionComponent<FlexProps> = (props) => (
     <Flex
         as="nav"
         align="center"
-        padding="1.5rem"
+        padding="1.5rem 0.5rem"
         position="sticky"
         top="0"
         left="0"

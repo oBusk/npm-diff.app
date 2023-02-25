@@ -20,17 +20,9 @@ const LayoutClient = ({ children }: PropsWithChildren<{}>) => (
                 paddingRight={PADDING}
                 paddingLeft={PADDING}
             >
-                <Header
-                    background="chakra-body-bg"
-                    marginLeft={`-${PADDING}`}
-                    marginRight={`-${PADDING}`}
-                />
+                <Header background="chakra-body-bg" />
                 {children}
-                <Footer
-                    background="chakra-body-bg"
-                    marginLeft={`-${PADDING}`}
-                    marginRight={`-${PADDING}`}
-                />
+                <Footer background="chakra-body-bg" />
             </Stack>
         </ChakraProvider>
     </>

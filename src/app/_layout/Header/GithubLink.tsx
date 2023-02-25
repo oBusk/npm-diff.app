@@ -14,6 +14,7 @@ export const GithubLink: FunctionComponent<GithubLinkProps> = (props) => {
                 as={ExternalLink}
                 href="https://github.com/oBusk/npm-diff.app"
                 aria-label={label}
+                size="sm"
                 fontSize="1.75em"
                 icon={<DiGithubBadge />}
                 {...props}
