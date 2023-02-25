@@ -45,9 +45,11 @@ const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
         );
 
         const generateAnchorID = useCallback(
-            ({ lineNumber, oldLineNumber }: ChangeData) =>
+            (change: ChangeData) =>
                 `${type === "delete" ? oldPath : newPath}-L${
-                    lineNumber ?? oldLineNumber
+                    change.type !== "normal"
+                        ? change.lineNumber
+                        : change.oldLineNumber
                 }`,
             [type, oldPath, newPath],
         );
