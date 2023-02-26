@@ -26,7 +26,8 @@ const ViewTypeButton = forwardRef<ViewTypeButtonProps, typeof Button>(
                 href={{
                     pathname,
                     query: {
-                        ...Object.fromEntries(searchParams.entries()),
+                        ...(searchParams &&
+                            Object.fromEntries(searchParams.entries())),
                         [DIFF_TYPE_PARAM_NAME]: viewType,
                     },
                 }}

@@ -37,12 +37,10 @@ const NpmDiffClient = ({
 
     const viewType =
         // If specified in URL, use that
-        searchParams.get(DIFF_TYPE_PARAM_NAME) === "split"
-            ? "split"
-            : searchParams.get(DIFF_TYPE_PARAM_NAME) === "unified"
-            ? "unified"
-            : // If not, use default based on screen size
-              defaultViewType;
+        (searchParams?.get(DIFF_TYPE_PARAM_NAME) === "split" && "split") ||
+        (searchParams?.get(DIFF_TYPE_PARAM_NAME) === "unified" && "unified") ||
+        // If not, use default based on screen size
+        defaultViewType;
 
     return (
         <>
