@@ -7,7 +7,11 @@ module.exports = {
     //     emotion: true,
     // },
     experimental: {
-        serverComponentsExternalPackages: ["libnpmdiff", "pacote"],
+        serverComponentsExternalPackages: [
+            "libnpmdiff",
+            "npm-package-arg",
+            "pacote",
+        ],
         appDir: true,
     },
 };
