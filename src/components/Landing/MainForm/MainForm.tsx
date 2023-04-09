@@ -99,10 +99,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                             : undefined),
                     }}
                 ></SpecInput>
-                <CenterInputAddon
-                    size={SIZE}
-                    display={{ base: "none", lg: "flex" }}
-                >
+                <CenterInputAddon display={{ base: "none", lg: "flex" }}>
                     ...
                 </CenterInputAddon>
                 <SpecInput
