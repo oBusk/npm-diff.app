@@ -1,8 +1,15 @@
+import npa from "npm-package-arg";
 import TIMED_OUT, { resultOrTimedOut } from "../TimedOut";
 import BundlephobiaResponse from "./BundlephobiaResponse";
 import BundlephobiaResults from "./BundlephobiaResults";
 
 async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
+    const { scope } = npa(spec);
+
+    if (scope === "@types") {
+        return null;
+    }
+
     try {
         const response = await fetch(
             `https://bundlephobia.com/api/size?package=${spec}`,
