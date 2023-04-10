@@ -1,6 +1,7 @@
 "use client";
 
 import { Box, ChakraProvider, ColorModeScript, Stack } from "@chakra-ui/react";
+import { Analytics } from "@vercel/analytics/react";
 import { PropsWithChildren } from "react";
 import Div100vh from "react-div-100vh";
 import theme from "^/theme";
@@ -25,6 +26,7 @@ const LayoutClient = ({ children }: PropsWithChildren<{}>) => (
                 <Footer background="chakra-body-bg" />
             </Stack>
         </ChakraProvider>
+        <Analytics />
     </>
 );
 export default LayoutClient;
