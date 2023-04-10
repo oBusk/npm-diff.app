@@ -10,7 +10,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <head>
                 <link
                     rel="apple-touch-icon"
@@ -37,7 +37,7 @@ export default function RootLayout({
                     content={defaultMetaData.description}
                 />
             </head>
-            <body>
+            <body suppressHydrationWarning>
                 <LayoutClient>{children}</LayoutClient>
             </body>
         </html>
