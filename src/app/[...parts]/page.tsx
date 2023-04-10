@@ -10,10 +10,10 @@ import { parseQuery, QueryParams } from "^/lib/query";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
 import BundlephobiaDiff from "./_page/BundlephobiaDiff";
+import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff/NpmDiff";
 import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
-import DiffPageClient from "./page.client";
 
 export interface DiffPageProps {
     params: { parts: string | string[] };
@@ -72,42 +72,43 @@ const DiffPage = async ({
         );
 
         return (
-            <DiffPageClient
-                a={a}
-                b={b}
-                options={options}
-                services={
-                    <>
-                        <Suspense>
-                            {/* @ts-expect-error Server Component */}
-                            <BundlephobiaDiff
-                                a={a}
-                                b={b}
-                                specs={canonicalSpecs}
-                            />
-                        </Suspense>
-                        <Suspense>
-                            {/* @ts-expect-error Server Component */}
-                            <PackagephobiaDiff
-                                a={a}
-                                b={b}
-                                specs={canonicalSpecs}
-                            />
-                        </Suspense>
-                    </>
-                }
-                diffResults={
-                    <Suspense>
-                        {/* @ts-expect-error Server Component */}
-                        <NpmDiff
-                            a={a}
-                            b={b}
-                            specs={canonicalSpecs}
-                            options={options}
-                        />
-                    </Suspense>
-                }
-            />
+            <>
+                <DiffIntro
+                    alignSelf="stretch"
+                    a={a}
+                    b={b}
+                    services={
+                        <>
+                            <Suspense>
+                                {/* @ts-expect-error Server Component */}
+                                <BundlephobiaDiff
+                                    a={a}
+                                    b={b}
+                                    specs={canonicalSpecs}
+                                />
+                            </Suspense>
+                            <Suspense>
+                                {/* @ts-expect-error Server Component */}
+                                <PackagephobiaDiff
+                                    a={a}
+                                    b={b}
+                                    specs={canonicalSpecs}
+                                />
+                            </Suspense>
+                        </>
+                    }
+                    options={options}
+                />
+                <Suspense>
+                    {/* @ts-expect-error Server Component */}
+                    <NpmDiff
+                        a={a}
+                        b={b}
+                        specs={canonicalSpecs}
+                        options={options}
+                    />
+                </Suspense>
+            </>
         );
     }
 };
