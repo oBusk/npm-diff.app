@@ -2,7 +2,6 @@
 
 import { FunctionComponent, ReactNode } from "react";
 import DiffOptions from "^/lib/DiffOptions";
-import { MetaData } from "^/lib/metaData";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import DiffIntro from "./_page/DiffIntro";
 
@@ -21,10 +20,7 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
     services,
     diffResults,
 }) => (
-    <MetaData
-        title={`Comparing ${a.name}@${a.version}...${b.name}@${b.version}`}
-        description={`A diff between the npm packages "${a.name}@${a.version}" and "${b.name}@${b.version}"`}
-    >
+    <>
         <DiffIntro
             alignSelf="stretch"
             a={a}
@@ -33,7 +29,7 @@ const DiffPageClient: FunctionComponent<DiffPageClientProps> = ({
             options={options}
         />
         {diffResults}
-    </MetaData>
+    </>
 );
 
 export default DiffPageClient;

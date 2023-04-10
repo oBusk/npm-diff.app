@@ -15,6 +15,22 @@ import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 import DiffPageClient from "./page.client";
 
+export interface DiffPageProps {
+    params: { parts: string | string[] };
+    searchParams: QueryParams & { [DIFF_TYPE_PARAM_NAME]: ViewType };
+}
+
+export function generateMetadata({ params: { parts } }: DiffPageProps) {
+    const specs = splitParts(decodePartts(parts));
+
+    const [a, b] = specs.map((spec) => parseSimplePackageSpec(spec));
+
+    return {
+        title: `Comparing ${a.name}@${a.version}...${b.name}@${b.version}`,
+        description: `A diff between the npm packages "${a.name}@${a.version}" and "${b.name}@${b.version}"`,
+    };
+}
+
 // Ensure static rendering https://beta.nextjs.org/docs/api-reference/segment-config#dynamic
 export const dynamic = "force-static";
 
@@ -26,15 +42,10 @@ export function generateStaticParams() {
 
 // We need nodejs since we use Npm libs https://beta.nextjs.org/docs/api-reference/segment-config#runtime
 export const runtime = "nodejs";
-// TODO: Set title and description using `head.tsx` so that they
-//       are set before `useEffect()`
 const DiffPage = async ({
     params: { parts },
     searchParams,
-}: {
-    params: { parts: string | string[] };
-    searchParams: QueryParams & { [DIFF_TYPE_PARAM_NAME]: ViewType };
-}): Promise<JSX.Element> => {
+}: DiffPageProps): Promise<JSX.Element> => {
     const { diffFiles, ...optionsQuery } = searchParams;
 
     const specsOrVersions = splitParts(decodePartts(parts));

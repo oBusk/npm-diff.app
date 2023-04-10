@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import destination from "^/lib/destination";
 import doDiff from "^/lib/diff";
 import EXAMPLES from "^/lib/examples";
@@ -12,6 +13,11 @@ const EXAMPLE_RELATIVE_LINK = `${API_PATH}/${EXAMPLE_QUERY}` as const;
 
 const DOMAIN = "https://npm-diff.app";
 const EXAMPLE_ABSOLUTE_URL = `${DOMAIN}${EXAMPLE_RELATIVE_LINK}` as const;
+
+export const metadata = {
+    title: "API",
+    description: "API documentation for npm-diff.app",
+} satisfies Metadata;
 
 // Ensure static rendering https://beta.nextjs.org/docs/api-reference/segment-config#dynamic
 export const dynamic = "force-static";
