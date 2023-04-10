@@ -56,7 +56,7 @@
         "react-dom": "^18.2.0",
         "react-icons": "^4.8.0",
         "react-use": "^17.4.0",
-        "semver": "^7.3.8",
+        "semver": "^7.4.0",
         "validate-npm-package-name": "^5.0.0"
     },
     "devDependencies": {
@@ -67,7 +67,7 @@
         "@types/node": "^18.15.11",
         "@types/npm-package-arg": "^6.1.1",
         "@types/pacote": "^11.1.5",
-        "@types/react": "^18.0.33",
+        "@types/react": "^18.0.34",
         "@types/react-dom": "^18.0.11",
         "@types/semver": "^7.3.13",
         "@types/validate-npm-package-name": "^4.0.0",
