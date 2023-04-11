@@ -39,6 +39,7 @@
     },
     "dependencies": {
         "@chakra-ui/icons": "^2.0.18",
+        "@chakra-ui/next-js": "^2.1.2",
         "@chakra-ui/react": "2.5.5",
         "@emotion/react": "^11.10.6",
         "@emotion/styled": "^11.10.6",
