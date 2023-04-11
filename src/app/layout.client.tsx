@@ -29,7 +29,7 @@ const LayoutClient = ({ children }: PropsWithChildren<{}>) => (
                 </Stack>
             </ChakraProvider>
         </CacheProvider>
-        <Analytics />
+        {process.env.VERCEL_URL ? <Analytics /> : null}
     </>
 );
 export default LayoutClient;
