@@ -7,7 +7,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     return (
         <ChakraProvider theme={theme}>
             <Component {...pageProps} />
-            <Analytics />
+            {process.env.VERCEL_URL ? <Analytics /> : null}
         </ChakraProvider>
     );
 }
