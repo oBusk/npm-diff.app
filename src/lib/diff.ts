@@ -20,7 +20,7 @@ export interface DiffError {
     error: string;
 }
 
-const doDiff = cache(async function _doDiff(
+async function _doDiff(
     specs: [string, string],
     options: Options,
 ): Promise<string> {
@@ -77,6 +77,15 @@ const doDiff = cache(async function _doDiff(
             error: "Unknown error",
         };
     }
+}
+
+const cachedDoDiff = cache((str: string) => {
+    const args = JSON.parse(str) as Parameters<typeof _doDiff>;
+
+    return _doDiff(...args);
 });
+
+const doDiff = (...args: Parameters<typeof _doDiff>) =>
+    cachedDoDiff(JSON.stringify(args));
 
 export default doDiff;
