@@ -1,5 +1,6 @@
 import libnpmdiff, { Options } from "libnpmdiff";
 import { cache } from "react";
+import wait from "./wait";
 
 interface ErrorETARGET {
     code: "ETARGET";
@@ -27,6 +28,9 @@ async function _doDiff(
     let startTime = 0;
     try {
         startTime = Date.now();
+
+        await wait(5000);
+
         const result = await libnpmdiff(specs, options);
 
         console.log("_doDiff", {
