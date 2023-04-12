@@ -2,6 +2,7 @@
 
 import { HStack, useBreakpointValue } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 import { ViewType } from "react-diff-view";
 import B from "^/components/B";
 import Span from "^/components/Span";
@@ -50,7 +51,10 @@ const NpmDiffClient = ({
                     <B>{additions} additions</B> and{" "}
                     <B>{deletions} deletions</B>
                 </Span>
-                <ViewTypeSwitch currentViewType={viewType} />
+                {/* Wrap in suspense because components use dynamic function https://beta.nextjs.org/docs/rendering/static-and-dynamic-rendering#using-dynamic-functions */}
+                <Suspense>
+                    <ViewTypeSwitch currentViewType={viewType} />
+                </Suspense>
             </HStack>
             <DiffFiles viewType={viewType} {...props} />
         </>

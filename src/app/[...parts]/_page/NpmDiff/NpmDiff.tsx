@@ -1,5 +1,6 @@
 import parser from "gitdiff-parser";
 import type { Options } from "libnpmdiff";
+import { Suspense } from "react";
 import type { FileData } from "react-diff-view";
 import adjustDiff from "^/lib/adjustDiff";
 import doDiff from "^/lib/diff";
@@ -40,13 +41,16 @@ const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
         .reduce((a, b) => a + b, 0);
 
     return (
-        <NpmDiffClient
-            a={a}
-            b={b}
-            files={files}
-            additions={additions}
-            deletions={deletions}
-        />
+        // Wrap in suspense because it uses dynamic function https://beta.nextjs.org/docs/rendering/static-and-dynamic-rendering#using-dynamic-functions
+        <Suspense>
+            <NpmDiffClient
+                a={a}
+                b={b}
+                files={files}
+                additions={additions}
+                deletions={deletions}
+            />
+        </Suspense>
     );
 };
 
