@@ -11,6 +11,7 @@ export interface PackagephobiaDiffProps {
 }
 
 const PackagephobiaDiff = async ({ specs, a, b }: PackagephobiaDiffProps) => {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     const { result, time } = await measuredPromise(packagephobia(specs));
 
     if (result == null) {

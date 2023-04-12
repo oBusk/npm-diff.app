@@ -16,6 +16,7 @@ export interface NpmDiffProps {
 }
 
 const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
+    await new Promise((resolve) => setTimeout(resolve, 5000));
     const diff = await doDiff(specs, options);
 
     let files: FileData[] = [];
