@@ -80,7 +80,7 @@ const DiffPage = async ({
                     b={b}
                     services={
                         <>
-                            <Suspense>
+                            <Suspense fallback={<div>Loading...</div>}>
                                 {/* @ts-expect-error Server Component */}
                                 <BundlephobiaDiff
                                     a={a}
