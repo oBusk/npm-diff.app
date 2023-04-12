@@ -32,15 +32,6 @@ export function generateMetadata({ params: { parts } }: DiffPageProps) {
     };
 }
 
-// Ensure static rendering https://beta.nextjs.org/docs/api-reference/segment-config#dynamic
-export const dynamic = "force-static";
-
-export function generateStaticParams() {
-    return EXAMPLES.map((parts) => ({
-        parts: parts.split("/"),
-    }));
-}
-
 // We need nodejs since we use Npm libs https://beta.nextjs.org/docs/api-reference/segment-config#runtime
 export const runtime = "nodejs";
 const DiffPage = async ({
@@ -73,7 +64,7 @@ const DiffPage = async ({
         );
 
         return (
-            <>
+            <Suspense fallback={<div>Loading...</div>}>
                 <DiffIntro
                     alignSelf="stretch"
                     a={a}
@@ -116,7 +107,7 @@ const DiffPage = async ({
                         options={options}
                     />
                 </Suspense>
-            </>
+            </Suspense>
         );
     }
 };

@@ -19,8 +19,6 @@ export const metadata = {
     description: "API documentation for npm-diff.app",
 } satisfies Metadata;
 
-// Ensure static rendering https://beta.nextjs.org/docs/api-reference/segment-config#dynamic
-export const dynamic = "force-static";
 // We need nodejs since we use Npm libs https://beta.nextjs.org/docs/api-reference/segment-config#runtime
 export const runtime = "nodejs";
 const AboutApiPage = async () => {
