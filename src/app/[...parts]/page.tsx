@@ -32,8 +32,12 @@ export function generateMetadata({ params: { parts } }: DiffPageProps) {
     };
 }
 
+// Force caching even when using dynamic functions https://beta.nextjs.org/docs/api-reference/segment-config#fetchcache
+export const fetchCache = "only-cache";
+
 // We need nodejs since we use Npm libs https://beta.nextjs.org/docs/api-reference/segment-config#runtime
 export const runtime = "nodejs";
+
 const DiffPage = async ({
     params: { parts },
     searchParams,
