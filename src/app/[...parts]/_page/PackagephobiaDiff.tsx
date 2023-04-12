@@ -2,7 +2,7 @@ import packagephobia from "^/lib/api/packagephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
 import measuredPromise from "^/lib/measuredPromise";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
-import SizeComparison from "./DiffIntro/SizeComparison";
+import SizeComparison from "./SizeComparison";
 
 export interface PackagephobiaDiffProps {
     a: SimplePackageSpec;

@@ -15,8 +15,8 @@ import Span from "^/components/Span";
 import { Bundlephobia, Packagephobia, Service } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { prettyByte } from "^/lib/utils/prettyByte";
-import Halfs from "./Halfs";
-import ServiceTooltip from "./ServiceTooltip";
+import Halfs from "./DiffIntro/Halfs";
+import ServiceTooltip from "./DiffIntro/ServiceTooltip";
 
 function differance(a: number, b: number): ReactNode {
     const diff = a - b;

@@ -14,6 +14,7 @@ import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff/NpmDiff";
 import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
+import SizeComparisonSkeleton from "./_page/SizeComparisonSkeleton";
 
 export interface DiffPageProps {
     params: { parts: string | string[] };
@@ -87,7 +88,14 @@ const DiffPage = async ({
                                     specs={canonicalSpecs}
                                 />
                             </Suspense>
-                            <Suspense>
+                            <Suspense
+                                fallback={
+                                    <SizeComparisonSkeleton
+                                        serviceName="packagephobia"
+                                        sizeRowNames={["Publish", "Install"]}
+                                    />
+                                }
+                            >
                                 {/* @ts-expect-error Server Component */}
                                 <PackagephobiaDiff
                                     a={a}

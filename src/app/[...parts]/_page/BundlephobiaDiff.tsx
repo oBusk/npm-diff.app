@@ -3,7 +3,7 @@ import TIMED_OUT from "^/lib/api/TimedOut";
 import measuredPromise from "^/lib/measuredPromise";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import BundlephobiaFlags from "./DiffIntro/BundlePhobiaFlags";
-import SizeComparison from "./DiffIntro/SizeComparison";
+import SizeComparison from "./SizeComparison";
 
 export interface BundlephobiaDiffProps {
     a: SimplePackageSpec;
