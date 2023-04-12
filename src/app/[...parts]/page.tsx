@@ -107,7 +107,7 @@ const DiffPage = async ({
                     }
                     options={options}
                 />
-                <Suspense>
+                <Suspense fallback={<div style={{ flex: "1" }} />}>
                     {/* @ts-expect-error Server Component */}
                     <NpmDiff
                         a={a}
