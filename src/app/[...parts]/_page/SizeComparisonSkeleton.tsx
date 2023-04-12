@@ -1,18 +1,10 @@
 "use client";
 
-import {
-    Box,
-    Flex,
-    forwardRef,
-    Heading,
-    Skeleton,
-    Text,
-    VStack,
-} from "@chakra-ui/react";
+import { Box, Flex, Heading, Skeleton, Text, VStack } from "@chakra-ui/react";
 import { Bundlephobia, Packagephobia } from "^/lib/Services";
-import Halfs, { HalfsProps } from "./DiffIntro/Halfs";
+import Halfs from "./DiffIntro/Halfs";
 
-interface SizeComparisonSkeletonProps extends HalfsProps {
+export interface SizeComparisonSkeletonProps {
     serviceName: "packagephobia" | "bundlephobia";
     sizeRowNames: string[];
 }
@@ -20,10 +12,10 @@ interface SizeComparisonSkeletonProps extends HalfsProps {
 /** The padding of the center column and the right/left half has to be the same to line up */
 const COMMON_PADDING = "8px";
 
-const SizeComparisonSkeleton = forwardRef<
-    SizeComparisonSkeletonProps,
-    typeof Halfs
->(({ serviceName, sizeRowNames, ...props }, ref) => {
+const SizeComparisonSkeleton = ({
+    serviceName,
+    sizeRowNames,
+}: SizeComparisonSkeletonProps) => {
     const service =
         serviceName === "bundlephobia" ? Bundlephobia : Packagephobia;
 
@@ -31,8 +23,7 @@ const SizeComparisonSkeleton = forwardRef<
         <>
             <Heading size="xs">{service.name}</Heading>
             <Halfs
-                {...props}
-                ref={ref}
+                width="100%"
                 left={
                     <VStack
                         padding={COMMON_PADDING}
@@ -73,6 +64,6 @@ const SizeComparisonSkeleton = forwardRef<
             ></Halfs>
         </>
     );
-});
+};
 
 export default SizeComparisonSkeleton;

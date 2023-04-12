@@ -54,7 +54,6 @@ const PackagephobiaDiff = async ({ specs, a, b }: PackagephobiaDiffProps) => {
                     },
                 },
             ]}
-            width="100%"
         />
     );
 };

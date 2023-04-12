@@ -61,7 +61,6 @@ const BundlephobiaDiff = async ({ specs, a, b }: BundlephobiaDiffProps) => {
                     },
                 },
             ]}
-            width="100%"
         />
     );
 };
