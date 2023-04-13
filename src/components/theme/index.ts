@@ -5,7 +5,6 @@ import CollapsableBorderBox, {
     CollapsableBorderBoxProps,
 } from "./CollapsableBorderBox";
 import ExternalLink, { ExternalLinkProps } from "./ExternalLink";
-import NextLink, { NextLinkProps } from "./NextLink";
 import Span, { SpanProps } from "./Span";
 import Tooltip, { TooltipProps } from "./Tooltip";
 
@@ -15,7 +14,6 @@ export type {
     ButtonExpandBoxProps,
     CollapsableBorderBoxProps,
     ExternalLinkProps,
-    NextLinkProps,
     SpanProps,
     TooltipProps,
 };
@@ -26,7 +24,6 @@ export {
     ButtonExpandBox,
     CollapsableBorderBox,
     ExternalLink,
-    NextLink,
     Span,
     Tooltip,
 };
