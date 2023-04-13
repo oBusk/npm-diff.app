@@ -1,9 +1,10 @@
 import {
     defineStyle,
-    extendTheme,
+    extendBaseTheme,
     ThemeConfig,
     ThemeOverride,
 } from "@chakra-ui/react";
+import chakraTheme from "@chakra-ui/theme";
 import { mode } from "@chakra-ui/theme-tools";
 
 const config: ThemeConfig = {
@@ -48,6 +49,19 @@ const variantSolidDisabled = defineStyle((props) => {
     };
 });
 
+const {
+    Button,
+    Code,
+    FormLabel,
+    Heading,
+    Input,
+    Link,
+    List,
+    Spinner,
+    Tag,
+    Tooltip,
+} = chakraTheme.components;
+
 const themeOverride: ThemeOverride = {
     config,
     styles: {
@@ -59,12 +73,24 @@ const themeOverride: ThemeOverride = {
     },
     components: {
         Button: {
+            ...Button,
             variants: {
+                ...Button.variants,
                 "solid-disabled": variantSolidDisabled,
             },
         },
+        Code,
+        FormLabel,
+        Heading,
+        Input,
+        Link,
+        List,
+        Spinner,
+        Tag,
         Tooltip: {
+            ...Tooltip,
             baseStyle: {
+                ...Tooltip.baseStyle,
                 padding: "4px",
                 textAlign: "center",
             },
@@ -72,7 +98,7 @@ const themeOverride: ThemeOverride = {
     },
 };
 
-const theme = extendTheme(themeOverride);
+const theme = extendBaseTheme(themeOverride);
 
 export type Theme = typeof theme;
 
