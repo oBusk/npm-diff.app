@@ -1,7 +1,7 @@
 "use client";
 
 import { CacheProvider } from "@chakra-ui/next-js";
-import { ChakraProvider, ColorModeScript, Stack } from "@chakra-ui/react";
+import { ChakraBaseProvider, ColorModeScript, Stack } from "@chakra-ui/react";
 import { Analytics } from "@vercel/analytics/react";
 import { PropsWithChildren } from "react";
 import Div100vh from "react-div-100vh";
@@ -15,7 +15,7 @@ const LayoutClient = ({ children }: PropsWithChildren<{}>) => (
     <>
         <ColorModeScript initialColorMode={theme.config.initialColorMode} />
         <CacheProvider>
-            <ChakraProvider theme={theme}>
+            <ChakraBaseProvider theme={theme}>
                 <Stack
                     as={Div100vh}
                     justifyContent="space-between"
@@ -27,7 +27,7 @@ const LayoutClient = ({ children }: PropsWithChildren<{}>) => (
                     {children}
                     <Footer background="chakra-body-bg" />
                 </Stack>
-            </ChakraProvider>
+            </ChakraBaseProvider>
         </CacheProvider>
         {process.env.VERCEL_URL ? <Analytics /> : null}
     </>
