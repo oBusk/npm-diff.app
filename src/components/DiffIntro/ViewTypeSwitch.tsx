@@ -1,3 +1,4 @@
+import { Link } from "@chakra-ui/next-js";
 import {
     Button,
     ButtonGroup,
@@ -6,9 +7,8 @@ import {
     forwardRef,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import type { DiffProps, ViewType } from "react-diff-view";
+import type { ViewType } from "react-diff-view";
 import { DIFF_TYPE_PARAM_NAME } from "^/pages/[...parts]";
-import { NextLink } from "../theme";
 
 export interface ViewTypeButtonProps extends ButtonProps {
     title: string;
@@ -21,7 +21,8 @@ const ViewTypeButton = forwardRef<ViewTypeButtonProps, typeof Button>(
         const router = useRouter();
 
         return (
-            <NextLink
+            <Button
+                as={Link}
                 href={{
                     query: {
                         ...router.query,
@@ -30,16 +31,15 @@ const ViewTypeButton = forwardRef<ViewTypeButtonProps, typeof Button>(
                 }}
                 replace
                 shallow
+                isActive={currentViewType === viewType}
+                _hover={{
+                    textDecoration: "none",
+                }}
+                {...props}
+                ref={ref}
             >
-                <Button
-                    as="a"
-                    isActive={currentViewType === viewType}
-                    {...props}
-                    ref={ref}
-                >
-                    {title}
-                </Button>
-            </NextLink>
+                {title}
+            </Button>
         );
     },
 );
