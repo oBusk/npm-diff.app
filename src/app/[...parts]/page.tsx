@@ -32,14 +32,12 @@ export function generateMetadata({ params: { parts } }: DiffPageProps) {
     };
 }
 
-// Revalidate every 24 hours https://beta.nextjs.org/docs/api-reference/segment-config#revalidate
-export const revalidate = 86400;
-
-// Force caching even when using dynamic functions https://beta.nextjs.org/docs/api-reference/segment-config#fetchcache
-export const fetchCache = "only-cache";
-
-// We need nodejs since we use Npm libs https://beta.nextjs.org/docs/api-reference/segment-config#runtime
-export const runtime = "nodejs";
+// So while it would be super cool to have a dynamic page with cached data to
+// have the fancy Suspense loading, there's no data caching for third party
+// data, only for `fetch()` calls. So if we don't want to redo the diff for
+// every page load, we need to have a static page.
+// https://beta.nextjs.org/docs/data-fetching/fetching#segment-cache-configuration
+export const dynamic = "force-static";
 
 const DiffPage = async ({
     params: { parts },
