@@ -32,6 +32,9 @@ export function generateMetadata({ params: { parts } }: DiffPageProps) {
     };
 }
 
+// Revalidate every 24 hours https://beta.nextjs.org/docs/api-reference/segment-config#revalidate
+export const revalidate = 86400;
+
 // Force caching even when using dynamic functions https://beta.nextjs.org/docs/api-reference/segment-config#fetchcache
 export const fetchCache = "only-cache";
 
