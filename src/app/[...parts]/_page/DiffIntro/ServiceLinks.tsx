@@ -10,7 +10,7 @@ export interface ServiceLinksProps extends ButtonGroupProps {
 const ServiceLinks = forwardRef<ServiceLinksProps, typeof ButtonGroup>(
     ({ pkg, ...props }, ref) => (
         <ButtonGroup isAttached size="xs" variant="ghost" {...props} ref={ref}>
-            {Services.map((service) => (
+            {Object.values(Services).map((service) => (
                 <ServiceLink key={service.name} service={service} pkg={pkg} />
             ))}
         </ButtonGroup>

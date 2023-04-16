@@ -4,17 +4,19 @@ import { ViewType } from "react-diff-view";
 import decodePartts from "^/lib/decodeParts";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
-import EXAMPLES from "^/lib/examples";
 import parseSimplePackageSpec from "^/lib/parseSimplePackageSpec";
 import { parseQuery, QueryParams } from "^/lib/query";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
-import BundlephobiaDiff from "./_page/BundlephobiaDiff";
+import BundlephobiaDiff, {
+    BundlephobiaDiffSkeleton,
+} from "./_page/BundlephobiaDiff";
 import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff/NpmDiff";
-import PackagephobiaDiff from "./_page/PackagephobiaDiff";
+import PackagephobiaDiff, {
+    PackagephobiaDiffSkeleton,
+} from "./_page/PackagephobiaDiff";
 import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
-import SizeComparisonSkeleton from "./_page/SizeComparisonSkeleton";
 
 export interface DiffPageProps {
     params: { parts: string | string[] };
@@ -76,7 +78,7 @@ const DiffPage = async ({
                     b={b}
                     services={
                         <>
-                            <Suspense fallback={<div>Loading...</div>}>
+                            <Suspense fallback={<BundlephobiaDiffSkeleton />}>
                                 {/* @ts-expect-error Server Component */}
                                 <BundlephobiaDiff
                                     a={a}
@@ -84,14 +86,7 @@ const DiffPage = async ({
                                     specs={canonicalSpecs}
                                 />
                             </Suspense>
-                            <Suspense
-                                fallback={
-                                    <SizeComparisonSkeleton
-                                        serviceName="packagephobia"
-                                        sizeRowNames={["Publish", "Install"]}
-                                    />
-                                }
-                            >
+                            <Suspense fallback={<PackagephobiaDiffSkeleton />}>
                                 {/* @ts-expect-error Server Component */}
                                 <PackagephobiaDiff
                                     a={a}

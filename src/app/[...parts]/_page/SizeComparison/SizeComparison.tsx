@@ -4,11 +4,11 @@ import { Box, Flex, Heading, LinkProps, Text } from "@chakra-ui/react";
 import { FunctionComponent, ReactNode } from "react";
 import ExternalLink from "^/components/ExternalLink";
 import Span from "^/components/Span";
-import { Bundlephobia, Packagephobia, Service } from "^/lib/Services";
+import { Service, ServiceName, Services } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { prettyByte } from "^/lib/utils/prettyByte";
-import Halfs from "./DiffIntro/Halfs";
-import ServiceTooltip from "./DiffIntro/ServiceTooltip";
+import Halfs from "../DiffIntro/Halfs";
+import ServiceTooltip from "../DiffIntro/ServiceTooltip";
 
 function differance(a: number, b: number): ReactNode {
     const diff = a - b;
@@ -102,7 +102,7 @@ export interface SizeComparisonRow {
 }
 
 export interface SizeComparisonProps {
-    serviceName: "bundlephobia" | "packagephobia";
+    serviceName: ServiceName;
     flags?: ReactNode;
     a: SimplePackageSpec;
     b: SimplePackageSpec;
@@ -119,8 +119,7 @@ const SizeComparison = ({
     b,
     sizeRows,
 }: SizeComparisonProps) => {
-    const service =
-        serviceName === "bundlephobia" ? Bundlephobia : Packagephobia;
+    const service = Services[serviceName];
     return (
         <>
             <Heading size="xs">{service.name}</Heading>

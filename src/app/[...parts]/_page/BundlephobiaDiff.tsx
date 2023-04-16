@@ -1,9 +1,12 @@
 import bundlephobia from "^/lib/api/bundlephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
 import measuredPromise from "^/lib/measuredPromise";
+import { Bundlephobia } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
-import BundlephobiaFlags from "./DiffIntro/BundlePhobiaFlags";
-import SizeComparison from "./SizeComparison";
+import BundlephobiaFlags, {
+    BundlephobiaFlagsSkeleton,
+} from "./DiffIntro/BundlePhobiaFlags";
+import SizeComparison, { SizeComparisonSkeleton } from "./SizeComparison";
 
 export interface BundlephobiaDiffProps {
     a: SimplePackageSpec;
@@ -11,24 +14,26 @@ export interface BundlephobiaDiffProps {
     specs: [string, string];
 }
 
+const { name } = Bundlephobia;
+
 const BundlephobiaDiff = async ({ specs, a, b }: BundlephobiaDiffProps) => {
     const { result, time } = await measuredPromise(bundlephobia(specs));
 
     if (result == null) {
-        console.warn("Bundlephobia result is null", { specs });
+        console.warn(`${name} result is null`, { specs });
         return null;
     }
 
     if (result === TIMED_OUT) {
-        console.warn("Bundlephobia timed out", { specs });
+        console.warn(`${name} timed out`, { specs });
         return null;
     }
 
-    console.log("Bundlephobia", { specs, time });
+    console.log(name, { specs, time });
 
     return (
         <SizeComparison
-            serviceName="bundlephobia"
+            serviceName={name}
             flags={<BundlephobiaFlags data={result} />}
             a={a}
             b={b}
@@ -66,3 +71,27 @@ const BundlephobiaDiff = async ({ specs, a, b }: BundlephobiaDiffProps) => {
 };
 
 export default BundlephobiaDiff;
+
+export const BundlephobiaDiffSkeleton = () => (
+    <SizeComparisonSkeleton
+        serviceName={name}
+        flags={<BundlephobiaFlagsSkeleton />}
+        sizeRows={[
+            {
+                name: "Size",
+                a: 42,
+                b: 84,
+            },
+            {
+                name: "Gzip",
+                a: 42,
+                b: 84,
+            },
+            {
+                name: "Dependencies",
+                a: 16,
+                b: 32,
+            },
+        ]}
+    />
+);
