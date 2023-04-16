@@ -5,7 +5,7 @@
  * This little utiltity finds any `new file` or `deleted file` and replaces the
  * file name with `/dev/null`.
  */
-const adjustDiff = (content: string): string => {
+export default function adjust(content: string): string {
     return (
         content
             // `npmdiff-parse` expects the `+++` to be `/dev/null` to detect as deleted.
@@ -19,6 +19,4 @@ const adjustDiff = (content: string): string => {
                 "/dev/null",
             )
     );
-};
-
-export default adjustDiff;
+}

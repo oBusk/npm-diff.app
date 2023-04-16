@@ -1,16 +1,14 @@
 "use server";
 
-import parser from "gitdiff-parser";
 import type { Options } from "libnpmdiff";
 import { Suspense } from "react";
 import type { FileData } from "react-diff-view";
-import adjustDiff from "^/lib/adjustDiff";
-import doDiff from "^/lib/diff";
+import { gitDiffParse } from "^/lib/gitDiff";
+import npmDiff from "^/lib/npmDiff";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import countChanges from "^/lib/utils/countChanges";
 import NoDiff from "./NoDiff";
 import NpmDiffClient from "./NpmDiff.client";
-import NpmDiffSkeleton from "./NpmDiff.skeleton";
 
 export interface NpmDiffProps {
     a: SimplePackageSpec;
@@ -20,18 +18,12 @@ export interface NpmDiffProps {
 }
 
 const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
-    const diff = await doDiff(specs, options);
+    const diff = await npmDiff(specs, options);
 
-    let files: FileData[] = [];
-    if (diff == null) {
-        throw new Error("diff is null");
-    } else if (diff == "") {
+    let files: FileData[] = gitDiffParse(diff);
+
+    if (files.length === 0) {
         return <NoDiff a={a} b={b} />;
-    } else {
-        const adjustedDiff = adjustDiff(diff);
-        if (adjustedDiff) {
-            files = parser.parse(adjustedDiff);
-        }
     }
 
     const changes = files.map((file) => countChanges(file.hunks));
