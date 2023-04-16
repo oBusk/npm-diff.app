@@ -1,9 +1,10 @@
+import SimplePackageSpec from "../SimplePackageSpec";
 import { unpkgIcon } from "./assets";
 
 const unpkg = Object.freeze({
     name: "unpkg",
-    url: (packageName: string | null, packageVersion: string, path = "") =>
-        `https://unpkg.com/browse/${packageName}@${packageVersion}/${path}` as const,
+    url: ({ name, version }: SimplePackageSpec, path = "") =>
+        `https://unpkg.com/browse/${name}@${version}/${path}` as const,
     icon: unpkgIcon,
 });
 

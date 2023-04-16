@@ -1,4 +1,4 @@
-import { Version } from "^/pages/api/versions";
+import { Version } from "^/app/api/-/versions/route";
 import { Matched, matchVersions } from "./matchVersions";
 
 describe("matchVersions", () => {

@@ -45,6 +45,7 @@
         "@emotion/styled": "^11.10.6",
         "@vercel/analytics": "^0.1.11",
         "downshift": "^7.6.0",
+        "gitdiff-parser": "^0.3.1",
         "jest": "^29.5.0",
         "libnpmdiff": "^5.0.15",
         "next": "^13.3.0",

@@ -12,9 +12,9 @@ const defaultPageCaching = [
     `s-maxage=${31 * day}`,
 ].join(", ");
 
-export function setDefaultPageCaching(res: ServerResponse): void {
-    res.setHeader("cache-control", defaultPageCaching);
-}
+export const defaultPageCachingHeaders = {
+    "cache-control": defaultPageCaching,
+};
 
 export const responseCacheSwr = {
     "cache-control": [
