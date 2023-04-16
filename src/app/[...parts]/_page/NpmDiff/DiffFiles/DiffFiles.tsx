@@ -1,6 +1,7 @@
 import { Box } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import { FileData, ViewType } from "react-diff-view";
+import { FileData } from "react-diff-view";
+import useViewType from "^/lib/hooks/useViewType";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import DiffFileComponent from "./DiffFile";
 
@@ -8,15 +9,11 @@ export interface DiffFilesProps {
     a: SimplePackageSpec;
     b: SimplePackageSpec;
     files: FileData[];
-    viewType: ViewType;
 }
 
-const DiffFiles: FunctionComponent<DiffFilesProps> = ({
-    a,
-    b,
-    files,
-    viewType,
-}) => {
+const DiffFiles: FunctionComponent<DiffFilesProps> = ({ a, b, files }) => {
+    const viewType = useViewType();
+
     return (
         <Box css={{ label: "DiffFiles", contain: "content", minWidth: "100%" }}>
             {files.map((file, index) => (
