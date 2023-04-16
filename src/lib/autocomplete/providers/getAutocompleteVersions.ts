@@ -2,7 +2,7 @@ import npa from "npm-package-arg";
 import {
     SpecsEndpointResponse,
     VERSIONS_PARAMETER_PACKAGE,
-} from "^/pages/api/versions";
+} from "^/app/api/versions/route";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";

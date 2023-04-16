@@ -1,18 +1,16 @@
-import { type NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 import packument from "^/lib/api/npm/packument";
 
 export const VERSIONS_PARAMETER_PACKAGE = "package";
 export type Version = { version: string; tags?: string[] };
 export type SpecsEndpointResponse = Version[];
 
-export const config = {
-    runtime: "edge",
-};
+export const runtime = "edge";
 
-export default async function versions(req: NextRequest) {
+export async function GET(request: Request) {
     const start = Date.now();
 
-    const { searchParams } = new URL(req.url);
+    const { searchParams } = new URL(request.url);
     const spec = searchParams.get(VERSIONS_PARAMETER_PACKAGE);
 
     if (spec == null) {
@@ -23,7 +21,7 @@ export default async function versions(req: NextRequest) {
         return new Response("spec must be a string", { status: 400 });
     }
 
-    const result = await packument(spec);
+    const result = await packument(spec, { next: { revalidate: 0 } });
 
     const tags = result["dist-tags"];
     /**
@@ -50,7 +48,7 @@ export default async function versions(req: NextRequest) {
         tags: versionToTags[version],
     }));
 
-    return new Response(JSON.stringify(versions), {
+    return NextResponse.json(versions, {
         status: 200,
         headers: {
             "Content-Type": "application/json",
