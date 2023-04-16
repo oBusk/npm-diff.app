@@ -57,6 +57,7 @@ const {
     Input,
     Link,
     List,
+    Skeleton,
     Spinner,
     Tag,
     Tooltip,
@@ -85,6 +86,7 @@ const themeOverride: ThemeOverride = {
         Input,
         Link,
         List,
+        Skeleton,
         Spinner,
         Tag,
         Tooltip: {
