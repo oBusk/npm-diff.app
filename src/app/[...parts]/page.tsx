@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { ViewType } from "react-diff-view";
-import decodePartts from "^/lib/decodeParts";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
-import parseSimplePackageSpec from "^/lib/parseSimplePackageSpec";
 import { parseQuery, QueryParams } from "^/lib/query";
+import { createSimplePackageSpec } from "^/lib/SimplePackageSpec";
+import decodeParts from "^/lib/utils/decodeParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
 import BundlephobiaDiff, {
@@ -25,9 +25,9 @@ export interface DiffPageProps {
 }
 
 export function generateMetadata({ params: { parts } }: DiffPageProps) {
-    const specs = splitParts(decodePartts(parts));
+    const specs = splitParts(decodeParts(parts));
 
-    const [a, b] = specs.map((spec) => parseSimplePackageSpec(spec));
+    const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
 
     return {
         title: `Comparing ${a.name}@${a.version}...${b.name}@${b.version}`,
@@ -48,7 +48,7 @@ const DiffPage = async ({
 }: DiffPageProps): Promise<JSX.Element> => {
     const { diffFiles, ...optionsQuery } = searchParams;
 
-    const specsOrVersions = splitParts(decodePartts(parts));
+    const specsOrVersions = splitParts(decodeParts(parts));
     const { redirect: redirectTarget, canonicalSpecs } = await destination(
         specsOrVersions,
     );
@@ -68,7 +68,7 @@ const DiffPage = async ({
         });
 
         const [a, b] = canonicalSpecs.map((spec) =>
-            parseSimplePackageSpec(spec),
+            createSimplePackageSpec(spec),
         );
 
         return (

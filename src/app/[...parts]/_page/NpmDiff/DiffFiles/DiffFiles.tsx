@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { FileData } from "react-diff-view";
-import useViewType from "^/lib/hooks/useViewType";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import useViewType from "^/lib/utils/useViewType";
 import DiffFileComponent from "./DiffFile";
 
 export interface DiffFilesProps {

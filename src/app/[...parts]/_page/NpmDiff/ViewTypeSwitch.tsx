@@ -12,7 +12,7 @@ import {
     useSearchParams,
 } from "next/navigation";
 import type { ViewType } from "react-diff-view";
-import useViewType from "^/lib/hooks/useViewType";
+import useViewType from "^/lib/utils/useViewType";
 import { DIFF_TYPE_PARAM_NAME } from "../paramNames";
 
 export interface ViewTypeButtonProps

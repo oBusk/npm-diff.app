@@ -1,5 +1,5 @@
 import { useAsync } from "react-use";
-import useThrottle from "^/lib/hooks/useThrottle";
+import useThrottle from "^/lib/utils/useThrottle";
 import autocomplete from "./autocomplete";
 import AutocompleteSuggestion from "./AutocompleteSuggestion";
 

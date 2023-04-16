@@ -1,5 +1,6 @@
-import DEFAULT_TIMEOUT from "^/lib/default-timeout";
-import wait from "^/lib/wait";
+import wait from "^/lib/utils/wait";
+
+export const DEFAULT_TIMEOUT = 9_000;
 
 const TIMED_OUT = "TIMED_OUT" as const;
 type TIMED_OUT = typeof TIMED_OUT;

@@ -1,8 +1,8 @@
 import packagephobia from "^/lib/api/packagephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
-import measuredPromise from "^/lib/measuredPromise";
 import { Packagephobia } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import measuredPromise from "^/lib/utils/measuredPromise";
 import SizeComparison, { SizeComparisonSkeleton } from "./SizeComparison";
 
 export interface PackagephobiaDiffProps {
