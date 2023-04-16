@@ -7,7 +7,7 @@ export interface NavLinkProps extends LinkProps {
     href: string;
 }
 
-const NavLink: FunctionComponent<LinkProps> = ({
+const NavLink: FunctionComponent<NavLinkProps> = ({
     href = "",
     children,
     ...props

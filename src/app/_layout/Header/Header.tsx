@@ -30,6 +30,9 @@ const Header: FunctionComponent<FlexProps> = (props) => (
             _focus={{
                 boxShadow: "outline",
             }}
+            _hover={{
+                textDecoration: "none",
+            }}
         >
             <Heading as="h1" fontSize={{ base: "md", sm: "xl", lg: "3xl" }}>
                 npm-diff.app 📦🔃
