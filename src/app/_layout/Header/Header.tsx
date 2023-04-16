@@ -1,6 +1,6 @@
+import { Link } from "@chakra-ui/next-js";
 import { Box, Flex, FlexProps, Heading, HStack } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import NextLink from "^/components/NextLink";
 import ColorModeToggle from "./ColorModeToggle";
 import { GithubLink } from "./GithubLink";
 import NavLink from "./NavLink";
@@ -22,20 +22,19 @@ const Header: FunctionComponent<FlexProps> = (props) => (
             <GithubLink variant="ghost" />
             <ColorModeToggle variant="ghost" />
         </HStack>
-        <NextLink href="/">
-            <Box
-                as="a"
-                transition="all 0.2s"
-                borderRadius="md"
-                _focus={{
-                    boxShadow: "outline",
-                }}
-            >
-                <Heading as="h1" fontSize={{ base: "md", sm: "xl", lg: "3xl" }}>
-                    npm-diff.app 📦🔃
-                </Heading>
-            </Box>
-        </NextLink>
+        <Box
+            as={Link}
+            href="/"
+            transition="all 0.2s"
+            borderRadius="md"
+            _focus={{
+                boxShadow: "outline",
+            }}
+        >
+            <Heading as="h1" fontSize={{ base: "md", sm: "xl", lg: "3xl" }}>
+                npm-diff.app 📦🔃
+            </Heading>
+        </Box>
         <Flex flex="1 0 0px" justifyContent="flex-end">
             <NavLink href="/about">about</NavLink>/
             <NavLink href="/about/api">api</NavLink>

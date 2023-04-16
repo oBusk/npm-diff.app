@@ -1,7 +1,7 @@
-import { Link, LinkProps } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/next-js";
+import { LinkProps } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
 import { FunctionComponent, useEffect, useState } from "react";
-import NextLink from "^/components/NextLink";
 
 export interface NavLinkProps extends LinkProps {
     href: string;
@@ -29,19 +29,18 @@ const NavLink: FunctionComponent<LinkProps> = ({
     }, [asPath, href]);
 
     return (
-        <NextLink href={href}>
-            <Link
-                opacity={isActive ? 0.4 : undefined}
-                transition="all 0.2s"
-                borderRadius="md"
-                _focus={{
-                    boxShadow: "outline",
-                }}
-                {...props}
-            >
-                {children}
-            </Link>
-        </NextLink>
+        <Link
+            href={href}
+            opacity={isActive ? 0.4 : undefined}
+            transition="all 0.2s"
+            borderRadius="md"
+            _focus={{
+                boxShadow: "outline",
+            }}
+            {...props}
+        >
+            {children}
+        </Link>
     );
 };
 
