@@ -3,11 +3,13 @@ import {
     Code,
     Heading,
     HStack,
+    Skeleton,
     StackProps,
-    Text,
+    VStack,
 } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import type { FileData } from "react-diff-view";
+import Span from "^/components/Span";
 import Tooltip from "^/components/Tooltip";
 import { unpkg } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
@@ -37,14 +39,14 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
                     additions + deletions
                 } changes: ${additions} additions & ${deletions} deletions`}
             >
-                <Text as="span">
-                    <Text as="span" color="green.200" padding="0 4px">
+                <Span>
+                    <Span color="green.200" padding="0 4px">
                         +++{additions}
-                    </Text>
-                    <Text as="span" color="red.200" padding="0 4px">
+                    </Span>
+                    <Span color="red.200" padding="0 4px">
                         ---{deletions}
-                    </Text>
-                </Text>
+                    </Span>
+                </Span>
             </Tooltip>
         </Heading>
         <Tooltip
@@ -75,3 +77,28 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
 );
 
 export default DiffFileHeader;
+
+export function DiffFileHeaderSkeleton() {
+    return (
+        <HStack justifyContent="space-between" width="100%">
+            <Heading size="sm" as={HStack}>
+                <Skeleton width={170} height="0.5rem" />
+                <Span>
+                    <Span opacity={0.5} padding="0 4px">
+                        +++0
+                    </Span>
+                    <Span opacity={0.5} padding="0 4px">
+                        ---0
+                    </Span>
+                </Span>
+            </Heading>
+            <Button
+                size="sm"
+                variant="ghost"
+                rightIcon={<ServiceIcon service={unpkg} />}
+            >
+                View file
+            </Button>
+        </HStack>
+    );
+}

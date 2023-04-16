@@ -16,7 +16,7 @@ import { Diff } from "./react-diff-view";
 const FILES_TO_RENDER = 2 ** 6;
 const CHANGES_TO_RENDER = 2 ** 7;
 
-interface DiffFileProps extends CollapsableBorderBoxProps {
+export interface DiffFileProps extends CollapsableBorderBoxProps {
     a: SimplePackageSpec;
     b: SimplePackageSpec;
     file: FileData;

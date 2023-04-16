@@ -1,3 +1,5 @@
+"use server";
+
 import parser from "gitdiff-parser";
 import type { Options } from "libnpmdiff";
 import { Suspense } from "react";
@@ -8,6 +10,7 @@ import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import countChanges from "^/lib/utils/countChanges";
 import NoDiff from "./NoDiff";
 import NpmDiffClient from "./NpmDiff.client";
+import NpmDiffSkeleton from "./NpmDiff.skeleton";
 
 export interface NpmDiffProps {
     a: SimplePackageSpec;

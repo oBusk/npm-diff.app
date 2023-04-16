@@ -13,6 +13,7 @@ import BundlephobiaDiff, {
 } from "./_page/BundlephobiaDiff";
 import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff/NpmDiff";
+import NpmDiffSkeleton from "./_page/NpmDiff/NpmDiff.skeleton";
 import PackagephobiaDiff, {
     PackagephobiaDiffSkeleton,
 } from "./_page/PackagephobiaDiff";
@@ -98,7 +99,7 @@ const DiffPage = async ({
                     }
                     options={options}
                 />
-                <Suspense fallback={<div style={{ flex: "1" }} />}>
+                <Suspense fallback={<NpmDiffSkeleton flex="1" />}>
                     {/* @ts-expect-error Server Component */}
                     <NpmDiff
                         a={a}
