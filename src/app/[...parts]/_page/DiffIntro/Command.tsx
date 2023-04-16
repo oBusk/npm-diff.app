@@ -1,13 +1,13 @@
 import { Code } from "@chakra-ui/react";
 import { forwardRef } from "@chakra-ui/system";
-import DiffOptions from "^/lib/DiffOptions";
+import { NpmDiffOptions } from "^/lib/npmDiff";
 
 export interface CommandProps {
     aName: string;
     aVersion: string;
     bName: string;
     bVersion: string;
-    options: DiffOptions;
+    options: NpmDiffOptions;
 }
 
 function toKebabCase(input: string): string {

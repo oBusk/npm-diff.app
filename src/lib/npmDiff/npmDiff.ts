@@ -15,12 +15,7 @@ interface Error404 {
     pkgid: string;
 }
 
-export interface DiffError {
-    code: number;
-    error: string;
-}
-
-async function _doDiff(
+async function _npmDiff(
     specs: [string, string],
     options: Options,
 ): Promise<string> {
@@ -79,13 +74,13 @@ async function _doDiff(
     }
 }
 
-const cachedDoDiff = cache((str: string) => {
-    const args = JSON.parse(str) as Parameters<typeof _doDiff>;
+const cachedNpmDiff = cache((str: string) => {
+    const args = JSON.parse(str) as Parameters<typeof _npmDiff>;
 
-    return _doDiff(...args);
+    return _npmDiff(...args);
 });
 
-const doDiff = (...args: Parameters<typeof _doDiff>) =>
-    cachedDoDiff(JSON.stringify(args));
+const npmDiff = (...args: Parameters<typeof _npmDiff>) =>
+    cachedNpmDiff(JSON.stringify(args));
 
-export default doDiff;
+export default npmDiff;

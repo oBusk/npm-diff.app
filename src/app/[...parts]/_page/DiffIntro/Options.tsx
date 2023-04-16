@@ -1,10 +1,10 @@
 import { Code, Heading, Text } from "@chakra-ui/react";
 import { forwardRef } from "@chakra-ui/system";
 import BorderBox from "^/components/BorderBox";
-import DiffOptions from "^/lib/DiffOptions";
+import { NpmDiffOptions } from "^/lib/npmDiff";
 
 interface OptionsProps {
-    options: DiffOptions;
+    options: NpmDiffOptions;
 }
 
 const Options = forwardRef<OptionsProps, typeof BorderBox>(

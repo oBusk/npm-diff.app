@@ -1,4 +1,4 @@
-import DiffOptions from "^/lib/DiffOptions";
+import { NpmDiffOptions } from "^/lib/npmDiff";
 import QueryParams from "../QueryParams";
 import parseBoolean from "./parseBoolean";
 import parseNumber from "./parseNumber";
@@ -14,7 +14,7 @@ function parseQuery({
     diffSrcPrefix,
     diffDstPrefix,
     diffText,
-}: QueryParams): DiffOptions {
+}: QueryParams): NpmDiffOptions {
     return trimUndefined({
         diffFiles: typeof diffFiles === "string" ? [diffFiles] : diffFiles,
         diffNameOnly: parseBoolean(diffNameOnly),

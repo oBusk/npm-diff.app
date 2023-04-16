@@ -10,7 +10,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import DiffOptions from "^/lib/DiffOptions";
+import { NpmDiffOptions } from "^/lib/npmDiff";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import Halfs from "./Halfs";
@@ -21,7 +21,7 @@ export interface DiffIntroProps extends FlexProps {
     a: SimplePackageSpec;
     b: SimplePackageSpec;
     services: ReactNode;
-    options: DiffOptions;
+    options: NpmDiffOptions;
 }
 
 const DiffIntro = forwardRef<DiffIntroProps, "h2">(
