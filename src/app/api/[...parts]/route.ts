@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import destination from "^/lib/destination";
-import doDiff, { DiffError } from "^/lib/diff";
+import npmDiff, { NpmDiffError } from "^/lib/npmDiff";
 import { parseQuery } from "^/lib/query";
 import { defaultPageCachingHeaders } from "^/lib/utils/headers";
 import specsToDiff from "^/lib/utils/specsToDiff";
@@ -26,14 +26,14 @@ export async function GET(
 
     if (red === false) {
         try {
-            const diff = await doDiff(canonicalSpecs, parseQuery(options));
+            const diff = await npmDiff(canonicalSpecs, parseQuery(options));
 
             return new NextResponse(diff, {
                 status: 200,
                 headers: defaultPageCachingHeaders,
             });
         } catch (e) {
-            const { code, error } = e as DiffError;
+            const { code, error } = e as NpmDiffError;
 
             return NextResponse.json(error, { status: code });
         }

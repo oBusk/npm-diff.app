@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import destination from "^/lib/destination";
-import doDiff from "^/lib/diff";
 import EXAMPLES from "^/lib/examples";
+import npmDiff from "^/lib/npmDiff";
 import splitParts from "^/lib/utils/splitParts";
 import AboutApiPageClient from "./page.client";
 
@@ -25,7 +25,7 @@ const AboutApiPage = async () => {
     const specsOrVersions = splitParts(EXAMPLE_QUERY);
     const { canonicalSpecs } = await destination(specsOrVersions);
 
-    const diff = await doDiff(canonicalSpecs, {});
+    const diff = await npmDiff(canonicalSpecs, {});
 
     return (
         <AboutApiPageClient
