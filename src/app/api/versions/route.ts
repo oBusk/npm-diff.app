@@ -1,9 +1,6 @@
 import { NextResponse } from "next/server";
 import packument from "^/lib/api/npm/packument";
-
-export const VERSIONS_PARAMETER_PACKAGE = "package";
-export type Version = { version: string; tags?: string[] };
-export type SpecsEndpointResponse = Version[];
+import { VERSIONS_PARAMETER_PACKAGE } from "./types";
 
 export const runtime = "edge";
 
