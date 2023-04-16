@@ -37,6 +37,9 @@ const ViewTypeButton = forwardRef<ViewTypeButtonProps, typeof Button>(
     ) => (
         <Button
             isActive={currentViewType === viewType}
+            _hover={{
+                textDecoration: "none",
+            }}
             as={Link}
             href={{
                 pathname,
