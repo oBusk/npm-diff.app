@@ -1,14 +1,9 @@
-import {
-    Box,
-    Button,
-    Code,
-    Flex,
-    forwardRef,
-    StackProps,
-} from "@chakra-ui/react";
+import { Box, Code, Flex, forwardRef, StackProps } from "@chakra-ui/react";
+import { Loader2 } from "lucide-react";
 import npa from "npm-package-arg";
 import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
 import Tooltip from "^/components/Tooltip";
+import { Button } from "^/components/ui/button";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
@@ -162,18 +157,16 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     >
                         <Box>
                             <Button
-                                isLoading={isLoading}
-                                size={SIZE}
-                                {...(!a
-                                    ? {
-                                          type: "button",
-                                          variant: "solid-disabled",
-                                      }
-                                    : {
-                                          type: "submit",
-                                          variant: "solid",
-                                      })}
+                                type="submit"
+                                size="default"
+                                disabled={!a || isLoading}
+                                className="relative overflow-hidden"
                             >
+                                {isLoading ? (
+                                    <div className="absolute inset-0 bg-primary flex items-center justify-center">
+                                        <Loader2 className="animate-spin" />
+                                    </div>
+                                ) : null}
                                 npm diff! 📦🔃
                             </Button>
                         </Box>
