@@ -2,17 +2,13 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "typescript.tsdk": "node_modules/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true,
+    "prettier.prettierPath": "node_modules/prettier",
+    "eslint.nodePath": "node_modules",
+    "eslint.format.enable": true,
     "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
-    "conventionalCommits.scopes": [
-        "actions",
-        "api",
-        "deps-dev",
-        "deps",
-        "lib",
-        "test",
-        "ui",
-        "vscode"
-    ]
+    "[javascript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+    }
 }
