@@ -1,5 +1,3 @@
-"use server";
-
 import type { Options } from "libnpmdiff";
 import { Suspense } from "react";
 import type { FileData } from "react-diff-view";
