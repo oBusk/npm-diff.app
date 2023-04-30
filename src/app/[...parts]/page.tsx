@@ -72,7 +72,7 @@ const DiffPage = async ({
         );
 
         return (
-            <Suspense fallback={<div>Loading...</div>}>
+            <>
                 <DiffIntro
                     alignSelf="stretch"
                     a={a}
@@ -108,7 +108,7 @@ const DiffPage = async ({
                         options={options}
                     />
                 </Suspense>
-            </Suspense>
+            </>
         );
     }
 };
