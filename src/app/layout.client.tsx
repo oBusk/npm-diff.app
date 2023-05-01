@@ -23,7 +23,7 @@ const LayoutClient = ({ children }: PropsWithChildren<{}>) => (
                     paddingRight={PADDING}
                     paddingLeft={PADDING}
                 >
-                    <Header background="chakra-body-bg" />
+                    <Header />
                     {children}
                     <Footer background="chakra-body-bg" />
                 </Stack>
