@@ -12,6 +12,6 @@
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
     "tailwindCSS.experimental.classRegex": [
-        ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+        ["cva\\(([^)]*)\\)", "cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
     ]
 }
