@@ -1,48 +1,29 @@
-import { Link } from "@chakra-ui/next-js";
-import { Box, Flex, FlexProps, Heading, HStack } from "@chakra-ui/react";
+import Link from "next/link";
 import { FunctionComponent } from "react";
 import ColorModeToggle from "./ColorModeToggle";
 import { GithubLink } from "./GithubLink";
 import NavLink from "./NavLink";
 
-const Header: FunctionComponent<FlexProps> = (props) => (
-    <Flex
-        as="nav"
-        align="center"
-        padding="1.5rem 0.5rem"
-        position="sticky"
-        top="0"
-        left="0"
-        right="0"
-        zIndex="2"
-        css={{ label: "Header", contain: "content" }}
-        {...props}
-    >
-        <HStack flex="1 0 0px">
-            <GithubLink variant="ghost" />
+const Header: FunctionComponent = () => (
+    <nav className="bg-background flex items-center justify-between px-4 py-6 sticky top-0 left-0 right-0 z-20 ">
+        <div className="flex items-center">
+            <GithubLink variant="ghost" className="mr-4" />
             <ColorModeToggle variant="ghost" />
-        </HStack>
-        <Box
-            as={Link}
+        </div>
+        <Link
             href="/"
-            transition="all 0.2s"
-            borderRadius="md"
-            _focus={{
-                boxShadow: "outline",
-            }}
-            _hover={{
-                textDecoration: "none",
-            }}
+            className="block transition-all duration-200 rounded-md focus:outline-none hover:no-underline"
         >
-            <Heading as="h1" fontSize={{ base: "md", sm: "xl", lg: "3xl" }}>
+            <h1 className="text-xl sm:text-2xl lg:text-4xl font-bold">
                 npm-diff.app 📦🔃
-            </Heading>
-        </Box>
-        <Flex flex="1 0 0px" justifyContent="flex-end">
-            <NavLink href="/about">about</NavLink>/
+            </h1>
+        </Link>
+        <div className="flex items-center justify-end">
+            <NavLink href="/about">about</NavLink>
+            <span>/</span>
             <NavLink href="/about/api">api</NavLink>
-        </Flex>
-    </Flex>
+        </div>
+    </nav>
 );
 
 export default Header;
