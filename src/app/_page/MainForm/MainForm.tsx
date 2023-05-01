@@ -1,9 +1,10 @@
 import { Box, Code, Flex, forwardRef, StackProps } from "@chakra-ui/react";
+import { TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Loader2 } from "lucide-react";
 import npa from "npm-package-arg";
 import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
 import { Button } from "^/components/ui/button";
-import Tooltip from "^/components/ui/Tooltip";
+import { TooltipRoot } from "^/components/ui/Tooltip";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
@@ -134,43 +135,40 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     marginInlineStart={{ lg: "2rem" }}
                     marginTop={{ base: "0.5rem", lg: 0 }}
                 >
-                    <Tooltip
-                        {...(!a
-                            ? {
-                                  label: "Enter a package specification to compare",
-                                  background: "red.700",
-                              }
-                            : {
-                                  label: (
-                                      <>
-                                          Compare <Code>{a}</Code>{" "}
-                                          {!!b && (
-                                              <>
-                                                  and <Code>{b}</Code>
-                                              </>
-                                          )}{" "}
-                                          now!
-                                      </>
-                                  ),
-                              })}
-                        isOpen={isLoading ? false : undefined}
-                    >
-                        <Box>
-                            <Button
-                                type="submit"
-                                size="default"
-                                disabled={!a || isLoading}
-                                className="relative overflow-hidden"
-                            >
-                                {isLoading ? (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-primary">
-                                        <Loader2 className="animate-spin" />
-                                    </div>
-                                ) : null}
-                                npm diff! 📦🔃
-                            </Button>
-                        </Box>
-                    </Tooltip>
+                    <TooltipRoot open={isLoading ? false : undefined}>
+                        <TooltipTrigger asChild>
+                            <Box>
+                                <Button
+                                    type="submit"
+                                    size="default"
+                                    disabled={!a || isLoading}
+                                    className="relative overflow-hidden"
+                                >
+                                    {isLoading ? (
+                                        <div className="absolute inset-0 flex items-center justify-center bg-primary">
+                                            <Loader2 className="animate-spin" />
+                                        </div>
+                                    ) : null}
+                                    npm diff! 📦🔃
+                                </Button>
+                            </Box>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {!a ? (
+                                "Enter a package specification to compare"
+                            ) : (
+                                <>
+                                    Compare <Code>{a}</Code>{" "}
+                                    {!!b && (
+                                        <>
+                                            and <Code>{b}</Code>
+                                        </>
+                                    )}{" "}
+                                    now!
+                                </>
+                            )}
+                        </TooltipContent>
+                    </TooltipRoot>
                 </Box>
             </Flex>
         );

@@ -1,9 +1,10 @@
 "use client";
 
-import { Box, Flex, Heading, LinkProps, Text } from "@chakra-ui/react";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { FunctionComponent, ReactNode } from "react";
-import ExternalLink from "^/components/ExternalLink";
+import ExternalLink, { LinkProps } from "^/components/ExternalLink";
 import Span from "^/components/Span";
+import cn from "^/lib/cn";
 import { Service, ServiceName, Services } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { prettyByte } from "^/lib/utils/prettyByte";
@@ -39,10 +40,10 @@ const LinkButton: FunctionComponent<
         pkg: SimplePackageSpec;
         service: Service;
     }
-> = ({ pkg, service, ...props }) => {
+> = ({ pkg, service, className, ...props }) => {
     return (
         <ServiceTooltip serviceName={service.name} pkg={pkg}>
-            <ExternalLink
+            {/* <ExternalLink
                 borderRadius="lg"
                 padding={COMMON_PADDING}
                 href={service.url(pkg)}
@@ -56,6 +57,11 @@ const LinkButton: FunctionComponent<
                         background: "gray.700",
                     },
                 }}
+                {...props}
+            /> */}
+            <ExternalLink
+                className={cn("rounded-lg p-2 text-center", className)}
+                href={service.url(pkg)}
                 {...props}
             />
         </ServiceTooltip>
@@ -127,11 +133,7 @@ const SizeComparison = ({
             <Halfs
                 width="100%"
                 left={
-                    <LinkButton
-                        padding={COMMON_PADDING}
-                        service={service}
-                        pkg={a}
-                    >
+                    <LinkButton service={service} pkg={a}>
                         {sizeRows.map(({ name, a }) => {
                             if (a.bytes != null) {
                                 return (
@@ -150,7 +152,7 @@ const SizeComparison = ({
                     </LinkButton>
                 }
                 center={
-                    <Box padding={COMMON_PADDING} textAlign="center">
+                    <Box className={cn("p-2")} textAlign="center">
                         {sizeRows.map((sizeRow) => (
                             <Text key={sizeRow.name}>{sizeRow.name}</Text>
                         ))}
@@ -158,11 +160,7 @@ const SizeComparison = ({
                 }
                 right={
                     <Flex flex="1 0 0px" justifyContent="flex-start">
-                        <LinkButton
-                            padding={COMMON_PADDING}
-                            service={service}
-                            pkg={b}
-                        >
+                        <LinkButton service={service} pkg={b}>
                             {sizeRows.map(({ name, a, b }) => {
                                 if (b.bytes != null) {
                                     return (
