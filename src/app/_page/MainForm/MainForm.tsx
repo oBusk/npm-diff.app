@@ -163,7 +163,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                                 className="relative overflow-hidden"
                             >
                                 {isLoading ? (
-                                    <div className="absolute inset-0 bg-primary flex items-center justify-center">
+                                    <div className="absolute inset-0 flex items-center justify-center bg-primary">
                                         <Loader2 className="animate-spin" />
                                     </div>
                                 ) : null}

@@ -7,7 +7,7 @@ const Footer = forwardRef<HTMLDivElement, FooterProps>(
     ({ className, ...props }, ref) => {
         return (
             <footer
-                className={cn("bg-background flex contain-content", className)}
+                className={cn("contain-content flex bg-background", className)}
                 {...props}
                 ref={ref}
             />
