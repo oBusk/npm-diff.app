@@ -1,17 +1,16 @@
-import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
-import {
-    Button,
-    Flex,
-    FlexProps,
-    forwardRef,
-    useBoolean,
-} from "@chakra-ui/react";
+"use client";
+
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { forwardRef, HTMLAttributes, ReactNode } from "react";
+import { useBoolean } from "react-use";
+import cn from "^/lib/cn";
 import BorderBox from "./BorderBox";
+import Button from "./ui/Button";
 import Tooltip from "./ui/Tooltip";
 
-export interface ButtonExpandBoxProps extends FlexProps {
-    buttonContent: string;
-    buttonLabel: string;
+export interface ButtonExpandBoxProps extends HTMLAttributes<HTMLElement> {
+    buttonContent: ReactNode;
+    buttonLabel: ReactNode;
 }
 
 /**
@@ -21,15 +20,14 @@ export interface ButtonExpandBoxProps extends FlexProps {
  * Use `buttonText` to set the text of the button and `buttonLabel`
  * to set the tooltip of the button
  */
-const ButtonExpandBox = forwardRef<ButtonExpandBoxProps, "div">(
-    ({ buttonContent, buttonLabel, children, ...props }, ref) => {
-        const [isExpanded, setExpanded] = useBoolean(false);
+const ButtonExpandBox = forwardRef<HTMLElement, ButtonExpandBoxProps>(
+    ({ buttonContent, buttonLabel, children, className, ...props }, ref) => {
+        const [isExpanded, toggleExpanded] = useBoolean(false);
+        const Icon = isExpanded ? ChevronUp : ChevronDown;
 
         return (
-            <Flex
-                margin="16px"
-                direction="column"
-                alignItems="center"
+            <section
+                className={cn("m-4 flex flex-col items-center", className)}
                 {...props}
                 ref={ref}
             >
@@ -40,20 +38,19 @@ const ButtonExpandBox = forwardRef<ButtonExpandBoxProps, "div">(
                 <Tooltip label={buttonLabel}>
                     <Button
                         variant="outline"
-                        onClick={setExpanded.toggle}
-                        leftIcon={<ChevronDownIcon />}
-                        {...(isExpanded && {
-                            leftIcon: <ChevronUpIcon />,
-                            borderTopRadius: 0,
-                            borderTopWidth: 0,
-                        })}
+                        onClick={toggleExpanded}
+                        className={cn(
+                            isExpanded && "rounded-t-none border-t-0",
+                        )}
                     >
+                        <Icon className={cn("mr-0.5 h-4 w-4 ")} />{" "}
                         {buttonContent}
                     </Button>
                 </Tooltip>
-            </Flex>
+            </section>
         );
     },
 );
+ButtonExpandBox.displayName = "ButtonExpandBox";
 
 export default ButtonExpandBox;
