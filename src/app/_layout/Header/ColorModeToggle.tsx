@@ -3,7 +3,7 @@
 import { Moon, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";
 import { forwardRef, useEffect, useState } from "react";
-import { Button, ButtonProps } from "^/components/ui/button";
+import Button, { ButtonProps } from "^/components/ui/Button";
 import Tooltip from "^/components/ui/Tooltip";
 
 export interface ColorModeToggleProps extends Partial<ButtonProps> {}

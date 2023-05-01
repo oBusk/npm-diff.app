@@ -3,7 +3,7 @@ import { TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
 import { Loader2 } from "lucide-react";
 import npa from "npm-package-arg";
 import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
-import { Button } from "^/components/ui/button";
+import Button from "^/components/ui/Button";
 import { TooltipRoot } from "^/components/ui/Tooltip";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import CenterInputAddon from "./CenterInputAddon";
