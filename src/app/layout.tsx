@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { ReactNode } from "react";
 import { ThemeProvider } from "^/components/ThemeProvider";
+import cn from "^/lib/cn";
+import Footer from "./_layout/Footer";
+import Header from "./_layout/Header";
 import "./globals.css";
-import LayoutClient from "./layout.client";
 
 export const metadata = {
     applicationName: "npm-diff.app",
@@ -19,21 +22,30 @@ export const metadata = {
     themeColor: "#3f444e",
 } satisfies Metadata;
 
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+const sitebackground = cn("bg-background");
+
+export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning>
             <head />
-            <body suppressHydrationWarning>
+            <body className={cn(sitebackground, "min-h-screen-s")}>
                 <ThemeProvider
                     attribute="class"
                     defaultTheme="system"
                     enableSystem
                 >
-                    <LayoutClient>{children}</LayoutClient>
+                    <div
+                        className={cn(
+                            "min-h-screen-s",
+                            "relative overflow-auto",
+                            "flex flex-col justify-between",
+                            "px-4",
+                        )}
+                    >
+                        <Header className={cn(sitebackground)} />
+                        {children}
+                        <Footer className={cn(sitebackground)} />
+                    </div>
                 </ThemeProvider>
             </body>
         </html>

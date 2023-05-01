@@ -84,4 +84,13 @@
     .contain-content {
         contain: content;
     }
+
+    .min-h-screen-s {
+        min-height: 100vh;
+        /*
+         * set screen to be minimum of page height without url bar
+         * https://dev.to/frehner/css-vh-dvh-lvh-svh-and-vw-units-27k4
+         */
+        min-height: 100svh;
+    }
 }

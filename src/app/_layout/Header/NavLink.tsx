@@ -1,8 +1,10 @@
+"use client";
+
 import { cva } from "class-variance-authority";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnchorHTMLAttributes, forwardRef, useEffect, useState } from "react";
-import { cn } from "^/lib/utils";
+import cn from "^/lib/cn";
 
 const navLinkVariants = cva(
     "block rounded-md transition-all duration-200 focus:outline-none",

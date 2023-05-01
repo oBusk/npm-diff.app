@@ -1,3 +1,5 @@
+"use client";
+
 import { Moon, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";
 import { forwardRef, useEffect, useState } from "react";
