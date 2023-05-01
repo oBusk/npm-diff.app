@@ -1,30 +1,36 @@
 import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import {
-    forwardRef,
-    IconButton,
-    IconButtonProps,
-    useColorMode,
-} from "@chakra-ui/react";
+import { forwardRef, IconButton, IconButtonProps } from "@chakra-ui/react";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import Tooltip from "^/components/Tooltip";
 
 export interface ColorModeToggleProps extends Partial<IconButtonProps> {}
 
 const ColorModeToggle = forwardRef<ColorModeToggleProps, "button">(
     ({ ...props }, ref) => {
-        const { colorMode, toggleColorMode } = useColorMode();
+        const [mounted, setMounted] = useState(false);
+        const { setTheme, theme } = useTheme();
+
+        useEffect(() => setMounted(true), []);
+
+        if (!mounted) {
+            return null;
+        }
 
         const label = `Switch to ${
-            colorMode === "dark" ? "Light Mode" : "Dark Mode"
+            theme === "dark" ? "Light Mode" : "Dark Mode"
         }`;
 
         return (
             <Tooltip label={label}>
                 <IconButton
-                    onClick={toggleColorMode}
+                    onClick={() =>
+                        setTheme(theme === "dark" ? "light" : "dark")
+                    }
                     aria-label={label}
                     size="sm"
                     fontSize="1.2em"
-                    icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+                    icon={theme === "dark" ? <SunIcon /> : <MoonIcon />}
                     {...props}
                     ref={ref}
                 />

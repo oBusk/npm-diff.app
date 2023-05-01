@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ThemeProvider } from "^/components/ThemeProvider";
 import "./globals.css";
 import LayoutClient from "./layout.client";
 
@@ -27,7 +28,13 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
             <head />
             <body suppressHydrationWarning>
-                <LayoutClient>{children}</LayoutClient>
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                >
+                    <LayoutClient>{children}</LayoutClient>
+                </ThemeProvider>
             </body>
         </html>
     );
