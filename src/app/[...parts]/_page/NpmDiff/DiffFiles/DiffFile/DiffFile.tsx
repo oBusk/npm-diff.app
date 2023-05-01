@@ -5,6 +5,7 @@ import "react-diff-view/style/index.css";
 import CollapsableBorderBox, {
     CollapsableBorderBoxProps,
 } from "^/components/CollapsableBorderBox";
+import cn from "^/lib/cn";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import countChanges from "^/lib/utils/countChanges";
@@ -25,7 +26,7 @@ export interface DiffFileProps extends CollapsableBorderBoxProps {
 }
 
 const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
-    ({ a, b, file, viewType, index, ...props }, ref) => {
+    ({ a, b, file, viewType, index, className, ...props }, ref) => {
         const { type, hunks, oldPath, newPath } = file;
 
         const countedChanges = useMemo(() => countChanges(hunks), [hunks]);
@@ -59,8 +60,8 @@ const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
                 css={{
                     label: "DiffFile",
                     margin: "1em 0",
-                    ...contentVisibility("700px"),
                 }}
+                className={cn(contentVisibility("700px", className))}
                 header={
                     <DiffFileHeader
                         a={a}

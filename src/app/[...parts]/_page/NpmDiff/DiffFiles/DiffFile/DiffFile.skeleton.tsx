@@ -1,8 +1,8 @@
 import { Box, Skeleton } from "@chakra-ui/react";
 import CollapsableBorderBox from "^/components/CollapsableBorderBox";
+import cn from "^/lib/cn";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import { DiffFileHeaderSkeleton } from "./DiffFileHeader";
-import { Decoration } from "./react-diff-view";
 
 const FakeCodeRow = ({
     length,
@@ -23,12 +23,7 @@ const FakeCodeRow = ({
 export default function DiffFileSkeleton() {
     return (
         <CollapsableBorderBox
-            css={{
-                label: "DiffFile",
-                margin: "1em 0",
-                fontsize: "16px",
-                ...contentVisibility("700px"),
-            }}
+            className={cn("my-4 text-base", contentVisibility("700px"))}
             header={<DiffFileHeaderSkeleton />}
         >
             <Box

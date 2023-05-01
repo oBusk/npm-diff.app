@@ -1,20 +1,24 @@
 import { Code, Heading, Text } from "@chakra-ui/react";
-import { forwardRef } from "@chakra-ui/system";
-import BorderBox from "^/components/ui/BorderBox";
+import { ElementRef, forwardRef } from "react";
+import BorderBox, { BorderBoxProps } from "^/components/ui/BorderBox";
+import cn from "^/lib/cn";
 import { NpmDiffOptions } from "^/lib/npmDiff";
 
-interface OptionsProps {
+interface OptionsProps extends BorderBoxProps {
     options: NpmDiffOptions;
 }
 
-const Options = forwardRef<OptionsProps, typeof BorderBox>(
-    ({ options: { diffFiles = [], ...options } = {} }, ref) => {
+const Options = forwardRef<ElementRef<typeof BorderBox>, OptionsProps>(
+    (
+        { options: { diffFiles = [], ...options } = {}, className, ...props },
+        ref,
+    ) => {
         const specifiedOptions = Object.entries(options).filter(
             ([, value]) => value != null,
         );
 
         return (
-            <BorderBox margin="10px 0" ref={ref}>
+            <BorderBox className={cn("my-2", className)} {...props} ref={ref}>
                 <Heading size="xs" marginBottom="1em">
                     Options
                 </Heading>
@@ -33,5 +37,6 @@ const Options = forwardRef<OptionsProps, typeof BorderBox>(
         );
     },
 );
+Options.displayName = "Options";
 
 export default Options;

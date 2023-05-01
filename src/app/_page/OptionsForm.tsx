@@ -1,14 +1,16 @@
 import {
-    FlexProps,
     FormControl,
     FormHelperText,
     FormLabel,
     Input,
 } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import ButtonExpandBox from "^/components/ui/ButtonExpandBox";
+import ButtonExpandBox, {
+    ButtonExpandBoxProps,
+} from "^/components/ui/ButtonExpandBox";
 
-export interface OptionsFormProps extends FlexProps {
+export interface OptionsFormProps
+    extends Omit<ButtonExpandBoxProps, "buttonContent" | "buttonLabel"> {
     files: string;
     filesChange: (value: string) => void;
 }

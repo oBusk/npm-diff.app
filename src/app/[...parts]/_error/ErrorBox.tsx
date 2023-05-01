@@ -1,20 +1,20 @@
-import { Code, forwardRef, VStack } from "@chakra-ui/react";
+import { ElementRef, forwardRef } from "react";
 import BorderBox, { BorderBoxProps } from "^/components/ui/BorderBox";
+import cn from "^/lib/cn";
 
 export interface ErrorBoxProps extends BorderBoxProps {}
 
-const ErrorBox = forwardRef<ErrorBoxProps, typeof BorderBox>((props, ref) => {
-    return (
-        <BorderBox
-            as={VStack}
-            backgroundColor="red.200"
-            _dark={{
-                backgroundColor: "red.700",
-            }}
-            {...props}
-            ref={ref}
-        />
-    );
-});
+const ErrorBox = forwardRef<ElementRef<typeof BorderBox>, ErrorBoxProps>(
+    (props, ref) => {
+        return (
+            <BorderBox
+                className={cn("bg-red-200 dark:bg-red-700")}
+                {...props}
+                ref={ref}
+            />
+        );
+    },
+);
+ErrorBox.displayName = "ErrorBox";
 
 export default ErrorBox;

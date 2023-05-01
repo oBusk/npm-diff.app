@@ -1,6 +1,7 @@
 import { Text } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { HunkData } from "react-diff-view";
+import cn from "^/lib/cn";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import { Decoration, Hunk } from "./react-diff-view";
 
@@ -18,8 +19,8 @@ const DiffHunk: FunctionComponent<DiffHunkProps> = ({ hunk }) => (
             _dark={{ background: "gray.700", color: "gray.100" }}
             css={{
                 label: "DiffHunk",
-                ...contentVisibility("800px"),
             }}
+            className={cn(contentVisibility("800px"))}
         >
             <Text padding="10px">{hunk.content}</Text>
         </Decoration>

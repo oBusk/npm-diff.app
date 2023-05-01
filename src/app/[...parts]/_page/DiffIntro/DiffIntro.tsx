@@ -10,6 +10,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
+import cn from "^/lib/cn";
 import { NpmDiffOptions } from "^/lib/npmDiff";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
@@ -25,7 +26,7 @@ export interface DiffIntroProps extends FlexProps {
 }
 
 const DiffIntro = forwardRef<DiffIntroProps, "h2">(
-    ({ a, b, services, options, ...props }, ref) => {
+    ({ a, b, services, options, className, ...props }, ref) => {
         if (a.name == null) {
             a.name = "ERROR";
         }
@@ -39,8 +40,8 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                 alignItems="center"
                 css={{
                     label: "DiffIntro",
-                    ...contentVisibility("700px"),
                 }}
+                className={cn(contentVisibility("700px"), className)}
                 {...props}
                 ref={ref}
             >
