@@ -55,7 +55,7 @@ const IndexPageClient: FunctionComponent<LandingProps> = ({
 
     return (
         <>
-            <Intro as={Stack} />
+            <Intro />
             <Stack>
                 <MainForm
                     overrideA={overrides.a}

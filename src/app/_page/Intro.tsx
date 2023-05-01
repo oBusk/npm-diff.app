@@ -1,20 +1,23 @@
-import { Box, BoxProps, Code, forwardRef, Text } from "@chakra-ui/react";
+import { forwardRef, HTMLAttributes } from "react";
 import ExternalLink from "^/components/ExternalLink";
+import Code from "^/components/ui/Code";
+import cn from "^/lib/cn";
 
-export interface IntroProps extends BoxProps {}
+export interface IntroProps extends HTMLAttributes<HTMLElement> {}
 
-const Intro = forwardRef<IntroProps, "div">((props, ref) => (
-    <Box {...props} ref={ref}>
-        <Text align="center">
+const Intro = forwardRef<HTMLElement, IntroProps>((props, ref) => (
+    <section {...props} ref={ref}>
+        <p className={cn("text-center")}>
             <ExternalLink href="https://docs.npmjs.com/cli/v7/commands/npm-diff">
                 <Code>npm diff</Code>
             </ExternalLink>{" "}
             online!
-        </Text>
-        <Text align="center">
+        </p>
+        <p className={cn("text-center")}>
             Web tool to compare versions, or branches, of NPM packages.
-        </Text>
-    </Box>
+        </p>
+    </section>
 ));
+Intro.displayName = "Intro";
 
 export default Intro;
