@@ -22,7 +22,7 @@ const LayoutClient = ({ children }: PropsWithChildren<{}>) => (
             >
                 <Header />
                 {children}
-                <Footer background="chakra-body-bg" />
+                <Footer />
             </Stack>
         </ChakraProvider>
         {process.env.VERCEL_URL ? <Analytics /> : null}
