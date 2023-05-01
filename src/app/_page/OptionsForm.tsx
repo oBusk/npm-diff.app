@@ -6,7 +6,7 @@ import {
     Input,
 } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
-import ButtonExpandBox from "^/components/ButtonExpandBox";
+import ButtonExpandBox from "^/components/ui/ButtonExpandBox";
 
 export interface OptionsFormProps extends FlexProps {
     files: string;

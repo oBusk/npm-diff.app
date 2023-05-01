@@ -1,6 +1,6 @@
 import { Box, forwardRef, useBoolean } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import BorderBox, { BorderBoxProps } from "../BorderBox";
+import BorderBox, { BorderBoxProps } from "^/components/ui/BorderBox";
 import CollapsableBorderBoxHeader from "./CollapsableBorderBoxHeader";
 
 export interface CollapsableBorderBoxProps extends BorderBoxProps {

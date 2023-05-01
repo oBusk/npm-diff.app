@@ -5,8 +5,8 @@ import { forwardRef, HTMLAttributes, ReactNode } from "react";
 import { useBoolean } from "react-use";
 import cn from "^/lib/cn";
 import BorderBox from "./BorderBox";
-import Button from "./ui/Button";
-import Tooltip from "./ui/Tooltip";
+import Button from "./Button";
+import Tooltip from "./Tooltip";
 
 export interface ButtonExpandBoxProps extends HTMLAttributes<HTMLElement> {
     buttonContent: ReactNode;
@@ -32,7 +32,9 @@ const ButtonExpandBox = forwardRef<HTMLElement, ButtonExpandBoxProps>(
                 ref={ref}
             >
                 {isExpanded ? (
-                    <BorderBox overflow="auto">{children}</BorderBox>
+                    <BorderBox className={cn("overflow-auto")}>
+                        {children}
+                    </BorderBox>
                 ) : null}
 
                 <Tooltip label={buttonLabel}>
