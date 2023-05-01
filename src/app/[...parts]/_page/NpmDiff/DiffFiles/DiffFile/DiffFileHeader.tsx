@@ -10,7 +10,7 @@ import {
 import { FunctionComponent } from "react";
 import type { FileData } from "react-diff-view";
 import Span from "^/components/Span";
-import Tooltip from "^/components/Tooltip";
+import Tooltip from "^/components/ui/Tooltip";
 import { unpkg } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import type { CountedChanges } from "^/lib/utils/countChanges";

@@ -1,0 +1,67 @@
+"use client";
+
+import * as Primitive from "@radix-ui/react-tooltip";
+import {
+    ComponentProps,
+    ComponentPropsWithoutRef,
+    ElementRef,
+    forwardRef,
+    ReactNode,
+} from "react";
+import cn from "^/lib/cn";
+
+const TooltipProvider = forwardRef<
+    ElementRef<typeof Primitive.Provider>,
+    ComponentPropsWithoutRef<typeof Primitive.Provider>
+>((props: ComponentProps<typeof Primitive.Provider>, ref) => (
+    <Primitive.Provider
+        delayDuration={400}
+        skipDelayDuration={250}
+        {...props}
+    />
+));
+TooltipProvider.displayName = Primitive.Provider.displayName;
+
+const TooltipRoot = Primitive.Root;
+
+const TooltipTrigger = Primitive.Trigger;
+
+const TooltipContent = forwardRef<
+    ElementRef<typeof Primitive.Content>,
+    ComponentPropsWithoutRef<typeof Primitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+    <Primitive.Content
+        ref={ref}
+        sideOffset={sideOffset}
+        className={cn(
+            "z-20 overflow-hidden",
+            "px-3 py-1.5",
+            "bg-popover text-popover-foreground",
+            "rounded-md border text-sm shadow-md animate-in fade-in-50",
+            "data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1",
+            className,
+        )}
+        {...props}
+    />
+));
+TooltipContent.displayName = Primitive.Content.displayName;
+
+export interface TooltipProps
+    extends ComponentPropsWithoutRef<typeof TooltipTrigger> {
+    label: ReactNode;
+}
+
+const Tooltip = forwardRef<ElementRef<typeof TooltipTrigger>, TooltipProps>(
+    ({ children, label, ...props }, ref) => (
+        <TooltipRoot>
+            <TooltipTrigger asChild {...props} ref={ref}>
+                {children}
+            </TooltipTrigger>
+            <TooltipContent>{label}</TooltipContent>
+        </TooltipRoot>
+    ),
+);
+Tooltip.displayName = "Tooltip";
+
+export default Tooltip;
+export { TooltipRoot, TooltipTrigger, TooltipContent, TooltipProvider };

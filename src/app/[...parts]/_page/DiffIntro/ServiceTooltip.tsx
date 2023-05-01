@@ -1,7 +1,7 @@
 import { forwardRef, Text } from "@chakra-ui/react";
 import B from "^/components/B";
 import Pkg from "^/components/Pkg";
-import Tooltip, { TooltipProps } from "^/components/Tooltip";
+import Tooltip, { TooltipProps } from "^/components/ui/Tooltip";
 import { Service } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 
@@ -14,7 +14,7 @@ const ServiceTooltip = forwardRef<ServiceTooltipProps, any>(
     ({ pkg, serviceName, ...props }, ref) => {
         return (
             <Tooltip
-                textAlign="center"
+                className="text-center"
                 {...props}
                 ref={ref}
                 label={

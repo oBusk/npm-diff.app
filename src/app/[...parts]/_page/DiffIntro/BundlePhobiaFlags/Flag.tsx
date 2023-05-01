@@ -7,7 +7,7 @@ import {
     TagProps,
 } from "@chakra-ui/react";
 import { ElementType, ReactNode } from "react";
-import Tooltip from "^/components/Tooltip";
+import Tooltip from "^/components/ui/Tooltip";
 import TreeshakeIcon from "./assets/TreeshakeIcon";
 
 interface FlagProps extends TagProps {
@@ -37,13 +37,9 @@ const Flag = forwardRef<FlagProps, "div">(
         }
 
         return (
-            <Tooltip
-                label={tooltip}
-                closeOnClick={false}
-                shouldWrapChildren={true}
-            >
-                {tag}
-            </Tooltip>
+            /* TODO(#805) closeOnClick={false} */
+            /* TODO(#805) shouldWrapChildren={true} */
+            <Tooltip label={tooltip}>{tag}</Tooltip>
         );
     },
 );

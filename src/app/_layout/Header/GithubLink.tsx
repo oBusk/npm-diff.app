@@ -3,8 +3,8 @@
 import { Github } from "lucide-react";
 import { forwardRef } from "react";
 import ExternalLink from "^/components/ExternalLink";
-import Tooltip from "^/components/Tooltip";
 import { Button, ButtonProps } from "^/components/ui/button";
+import Tooltip from "^/components/ui/Tooltip";
 
 export interface GithubLinkProps extends Omit<ButtonProps, "aria-label"> {}
 

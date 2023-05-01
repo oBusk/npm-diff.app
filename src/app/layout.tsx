@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 import { ThemeProvider } from "^/components/ThemeProvider";
+import { TooltipProvider } from "^/components/ui/Tooltip";
 import cn from "^/lib/cn";
 import Footer from "./_layout/Footer";
 import Header from "./_layout/Header";
@@ -22,30 +23,26 @@ export const metadata = {
     themeColor: "#3f444e",
 } satisfies Metadata;
 
-const sitebackground = cn("bg-background");
-
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning>
             <head />
-            <body className={cn(sitebackground, "min-h-screen-s")}>
-                <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                >
-                    <div
-                        className={cn(
-                            "min-h-screen-s",
-                            "relative overflow-auto",
-                            "flex flex-col justify-between",
-                            "px-4",
-                        )}
-                    >
-                        <Header className={cn(sitebackground)} />
-                        {children}
-                        <Footer className={cn(sitebackground)} />
-                    </div>
+            <body className={cn("min-h-screen-s bg-background")}>
+                <ThemeProvider>
+                    <TooltipProvider>
+                        <div
+                            className={cn(
+                                "min-h-screen-s",
+                                "relative overflow-auto",
+                                "flex flex-col justify-between",
+                                "px-4",
+                            )}
+                        >
+                            <Header className={cn("bg-background")} />
+                            {children}
+                            <Footer className={cn("bg-background")} />
+                        </div>
+                    </TooltipProvider>
                 </ThemeProvider>
             </body>
         </html>
