@@ -1,16 +1,29 @@
-import { Box, Code, Flex, forwardRef, StackProps } from "@chakra-ui/react";
-import { TooltipContent, TooltipTrigger } from "@radix-ui/react-tooltip";
+"use client";
+
 import { Loader2 } from "lucide-react";
 import npa from "npm-package-arg";
-import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
+import {
+    FormEventHandler,
+    forwardRef,
+    HTMLAttributes,
+    useCallback,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
 import Button from "^/components/ui/Button";
-import { TooltipRoot } from "^/components/ui/Tooltip";
+import Code from "^/components/ui/Code";
+import {
+    TooltipContent,
+    TooltipRoot,
+    TooltipTrigger,
+} from "^/components/ui/Tooltip";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import cn from "^/lib/cn";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
 
-export interface MainFormProps extends StackProps {
+export interface MainFormProps extends HTMLAttributes<HTMLFormElement> {
     overrideA: string | null;
     overrideB: string | null;
     isLoading: boolean;
@@ -18,7 +31,7 @@ export interface MainFormProps extends StackProps {
     fallbackSuggestions: AutocompleteSuggestion[];
 }
 
-const MainForm = forwardRef<MainFormProps, typeof Flex>(
+const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
     (
         {
             overrideA,
@@ -27,6 +40,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
             isLoading,
             handleSubmit,
             fallbackSuggestions,
+            className,
             ...props
         },
         ref,
@@ -56,8 +70,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                 : undefined;
         }, [a]);
 
-        const internalHandleSubmit = useCallback(
-            (event: FormEvent): void => {
+        const internalHandleSubmit = useCallback<FormEventHandler>(
+            (event) => {
                 event.preventDefault();
 
                 const target = event.target as typeof event.target & {
@@ -71,12 +85,13 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         );
 
         return (
-            <Flex
-                as="form"
+            <form
+                className={cn(
+                    "flex flex-col lg:flex-row",
+                    "items-center justify-center",
+                    className,
+                )}
                 onSubmit={internalHandleSubmit}
-                align="center"
-                justify="center"
-                direction={{ base: "column", lg: "row" }}
                 ref={ref}
                 {...props}
             >
@@ -126,13 +141,10 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     }}
                     fallbackSuggestions={fallbackSuggestions}
                 ></SpecInput>
-                <Box
-                    marginInlineStart={{ lg: "2rem" }}
-                    marginTop={{ base: "0.5rem", lg: 0 }}
-                >
+                <div className="mt-2 lg:ml-8 lg:mt-0">
                     <TooltipRoot open={isLoading ? false : undefined}>
                         <TooltipTrigger asChild>
-                            <Box>
+                            <span>
                                 <Button
                                     type="submit"
                                     variant="secondary"
@@ -147,7 +159,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                                     ) : null}
                                     npm diff! 📦🔃
                                 </Button>
-                            </Box>
+                            </span>
                         </TooltipTrigger>
                         <TooltipContent>
                             {!a ? (
@@ -165,10 +177,11 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                             )}
                         </TooltipContent>
                     </TooltipRoot>
-                </Box>
-            </Flex>
+                </div>
+            </form>
         );
     },
 );
+MainForm.displayName = "MainForm";
 
 export default MainForm;
