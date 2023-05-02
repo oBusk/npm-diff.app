@@ -19,9 +19,7 @@ const Suggestion: FunctionComponent<SuggestionProps> = ({
         {body ? <p className={cn("text-xs")}>{body}</p> : null}
         <Stack direction="h" className={cn("mt-1")}>
             {tags.map((tag) => (
-                <VersionTag className={cn("text-gray-400")} key={tag}>
-                    {tag}
-                </VersionTag>
+                <VersionTag key={tag}>{tag}</VersionTag>
             ))}
         </Stack>
     </>

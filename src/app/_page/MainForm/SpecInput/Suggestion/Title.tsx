@@ -22,7 +22,7 @@ const Title = forwardRef<ElementRef<typeof Heading>, TitleProps>(
         >
             {version ? (
                 <>
-                    <span className={cn("opacity-40")}>{name}@</span>
+                    <span className={cn("opacity-30")}>{name}@</span>
                     {emphasized(version)}
                 </>
             ) : (

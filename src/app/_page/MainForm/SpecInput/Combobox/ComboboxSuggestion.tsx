@@ -2,7 +2,7 @@ import { cva, VariantProps } from "class-variance-authority";
 import { forwardRef, HTMLAttributes } from "react";
 import cn from "^/lib/cn";
 
-const comboboxSuggestionVariants = cva("rounded-sm p-4", {
+const comboboxSuggestionVariants = cva("cursor-pointer rounded-sm p-4", {
     variants: {
         highlighted: {
             true: "bg-accent text-accent-foreground",

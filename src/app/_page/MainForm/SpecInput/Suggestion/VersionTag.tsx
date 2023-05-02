@@ -11,7 +11,7 @@ const VersionTag = forwardRef<HTMLDivElement, VersionTagProps>(
         return (
             <div
                 className={cn(
-                    "rounded-md border border-current px-1.5 py-0.5 text-xs",
+                    "rounded-md border border-current px-1.5 py-0.5 text-xs opacity-30",
                     className,
                 )}
                 {...props}
