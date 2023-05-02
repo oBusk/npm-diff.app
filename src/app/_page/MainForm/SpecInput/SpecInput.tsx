@@ -1,3 +1,5 @@
+"use client";
+
 import { Loader2 } from "lucide-react";
 import { FunctionComponent, RefObject } from "react";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
