@@ -1,21 +1,30 @@
-import { forwardRef, ListItem, ListItemProps } from "@chakra-ui/react";
+import { cva, VariantProps } from "class-variance-authority";
+import { forwardRef, HTMLAttributes } from "react";
+import cn from "^/lib/cn";
 
-export interface ComboboxSuggestionProps extends ListItemProps {
-    highlighted: boolean;
-}
+const comboboxSuggestionVariants = cva("rounded-sm p-4", {
+    variants: {
+        highlighted: {
+            true: "bg-accent text-accent-foreground",
+        },
+    },
+});
 
-const ComboboxSuggestion = forwardRef<ComboboxSuggestionProps, "li">(
-    ({ highlighted, ...props }, ref) => (
-        <ListItem
-            background={highlighted ? "gray.100" : undefined}
-            _dark={{
-                background: highlighted ? "gray.600" : undefined,
-            }}
-            padding="16px"
+export interface ComboboxSuggestionProps
+    extends HTMLAttributes<HTMLLIElement>,
+        VariantProps<typeof comboboxSuggestionVariants> {}
+
+const ComboboxSuggestion = forwardRef<HTMLLIElement, ComboboxSuggestionProps>(
+    ({ highlighted, className, ...props }, ref) => (
+        <li
+            className={cn(
+                comboboxSuggestionVariants({ highlighted, className }),
+            )}
             ref={ref}
             {...props}
         />
     ),
 );
+ComboboxSuggestion.displayName = "ComboboxSuggestion";
 
 export default ComboboxSuggestion;

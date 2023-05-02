@@ -1,5 +1,6 @@
 import { cva, VariantProps } from "class-variance-authority";
 import { forwardRef, HTMLAttributes } from "react";
+import cn from "^/lib/cn";
 
 const headingVariants = cva("font-bold", {
     variants: {
@@ -23,7 +24,7 @@ const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
         const Comp = variant;
         return (
             <Comp
-                className={headingVariants({ variant, className })}
+                className={cn(headingVariants({ variant, className }))}
                 ref={ref}
                 {...props}
             />

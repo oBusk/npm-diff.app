@@ -6,10 +6,9 @@ import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
 import Button from "^/components/ui/Button";
 import { TooltipRoot } from "^/components/ui/Tooltip";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
+import cn from "^/lib/cn";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
-
-const SIZE = "md";
 
 export interface MainFormProps extends StackProps {
     overrideA: string | null;
@@ -93,14 +92,12 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                             setTimeout(() => bCombobox.focus());
                         }
                     }}
-                    size={SIZE}
                     inputProps={{
-                        borderEndRadius: { lg: 0 },
-                        borderEndWidth: { lg: 0 },
+                        className: cn("lg:rounded-r-none", "lg:border-r-0"),
                         ...(overrideA
                             ? {
                                   value: overrideA,
-                                  isDisabled: true,
+                                  disabled: true,
                               }
                             : undefined),
                     }}
@@ -115,17 +112,15 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     inputValue={b}
                     onInputValueChange={setB}
                     optionalPackageFilter={bPackageFilter}
-                    size={SIZE}
                     wrapperProps={{
-                        marginTop: { base: "0.5rem", lg: 0 },
+                        className: cn("mt-2", "lg:mt-0"),
                     }}
                     inputProps={{
-                        borderStartRadius: { lg: 0 },
-                        borderStartWidth: { lg: 0 },
+                        className: cn("lg:rounded-l-none", "lg:border-l-0"),
                         ...(overrideB
                             ? {
                                   value: overrideB,
-                                  isDisabled: true,
+                                  disabled: true,
                               }
                             : undefined),
                     }}

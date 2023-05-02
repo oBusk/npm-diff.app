@@ -1,11 +1,13 @@
-import { Box, BoxProps, chakra } from "@chakra-ui/react";
+import { forwardRef, HTMLAttributes } from "react";
+import cn from "^/lib/cn";
 
-export type ComboboxWrapperProps = BoxProps;
+export type ComboboxWrapperProps = HTMLAttributes<HTMLDivElement>;
 
-const ComboboxWrapper = chakra(Box, {
-    baseStyle: {
-        position: "relative",
-    },
-});
+const ComboboxWrapper = forwardRef<HTMLDivElement, ComboboxWrapperProps>(
+    ({ className, ...props }, ref) => (
+        <div className={cn("relative", className)} {...props} ref={ref} />
+    ),
+);
+ComboboxWrapper.displayName = "ComboboxWrapper";
 
 export default ComboboxWrapper;

@@ -1,18 +1,31 @@
-import { forwardRef, Input, InputProps } from "@chakra-ui/react";
+import { cva, VariantProps } from "class-variance-authority";
+import { ElementRef, forwardRef } from "react";
+import Input, { InputProps } from "^/components/ui/Input";
+import cn from "^/lib/cn";
 
-export interface ComboboxInputProps extends InputProps {
-    isOpen: boolean;
-}
+const comboboxInputVariants = cva(null, {
+    variants: {
+        isOpen: {
+            true: "rounded-b-none",
+        },
+    },
+});
 
-const ComboboxInput = forwardRef<ComboboxInputProps, "input">(
-    ({ isOpen, ...props }, ref) => (
+export interface ComboboxInputProps
+    extends InputProps,
+        VariantProps<typeof comboboxInputVariants> {}
+
+const ComboboxInput = forwardRef<ElementRef<typeof Input>, ComboboxInputProps>(
+    ({ isOpen, className, ...props }, ref) => (
         <Input
             type="text"
-            borderBottomRadius={isOpen ? "0" : undefined}
+            ring={false}
+            className={cn(comboboxInputVariants({ isOpen, className }))}
             ref={ref}
             {...props}
         />
     ),
 );
+ComboboxInput.displayName = "ComboboxInput";
 
 export default ComboboxInput;
