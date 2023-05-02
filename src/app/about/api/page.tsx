@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ExternalLink from "^/components/ExternalLink";
 import Code from "^/components/ui/Code";
 import Heading from "^/components/ui/Heading";
+import Stack from "^/components/ui/Stack";
 import Tooltip from "^/components/ui/Tooltip";
 import cn from "^/lib/cn";
 import destination from "^/lib/destination";
@@ -32,9 +33,7 @@ const AboutApiPage = async () => {
     const diff = await npmDiff(specs, {});
 
     return (
-        <article
-            className={cn("flex flex-col items-center space-y-8 border p-5")}
-        >
+        <Stack align="center" gap={8} className={cn("border p-5")}>
             <Heading>npm-diff.app API</Heading>
             <p>
                 npm-diff.app exposes a online API to equal{" "}
@@ -66,7 +65,7 @@ const AboutApiPage = async () => {
                 a <i>diff</i> of the two provided packages
             </p>
             <Code variant="block">{diff}</Code>
-        </article>
+        </Stack>
     );
 };
 

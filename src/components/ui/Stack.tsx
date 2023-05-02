@@ -1,0 +1,50 @@
+import { cva, VariantProps } from "class-variance-authority";
+import { forwardRef } from "react";
+import cn from "^/lib/cn";
+
+const stackVariants = cva("flex", {
+    variants: {
+        direction: {
+            v: "flex-col",
+            h: "flex-row",
+        },
+        align: {
+            start: "items-start",
+            center: "items-center",
+            end: "items-end",
+        },
+        justify: {
+            start: "justify-start",
+            center: "justify-center",
+            end: "justify-end",
+            between: "justify-between",
+            around: "justify-around",
+            evenly: "justify-evenly",
+        },
+        gap: {
+            8: "gap-8",
+        },
+    },
+    defaultVariants: {
+        direction: "v",
+    },
+});
+
+export interface StackProps
+    extends React.HTMLAttributes<HTMLElement>,
+        VariantProps<typeof stackVariants> {}
+
+const Stack = forwardRef<HTMLElement, StackProps>(
+    ({ className, direction, align, justify, gap, ...props }, ref) => (
+        <section
+            className={cn(
+                stackVariants({ className, direction, align, justify, gap }),
+            )}
+            {...props}
+            ref={ref}
+        />
+    ),
+);
+Stack.displayName = "Stack";
+
+export default Stack;

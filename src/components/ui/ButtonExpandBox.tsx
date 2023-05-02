@@ -1,14 +1,15 @@
 "use client";
 
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { forwardRef, HTMLAttributes, ReactNode } from "react";
+import { ElementRef, forwardRef, ReactNode } from "react";
 import { useBoolean } from "react-use";
 import cn from "^/lib/cn";
 import BorderBox from "./BorderBox";
 import Button from "./Button";
+import Stack, { StackProps } from "./Stack";
 import Tooltip from "./Tooltip";
 
-export interface ButtonExpandBoxProps extends HTMLAttributes<HTMLElement> {
+export interface ButtonExpandBoxProps extends StackProps {
     buttonContent: ReactNode;
     buttonLabel: ReactNode;
 }
@@ -20,39 +21,38 @@ export interface ButtonExpandBoxProps extends HTMLAttributes<HTMLElement> {
  * Use `buttonText` to set the text of the button and `buttonLabel`
  * to set the tooltip of the button
  */
-const ButtonExpandBox = forwardRef<HTMLElement, ButtonExpandBoxProps>(
-    ({ buttonContent, buttonLabel, children, className, ...props }, ref) => {
-        const [isExpanded, toggleExpanded] = useBoolean(false);
-        const Icon = isExpanded ? ChevronUp : ChevronDown;
+const ButtonExpandBox = forwardRef<
+    ElementRef<typeof Stack>,
+    ButtonExpandBoxProps
+>(({ buttonContent, buttonLabel, children, className, ...props }, ref) => {
+    const [isExpanded, toggleExpanded] = useBoolean(false);
+    const Icon = isExpanded ? ChevronUp : ChevronDown;
 
-        return (
-            <section
-                className={cn("m-4 flex flex-col items-center", className)}
-                {...props}
-                ref={ref}
-            >
-                {isExpanded ? (
-                    <BorderBox className={cn("overflow-auto")}>
-                        {children}
-                    </BorderBox>
-                ) : null}
+    return (
+        <Stack
+            align="center"
+            className={cn("m-4", className)}
+            {...props}
+            ref={ref}
+        >
+            {isExpanded ? (
+                <BorderBox className={cn("overflow-auto")}>
+                    {children}
+                </BorderBox>
+            ) : null}
 
-                <Tooltip label={buttonLabel}>
-                    <Button
-                        variant="outline"
-                        onClick={toggleExpanded}
-                        className={cn(
-                            isExpanded && "rounded-t-none border-t-0",
-                        )}
-                    >
-                        <Icon className={cn("mr-0.5 h-4 w-4 ")} />{" "}
-                        {buttonContent}
-                    </Button>
-                </Tooltip>
-            </section>
-        );
-    },
-);
+            <Tooltip label={buttonLabel}>
+                <Button
+                    variant="outline"
+                    onClick={toggleExpanded}
+                    className={cn(isExpanded && "rounded-t-none border-t-0")}
+                >
+                    <Icon className={cn("mr-0.5 h-4 w-4 ")} /> {buttonContent}
+                </Button>
+            </Tooltip>
+        </Stack>
+    );
+});
 ButtonExpandBox.displayName = "ButtonExpandBox";
 
 export default ButtonExpandBox;

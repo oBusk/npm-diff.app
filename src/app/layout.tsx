@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 import { ThemeProvider } from "^/components/ThemeProvider";
+import Stack from "^/components/ui/Stack";
 import { TooltipProvider } from "^/components/ui/Tooltip";
 import cn from "^/lib/cn";
 import Footer from "./_layout/Footer";
@@ -30,18 +31,18 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             <body className={cn("min-h-screen-s bg-background")}>
                 <ThemeProvider>
                     <TooltipProvider>
-                        <div
+                        <Stack
+                            justify="between"
                             className={cn(
                                 "min-h-screen-s",
                                 "relative overflow-auto",
-                                "flex flex-col justify-between",
                                 "px-4",
                             )}
                         >
                             <Header className={cn("bg-background")} />
                             {children}
                             <Footer className={cn("bg-background")} />
-                        </div>
+                        </Stack>
                     </TooltipProvider>
                 </ThemeProvider>
             </body>

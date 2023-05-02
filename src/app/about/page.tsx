@@ -3,6 +3,7 @@ import ExternalLink from "^/components/ExternalLink";
 import Code from "^/components/ui/Code";
 import Heading from "^/components/ui/Heading";
 import Image from "^/components/ui/Image";
+import Stack from "^/components/ui/Stack";
 import cn from "^/lib/cn";
 import {
     externalServicesDarkmode,
@@ -15,9 +16,7 @@ export const metadata = {
 
 export default function AboutPage() {
     return (
-        <article
-            className={cn("flex flex-col items-center space-y-8 border p-5")}
-        >
+        <Stack gap={8} align="center" className={cn("border p-5")}>
             <Heading>About npm-diff.app</Heading>
             <p>Inspect changes between npm packages in a webapp</p>
             <p>
@@ -68,6 +67,6 @@ export default function AboutPage() {
                 to give an overview of the differances between the two, measured
                 in install and bundle size.
             </p>
-        </article>
+        </Stack>
     );
 }
