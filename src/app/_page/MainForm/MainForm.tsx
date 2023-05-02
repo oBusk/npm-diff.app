@@ -135,6 +135,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                             <Box>
                                 <Button
                                     type="submit"
+                                    variant="secondary"
                                     size="default"
                                     disabled={!a || isLoading}
                                     className="relative overflow-hidden"
