@@ -9,8 +9,6 @@ import cn from "^/lib/cn";
 
 export interface ColorModeToggleProps extends ButtonProps {}
 
-const iconSize = cn("h-6 w-6");
-
 const ColorModeToggle = forwardRef<HTMLButtonElement, ColorModeToggleProps>(
     ({ ...props }, ref) => {
         const [mounted, setMounted] = useState(false);
@@ -18,19 +16,9 @@ const ColorModeToggle = forwardRef<HTMLButtonElement, ColorModeToggleProps>(
 
         useEffect(() => setMounted(true), []);
 
-        if (!mounted) {
-            return (
-                <Button variant="ghost" {...props}>
-                    <div className={iconSize} />
-                </Button>
-            );
-        }
-
-        const label = `Switch to ${
-            theme === "dark" ? "Light Mode" : "Dark Mode"
-        }`;
-
-        const Icon = theme === "dark" ? SunMedium : Moon;
+        const label = mounted
+            ? `Switch to ${theme === "dark" ? "Light Mode" : "Dark Mode"}`
+            : "Loading...";
 
         return (
             <Tooltip label={label}>
@@ -41,10 +29,14 @@ const ColorModeToggle = forwardRef<HTMLButtonElement, ColorModeToggleProps>(
                         setTheme(theme === "dark" ? "light" : "dark")
                     }
                     aria-label={label}
+                    className={cn(
+                        "transition-opacity duration-500",
+                        !mounted && "opacity-0",
+                    )}
                     {...props}
                     ref={ref}
                 >
-                    <Icon className={iconSize} />
+                    {mounted && theme === "dark" ? <SunMedium /> : <Moon />}
                 </Button>
             </Tooltip>
         );

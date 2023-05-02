@@ -48,18 +48,21 @@ TooltipContent.displayName = Primitive.Content.displayName;
 
 export interface TooltipProps
     extends ComponentPropsWithoutRef<typeof TooltipTrigger> {
-    label: ReactNode;
+    label: ReactNode | null;
 }
 
 const Tooltip = forwardRef<ElementRef<typeof TooltipTrigger>, TooltipProps>(
-    ({ children, label, ...props }, ref) => (
-        <TooltipRoot>
-            <TooltipTrigger asChild {...props} ref={ref}>
-                {children}
-            </TooltipTrigger>
-            <TooltipContent>{label}</TooltipContent>
-        </TooltipRoot>
-    ),
+    ({ children, label, ...props }, ref) =>
+        label ? (
+            <TooltipRoot>
+                <TooltipTrigger asChild {...props} ref={ref}>
+                    {children}
+                </TooltipTrigger>
+                <TooltipContent>{label}</TooltipContent>
+            </TooltipRoot>
+        ) : (
+            <>{children}</>
+        ),
 );
 Tooltip.displayName = "Tooltip";
 
