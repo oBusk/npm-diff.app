@@ -13,11 +13,15 @@ const GithubLink = forwardRef<HTMLButtonElement, GithubLinkProps>(
         const label = "View npm-diff.app on Github";
         return (
             <Tooltip label={label}>
-                <Button variant="ghost" size="sm" asChild {...props} ref={ref}>
-                    <ExternalLink
-                        href="https://github.com/oBusk/npm-diff.app"
-                        aria-label={label}
-                    >
+                <Button
+                    variant="ghost"
+                    size="xs"
+                    asChild
+                    aria-label={label}
+                    {...props}
+                    ref={ref}
+                >
+                    <ExternalLink href="https://github.com/oBusk/npm-diff.app">
                         <Github />
                     </ExternalLink>
                 </Button>

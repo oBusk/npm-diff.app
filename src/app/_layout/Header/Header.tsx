@@ -18,9 +18,9 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
             {...props}
             ref={ref}
         >
-            <div className="flex items-center">
-                <GithubLink variant="ghost" className="mr-4" />
-                <ColorModeToggle variant="ghost" />
+            <div className="flex items-center space-x-1">
+                <GithubLink />
+                <ColorModeToggle />
             </div>
             <Link
                 href="/"

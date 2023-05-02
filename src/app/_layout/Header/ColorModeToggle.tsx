@@ -5,8 +5,11 @@ import { useTheme } from "next-themes";
 import { forwardRef, useEffect, useState } from "react";
 import Button, { ButtonProps } from "^/components/ui/Button";
 import Tooltip from "^/components/ui/Tooltip";
+import cn from "^/lib/cn";
 
-export interface ColorModeToggleProps extends Partial<ButtonProps> {}
+export interface ColorModeToggleProps extends ButtonProps {}
+
+const iconSize = cn("h-6 w-6");
 
 const ColorModeToggle = forwardRef<HTMLButtonElement, ColorModeToggleProps>(
     ({ ...props }, ref) => {
@@ -16,18 +19,24 @@ const ColorModeToggle = forwardRef<HTMLButtonElement, ColorModeToggleProps>(
         useEffect(() => setMounted(true), []);
 
         if (!mounted) {
-            return null;
+            return (
+                <Button variant="ghost" {...props}>
+                    <div className={iconSize} />
+                </Button>
+            );
         }
 
         const label = `Switch to ${
             theme === "dark" ? "Light Mode" : "Dark Mode"
         }`;
 
+        const Icon = theme === "dark" ? SunMedium : Moon;
+
         return (
             <Tooltip label={label}>
                 <Button
                     variant="ghost"
-                    size="sm"
+                    size="xs"
                     onClick={() =>
                         setTheme(theme === "dark" ? "light" : "dark")
                     }
@@ -35,7 +44,7 @@ const ColorModeToggle = forwardRef<HTMLButtonElement, ColorModeToggleProps>(
                     {...props}
                     ref={ref}
                 >
-                    {theme === "dark" ? <SunMedium /> : <Moon />}
+                    <Icon className={iconSize} />
                 </Button>
             </Tooltip>
         );
