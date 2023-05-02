@@ -1,11 +1,12 @@
 "use client";
-import { Stack, useBoolean } from "@chakra-ui/react";
+
 import { useRouter } from "next/navigation";
 import { FunctionComponent, useState } from "react";
+import { useBoolean } from "react-use";
+import Stack from "^/components/ui/Stack";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import ExamplesList from "./_page/ExamplesList";
-import Intro from "./_page/Intro";
 import MainForm from "./_page/MainForm/MainForm";
 import OptionsForm from "./_page/OptionsForm";
 
@@ -40,11 +41,11 @@ const IndexPageClient: FunctionComponent<LandingProps> = ({
     };
 
     const exampleClicked = () => {
-        setLoading.on();
+        setLoading(true);
     };
 
     const goToDiff = (a: string | undefined, b: string | undefined): void => {
-        setLoading.on();
+        setLoading(true);
 
         router.push(
             `/${a}...${b}?${Object.entries(query)
@@ -55,7 +56,6 @@ const IndexPageClient: FunctionComponent<LandingProps> = ({
 
     return (
         <>
-            <Intro />
             <Stack>
                 <MainForm
                     overrideA={overrides.a}
