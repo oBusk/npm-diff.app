@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { forwardRef, HTMLAttributes } from "react";
+import Heading from "^/components/ui/Heading";
 import cn from "^/lib/cn";
 import ColorModeToggle from "./ColorModeToggle";
 import GithubLink from "./GithubLink";
@@ -25,9 +26,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                 href="/"
                 className="block rounded-md transition-all duration-200 hover:no-underline focus:outline-none"
             >
-                <h1 className="text-xl font-bold sm:text-2xl lg:text-4xl">
-                    npm-diff.app 📦🔃
-                </h1>
+                <Heading variant="h1">npm-diff.app 📦🔃</Heading>
             </Link>
             <div className="flex items-center justify-end">
                 <NavLink href="/about">about</NavLink>
