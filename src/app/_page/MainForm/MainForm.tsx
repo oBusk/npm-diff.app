@@ -103,7 +103,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     }}
                     fallbackSuggestions={fallbackSuggestions}
                 ></SpecInput>
-                <CenterInputAddon display={{ base: "none", lg: "flex" }}>
+                <CenterInputAddon className="hidden lg:flex">
                     ...
                 </CenterInputAddon>
                 <SpecInput

@@ -1,53 +1,17 @@
-import {
-    chakra,
-    forwardRef,
-    InputAddon,
-    InputAddonProps,
-    useMultiStyleConfig,
-} from "@chakra-ui/react";
+import { forwardRef, HTMLAttributes } from "react";
+import cn from "^/lib/cn";
 
-const StyledAddon = chakra("div", {
-    baseStyle: {
-        flex: "0 0 auto",
-        width: "auto",
-        display: "flex",
-        alignItems: "center",
-        whiteSpace: "nowrap",
-    },
-});
+export interface InputAddonProps extends HTMLAttributes<HTMLDivElement> {}
 
-// Trying to replicate what happens in
-// https://github.com/chakra-ui/chakra-ui/blob/%40chakra-ui/react%401.6.5/packages/input/src/input-addon.tsx
-// with some extra spice from
-// https://github.com/chakra-ui/chakra-ui/blob/%40chakra-ui/react%401.6.5/packages/input/src/input-group.tsx
-// Goal is to have a InputAddon that fits between two input elements without having to be wrapped in a
-// InputGroup.
-const CenterInputAddon = forwardRef<InputAddonProps, typeof InputAddon>(
-    (props, ref) => {
-        const { addon: addonStyles } = useMultiStyleConfig("Input", props);
-
-        const { placement: _, ...rest } = props;
-        const placementStyles = {
-            // Do both what placement=left and placement=right do
-            marginEnd: "-1px",
-            borderEndRadius: 0,
-            borderEndColor: "transparent",
-            maringStart: "-1px",
-            borderStartRadius: 0,
-            borderStartColor: "transparent",
-        } as const;
-
-        return (
-            <StyledAddon
-                {...rest}
-                ref={ref}
-                sx={{
-                    ...addonStyles,
-                    ...placementStyles,
-                }}
-            />
-        );
-    },
+const CenterInputAddon = forwardRef<HTMLDivElement, InputAddonProps>(
+    ({ className, ...props }, ref) => (
+        <div
+            className={cn("h-10 select-none border bg-accent p-2", className)}
+            {...props}
+            ref={ref}
+        />
+    ),
 );
+CenterInputAddon.displayName = "CenterInputAddon";
 
 export default CenterInputAddon;
