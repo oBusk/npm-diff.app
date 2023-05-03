@@ -1,3 +1,5 @@
+"use client";
+
 import { forwardRef } from "@chakra-ui/react";
 import { useCallback, useMemo, useState } from "react";
 import type { ChangeData, FileData, ViewType } from "react-diff-view";

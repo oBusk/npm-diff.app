@@ -1,30 +1,33 @@
-"use client";
-
 import { Github } from "lucide-react";
-import { forwardRef } from "react";
-import ExternalLink from "^/components/ExternalLink";
-import Button, { ButtonProps } from "^/components/ui/Button";
+import { ElementRef, forwardRef } from "react";
+import ExternalLink, { ExternalLinkProps } from "^/components/ExternalLink";
+import { buttonVariants } from "^/components/ui/Button";
 import Tooltip from "^/components/ui/Tooltip";
+import cn from "^/lib/cn";
 
-export interface GithubLinkProps extends Omit<ButtonProps, "aria-label"> {}
+export interface GithubLinkProps
+    extends Omit<ExternalLinkProps, "aria-label"> {}
 
-const GithubLink = forwardRef<HTMLButtonElement, GithubLinkProps>(
-    ({ ...props }, ref) => {
+const GithubLink = forwardRef<ElementRef<typeof ExternalLink>, GithubLinkProps>(
+    ({ className, ...props }, ref) => {
         const label = "View npm-diff.app on Github";
         return (
             <Tooltip label={label}>
-                <Button
-                    variant="ghost"
-                    size="xs"
-                    asChild
+                <ExternalLink
+                    className={cn(
+                        buttonVariants({
+                            className,
+                            variant: "ghost",
+                            size: "xs",
+                        }),
+                    )}
                     aria-label={label}
+                    href="https://github.com/oBusk/npm-diff.app"
                     {...props}
                     ref={ref}
                 >
-                    <ExternalLink href="https://github.com/oBusk/npm-diff.app">
-                        <Github />
-                    </ExternalLink>
-                </Button>
+                    <Github />
+                </ExternalLink>
             </Tooltip>
         );
     },

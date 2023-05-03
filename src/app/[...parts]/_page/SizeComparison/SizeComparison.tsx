@@ -2,7 +2,7 @@
 
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { FunctionComponent, ReactNode } from "react";
-import ExternalLink, { LinkProps } from "^/components/ExternalLink";
+import ExternalLink, { ExternalLinkProps } from "^/components/ExternalLink";
 import Span from "^/components/Span";
 import cn from "^/lib/cn";
 import { Service, ServiceName, Services } from "^/lib/Services";
@@ -36,7 +36,7 @@ function byteDifferance(a: number, b: number): ReactNode {
 }
 
 const LinkButton: FunctionComponent<
-    LinkProps & {
+    ExternalLinkProps & {
         pkg: SimplePackageSpec;
         service: Service;
     }
