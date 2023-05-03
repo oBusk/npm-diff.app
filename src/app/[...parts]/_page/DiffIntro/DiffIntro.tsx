@@ -49,10 +49,10 @@ const DiffIntro = forwardRef<ElementRef<typeof Stack>, DiffIntroProps>(
                 <h3 className="text-sm">npm diff</h3>
                 <Options options={options} />
                 {/* <Command
-                    aName={aName}
-                    aVersion={aVersion}
-                    bName={bName}
-                    bVersion={bVersion}
+                    aName={a.name}
+                    aVersion={a.version}
+                    bName={b.name}
+                    bVersion={b.version}
                     options={options}
                 /> */}
             </Stack>

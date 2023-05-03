@@ -1,8 +1,8 @@
-import { Code } from "@chakra-ui/react";
-import { forwardRef } from "@chakra-ui/system";
+import { ElementRef, forwardRef } from "react";
+import Code, { CodeProps } from "^/components/ui/Code";
 import { NpmDiffOptions } from "^/lib/npmDiff";
 
-export interface CommandProps {
+export interface CommandProps extends CodeProps {
     aName: string;
     aVersion: string;
     bName: string;
@@ -14,7 +14,7 @@ function toKebabCase(input: string): string {
     return input.replace(/([A-Z])/g, "-$1").toLowerCase();
 }
 
-const Command = forwardRef<CommandProps, typeof Code>(
+const Command = forwardRef<ElementRef<typeof Code>, CommandProps>(
     (
         {
             aName,
@@ -22,6 +22,7 @@ const Command = forwardRef<CommandProps, typeof Code>(
             bName,
             bVersion,
             options: { diffFiles = "", ...options },
+            ...props
         },
         ref,
     ) => {
@@ -38,12 +39,13 @@ const Command = forwardRef<CommandProps, typeof Code>(
         }
 
         return (
-            <Code ref={ref}>
+            <Code {...props} ref={ref}>
                 npm diff --diff={aName}@{aVersion} --diff={bName}@{bVersion}
                 {optionStrings?.length > 0 ? ` ${optionStrings.join(" ")}` : ""}
             </Code>
         );
     },
 );
+Command.displayName = "Command";
 
 export default Command;
