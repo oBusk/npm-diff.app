@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes } from "react";
+import { ElementRef, forwardRef } from "react";
 import ExternalLink, { ExternalLinkProps } from "^/components/ExternalLink";
 import { cx } from "^/lib/cva";
 import { Service } from "^/lib/Services";
@@ -11,20 +11,21 @@ export interface ServiceLinkProps extends Omit<ExternalLinkProps, "href"> {
     pkg: SimplePackageSpec;
 }
 
-const ServiceLink = forwardRef<HTMLAnchorElement, ServiceLinkProps>(
-    ({ service, pkg, className, ...props }, ref) => (
-        <ServiceTooltip serviceName={service.name} pkg={pkg}>
-            <ExternalLink
-                href={service.url(pkg)}
-                className={cx("p-[0.1em] inline-block", className)}
-                {...props}
-                ref={ref}
-            >
-                <ServiceIcon service={service} />
-            </ExternalLink>
-        </ServiceTooltip>
-    ),
-);
+const ServiceLink = forwardRef<
+    ElementRef<typeof ExternalLink>,
+    ServiceLinkProps
+>(({ service, pkg, className, ...props }, ref) => (
+    <ServiceTooltip serviceName={service.name} pkg={pkg}>
+        <ExternalLink
+            href={service.url(pkg)}
+            className={cx("p-[0.1em] inline-block", className)}
+            {...props}
+            ref={ref}
+        >
+            <ServiceIcon service={service} />
+        </ExternalLink>
+    </ServiceTooltip>
+));
 ServiceLink.displayName = "ServiceLink";
 
 export default ServiceLink;
