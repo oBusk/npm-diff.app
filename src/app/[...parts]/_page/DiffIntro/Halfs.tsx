@@ -1,31 +1,28 @@
-"use client";
+import { forwardRef, HTMLAttributes, ReactNode } from "react";
+import { cx } from "^/lib/cva";
 
-import { Flex, FlexProps } from "@chakra-ui/react";
-import { forwardRef } from "@chakra-ui/system";
-import { ReactNode } from "react";
-
-export interface HalfsProps
-    extends Omit<FlexProps, "children" | "left" | "right"> {
+export interface HalfsProps extends HTMLAttributes<HTMLElement> {
     left: ReactNode;
     center?: ReactNode;
     right: ReactNode;
 }
 
-const Halfs = forwardRef<HalfsProps, typeof Flex>(
-    ({ left, center, right, ...props }, ref) => (
-        <Flex {...props} ref={ref}>
-            <Flex flex="1 0 0px" justifyContent="flex-end">
+const Halfs = forwardRef<HTMLElement, HalfsProps>(
+    ({ left, center, right, className, ...props }, ref) => (
+        <section className={cx("flex", className)} {...props} ref={ref}>
+            <div className="flex flex-1 justify-end">
                 {/* Left half */}
                 {left}
-            </Flex>
+            </div>
             {/* Center column */}
             {center}
-            <Flex flex="1 0 0px" justifyContent="flex-start">
+            <div className="flex flex-1 justify-start">
                 {/* Right half */}
                 {right}
-            </Flex>
-        </Flex>
+            </div>
+        </section>
     ),
 );
+Halfs.displayName = "Halfs";
 
 export default Halfs;
