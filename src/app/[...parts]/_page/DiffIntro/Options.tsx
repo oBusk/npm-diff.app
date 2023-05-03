@@ -1,8 +1,7 @@
-"use client";
-
-import { Code, Heading, Text } from "@chakra-ui/react";
 import { ElementRef, forwardRef } from "react";
 import BorderBox, { BorderBoxProps } from "^/components/ui/BorderBox";
+import Code from "^/components/ui/Code";
+import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import { NpmDiffOptions } from "^/lib/npmDiff";
 
@@ -21,19 +20,19 @@ const Options = forwardRef<ElementRef<typeof BorderBox>, OptionsProps>(
 
         return (
             <BorderBox className={cx("my-2", className)} {...props} ref={ref}>
-                <Heading size="xs" marginBottom="1em">
+                <Heading h={4} className="mb-4 text-sm">
                     Options
                 </Heading>
                 {diffFiles ? (
-                    <Text>
+                    <span>
                         <b>files:</b>{" "}
                         <Code>{diffFiles.join(" ") || "\u00A0"}</Code>
-                    </Text>
+                    </span>
                 ) : null}
                 {specifiedOptions.map(([key, value]) => (
-                    <Text key={key}>
+                    <span key={key}>
                         <b>{key}:</b> <Code>{JSON.stringify(value)}</Code>
-                    </Text>
+                    </span>
                 ))}
             </BorderBox>
         );
