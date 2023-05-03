@@ -1,4 +1,4 @@
-import { forwardRef } from "react";
+import { forwardRef, HTMLAttributes } from "react";
 import { cva, VariantProps } from "^/lib/cva";
 
 const stackVariants = cva("flex", {
@@ -30,7 +30,7 @@ const stackVariants = cva("flex", {
 });
 
 export interface StackProps
-    extends React.HTMLAttributes<HTMLElement>,
+    extends HTMLAttributes<HTMLElement>,
         VariantProps<typeof stackVariants> {}
 
 const Stack = forwardRef<HTMLElement, StackProps>(
