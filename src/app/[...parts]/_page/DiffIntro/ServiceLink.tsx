@@ -1,29 +1,30 @@
-import { forwardRef, IconButton, Link, LinkProps } from "@chakra-ui/react";
+import { forwardRef, HTMLAttributes } from "react";
+import ExternalLink, { ExternalLinkProps } from "^/components/ExternalLink";
+import { cx } from "^/lib/cva";
 import { Service } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import ServiceIcon from "../ServiceIcon";
 import ServiceTooltip from "./ServiceTooltip";
 
-export interface ServiceLinkProps extends LinkProps {
+export interface ServiceLinkProps extends Omit<ExternalLinkProps, "href"> {
     service: Service;
     pkg: SimplePackageSpec;
 }
 
-const ServiceLink = forwardRef<ServiceLinkProps, typeof IconButton>(
-    ({ service, pkg, ...props }, ref) => (
+const ServiceLink = forwardRef<HTMLAnchorElement, ServiceLinkProps>(
+    ({ service, pkg, className, ...props }, ref) => (
         <ServiceTooltip serviceName={service.name} pkg={pkg}>
-            <Link
+            <ExternalLink
                 href={service.url(pkg)}
-                rel="noopener noreferrer"
-                target="_blank"
-                padding="0.1em"
+                className={cx("p-[0.1em] inline-block", className)}
                 {...props}
                 ref={ref}
             >
                 <ServiceIcon service={service} />
-            </Link>
+            </ExternalLink>
         </ServiceTooltip>
     ),
 );
+ServiceLink.displayName = "ServiceLink";
 
 export default ServiceLink;
