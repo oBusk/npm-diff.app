@@ -30,19 +30,21 @@ const TooltipContent = forwardRef<
     ElementRef<typeof Primitive.Content>,
     ComponentPropsWithoutRef<typeof Primitive.Content>
 >(({ className, sideOffset = 4, ...props }, ref) => (
-    <Primitive.Content
-        ref={ref}
-        sideOffset={sideOffset}
-        className={cx(
-            "z-20 overflow-hidden",
-            "px-3 py-1.5",
-            "bg-popover text-popover-foreground",
-            "rounded-md border text-sm shadow-md animate-in fade-in-50",
-            "data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1",
-            className,
-        )}
-        {...props}
-    />
+    <Primitive.Portal>
+        <Primitive.Content
+            ref={ref}
+            sideOffset={sideOffset}
+            className={cx(
+                "z-20 overflow-hidden",
+                "px-3 py-1.5",
+                "bg-popover text-popover-foreground",
+                "rounded-md border text-sm shadow-md animate-in fade-in-50",
+                "data-[side=bottom]:slide-in-from-top-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1 data-[side=top]:slide-in-from-bottom-1",
+                className,
+            )}
+            {...props}
+        />
+    </Primitive.Portal>
 ));
 TooltipContent.displayName = Primitive.Content.displayName;
 
