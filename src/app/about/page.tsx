@@ -4,7 +4,6 @@ import Code from "^/components/ui/Code";
 import Heading from "^/components/ui/Heading";
 import Image from "^/components/ui/Image";
 import Stack from "^/components/ui/Stack";
-import cn from "^/lib/cn";
 import {
     externalServicesDarkmode,
     externalServicesLightmode,
@@ -16,7 +15,7 @@ export const metadata = {
 
 export default function AboutPage() {
     return (
-        <Stack gap={8} align="center" className={cn("border p-5")}>
+        <Stack gap={8} align="center" className="border p-5">
             <Heading>About npm-diff.app</Heading>
             <p>Inspect changes between npm packages in a webapp</p>
             <p>

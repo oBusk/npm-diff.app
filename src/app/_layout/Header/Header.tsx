@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { forwardRef, HTMLAttributes } from "react";
 import Heading from "^/components/ui/Heading";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 import ColorModeToggle from "./ColorModeToggle";
 import GithubLink from "./GithubLink";
 import NavLink from "./NavLink";
@@ -11,7 +11,7 @@ export interface HeaderProps extends HTMLAttributes<HTMLElement> {}
 const Header = forwardRef<HTMLElement, HeaderProps>(
     ({ className, ...props }, ref) => (
         <nav
-            className={cn(
+            className={cx(
                 "sticky inset-x-0 top-0 z-10 flex items-center justify-between px-4 py-6",
                 className,
             )}

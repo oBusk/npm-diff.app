@@ -4,7 +4,7 @@ import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { FunctionComponent, ReactNode } from "react";
 import ExternalLink, { ExternalLinkProps } from "^/components/ExternalLink";
 import Span from "^/components/Span";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 import { Service, ServiceName, Services } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { prettyByte } from "^/lib/utils/prettyByte";
@@ -60,7 +60,7 @@ const LinkButton: FunctionComponent<
                 {...props}
             /> */}
             <ExternalLink
-                className={cn("rounded-lg p-2 text-center", className)}
+                className={cx("rounded-lg p-2 text-center", className)}
                 href={service.url(pkg)}
                 {...props}
             />
@@ -152,7 +152,7 @@ const SizeComparison = ({
                     </LinkButton>
                 }
                 center={
-                    <Box className={cn("p-2")} textAlign="center">
+                    <Box className="p-2" textAlign="center">
                         {sizeRows.map((sizeRow) => (
                             <Text key={sizeRow.name}>{sizeRow.name}</Text>
                         ))}

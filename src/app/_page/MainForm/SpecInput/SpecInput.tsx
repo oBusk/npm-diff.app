@@ -3,7 +3,7 @@
 import { Loader2 } from "lucide-react";
 import { FunctionComponent, RefObject } from "react";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 import {
     useNpmCombobox,
     UseNpmComboboxProps,
@@ -33,7 +33,7 @@ const SuggestionListText = ({
     error?: boolean;
 }) => (
     <div
-        className={cn(
+        className={cx(
             "p-8 text-center",
             error ? "text-red-500" : "text-gray-500",
         )}
@@ -66,7 +66,7 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
 
     return (
         <ComboboxWrapper
-            className={cn("w-full max-w-xs", wrapperClassName)}
+            className={cx("w-full max-w-xs", wrapperClassName)}
             {...wrapperProps}
         >
             <ComboboxInput
@@ -99,11 +99,7 @@ const SpecInput: FunctionComponent<SpecInputProps> = ({
                             ))
                         )}
                         {loading ? (
-                            <Loader2
-                                className={cn(
-                                    "absolute bottom-1 right-1 animate-spin",
-                                )}
-                            />
+                            <Loader2 className="absolute bottom-1 right-1 animate-spin" />
                         ) : null}
                     </>
                 ) : null}

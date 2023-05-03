@@ -1,6 +1,6 @@
 import { ElementRef, forwardRef, memo } from "react";
 import Heading, { HeadingProps } from "^/components/ui/Heading";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 import emphasized from "./emphasized";
 
 interface TitleProps extends HeadingProps {
@@ -12,7 +12,7 @@ const Title = forwardRef<ElementRef<typeof Heading>, TitleProps>(
     ({ name, version, className, ...props }, ref) => (
         <Heading
             variant="h3"
-            className={cn(
+            className={cx(
                 "font-mono font-normal",
                 "text-sm sm:text-sm md:text-sm lg:text-sm",
                 className,
@@ -22,7 +22,7 @@ const Title = forwardRef<ElementRef<typeof Heading>, TitleProps>(
         >
             {version ? (
                 <>
-                    <span className={cn("opacity-30")}>{name}@</span>
+                    <span className="opacity-30">{name}@</span>
                     {emphasized(version)}
                 </>
             ) : (

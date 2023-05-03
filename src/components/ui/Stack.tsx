@@ -1,6 +1,5 @@
-import { cva, VariantProps } from "class-variance-authority";
 import { forwardRef } from "react";
-import cn from "^/lib/cn";
+import { cva, VariantProps } from "^/lib/cva";
 
 const stackVariants = cva("flex", {
     variants: {
@@ -37,9 +36,13 @@ export interface StackProps
 const Stack = forwardRef<HTMLElement, StackProps>(
     ({ className, direction, align, justify, gap, ...props }, ref) => (
         <section
-            className={cn(
-                stackVariants({ className, direction, align, justify, gap }),
-            )}
+            className={stackVariants({
+                className,
+                direction,
+                align,
+                justify,
+                gap,
+            })}
             {...props}
             ref={ref}
         />

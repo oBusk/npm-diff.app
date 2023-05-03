@@ -1,14 +1,14 @@
 import { ElementRef, forwardRef } from "react";
 import BorderBox, { BorderBoxProps } from "^/components/ui/BorderBox";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 
 export interface ErrorBoxProps extends BorderBoxProps {}
 
 const ErrorBox = forwardRef<ElementRef<typeof BorderBox>, ErrorBoxProps>(
-    (props, ref) => {
+    ({ className, ...props }, ref) => {
         return (
             <BorderBox
-                className={cn("bg-red-200 dark:bg-red-700")}
+                className={cx("bg-red-200 dark:bg-red-700", className)}
                 {...props}
                 ref={ref}
             />

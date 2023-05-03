@@ -1,6 +1,5 @@
-import { cva, VariantProps } from "class-variance-authority";
 import { forwardRef, HTMLAttributes } from "react";
-import cn from "^/lib/cn";
+import { cva, VariantProps } from "^/lib/cva";
 
 const codeVariants = cva("rounded-sm bg-muted text-sm", {
     variants: {
@@ -21,7 +20,7 @@ export interface CodeProps
 const Code = forwardRef<HTMLElement, CodeProps>(
     ({ className, variant, ...props }, ref) => (
         <code
-            className={cn(codeVariants({ variant, className }))}
+            className={codeVariants({ variant, className })}
             ref={ref}
             {...props}
         />

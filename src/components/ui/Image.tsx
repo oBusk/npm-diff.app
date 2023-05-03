@@ -1,5 +1,5 @@
 import NextImage, { ImageProps as NextImageProps } from "next/image";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 
 export interface ImageProps extends Omit<NextImageProps, "src"> {
     darkSrc: NextImageProps["src"];
@@ -11,12 +11,12 @@ const Image = ({ darkSrc, lightSrc, className, ...props }: ImageProps) => {
         <>
             <NextImage
                 src={lightSrc}
-                className={cn("block dark:hidden", className)}
+                className={cx("block dark:hidden", className)}
                 {...props}
             />
             <NextImage
                 src={darkSrc}
-                className={cn("hidden dark:block", className)}
+                className={cx("hidden dark:block", className)}
                 {...props}
             />
         </>

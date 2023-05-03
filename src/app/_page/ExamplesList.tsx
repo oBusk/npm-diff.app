@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { ElementRef, forwardRef } from "react";
 import Stack, { StackProps } from "^/components/ui/Stack";
-import cn from "^/lib/cn";
 import EXAMPLES from "^/lib/examples";
 import { QueryParams } from "^/lib/query";
 
@@ -31,10 +30,10 @@ const ExamplesList = forwardRef<ElementRef<typeof Stack>, ExamplesListProps>(
 
         return (
             <Stack align="center" {...props} ref={ref}>
-                <h2 className={cn("text-xl font-bold")}>Examples</h2>
+                <h2 className="text-xl font-bold">Examples</h2>
                 {EXAMPLES.map((ex) => (
                     <Link
-                        className={cn("my-1 hover:underline")}
+                        className="my-1 hover:underline"
                         key={ex}
                         href={{
                             pathname: `/${ex}`,

@@ -1,5 +1,5 @@
 import { forwardRef, HTMLAttributes } from "react";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 
 export interface BorderBoxProps extends HTMLAttributes<HTMLElement> {}
 
@@ -7,7 +7,7 @@ export interface BorderBoxProps extends HTMLAttributes<HTMLElement> {}
 const BorderBox = forwardRef<HTMLElement, BorderBoxProps>(
     ({ className, ...props }, ref) => (
         <section
-            className={cn("rounded-md border border-input p-4", className)}
+            className={cx("rounded-md border border-input p-4", className)}
             {...props}
             ref={ref}
         />

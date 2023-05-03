@@ -1,6 +1,6 @@
 import { Box, Skeleton } from "@chakra-ui/react";
 import CollapsableBorderBox from "^/components/CollapsableBorderBox";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import { DiffFileHeaderSkeleton } from "./DiffFileHeader";
 
@@ -23,7 +23,7 @@ const FakeCodeRow = ({
 export default function DiffFileSkeleton() {
     return (
         <CollapsableBorderBox
-            className={cn("my-4 text-base", contentVisibility("700px"))}
+            className={cx("my-4 text-base", contentVisibility("700px"))}
             header={<DiffFileHeaderSkeleton />}
         >
             <Box

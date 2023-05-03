@@ -1,7 +1,7 @@
 import { Code, Heading, Text } from "@chakra-ui/react";
 import { ElementRef, forwardRef } from "react";
 import BorderBox, { BorderBoxProps } from "^/components/ui/BorderBox";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 import { NpmDiffOptions } from "^/lib/npmDiff";
 
 interface OptionsProps extends BorderBoxProps {
@@ -18,7 +18,7 @@ const Options = forwardRef<ElementRef<typeof BorderBox>, OptionsProps>(
         );
 
         return (
-            <BorderBox className={cn("my-2", className)} {...props} ref={ref}>
+            <BorderBox className={cx("my-2", className)} {...props} ref={ref}>
                 <Heading size="xs" marginBottom="1em">
                     Options
                 </Heading>

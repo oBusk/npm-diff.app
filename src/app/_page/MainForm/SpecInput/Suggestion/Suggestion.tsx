@@ -1,7 +1,6 @@
 import { FunctionComponent } from "react";
 import Stack from "^/components/ui/Stack";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
-import cn from "^/lib/cn";
 import Title from "./Title";
 import VersionTag from "./VersionTag";
 
@@ -16,8 +15,8 @@ const Suggestion: FunctionComponent<SuggestionProps> = ({
     <>
         <Title name={name} version={version} />
 
-        {body ? <p className={cn("text-xs")}>{body}</p> : null}
-        <Stack direction="h" className={cn("mt-1")}>
+        {body ? <p className="text-xs">{body}</p> : null}
+        <Stack direction="h" className="mt-1">
             {tags.map((tag) => (
                 <VersionTag key={tag}>{tag}</VersionTag>
             ))}

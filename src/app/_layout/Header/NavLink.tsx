@@ -1,10 +1,9 @@
 "use client";
 
-import { cva } from "class-variance-authority";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { AnchorHTMLAttributes, forwardRef, useEffect, useState } from "react";
-import cn from "^/lib/cn";
+import { cva } from "^/lib/cva";
 
 const navLinkVariants = cva(
     "block rounded-md transition-all duration-200 focus:outline-none",
@@ -41,7 +40,7 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(
         return (
             <Link
                 href={href}
-                className={cn(navLinkVariants({ isActive, className }))}
+                className={navLinkVariants({ isActive, className })}
                 {...props}
                 ref={ref}
             />

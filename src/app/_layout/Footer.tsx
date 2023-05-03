@@ -1,12 +1,12 @@
 import { forwardRef, HTMLAttributes } from "react";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 
 interface FooterProps extends HTMLAttributes<HTMLDivElement> {}
 
 const Footer = forwardRef<HTMLDivElement, FooterProps>(
     ({ className, ...props }, ref) => (
         <footer
-            className={cn("contain-content flex", className)}
+            className={cx("contain-content flex", className)}
             {...props}
             ref={ref}
         />

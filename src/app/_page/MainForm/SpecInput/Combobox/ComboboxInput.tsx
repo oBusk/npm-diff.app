@@ -1,7 +1,6 @@
-import { cva, VariantProps } from "class-variance-authority";
 import { ElementRef, forwardRef } from "react";
 import Input, { InputProps } from "^/components/ui/Input";
-import cn from "^/lib/cn";
+import { cva, VariantProps } from "^/lib/cva";
 
 const comboboxInputVariants = cva(null, {
     variants: {
@@ -20,7 +19,7 @@ const ComboboxInput = forwardRef<ElementRef<typeof Input>, ComboboxInputProps>(
         <Input
             type="text"
             ring={false}
-            className={cn(comboboxInputVariants({ isOpen, className }))}
+            className={comboboxInputVariants({ isOpen, className })}
             ref={ref}
             {...props}
         />

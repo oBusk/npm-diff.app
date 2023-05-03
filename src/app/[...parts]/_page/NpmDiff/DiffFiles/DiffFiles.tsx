@@ -1,7 +1,6 @@
 import { Box } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { FileData } from "react-diff-view";
-import cn from "^/lib/cn";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import useViewType from "^/lib/utils/useViewType";
 import DiffFileComponent from "./DiffFile";
@@ -25,7 +24,7 @@ const DiffFiles: FunctionComponent<DiffFilesProps> = ({ a, b, files }) => {
                     b={b}
                     file={file}
                     viewType={viewType}
-                    className={cn("w-full")}
+                    className="w-full"
                 />
             ))}
         </Box>

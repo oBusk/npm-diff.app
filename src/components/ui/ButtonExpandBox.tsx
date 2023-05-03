@@ -3,7 +3,7 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { ElementRef, forwardRef, ReactNode } from "react";
 import { useBoolean } from "react-use";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 import BorderBox from "./BorderBox";
 import Button from "./Button";
 import Stack, { StackProps } from "./Stack";
@@ -31,23 +31,21 @@ const ButtonExpandBox = forwardRef<
     return (
         <Stack
             align="center"
-            className={cn("m-4", className)}
+            className={cx("m-4", className)}
             {...props}
             ref={ref}
         >
             {isExpanded ? (
-                <BorderBox className={cn("overflow-auto")}>
-                    {children}
-                </BorderBox>
+                <BorderBox className="overflow-auto">{children}</BorderBox>
             ) : null}
 
             <Tooltip label={buttonLabel}>
                 <Button
                     variant="outline"
                     onClick={toggleExpanded}
-                    className={cn(isExpanded && "rounded-t-none border-t-0")}
+                    className={cx(isExpanded && "rounded-t-none border-t-0")}
                 >
-                    <Icon className={cn("mr-0.5 h-4 w-4 ")} /> {buttonContent}
+                    <Icon className="mr-0.5 h-4 w-4 " /> {buttonContent}
                 </Button>
             </Tooltip>
         </Stack>

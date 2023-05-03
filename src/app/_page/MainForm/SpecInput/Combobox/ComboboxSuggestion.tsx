@@ -1,6 +1,5 @@
-import { cva, VariantProps } from "class-variance-authority";
 import { forwardRef, HTMLAttributes } from "react";
-import cn from "^/lib/cn";
+import { cva, VariantProps } from "^/lib/cva";
 
 const comboboxSuggestionVariants = cva("cursor-pointer rounded-sm p-4", {
     variants: {
@@ -17,9 +16,7 @@ export interface ComboboxSuggestionProps
 const ComboboxSuggestion = forwardRef<HTMLLIElement, ComboboxSuggestionProps>(
     ({ highlighted, className, ...props }, ref) => (
         <li
-            className={cn(
-                comboboxSuggestionVariants({ highlighted, className }),
-            )}
+            className={comboboxSuggestionVariants({ highlighted, className })}
             ref={ref}
             {...props}
         />

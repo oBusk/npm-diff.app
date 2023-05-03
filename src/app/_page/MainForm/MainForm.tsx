@@ -19,7 +19,7 @@ import {
     TooltipTrigger,
 } from "^/components/ui/Tooltip";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
 
@@ -86,7 +86,7 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
 
         return (
             <form
-                className={cn(
+                className={cx(
                     "flex flex-col lg:flex-row",
                     "items-center justify-center",
                     className,
@@ -108,7 +108,7 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                         }
                     }}
                     inputProps={{
-                        className: cn("lg:rounded-r-none", "lg:border-r-0"),
+                        className: "lg:rounded-r-none lg:border-r-0",
                         ...(overrideA
                             ? {
                                   value: overrideA,
@@ -128,10 +128,10 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                     onInputValueChange={setB}
                     optionalPackageFilter={bPackageFilter}
                     wrapperProps={{
-                        className: cn("mt-2", "lg:mt-0"),
+                        className: "mt-2 lg:mt-0",
                     }}
                     inputProps={{
-                        className: cn("lg:rounded-l-none", "lg:border-l-0"),
+                        className: "lg:rounded-l-none lg:border-l-0",
                         ...(overrideB
                             ? {
                                   value: overrideB,

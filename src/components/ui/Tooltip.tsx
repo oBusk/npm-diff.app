@@ -8,7 +8,7 @@ import {
     forwardRef,
     ReactNode,
 } from "react";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 
 const TooltipProvider = forwardRef<
     ElementRef<typeof Primitive.Provider>,
@@ -33,7 +33,7 @@ const TooltipContent = forwardRef<
     <Primitive.Content
         ref={ref}
         sideOffset={sideOffset}
-        className={cn(
+        className={cx(
             "z-20 overflow-hidden",
             "px-3 py-1.5",
             "bg-popover text-popover-foreground",

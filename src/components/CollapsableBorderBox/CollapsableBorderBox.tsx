@@ -1,7 +1,7 @@
 import { Box, forwardRef, useBoolean } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import BorderBox, { BorderBoxProps } from "^/components/ui/BorderBox";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 import CollapsableBorderBoxHeader from "./CollapsableBorderBoxHeader";
 
 export interface CollapsableBorderBoxProps extends BorderBoxProps {
@@ -15,7 +15,7 @@ const CollapsableBorderBox = forwardRef<CollapsableBorderBoxProps, "div">(
         const [isExpanded, setIsExpanded] = useBoolean(true);
 
         return (
-            <BorderBox className={cn("p-0", className)} {...props} ref={ref}>
+            <BorderBox className={cx("p-0", className)} {...props} ref={ref}>
                 <CollapsableBorderBoxHeader
                     isExpanded={isExpanded}
                     toggleIsExpanded={setIsExpanded.toggle}

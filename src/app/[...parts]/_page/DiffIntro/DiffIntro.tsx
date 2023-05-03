@@ -10,7 +10,7 @@ import {
     Text,
 } from "@chakra-ui/react";
 import { ReactNode } from "react";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 import { NpmDiffOptions } from "^/lib/npmDiff";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
@@ -41,7 +41,7 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                 css={{
                     label: "DiffIntro",
                 }}
-                className={cn(contentVisibility("700px"), className)}
+                className={cx(contentVisibility("700px"), className)}
                 {...props}
                 ref={ref}
             >

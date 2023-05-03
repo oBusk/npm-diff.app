@@ -1,5 +1,5 @@
 import { forwardRef, HTMLAttributes } from "react";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 
 export interface ComboboxSuggestionListProps
     extends HTMLAttributes<HTMLUListElement> {}
@@ -9,7 +9,7 @@ const ComboboxSuggestionList = forwardRef<
     ComboboxSuggestionListProps
 >(({ className, ...props }, ref) => (
     <ul
-        className={cn(
+        className={cx(
             "p-1",
             "bg-background shadow-2xl",
             "border border-t-0",

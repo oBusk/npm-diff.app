@@ -3,7 +3,6 @@ import { ElementRef, forwardRef } from "react";
 import ExternalLink, { ExternalLinkProps } from "^/components/ExternalLink";
 import { buttonVariants } from "^/components/ui/Button";
 import Tooltip from "^/components/ui/Tooltip";
-import cn from "^/lib/cn";
 
 export interface GithubLinkProps
     extends Omit<ExternalLinkProps, "aria-label"> {}
@@ -14,13 +13,11 @@ const GithubLink = forwardRef<ElementRef<typeof ExternalLink>, GithubLinkProps>(
         return (
             <Tooltip label={label}>
                 <ExternalLink
-                    className={cn(
-                        buttonVariants({
-                            className,
-                            variant: "ghost",
-                            size: "xs",
-                        }),
-                    )}
+                    className={buttonVariants({
+                        className,
+                        variant: "ghost",
+                        size: "xs",
+                    })}
                     aria-label={label}
                     href="https://github.com/oBusk/npm-diff.app"
                     {...props}

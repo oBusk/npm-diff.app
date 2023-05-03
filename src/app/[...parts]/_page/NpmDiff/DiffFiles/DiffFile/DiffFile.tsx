@@ -7,7 +7,7 @@ import "react-diff-view/style/index.css";
 import CollapsableBorderBox, {
     CollapsableBorderBoxProps,
 } from "^/components/CollapsableBorderBox";
-import cn from "^/lib/cn";
+import { cx } from "^/lib/cva";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import countChanges from "^/lib/utils/countChanges";
@@ -63,7 +63,7 @@ const DiffFile = forwardRef<DiffFileProps, typeof CollapsableBorderBox>(
                     label: "DiffFile",
                     margin: "1em 0",
                 }}
-                className={cn(contentVisibility("700px", className))}
+                className={cx(contentVisibility("700px", className))}
                 header={
                     <DiffFileHeader
                         a={a}
