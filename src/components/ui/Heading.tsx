@@ -1,29 +1,27 @@
 import { forwardRef, HTMLAttributes } from "react";
-import { cva, VariantProps } from "^/lib/cva";
+import { cx } from "^/lib/cva";
 
-const headingVariants = cva("font-bold", {
-    variants: {
-        variant: {
-            h1: "text-xl sm:text-2xl md:text-3xl lg:text-4xl",
-            h2: "text-xl md:text-2xl lg:text-3xl",
-            h3: "text-lg md:text-xl lg:text-2xl",
-            h4: "text-lg lg:text-xl",
-        },
-    },
-});
-
-export interface HeadingProps
-    extends HTMLAttributes<HTMLHeadingElement>,
-        VariantProps<typeof headingVariants> {}
+export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
+    h?: 1 | 2 | 3 | 4 | 5 | 6;
+}
 
 const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
-    ({ className, variant, ...props }, ref) => {
-        variant ??= "h2";
+    ({ className, h = 2, ...props }, ref) => {
+        const defaultSize = (
+            {
+                1: "text-4xl",
+                2: "text-3xl",
+                3: "text-2xl",
+                4: "text-xl",
+                5: "text-lg",
+                6: "text-base",
+            } as const
+        )[h];
 
-        const Comp = variant;
+        const Comp = `h${h}` as const;
         return (
             <Comp
-                className={headingVariants({ variant, className })}
+                className={cx("font-bold", defaultSize, className)}
                 ref={ref}
                 {...props}
             />

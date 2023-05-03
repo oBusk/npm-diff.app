@@ -74,7 +74,7 @@ const DiffPage = async ({
         return (
             <>
                 <DiffIntro
-                    alignSelf="stretch"
+                    className="self-stretch"
                     a={a}
                     b={b}
                     services={

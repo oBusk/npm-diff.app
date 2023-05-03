@@ -1,15 +1,7 @@
-"use client";
-
-import {
-    Box,
-    Code,
-    Flex,
-    FlexProps,
-    forwardRef,
-    Heading,
-    Text,
-} from "@chakra-ui/react";
-import { ReactNode } from "react";
+import { ElementRef, forwardRef, ReactNode } from "react";
+import Code from "^/components/ui/Code";
+import Heading from "^/components/ui/Heading";
+import Stack, { StackProps } from "^/components/ui/Stack";
 import { cx } from "^/lib/cva";
 import { NpmDiffOptions } from "^/lib/npmDiff";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
@@ -18,14 +10,14 @@ import Halfs from "./Halfs";
 import Options from "./Options";
 import SpecBox from "./SpecBox";
 
-export interface DiffIntroProps extends FlexProps {
+export interface DiffIntroProps extends StackProps {
     a: SimplePackageSpec;
     b: SimplePackageSpec;
     services: ReactNode;
     options: NpmDiffOptions;
 }
 
-const DiffIntro = forwardRef<DiffIntroProps, "h2">(
+const DiffIntro = forwardRef<ElementRef<typeof Stack>, DiffIntroProps>(
     ({ a, b, services, options, className, ...props }, ref) => {
         if (a.name == null) {
             a.name = "ERROR";
@@ -35,37 +27,26 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
         }
 
         return (
-            <Flex
-                direction="column"
-                alignItems="center"
-                css={{
-                    label: "DiffIntro",
-                }}
+            <Stack
+                align="center"
                 className={cx(contentVisibility("700px"), className)}
                 {...props}
                 ref={ref}
             >
-                <Heading
-                    as="h2"
-                    size="sm"
-                    width="100%"
-                    textAlign="center"
-                    marginBottom="1.5em"
-                >
-                    <Text>Comparing </Text>
+                <Heading className="mb-6 w-full text-center text-sm">
+                    <span>Comparing</span>
                     <Halfs
                         left={<SpecBox pkg={a} />}
                         center={
-                            <Box>
-                                {/* Center column */}
+                            <span>
                                 <Code>...</Code>
-                            </Box>
+                            </span>
                         }
                         right={<SpecBox pkg={b} />}
                     />
                 </Heading>
                 {services}
-                <Heading size="l">npm diff</Heading>
+                <h3 className="text-sm">npm diff</h3>
                 <Options options={options} />
                 {/* <Command
                     aName={aName}
@@ -74,9 +55,10 @@ const DiffIntro = forwardRef<DiffIntroProps, "h2">(
                     bVersion={bVersion}
                     options={options}
                 /> */}
-            </Flex>
+            </Stack>
         );
     },
 );
+DiffIntro.displayName = "DiffIntro";
 
 export default DiffIntro;

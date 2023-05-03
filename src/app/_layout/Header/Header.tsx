@@ -26,7 +26,12 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                 href="/"
                 className="block rounded-md transition-all duration-200 hover:no-underline focus:outline-none"
             >
-                <Heading variant="h1">npm-diff.app 📦🔃</Heading>
+                <Heading
+                    h={1}
+                    className="text-xl sm:text-2xl md:text-3xl lg:text-4xl"
+                >
+                    npm-diff.app 📦🔃
+                </Heading>
             </Link>
             <div className="flex items-center justify-end">
                 <NavLink href="/about">about</NavLink>

@@ -11,12 +11,8 @@ interface TitleProps extends HeadingProps {
 const Title = forwardRef<ElementRef<typeof Heading>, TitleProps>(
     ({ name, version, className, ...props }, ref) => (
         <Heading
-            variant="h3"
-            className={cx(
-                "font-mono font-normal",
-                "text-sm sm:text-sm md:text-sm lg:text-sm",
-                className,
-            )}
+            h={3}
+            className={cx("font-mono font-normal text-sm", className)}
             {...props}
             ref={ref}
         >

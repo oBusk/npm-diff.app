@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, BoxProps, forwardRef } from "@chakra-ui/react";
 import Pkg from "^/components/Pkg";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";

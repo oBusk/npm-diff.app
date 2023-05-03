@@ -1,3 +1,5 @@
+"use client";
+
 import { Flex, FlexProps } from "@chakra-ui/react";
 import { forwardRef } from "@chakra-ui/system";
 import { ReactNode } from "react";
