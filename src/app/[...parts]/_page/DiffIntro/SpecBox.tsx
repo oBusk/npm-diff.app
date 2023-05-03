@@ -1,21 +1,22 @@
-"use client";
-
-import { Box, BoxProps, forwardRef } from "@chakra-ui/react";
+import { forwardRef, HTMLAttributes } from "react";
 import Pkg from "^/components/Pkg";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import ServiceLinks from "./ServiceLinks";
 
-interface SpecBoxProps extends BoxProps {
+interface SpecBoxProps extends HTMLAttributes<HTMLElement> {
     pkg: SimplePackageSpec;
 }
 
-const SpecBox = forwardRef<SpecBoxProps, "div">(({ pkg, ...props }, ref) => (
-    <Box {...props} ref={ref}>
-        <Pkg pkg={pkg} />
-        <Box>
-            <ServiceLinks pkg={pkg} />
-        </Box>
-    </Box>
-));
+const SpecBox = forwardRef<HTMLElement, SpecBoxProps>(
+    ({ pkg, ...props }, ref) => (
+        <section {...props} ref={ref}>
+            <Pkg pkg={pkg} />
+            <div>
+                <ServiceLinks pkg={pkg} />
+            </div>
+        </section>
+    ),
+);
+SpecBox.displayName = "SpecBox";
 
 export default SpecBox;

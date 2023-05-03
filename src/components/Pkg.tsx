@@ -1,3 +1,5 @@
+"use client";
+
 import { Code, forwardRef } from "@chakra-ui/react";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 

@@ -1,3 +1,5 @@
+"use client";
+
 import { ButtonGroup, ButtonGroupProps, forwardRef } from "@chakra-ui/react";
 import { Services } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
