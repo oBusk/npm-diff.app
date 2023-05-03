@@ -1,6 +1,6 @@
 import { forwardRef, Text } from "@chakra-ui/react";
 import B from "^/components/B";
-import Pkg from "^/components/Pkg";
+import Pkg from "^/components/ui/Pkg";
 import Tooltip, { TooltipProps } from "^/components/ui/Tooltip";
 import { Service } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";

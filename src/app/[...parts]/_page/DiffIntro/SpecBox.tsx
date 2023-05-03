@@ -1,5 +1,5 @@
 import { forwardRef, HTMLAttributes } from "react";
-import Pkg from "^/components/Pkg";
+import Pkg from "^/components/ui/Pkg";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import ServiceLinks from "./ServiceLinks";
 
