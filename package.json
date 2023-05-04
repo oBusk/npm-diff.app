@@ -68,7 +68,7 @@
         "@types/node": "^18.16.3",
         "@types/npm-package-arg": "^6.1.1",
         "@types/pacote": "^11.1.5",
-        "@types/react": "^18.2.2",
+        "@types/react": "^18.2.5",
         "@types/react-dom": "^18.2.3",
         "@types/semver": "^7.3.13",
         "@types/validate-npm-package-name": "^4.0.0",
