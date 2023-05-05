@@ -1,9 +1,6 @@
-"use client";
-
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import { FunctionComponent, ReactNode } from "react";
 import ExternalLink, { ExternalLinkProps } from "^/components/ExternalLink";
-import Span from "^/components/Span";
+import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import { Service, ServiceName, Services } from "^/lib/Services";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
@@ -43,24 +40,12 @@ const LinkButton: FunctionComponent<
 > = ({ pkg, service, className, ...props }) => {
     return (
         <ServiceTooltip serviceName={service.name} pkg={pkg}>
-            {/* <ExternalLink
-                borderRadius="lg"
-                padding={COMMON_PADDING}
-                href={service.url(pkg)}
-                textAlign="center"
-                _hover={{
-                    textDecoration: "none",
-                    background: "gray.100",
-                }}
-                _dark={{
-                    _hover: {
-                        background: "gray.700",
-                    },
-                }}
-                {...props}
-            /> */}
             <ExternalLink
-                className={cx("rounded-lg p-2 text-center", className)}
+                className={cx(
+                    COMMON_PADDING,
+                    "rounded-lg text-center hover:bg-muted",
+                    className,
+                )}
                 href={service.url(pkg)}
                 {...props}
             />
@@ -74,24 +59,24 @@ const SizeText: FunctionComponent<{
     num?: number;
     baseBytes?: number;
 }> = ({ bytes, color, baseBytes }) => (
-    <Text>
-        <Span color={color}>{prettyByte(bytes)}</Span>
+    <p>
+        <span color={color}>{prettyByte(bytes)}</span>
         {baseBytes != null && baseBytes != 0 && (
-            <Span as="small">{byteDifferance(baseBytes, bytes)}</Span>
+            <small>{byteDifferance(baseBytes, bytes)}</small>
         )}
-    </Text>
+    </p>
 );
 
 const CountText: FunctionComponent<{
     count: number;
     baseCount?: number;
 }> = ({ count, baseCount }) => (
-    <Text>
-        <Span>{count}</Span>
+    <p>
+        <span>{count}</span>
         {baseCount != null && baseCount != 0 && (
-            <Span as="small">{differance(baseCount, count)}</Span>
+            <small>{differance(baseCount, count)}</small>
         )}
-    </Text>
+    </p>
 );
 
 export interface Size {
@@ -116,7 +101,7 @@ export interface SizeComparisonProps {
 }
 
 /** The padding of the center column and the right/left half has to be the same to line up */
-const COMMON_PADDING = "8px";
+const COMMON_PADDING = "p-2";
 
 const SizeComparison = ({
     serviceName,
@@ -128,10 +113,10 @@ const SizeComparison = ({
     const service = Services[serviceName];
     return (
         <>
-            <Heading size="xs">{service.name}</Heading>
+            <Heading className="text-xs">{service.name}</Heading>
             {flags}
             <Halfs
-                width="100%"
+                className="w-full"
                 left={
                     <LinkButton service={service} pkg={a}>
                         {sizeRows.map(({ name, a }) => {
@@ -152,39 +137,37 @@ const SizeComparison = ({
                     </LinkButton>
                 }
                 center={
-                    <Box className="p-2" textAlign="center">
+                    <section className={cx(COMMON_PADDING, "text-center")}>
                         {sizeRows.map((sizeRow) => (
-                            <Text key={sizeRow.name}>{sizeRow.name}</Text>
+                            <p key={sizeRow.name}>{sizeRow.name}</p>
                         ))}
-                    </Box>
+                    </section>
                 }
                 right={
-                    <Flex flex="1 0 0px" justifyContent="flex-start">
-                        <LinkButton service={service} pkg={b}>
-                            {sizeRows.map(({ name, a, b }) => {
-                                if (b.bytes != null) {
-                                    return (
-                                        <SizeText
-                                            key={name}
-                                            bytes={b.bytes}
-                                            color={b.color}
-                                            baseBytes={a.bytes}
-                                        />
-                                    );
-                                } else if (b.count != null) {
-                                    return (
-                                        <CountText
-                                            key={name}
-                                            count={b.count}
-                                            baseCount={a.count}
-                                        />
-                                    );
-                                } else {
-                                    return null;
-                                }
-                            })}
-                        </LinkButton>
-                    </Flex>
+                    <LinkButton service={service} pkg={b}>
+                        {sizeRows.map(({ name, a, b }) => {
+                            if (b.bytes != null) {
+                                return (
+                                    <SizeText
+                                        key={name}
+                                        bytes={b.bytes}
+                                        color={b.color}
+                                        baseBytes={a.bytes}
+                                    />
+                                );
+                            } else if (b.count != null) {
+                                return (
+                                    <CountText
+                                        key={name}
+                                        count={b.count}
+                                        baseCount={a.count}
+                                    />
+                                );
+                            } else {
+                                return null;
+                            }
+                        })}
+                    </LinkButton>
                 }
             />
         </>
