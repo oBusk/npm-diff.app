@@ -50,7 +50,7 @@ const SizeComparisonSkeleton = ({
                             <Skeleton
                                 key={name}
                                 style={{ width: `${a}px` }}
-                                className="h-[0.5rem]"
+                                className="h-2"
                             />
                         ))}
                     </Side>
@@ -68,7 +68,7 @@ const SizeComparisonSkeleton = ({
                             <Skeleton
                                 key={name}
                                 style={{ width: `${b}px` }}
-                                className="h-[0.5rem]"
+                                className="h-2"
                             />
                         ))}
                     </Side>
