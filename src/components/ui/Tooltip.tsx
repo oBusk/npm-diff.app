@@ -15,8 +15,8 @@ const TooltipProvider = forwardRef<
     ComponentPropsWithoutRef<typeof Primitive.Provider>
 >((props: ComponentProps<typeof Primitive.Provider>, ref) => (
     <Primitive.Provider
-        delayDuration={400}
-        skipDelayDuration={250}
+        delayDuration={250}
+        skipDelayDuration={100}
         {...props}
     />
 ));
