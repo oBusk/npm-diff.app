@@ -1,24 +1,14 @@
-import { useBreakpointValue } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
 import { ViewType } from "react-diff-view";
+import { useMedia } from "react-use";
 import { DIFF_TYPE_PARAM_NAME } from "^/app/[...parts]/_page/paramNames";
 
 export default function useViewType(): ViewType {
     const searchParams = useSearchParams();
-    // Even if the initial value and the first breakpoint value is the same,
-    // the component will re-render. This means it will _always_ render twice
-    // even when it shouldn't have to.
-    // We work around this by memoizing the rendering of the component.
-    const defaultViewType = useBreakpointValue<ViewType>(
-        {
-            base: "unified",
-            lg: "split",
-        },
-        // We assume that most users are on a computer so default to "lg".
-        // We could use something like https://github.com/kaimallea/isMobile
-        // but that means cache should be different for desktop/mobile
-        "lg",
-    )!;
+
+    const defaultViewType = useMedia("(min-width: 1024px)", true)
+        ? "split"
+        : "unified";
 
     const viewTypeParam = searchParams?.get(DIFF_TYPE_PARAM_NAME);
 

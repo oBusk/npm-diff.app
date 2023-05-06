@@ -1,3 +1,5 @@
+"use client";
+
 import { Box } from "@chakra-ui/react";
 import { FunctionComponent } from "react";
 import { FileData } from "react-diff-view";
