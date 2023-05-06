@@ -1,13 +1,11 @@
-"use client";
-
-import { HStack } from "@chakra-ui/react";
+import Stack from "^/components/ui/Stack";
 import { FlagSkeleton } from "./Flag";
 
 const BundlephobiaFlagsSkeleton = () => (
-    <HStack>
+    <Stack direction="h">
         <FlagSkeleton />
         <FlagSkeleton />
-    </HStack>
+    </Stack>
 );
 
 export default BundlephobiaFlagsSkeleton;
