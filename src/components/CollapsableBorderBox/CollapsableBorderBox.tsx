@@ -27,7 +27,7 @@ const CollapsableBorderBox = forwardRef<
                 {header}
             </CollapsableBorderBoxHeader>
             {isExpanded ? (
-                <div className="overflow-auto">{children}</div>
+                <div className="mt-[-1px] overflow-auto">{children}</div>
             ) : null}
         </BorderBox>
     );

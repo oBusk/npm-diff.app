@@ -21,7 +21,11 @@ const CollapsableBorderBoxHeader = forwardRef<
 
         return (
             <div
-                className={cx("border-b items-center p-2 flex", className)}
+                className={cx(
+                    "flex items-center p-2",
+                    isExpanded && "border-b",
+                    className,
+                )}
                 {...props}
                 ref={ref}
             >
