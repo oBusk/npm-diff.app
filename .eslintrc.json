@@ -55,7 +55,7 @@
     ],
     "settings": {
         "tailwindcss": {
-            "callees": ["clsx", "cn", "cva", "twMerge"]
+            "callees": ["clsx", "cx", "cva", "twMerge"]
         }
     }
 }
