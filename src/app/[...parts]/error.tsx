@@ -15,13 +15,13 @@ const DiffError: ErrorComponent = ({ error: error, reset }) => {
     }, [message]);
 
     return (
-        <div className="start-1/2 top-1/2 translate-x-1/2 translate-y-1/2">
-            <ErrorBox>
-                <h3>Something Went Wrong</h3>
-                <Code className="max-w-2xl">{`${message}`}</Code>
-                <Button onClick={reset}>Try Again</Button>
-            </ErrorBox>
-        </div>
+        <ErrorBox className="flex flex-col items-start gap-2 self-center">
+            <h3>Something Went Wrong</h3>
+            <Code className="max-w-2xl">{`${message}`}</Code>
+            <Button onClick={reset} variant="outline">
+                Try Again
+            </Button>
+        </ErrorBox>
     );
 };
 

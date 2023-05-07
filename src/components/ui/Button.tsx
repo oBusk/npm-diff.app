@@ -24,11 +24,22 @@ export const buttonVariants = cva(
                 sm: "h-9 rounded-md px-3",
                 lg: "h-11 rounded-md px-8",
             },
+            isActive: {
+                true: null,
+                false: null,
+            },
         },
         defaultVariants: {
             variant: "default",
             size: "default",
         },
+        compoundVariants: [
+            {
+                variant: "outline",
+                isActive: true,
+                class: "bg-muted text-muted-foreground",
+            },
+        ],
     },
 );
 
@@ -39,11 +50,19 @@ export interface ButtonProps
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, size, asChild = false, ...props }, ref) => {
+    (
+        { variant, size, isActive, asChild = false, className, ...props },
+        ref,
+    ) => {
         const Comp = asChild ? Slot : "button";
         return (
             <Comp
-                className={buttonVariants({ variant, size, className })}
+                className={buttonVariants({
+                    variant,
+                    size,
+                    isActive,
+                    className,
+                })}
                 ref={ref}
                 {...props}
             />

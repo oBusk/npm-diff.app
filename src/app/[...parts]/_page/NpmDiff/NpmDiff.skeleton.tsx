@@ -9,8 +9,11 @@ export interface NpmDiffSkeletonProps extends ComponentProps<"div"> {}
 const NpmDiffSkeleton = forwardRef<HTMLDivElement, NpmDiffSkeletonProps>(
     (props, ref) => (
         <div {...props} ref={ref}>
-            <Stack direction="h" className="w-full justify-between">
-                <Skeleton className="h-1 w-[400px]" />
+            <Stack
+                direction="h"
+                className="w-full items-center justify-between"
+            >
+                <Skeleton className="mt-1 h-2 w-64" />
                 <Suspense>
                     <ViewTypeSwitch />
                 </Suspense>

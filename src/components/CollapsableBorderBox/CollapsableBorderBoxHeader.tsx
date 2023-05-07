@@ -1,40 +1,50 @@
-import { ChevronDownIcon, ChevronRightIcon } from "@chakra-ui/icons";
-import { Flex, FlexProps, forwardRef, IconButton } from "@chakra-ui/react";
+import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
+import { ComponentProps, forwardRef } from "react";
 import Tooltip from "^/components/ui/Tooltip";
+import { cx } from "^/lib/cva";
+import Button from "../ui/Button";
 
-export interface CollapsableBorderBoxHeaderProps extends FlexProps {
+export interface CollapsableBorderBoxHeaderProps extends ComponentProps<"div"> {
     isExpanded: boolean;
     toggleIsExpanded: () => void;
 }
 
 const CollapsableBorderBoxHeader = forwardRef<
-    CollapsableBorderBoxHeaderProps,
-    "div"
->(({ isExpanded, toggleIsExpanded, title, children, ...props }, ref) => {
-    const label = isExpanded ? "Collapse" : "Expand";
+    HTMLDivElement,
+    CollapsableBorderBoxHeaderProps
+>(
+    (
+        { isExpanded, toggleIsExpanded, title, children, className, ...props },
+        ref,
+    ) => {
+        const label = isExpanded ? "Collapse" : "Expand";
 
-    return (
-        <Flex
-            borderBottomWidth={1}
-            alignItems="center"
-            padding="8px"
-            {...props}
-            ref={ref}
-        >
-            <Tooltip label={label}>
-                <IconButton
-                    onClick={() => toggleIsExpanded()}
-                    aria-label={label}
-                    size="sm"
-                    icon={
-                        isExpanded ? <ChevronDownIcon /> : <ChevronRightIcon />
-                    }
-                    marginRight="10px"
-                />
-            </Tooltip>
-            {children}
-        </Flex>
-    );
-});
+        return (
+            <div
+                className={cx("border-b items-center p-2 flex", className)}
+                {...props}
+                ref={ref}
+            >
+                <Tooltip label={label}>
+                    <Button
+                        size="xs"
+                        variant="secondary"
+                        onClick={() => toggleIsExpanded()}
+                        aria-label={label}
+                        className="mr-2"
+                    >
+                        {isExpanded ? (
+                            <ChevronDownIcon />
+                        ) : (
+                            <ChevronRightIcon />
+                        )}
+                    </Button>
+                </Tooltip>
+                {children}
+            </div>
+        );
+    },
+);
+CollapsableBorderBoxHeader.displayName = "CollapsableBorderBoxHeader";
 
 export default CollapsableBorderBoxHeader;
