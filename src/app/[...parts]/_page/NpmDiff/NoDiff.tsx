@@ -1,28 +1,36 @@
-"use client";
-
-import { Box, Code, Heading, Text } from "@chakra-ui/react";
+import { ComponentProps, forwardRef } from "react";
+import Code from "^/components/ui/Code";
+import Heading from "^/components/ui/Heading";
+import { cx } from "^/lib/cva";
 import SimplePackageSpec from "^/lib/SimplePackageSpec";
 
-export interface NoDiffProps {
+export interface NoDiffProps extends ComponentProps<"section"> {
     a: SimplePackageSpec;
     b: SimplePackageSpec;
 }
 
-const NoDiff = ({ a, b }: NoDiffProps) => (
-    <Box padding="3em" textAlign="center">
-        <Text fontSize="32">📦🔃</Text>
-        <Heading as="h3" marginBottom="1em">
-            There&apos;s nothing to compare!
-        </Heading>
-        <Text as={Code}>
-            {a.name}@{a.version}
-        </Text>{" "}
-        and{" "}
-        <Text as={Code}>
-            {b.name}@{b.version}
-        </Text>{" "}
-        are identical.
-    </Box>
+const NoDiff = forwardRef<HTMLElement, NoDiffProps>(
+    ({ a, b, className, ...props }, ref) => (
+        <section
+            className={cx("p-12 text-center", className)}
+            ref={ref}
+            {...props}
+        >
+            <p className="text-4xl">📦🔃</p>
+            <Heading h={3} className="mb-4">
+                There&apos;s nothing to compare!
+            </Heading>
+            <Code>
+                {a.name}@{a.version}
+            </Code>{" "}
+            and{" "}
+            <Code>
+                {b.name}@{b.version}
+            </Code>{" "}
+            are identical.
+        </section>
+    ),
 );
+NoDiff.displayName = "NoDiff";
 
 export default NoDiff;
