@@ -2,22 +2,23 @@
 
 import { Moon, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";
-import { forwardRef, useEffect, useState } from "react";
+import { forwardRef } from "react";
 import Button, { ButtonProps } from "^/components/ui/Button";
 import Tooltip from "^/components/ui/Tooltip";
 import { cx } from "^/lib/cva";
+import useMounted from "^/lib/utils/useMounted";
 
 export interface ColorModeToggleProps extends ButtonProps {}
 
 const ColorModeToggle = forwardRef<HTMLButtonElement, ColorModeToggleProps>(
     ({ className, ...props }, ref) => {
-        const [mounted, setMounted] = useState(false);
-        const { setTheme, theme } = useTheme();
-
-        useEffect(() => setMounted(true), []);
+        const mounted = useMounted();
+        const { setTheme, resolvedTheme } = useTheme();
 
         const label = mounted
-            ? `Switch to ${theme === "dark" ? "Light Mode" : "Dark Mode"}`
+            ? `Switch to ${
+                  resolvedTheme === "dark" ? "Light Mode" : "Dark Mode"
+              }`
             : "Loading...";
 
         return (
@@ -26,7 +27,7 @@ const ColorModeToggle = forwardRef<HTMLButtonElement, ColorModeToggleProps>(
                     variant="ghost"
                     size="xs"
                     onClick={() =>
-                        setTheme(theme === "dark" ? "light" : "dark")
+                        setTheme(resolvedTheme === "dark" ? "light" : "dark")
                     }
                     aria-label={label}
                     className={cx(
@@ -37,7 +38,11 @@ const ColorModeToggle = forwardRef<HTMLButtonElement, ColorModeToggleProps>(
                     {...props}
                     ref={ref}
                 >
-                    {mounted && theme === "dark" ? <SunMedium /> : <Moon />}
+                    {mounted && resolvedTheme === "dark" ? (
+                        <SunMedium />
+                    ) : (
+                        <Moon />
+                    )}
                 </Button>
             </Tooltip>
         );
