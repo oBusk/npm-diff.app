@@ -36,17 +36,21 @@ const DiffIntro = forwardRef<ElementRef<typeof Stack>, DiffIntroProps>(
                 <Heading className="mb-6 w-full text-center text-sm">
                     <span>Comparing</span>
                     <Halfs
-                        left={<SpecBox pkg={a} />}
+                        left={<SpecBox pkg={a} pkgClassName="rounded-r-none" />}
                         center={
                             <span>
-                                <Code>...</Code>
+                                <Code className="rounded-none">...</Code>
                             </span>
                         }
-                        right={<SpecBox pkg={b} />}
+                        right={
+                            <SpecBox pkg={b} pkgClassName="rounded-l-none" />
+                        }
                     />
                 </Heading>
                 {services}
-                <h3 className="text-sm">npm diff</h3>
+                <Heading h={3} className="mt-4 text-sm">
+                    npm diff
+                </Heading>
                 <Options options={options} />
                 {/* <Command
                     aName={a.name}

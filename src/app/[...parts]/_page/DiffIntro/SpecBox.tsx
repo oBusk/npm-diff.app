@@ -5,12 +5,13 @@ import ServiceLinks from "./ServiceLinks";
 
 interface SpecBoxProps extends HTMLAttributes<HTMLElement> {
     pkg: SimplePackageSpec;
+    pkgClassName?: string;
 }
 
 const SpecBox = forwardRef<HTMLElement, SpecBoxProps>(
-    ({ pkg, ...props }, ref) => (
+    ({ pkg, pkgClassName, ...props }, ref) => (
         <section {...props} ref={ref}>
-            <Pkg pkg={pkg} />
+            <Pkg pkg={pkg} className={pkgClassName} />
             <div>
                 <ServiceLinks pkg={pkg} />
             </div>

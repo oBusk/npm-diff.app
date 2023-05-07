@@ -33,14 +33,14 @@ const CollapsableBorderBoxHeader = forwardRef<
                     <Button
                         size="xs"
                         variant="secondary"
-                        onClick={() => toggleIsExpanded()}
+                        onClick={toggleIsExpanded}
                         aria-label={label}
                         className="mr-2"
                     >
                         {isExpanded ? (
-                            <ChevronDownIcon />
+                            <ChevronDownIcon className="stroke-current" />
                         ) : (
-                            <ChevronRightIcon />
+                            <ChevronRightIcon className="stroke-current" />
                         )}
                     </Button>
                 </Tooltip>

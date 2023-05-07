@@ -60,7 +60,7 @@ const SizeText: FunctionComponent<{
     baseBytes?: number;
 }> = ({ bytes, color, baseBytes }) => (
     <p>
-        <span color={color}>{prettyByte(bytes)}</span>
+        <span style={{ color }}>{prettyByte(bytes)}</span>
         {baseBytes != null && baseBytes != 0 && (
             <small>{byteDifferance(baseBytes, bytes)}</small>
         )}
@@ -113,7 +113,9 @@ const SizeComparison = ({
     const service = Services[serviceName];
     return (
         <>
-            <Heading className="text-xs">{service.name}</Heading>
+            <Heading h={3} className="text-xs">
+                {service.name}
+            </Heading>
             {flags}
             <Halfs
                 className="w-full"
