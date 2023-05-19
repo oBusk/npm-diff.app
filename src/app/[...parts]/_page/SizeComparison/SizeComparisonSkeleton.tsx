@@ -20,7 +20,7 @@ export interface SizeComparisonSkeletonProps {
 const Side = ({ className, ...props }: ComponentProps<"div">) => (
     <div
         className={cx(
-            "justify-evenly flex flex-col align items-center",
+            "flex flex-col items-center justify-evenly",
             COMMON_PADDING,
             className,
         )}

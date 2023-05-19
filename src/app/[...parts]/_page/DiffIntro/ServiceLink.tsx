@@ -18,7 +18,7 @@ const ServiceLink = forwardRef<
     <ServiceTooltip serviceName={service.name} pkg={pkg}>
         <ExternalLink
             href={service.url(pkg)}
-            className={cx("p-[0.1em] inline-block", className)}
+            className={cx("inline-block p-[0.1em]", className)}
             {...props}
             ref={ref}
         >

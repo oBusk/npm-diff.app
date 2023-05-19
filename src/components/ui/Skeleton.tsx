@@ -4,7 +4,7 @@ import { cx } from "^/lib/cva";
 function Skeleton({ className, ...props }: ComponentProps<"div">) {
     return (
         <div
-            className={cx("rounded-md bg-muted animate-pulse", className)}
+            className={cx("animate-pulse rounded-md bg-muted", className)}
             {...props}
         />
     );

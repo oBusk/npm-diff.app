@@ -13,7 +13,7 @@ const DiffPlaceholder = forwardRef<
 >(({ reason, className, ...props }, ref) => (
     <Stack
         align="center"
-        className={cx("p-8 cursor-pointer", className)}
+        className={cx("cursor-pointer p-8", className)}
         {...props}
         ref={ref}
     >
