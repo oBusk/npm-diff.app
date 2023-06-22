@@ -55,7 +55,7 @@
         "react-diff-view": "^3.0.3",
         "react-div-100vh": "^0.7.0",
         "react-dom": "^18.2.0",
-        "react-icons": "^4.9.0",
+        "react-icons": "^4.10.1",
         "react-use": "^17.4.0",
         "semver": "^7.5.2",
         "validate-npm-package-name": "^5.0.0"
