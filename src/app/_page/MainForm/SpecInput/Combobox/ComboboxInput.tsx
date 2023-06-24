@@ -8,9 +8,9 @@ const ComboboxInput = forwardRef<ComboboxInputProps, "input">(
     ({ isOpen, ...props }, ref) => (
         <Input
             type="text"
-            borderBottomRadius={isOpen ? "0" : undefined}
             ref={ref}
             {...props}
+            borderBottomRadius={isOpen ? 0 : undefined}
         />
     ),
 );
