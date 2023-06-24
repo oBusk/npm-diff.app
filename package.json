@@ -55,9 +55,9 @@
         "react-diff-view": "^3.0.3",
         "react-div-100vh": "^0.7.0",
         "react-dom": "^18.2.0",
-        "react-icons": "^4.9.0",
+        "react-icons": "^4.10.1",
         "react-use": "^17.4.0",
-        "semver": "^7.5.2",
+        "semver": "^7.5.3",
         "validate-npm-package-name": "^5.0.0"
     },
     "devDependencies": {
@@ -68,7 +68,7 @@
         "@types/node": "^20.3.1",
         "@types/npm-package-arg": "^6.1.1",
         "@types/pacote": "^11.1.5",
-        "@types/react": "^18.2.13",
+        "@types/react": "^18.2.14",
         "@types/react-dom": "^18.2.6",
         "@types/semver": "^7.5.0",
         "@types/validate-npm-package-name": "^4.0.0",
