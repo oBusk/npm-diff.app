@@ -52,6 +52,9 @@ const themeOverride: ThemeOverride = {
     config,
     styles: {
         global: {
+            body: {
+                minHeight: "100svh",
+            },
             html: {
                 minWidth: "sm",
             },
