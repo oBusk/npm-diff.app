@@ -72,7 +72,7 @@ const DiffPage = async ({
         );
 
         return (
-            <Suspense fallback={<div>Loading...</div>}>
+            <>
                 <DiffIntro
                     alignSelf="stretch"
                     a={a}
@@ -80,7 +80,6 @@ const DiffPage = async ({
                     services={
                         <>
                             <Suspense fallback={<BundlephobiaDiffSkeleton />}>
-                                {/* @ts-expect-error Server Component */}
                                 <BundlephobiaDiff
                                     a={a}
                                     b={b}
@@ -88,7 +87,6 @@ const DiffPage = async ({
                                 />
                             </Suspense>
                             <Suspense fallback={<PackagephobiaDiffSkeleton />}>
-                                {/* @ts-expect-error Server Component */}
                                 <PackagephobiaDiff
                                     a={a}
                                     b={b}
@@ -100,7 +98,6 @@ const DiffPage = async ({
                     options={options}
                 />
                 <Suspense fallback={<NpmDiffSkeleton flex="1" />}>
-                    {/* @ts-expect-error Server Component */}
                     <NpmDiff
                         a={a}
                         b={b}
@@ -108,7 +105,7 @@ const DiffPage = async ({
                         options={options}
                     />
                 </Suspense>
-            </Suspense>
+            </>
         );
     }
 };

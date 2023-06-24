@@ -4,7 +4,6 @@ import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraBaseProvider, ColorModeScript, Stack } from "@chakra-ui/react";
 import { Analytics } from "@vercel/analytics/react";
 import { PropsWithChildren } from "react";
-import Div100vh from "react-div-100vh";
 import theme from "^/theme";
 import Footer from "./_layout/Footer";
 import Header from "./_layout/Header";
@@ -17,7 +16,7 @@ const LayoutClient = ({ children }: PropsWithChildren<{}>) => (
         <CacheProvider>
             <ChakraBaseProvider theme={theme}>
                 <Stack
-                    as={Div100vh}
+                    minHeight="100svh"
                     justifyContent="space-between"
                     overflow="auto"
                     paddingRight={PADDING}
