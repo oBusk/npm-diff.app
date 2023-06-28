@@ -54,10 +54,13 @@ const DiffPage = async ({
     );
 
     if (redirectTarget !== false) {
+        const specsStr = specsToDiff(canonicalSpecs);
+        const searchStr = Object.entries(searchParams)
+            .map(([key, value]) => `${key}=${value}`)
+            .join("&");
+
         redirect(
-            `/${specsToDiff(canonicalSpecs)}?${Object.entries(searchParams)
-                .map(([key, value]) => `${key}=${value}`)
-                .join("&")}`,
+            `/${specsStr}` + (searchStr?.length > 0 ? `?${searchStr}` : ""),
         );
     } else {
         const options = parseQuery({
