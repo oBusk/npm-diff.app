@@ -1,7 +1,7 @@
 import { useSearchParams } from "next/navigation";
 import { type ViewType } from "react-diff-view";
 import { useMedia } from "react-use";
-import { DIFF_TYPE_PARAM_NAME } from "^/app/[...parts]/_page/paramNames";
+import { DIFF_TYPE_PARAM_NAME } from "^/app/diff/[a]/[b]/_page/paramNames";
 
 export default function useViewType(): ViewType {
     const searchParams = useSearchParams();

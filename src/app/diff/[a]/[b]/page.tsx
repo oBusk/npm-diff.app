@@ -15,14 +15,16 @@ import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 
 export interface DiffPageProps {
-    params: { parts: string | string[] };
+    params: { a: string; b: string };
     searchParams: QueryParams & { [DIFF_TYPE_PARAM_NAME]: ViewType };
 }
 
-export function generateMetadata({ params: { parts } }: DiffPageProps) {
-    const specs = splitParts(decodeParts(parts));
+export function generateMetadata({ params: { a: _a, b: _b } }: DiffPageProps) {
+    _a = decodeURIComponent(_a);
+    _b = decodeURIComponent(_b);
 
-    const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
+    const a = createSimplePackageSpec(_a);
+    const b = createSimplePackageSpec(_b);
 
     return {
         title: `Comparing ${simplePackageSpecToString(a)}...${simplePackageSpecToString(b)}`,
@@ -31,12 +33,15 @@ export function generateMetadata({ params: { parts } }: DiffPageProps) {
 }
 
 const DiffPage = async ({
-    params: { parts },
+    params: { a: _a, b: _b },
     searchParams,
 }: DiffPageProps): Promise<JSX.Element> => {
     const { diffFiles, ...optionsQuery } = searchParams;
 
-    const specsOrVersions = splitParts(decodeParts(parts));
+    const specsOrVersions: [string, string] = [
+        decodeURIComponent(_a),
+        decodeURIComponent(_b),
+    ];
     const { redirect: redirectTarget, canonicalSpecs } =
         await destination(specsOrVersions);
 
