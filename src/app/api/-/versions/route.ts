@@ -32,14 +32,17 @@ export async function GET(request: Request) {
      * }
      * ```
      */
-    const versionToTags = Object.entries(tags).reduce((acc, [tag, version]) => {
-        if (acc[version]) {
-            acc[version].push(tag);
-        } else {
-            acc[version] = [tag];
-        }
-        return acc;
-    }, {} as Record<string, string[]>);
+    const versionToTags = Object.entries(tags).reduce(
+        (acc, [tag, version]) => {
+            if (acc[version]) {
+                acc[version].push(tag);
+            } else {
+                acc[version] = [tag];
+            }
+            return acc;
+        },
+        {} as Record<string, string[]>,
+    );
     const versions = Object.values(result.versions).map(({ version }) => ({
         version,
         tags: versionToTags[version],
