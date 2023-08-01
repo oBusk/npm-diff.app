@@ -44,6 +44,12 @@ const CenterInputAddon = forwardRef<InputAddonProps, typeof InputAddon>(
                 sx={{
                     ...addonStyles,
                     ...placementStyles,
+                    // This is obviously terrible but I absolutely CBA wrestling with chakra's nonsense
+                    fontSize: "16px",
+                    paddingInlineStart: "16px",
+                    paddingInlineEnd: "16px",
+                    borderRadius: "0",
+                    height: "40px",
                 }}
             />
         );
