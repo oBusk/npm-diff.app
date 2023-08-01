@@ -1,3 +1,5 @@
+"use client";
+
 import { Box, forwardRef, useBoolean } from "@chakra-ui/react";
 import { ReactNode } from "react";
 import BorderBox, { BorderBoxProps } from "../BorderBox";
