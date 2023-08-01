@@ -21,8 +21,7 @@ import {
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import { cx } from "^/lib/cva";
 import CenterInputAddon from "./CenterInputAddon";
-import SpecInput from "./SpecInput";
-import { SpecInputRef } from "./SpecInput/SpecInput";
+import SpecInput, { SpecInputRef } from "./SpecInput";
 
 export interface MainFormProps extends HTMLAttributes<HTMLFormElement> {
     overrideA: string | null;
