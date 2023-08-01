@@ -106,9 +106,9 @@ export const useNpmCombobox = ({
         },
     });
 
-    const getInputProps = useCallback<typeof combobox.getInputProps>(
+    const getInputProps = useCallback<typeof combobox.getInputProps<{}>>(
         (props, otherOptions) =>
-            combobox.getInputProps(
+            combobox.getInputProps<{}>(
                 {
                     ...props,
                     onKeyDown: (event) => {
