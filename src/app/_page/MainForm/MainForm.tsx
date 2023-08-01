@@ -12,6 +12,7 @@ import Tooltip from "^/components/Tooltip";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
+import { SpecInputRef } from "./SpecInput/SpecInput";
 
 const SIZE = "md";
 
@@ -36,7 +37,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         },
         ref,
     ) => {
-        const bRef = useRef<HTMLInputElement>(null);
+        const bRef = useRef<SpecInputRef>(null);
         const [a, setA] = useState<string>("");
         const [b, setB] = useState<string>("");
 
@@ -115,7 +116,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                 </CenterInputAddon>
                 <SpecInput
                     id="b"
-                    inputRef={bRef}
+                    ref={bRef}
                     inputValue={b}
                     onInputValueChange={setB}
                     optionalPackageFilter={bPackageFilter}

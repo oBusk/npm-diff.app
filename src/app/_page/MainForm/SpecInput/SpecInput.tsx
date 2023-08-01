@@ -1,5 +1,5 @@
 import { Spinner, Text } from "@chakra-ui/react";
-import { FunctionComponent, RefObject } from "react";
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import {
     useNpmCombobox,
@@ -17,10 +17,13 @@ import {
 } from "./Combobox";
 import Suggestion from "./Suggestion";
 
+export interface SpecInputRef {
+    focus: () => void;
+}
+
 export interface SpecInputProps extends Omit<UseNpmComboboxProps, "fallback"> {
     wrapperProps?: ComboboxWrapperProps;
     inputProps?: Omit<ComboboxInputProps, "isOpen">;
-    inputRef?: RefObject<HTMLInputElement>;
     size: ComboboxBoxProps["size"];
     fallbackSuggestions?: AutocompleteSuggestion[];
 }
@@ -37,70 +40,92 @@ const SuggestionListText = ({
     </Text>
 );
 
-const SpecInput: FunctionComponent<SpecInputProps> = ({
-    wrapperProps = {},
-    inputProps = {},
-    inputRef,
-    size,
-    fallbackSuggestions = [],
+const SpecInput = forwardRef<SpecInputRef, SpecInputProps>(
+    (
+        {
+            wrapperProps = {},
+            inputProps = {},
+            size,
+            fallbackSuggestions = [],
 
-    ...useNpmComboboxProps
-}) => {
-    const {
-        getInputProps,
-        getItemProps,
-        getMenuProps,
-        highlightedIndex,
-        isOpen,
-        items,
-        loading,
-        error,
-    } = useNpmCombobox({
-        ...useNpmComboboxProps,
-        fallback: fallbackSuggestions,
-    });
+            ...useNpmComboboxProps
+        },
+        ref,
+    ) => {
+        const inputRef = useRef<HTMLInputElement>(null);
 
-    return (
-        <ComboboxWrapper width="100%" maxWidth="20em" {...wrapperProps}>
-            <ComboboxBox size={size}>
-                <ComboboxInput
-                    isOpen={isOpen}
-                    {...getInputProps({
-                        ref: inputRef,
-                    })}
-                    {...inputProps}
-                />
-            </ComboboxBox>
-            <ComboboxSuggestionList {...getMenuProps()}>
-                {isOpen ? (
-                    <>
-                        {error ? (
-                            <SuggestionListText error={true}>
-                                Something went wrong.
-                            </SuggestionListText>
-                        ) : items.length === 0 ? (
-                            <SuggestionListText>
-                                No suggestions
-                            </SuggestionListText>
-                        ) : (
-                            items.map((item, index) => (
-                                <ComboboxSuggestion
-                                    key={item.value}
-                                    highlighted={index === highlightedIndex}
-                                    {...getItemProps({ item, index })}
-                                >
-                                    <Suggestion item={item} />
-                                </ComboboxSuggestion>
-                            ))
-                        )}
-                        {loading ? (
-                            <Spinner position="absolute" right={2} bottom={2} />
-                        ) : null}
-                    </>
-                ) : null}
-            </ComboboxSuggestionList>
-        </ComboboxWrapper>
-    );
-};
+        const {
+            error,
+            getInputProps,
+            getItemProps,
+            getMenuProps,
+            highlightedIndex,
+            isOpen,
+            items,
+            loading,
+            openMenu,
+        } = useNpmCombobox({
+            ...useNpmComboboxProps,
+            fallback: fallbackSuggestions,
+        });
+
+        useImperativeHandle(
+            ref,
+            (): SpecInputRef => ({
+                focus: () => {
+                    inputRef.current?.focus();
+                    openMenu();
+                },
+            }),
+        );
+
+        return (
+            <ComboboxWrapper width="100%" maxWidth="20em" {...wrapperProps}>
+                <ComboboxBox size={size}>
+                    <ComboboxInput
+                        isOpen={isOpen}
+                        {...getInputProps({
+                            ref: inputRef,
+                        })}
+                        {...inputProps}
+                    />
+                </ComboboxBox>
+                <ComboboxSuggestionList {...getMenuProps()}>
+                    {isOpen ? (
+                        <>
+                            {error ? (
+                                <SuggestionListText error={true}>
+                                    Something went wrong.
+                                </SuggestionListText>
+                            ) : items.length === 0 ? (
+                                <SuggestionListText>
+                                    No suggestions
+                                </SuggestionListText>
+                            ) : (
+                                items.map((item, index) => (
+                                    <ComboboxSuggestion
+                                        key={item.value}
+                                        highlighted={index === highlightedIndex}
+                                        {...getItemProps({ item, index })}
+                                    >
+                                        <Suggestion item={item} />
+                                    </ComboboxSuggestion>
+                                ))
+                            )}
+                            {loading ? (
+                                <Spinner
+                                    position="absolute"
+                                    right={2}
+                                    bottom={2}
+                                />
+                            ) : null}
+                        </>
+                    ) : null}
+                </ComboboxSuggestionList>
+            </ComboboxWrapper>
+        );
+    },
+);
+SpecInput.displayName = "SpecInput";
 
 export default SpecInput;
