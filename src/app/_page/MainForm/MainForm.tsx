@@ -22,6 +22,7 @@ import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import { cx } from "^/lib/cva";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput from "./SpecInput";
+import { SpecInputRef } from "./SpecInput/SpecInput";
 
 export interface MainFormProps extends HTMLAttributes<HTMLFormElement> {
     overrideA: string | null;
@@ -45,7 +46,7 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
         },
         ref,
     ) => {
-        const bRef = useRef<HTMLInputElement>(null);
+        const bRef = useRef<SpecInputRef>(null);
         const [a, setA] = useState<string>("");
         const [b, setB] = useState<string>("");
 
@@ -123,7 +124,7 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                 </CenterInputAddon>
                 <SpecInput
                     id="b"
-                    inputRef={bRef}
+                    ref={bRef}
                     inputValue={b}
                     onInputValueChange={setB}
                     optionalPackageFilter={bPackageFilter}
