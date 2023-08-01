@@ -11,8 +11,7 @@ import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
 import Tooltip from "^/components/Tooltip";
 import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import CenterInputAddon from "./CenterInputAddon";
-import SpecInput from "./SpecInput";
-import { SpecInputRef } from "./SpecInput/SpecInput";
+import SpecInput, { SpecInputRef } from "./SpecInput";
 
 const SIZE = "md";
 
