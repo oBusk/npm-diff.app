@@ -119,7 +119,7 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                     fallbackSuggestions={fallbackSuggestions}
                 ></SpecInput>
                 <CenterInputAddon className="hidden lg:flex">
-                    ...
+                    <span>...</span>
                 </CenterInputAddon>
                 <SpecInput
                     id="b"
