@@ -80,7 +80,7 @@
         "eslint-plugin-testing-library": "^5.11.0",
         "jest-environment-jsdom": "^29.6.2",
         "lint-staged": "^13.2.3",
-        "prettier": "^3.0.0",
+        "prettier": "^3.0.1",
         "simple-git-hooks": "^2.9.0",
         "typescript": "5.1.6"
     }
