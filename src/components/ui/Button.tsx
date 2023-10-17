@@ -1,5 +1,4 @@
 import { Slot } from "@radix-ui/react-slot";
-import { Loader2 } from "lucide-react";
 import { ButtonHTMLAttributes, forwardRef } from "react";
 import { cva, VariantProps } from "^/lib/cva";
 
@@ -29,10 +28,6 @@ export const buttonVariants = cva(
                 true: null,
                 false: null,
             },
-            spinner: {
-                true: null,
-                false: null,
-            },
         },
         defaultVariants: {
             variant: "default",
@@ -56,17 +51,7 @@ export interface ButtonProps
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     (
-        {
-            variant,
-            size,
-            isActive,
-            spinner,
-            disabled,
-            asChild = false,
-            className,
-            children,
-            ...props
-        },
+        { variant, size, isActive, asChild = false, className, ...props },
         ref,
     ) => {
         const Comp = asChild ? Slot : "button";
@@ -78,19 +63,9 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
                     isActive,
                     className,
                 })}
-                disabled={disabled || spinner ? true : undefined}
                 ref={ref}
                 {...props}
-            >
-                {spinner ? (
-                    <div className="absolute inset-0 flex items-center justify-center">
-                        <Loader2 className="animate-spin" />
-                    </div>
-                ) : null}
-                <span className={spinner ? "invisible" : undefined}>
-                    {children}
-                </span>
-            </Comp>
+            />
         );
     },
 );
