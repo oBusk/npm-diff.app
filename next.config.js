@@ -12,6 +12,5 @@ module.exports = {
             "npm-package-arg",
             "pacote",
         ],
-        appDir: true,
     },
 };
