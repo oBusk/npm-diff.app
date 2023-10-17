@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom/extend-expect";
+import "@testing-library/jest-dom";
 
 // Override the react.cache method to avoid caching in tests
 jest.mock("react", () => {
