@@ -153,11 +153,17 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                                     className="relative overflow-hidden"
                                 >
                                     {isLoading ? (
-                                        <div className="absolute inset-0 flex items-center justify-center bg-primary">
+                                        <div className="absolute inset-0 flex items-center justify-center">
                                             <Loader2 className="animate-spin" />
                                         </div>
                                     ) : null}
-                                    npm diff! 📦🔃
+                                    <span
+                                        className={
+                                            isLoading ? "invisible" : undefined
+                                        }
+                                    >
+                                        npm diff! 📦🔃
+                                    </span>
                                 </Button>
                             </span>
                         </TooltipTrigger>
