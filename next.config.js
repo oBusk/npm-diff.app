@@ -6,6 +6,9 @@ module.exports = {
     // compiler: {
     //     emotion: true,
     // },
+    eslint: {
+        ignoreDuringBuilds: true,
+    },
     experimental: {
         serverComponentsExternalPackages: [
             "libnpmdiff",

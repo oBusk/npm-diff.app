@@ -49,9 +49,8 @@ const DiffPage = async ({
     const { diffFiles, ...optionsQuery } = searchParams;
 
     const specsOrVersions = splitParts(decodeParts(parts));
-    const { redirect: redirectTarget, canonicalSpecs } = await destination(
-        specsOrVersions,
-    );
+    const { redirect: redirectTarget, canonicalSpecs } =
+        await destination(specsOrVersions);
 
     if (redirectTarget !== false) {
         const specsStr = specsToDiff(canonicalSpecs);

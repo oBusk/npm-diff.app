@@ -20,9 +20,8 @@ export async function GET(
 
     const specsOrVersions = splitParts(parts);
 
-    const { redirect: red, canonicalSpecs } = await destination(
-        specsOrVersions,
-    );
+    const { redirect: red, canonicalSpecs } =
+        await destination(specsOrVersions);
 
     if (red === false) {
         try {
