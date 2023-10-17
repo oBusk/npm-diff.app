@@ -1,6 +1,5 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
 import npa from "npm-package-arg";
 import {
     FormEventHandler,
@@ -149,14 +148,10 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                                     type="submit"
                                     variant="secondary"
                                     size="default"
-                                    disabled={!a || isLoading}
+                                    disabled={!a}
+                                    spinner={isLoading}
                                     className="relative overflow-hidden"
                                 >
-                                    {isLoading ? (
-                                        <div className="absolute inset-0 flex items-center justify-center bg-primary">
-                                            <Loader2 className="animate-spin" />
-                                        </div>
-                                    ) : null}
                                     npm diff! 📦🔃
                                 </Button>
                             </span>
