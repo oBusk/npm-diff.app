@@ -48,7 +48,7 @@
         "gitdiff-parser": "^0.3.1",
         "jest": "^29.7.0",
         "libnpmdiff": "^6.0.2",
-        "next": "^13.5.5",
+        "next": "^13.5.6",
         "npm-package-arg": "^11.0.1",
         "pacote": "^17.0.4",
         "react": "^18.2.0",
