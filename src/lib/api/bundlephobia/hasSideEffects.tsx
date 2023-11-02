@@ -1,4 +1,4 @@
-import BundlephobiaResponse from "./BundlephobiaResponse";
+import type BundlephobiaResponse from "./BundlephobiaResponse";
 
 function hasSideEffects({
     hasSideEffects,

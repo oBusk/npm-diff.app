@@ -1,9 +1,9 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
-import { ViewType } from "react-diff-view";
+import { type ViewType } from "react-diff-view";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
-import { parseQuery, QueryParams } from "^/lib/query";
+import { parseQuery, type QueryParams } from "^/lib/query";
 import { createSimplePackageSpec } from "^/lib/SimplePackageSpec";
 import decodeParts from "^/lib/utils/decodeParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
@@ -17,7 +17,7 @@ import NpmDiffSkeleton from "./_page/NpmDiff/NpmDiff.skeleton";
 import PackagephobiaDiff, {
     PackagephobiaDiffSkeleton,
 } from "./_page/PackagephobiaDiff";
-import { DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
+import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 
 export interface DiffPageProps {
     params: { parts: string | string[] };

@@ -1,7 +1,7 @@
 import bundlephobia from "^/lib/api/bundlephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
 import { Bundlephobia } from "^/lib/Services";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import measuredPromise from "^/lib/utils/measuredPromise";
 import BundlephobiaFlags, {
     BundlephobiaFlagsSkeleton,

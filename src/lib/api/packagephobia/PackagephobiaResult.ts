@@ -1,4 +1,4 @@
-import PackagephobiaResponse from "./PackagephobiaResponse";
+import type PackagephobiaResponse from "./PackagephobiaResponse";
 
 export default interface PackagephobiaResults {
     a: PackagephobiaResponse;

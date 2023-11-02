@@ -1,6 +1,6 @@
 import getSuggestions from "^/lib/api/npms/suggestions";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
-import AutocompleteSuggestion from "../AutocompleteSuggestion";
+import type AutocompleteSuggestion from "../AutocompleteSuggestion";
 import packageSuggestion from "../packageSuggestion";
 
 async function getAutocompleteSuggestions(

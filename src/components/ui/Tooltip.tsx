@@ -2,11 +2,11 @@
 
 import * as Primitive from "@radix-ui/react-tooltip";
 import {
-    ComponentProps,
-    ComponentPropsWithoutRef,
-    ElementRef,
+    type ComponentProps,
+    type ComponentPropsWithoutRef,
+    type ElementRef,
     forwardRef,
-    ReactNode,
+    type ReactNode,
 } from "react";
 import { cx } from "^/lib/cva";
 

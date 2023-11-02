@@ -1,10 +1,10 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FunctionComponent, useState } from "react";
+import { type FunctionComponent, useState } from "react";
 import { useBoolean } from "react-use";
 import Stack from "^/components/ui/Stack";
-import { AutocompleteSuggestion } from "^/lib/autocomplete";
+import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import ExamplesList from "./_page/ExamplesList";
 import MainForm from "./_page/MainForm/MainForm";

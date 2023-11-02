@@ -1,5 +1,5 @@
-import { forwardRef, HTMLAttributes } from "react";
-import { cva, VariantProps } from "^/lib/cva";
+import { forwardRef, type HTMLAttributes } from "react";
+import { cva, type VariantProps } from "^/lib/cva";
 
 const codeVariants = cva("rounded-sm bg-muted text-sm", {
     variants: {

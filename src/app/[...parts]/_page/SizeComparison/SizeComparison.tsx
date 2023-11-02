@@ -1,9 +1,11 @@
-import { FunctionComponent, ReactNode } from "react";
-import ExternalLink, { ExternalLinkProps } from "^/components/ExternalLink";
+import { type FunctionComponent, type ReactNode } from "react";
+import ExternalLink, {
+    type ExternalLinkProps,
+} from "^/components/ExternalLink";
 import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
-import { Service, ServiceName, Services } from "^/lib/Services";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import { type Service, type ServiceName, Services } from "^/lib/Services";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { prettyByte } from "^/lib/utils/prettyByte";
 import Halfs from "../DiffIntro/Halfs";
 import ServiceTooltip from "../DiffIntro/ServiceTooltip";

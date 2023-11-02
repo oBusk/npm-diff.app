@@ -1,8 +1,8 @@
 "use client";
 
-import { ElementRef, forwardRef, ReactNode } from "react";
+import { type ElementRef, forwardRef, type ReactNode } from "react";
 import { useBoolean } from "react-use";
-import BorderBox, { BorderBoxProps } from "^/components/ui/BorderBox";
+import BorderBox, { type BorderBoxProps } from "^/components/ui/BorderBox";
 import { cx } from "^/lib/cva";
 import CollapsableBorderBoxHeader from "./CollapsableBorderBoxHeader";
 

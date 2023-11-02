@@ -3,7 +3,7 @@
 import { Moon, SunMedium } from "lucide-react";
 import { useTheme } from "next-themes";
 import { forwardRef } from "react";
-import Button, { ButtonProps } from "^/components/ui/Button";
+import Button, { type ButtonProps } from "^/components/ui/Button";
 import Tooltip from "^/components/ui/Tooltip";
 import { cx } from "^/lib/cva";
 import useMounted from "^/lib/utils/useMounted";

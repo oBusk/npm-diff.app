@@ -1,4 +1,4 @@
-import Suggestion, { SuggestionProps } from "./Suggestion";
+import Suggestion, { type SuggestionProps } from "./Suggestion";
 
 export default Suggestion;
 export type { SuggestionProps };

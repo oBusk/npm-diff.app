@@ -1,6 +1,6 @@
-import Flags from "./Flags";
-import Package from "./Package";
-import Score from "./Score";
+import type Flags from "./Flags";
+import type Package from "./Package";
+import type Score from "./Score";
 
 export default interface Result {
     /** The package data which contains the name, version and other useful information */

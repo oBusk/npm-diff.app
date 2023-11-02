@@ -1,9 +1,9 @@
 "use client";
 
-import { ComponentProps, forwardRef } from "react";
-import { FileData } from "react-diff-view";
+import { type ComponentProps, forwardRef } from "react";
+import { type FileData } from "react-diff-view";
 import { cx } from "^/lib/cva";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import useViewType from "^/lib/utils/useViewType";
 import DiffFileComponent from "./DiffFile";
 

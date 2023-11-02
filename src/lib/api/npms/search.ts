@@ -1,5 +1,5 @@
 import NpmsApiUrl from "./NpmsApiUrl";
-import Result from "./Result";
+import type Result from "./Result";
 
 export interface SearchResults {
     total: number;

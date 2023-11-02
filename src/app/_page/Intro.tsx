@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes } from "react";
+import { forwardRef, type HTMLAttributes } from "react";
 import ExternalLink from "^/components/ExternalLink";
 import Code from "^/components/ui/Code";
 

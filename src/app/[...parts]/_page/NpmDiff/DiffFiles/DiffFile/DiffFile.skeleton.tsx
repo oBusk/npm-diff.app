@@ -1,6 +1,6 @@
-import { ElementRef, forwardRef } from "react";
+import { type ElementRef, forwardRef } from "react";
 import CollapsableBorderBox, {
-    CollapsableBorderBoxProps,
+    type CollapsableBorderBoxProps,
 } from "^/components/CollapsableBorderBox";
 import Skeleton from "^/components/ui/Skeleton";
 import { cx } from "^/lib/cva";

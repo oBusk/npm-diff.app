@@ -1,6 +1,8 @@
 import { Github } from "lucide-react";
-import { ElementRef, forwardRef } from "react";
-import ExternalLink, { ExternalLinkProps } from "^/components/ExternalLink";
+import { type ElementRef, forwardRef } from "react";
+import ExternalLink, {
+    type ExternalLinkProps,
+} from "^/components/ExternalLink";
 import { buttonVariants } from "^/components/ui/Button";
 import Tooltip from "^/components/ui/Tooltip";
 

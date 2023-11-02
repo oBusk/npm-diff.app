@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { ElementRef, forwardRef } from "react";
-import Stack, { StackProps } from "^/components/ui/Stack";
+import { type ElementRef, forwardRef } from "react";
+import Stack, { type StackProps } from "^/components/ui/Stack";
 import EXAMPLES from "^/lib/examples";
-import { QueryParams } from "^/lib/query";
+import { type QueryParams } from "^/lib/query";
 
 export interface ExamplesListProps extends StackProps {
     exampleMouseOver: (a: string, b: string) => void;
