@@ -5,9 +5,9 @@ import { useCallback, useMemo, useState } from "react";
 import type { ChangeData, FileData, ViewType } from "react-diff-view";
 import "react-diff-view/style/index.css";
 import CollapsableBorderBox, {
-    CollapsableBorderBoxProps,
+    type CollapsableBorderBoxProps,
 } from "^/components/CollapsableBorderBox";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import countChanges from "^/lib/utils/countChanges";
 import DiffFileHeader from "./DiffFileHeader";

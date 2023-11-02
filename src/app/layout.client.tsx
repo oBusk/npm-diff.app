@@ -3,7 +3,7 @@
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider, ColorModeScript, Stack } from "@chakra-ui/react";
 import { Analytics } from "@vercel/analytics/react";
-import { PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import theme from "^/theme";
 import Footer from "./_layout/Footer";
 import Header from "./_layout/Header";

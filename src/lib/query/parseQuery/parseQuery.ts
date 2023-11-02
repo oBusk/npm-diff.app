@@ -1,5 +1,5 @@
-import { NpmDiffOptions } from "^/lib/npmDiff";
-import QueryParams from "../QueryParams";
+import { type NpmDiffOptions } from "^/lib/npmDiff";
+import type QueryParams from "../QueryParams";
 import parseBoolean from "./parseBoolean";
 import parseNumber from "./parseNumber";
 import parseString from "./parseString";

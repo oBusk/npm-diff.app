@@ -1,6 +1,10 @@
-import { ButtonGroup, ButtonGroupProps, forwardRef } from "@chakra-ui/react";
+import {
+    ButtonGroup,
+    type ButtonGroupProps,
+    forwardRef,
+} from "@chakra-ui/react";
 import { Services } from "^/lib/Services";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import ServiceLink from "./ServiceLink";
 
 export interface ServiceLinksProps extends ButtonGroupProps {

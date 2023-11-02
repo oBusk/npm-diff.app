@@ -1,4 +1,4 @@
-import { Box, BoxProps, chakra } from "@chakra-ui/react";
+import { Box, type BoxProps, chakra } from "@chakra-ui/react";
 
 export type ComboboxWrapperProps = BoxProps;
 

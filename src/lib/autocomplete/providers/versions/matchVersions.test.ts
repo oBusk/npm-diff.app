@@ -1,5 +1,5 @@
-import { Version } from "^/app/api/-/versions/route";
-import { Matched, matchVersions } from "./matchVersions";
+import { type Version } from "^/app/api/-/versions/route";
+import { type Matched, matchVersions } from "./matchVersions";
 
 describe("matchVersions", () => {
     let size: number;

@@ -1,4 +1,4 @@
-import parser, { File } from "gitdiff-parser";
+import parser, { type File } from "gitdiff-parser";
 import adjustDiff from "./adjust";
 
 export default function parse(diff: string | null): File[] {

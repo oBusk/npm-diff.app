@@ -1,6 +1,7 @@
-import TIMED_OUT, { resultOrTimedOut } from "../TimedOut";
-import PackagephobiaResponse from "./PackagephobiaResponse";
-import PackagephobiaResults from "./PackagephobiaResult";
+import type TIMED_OUT from "../TimedOut";
+import { resultOrTimedOut } from "../TimedOut";
+import type PackagephobiaResponse from "./PackagephobiaResponse";
+import type PackagephobiaResults from "./PackagephobiaResult";
 
 async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
     try {

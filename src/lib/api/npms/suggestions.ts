@@ -1,5 +1,5 @@
 import { requestCache30min } from "^/lib/utils/headers";
-import Result from "./Result";
+import type Result from "./Result";
 import { searchUrl } from "./search";
 
 // https://api-docs.npms.io/

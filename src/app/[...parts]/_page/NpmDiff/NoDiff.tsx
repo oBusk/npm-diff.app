@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Code, Heading, Text } from "@chakra-ui/react";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 
 export interface NoDiffProps {
     a: SimplePackageSpec;

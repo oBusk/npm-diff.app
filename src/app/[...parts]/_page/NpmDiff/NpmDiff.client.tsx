@@ -7,7 +7,7 @@ import { ViewType } from "react-diff-view";
 import B from "^/components/B";
 import Span from "^/components/Span";
 import { DIFF_TYPE_PARAM_NAME } from "../paramNames";
-import DiffFiles, { DiffFilesProps } from "./DiffFiles";
+import DiffFiles, { type DiffFilesProps } from "./DiffFiles";
 import ViewTypeSwitch from "./ViewTypeSwitch";
 
 export interface NpmDiffClientProps extends Omit<DiffFilesProps, "viewType"> {

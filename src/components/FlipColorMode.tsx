@@ -1,5 +1,5 @@
 import { ColorModeContext } from "@chakra-ui/react";
-import React, { PropsWithChildren, useContext, useMemo } from "react";
+import React, { type PropsWithChildren, useContext, useMemo } from "react";
 
 /**
  * Provider to flip the color mode to the opposite of the current color mode.

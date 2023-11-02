@@ -1,9 +1,9 @@
 "use client";
 
 import { Link } from "@chakra-ui/next-js";
-import { LinkProps } from "@chakra-ui/react";
+import { type LinkProps } from "@chakra-ui/react";
 import { usePathname } from "next/navigation";
-import { FunctionComponent, useEffect, useState } from "react";
+import { type FunctionComponent, useEffect, useState } from "react";
 
 export interface NavLinkProps extends LinkProps {
     href: string;

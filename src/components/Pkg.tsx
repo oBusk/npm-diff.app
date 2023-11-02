@@ -1,5 +1,5 @@
 import { Code, forwardRef } from "@chakra-ui/react";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 
 export interface PkgProps {
     pkg: SimplePackageSpec;

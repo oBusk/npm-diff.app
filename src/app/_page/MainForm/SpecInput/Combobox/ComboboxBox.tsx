@@ -1,4 +1,4 @@
-import { chakra, InputGroup, InputGroupProps } from "@chakra-ui/react";
+import { chakra, InputGroup, type InputGroupProps } from "@chakra-ui/react";
 
 export type ComboboxBoxProps = InputGroupProps;
 

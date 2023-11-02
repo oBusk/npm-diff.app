@@ -1,4 +1,4 @@
-import { forwardRef, ListItem, ListItemProps } from "@chakra-ui/react";
+import { forwardRef, ListItem, type ListItemProps } from "@chakra-ui/react";
 
 export interface ComboboxSuggestionProps extends ListItemProps {
     highlighted: boolean;

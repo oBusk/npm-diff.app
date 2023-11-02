@@ -1,8 +1,8 @@
 "use client";
 
 import { Box, Flex, Heading, Skeleton, Text, VStack } from "@chakra-ui/react";
-import { ReactNode } from "react";
-import { ServiceName, Services } from "^/lib/Services";
+import { type ReactNode } from "react";
+import { type ServiceName, Services } from "^/lib/Services";
 import Halfs from "../DiffIntro/Halfs";
 
 export interface SkeletonSizeRow {

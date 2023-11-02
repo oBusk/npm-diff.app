@@ -1,4 +1,4 @@
-import { forwardRef, Link, LinkProps } from "@chakra-ui/react";
+import { forwardRef, Link, type LinkProps } from "@chakra-ui/react";
 
 export interface ExternalLinkProps extends LinkProps {}
 

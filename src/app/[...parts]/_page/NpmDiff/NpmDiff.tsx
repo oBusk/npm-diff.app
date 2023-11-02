@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import type { FileData } from "react-diff-view";
 import { gitDiffParse } from "^/lib/gitDiff";
 import npmDiff from "^/lib/npmDiff";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import countChanges from "^/lib/utils/countChanges";
 import NoDiff from "./NoDiff";
 import NpmDiffClient from "./NpmDiff.client";

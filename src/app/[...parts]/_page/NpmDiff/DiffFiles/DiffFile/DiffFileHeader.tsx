@@ -4,15 +4,15 @@ import {
     Heading,
     HStack,
     Skeleton,
-    StackProps,
+    type StackProps,
     VStack,
 } from "@chakra-ui/react";
-import { FunctionComponent } from "react";
+import { type FunctionComponent } from "react";
 import type { FileData } from "react-diff-view";
 import Span from "^/components/Span";
 import Tooltip from "^/components/Tooltip";
 import { unpkg } from "^/lib/Services";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import type { CountedChanges } from "^/lib/utils/countChanges";
 import ServiceIcon from "../../../ServiceIcon";
 

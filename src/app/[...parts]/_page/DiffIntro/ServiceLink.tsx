@@ -1,6 +1,11 @@
-import { forwardRef, IconButton, Link, LinkProps } from "@chakra-ui/react";
-import { Service } from "^/lib/Services";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import {
+    forwardRef,
+    type IconButton,
+    Link,
+    type LinkProps,
+} from "@chakra-ui/react";
+import { type Service } from "^/lib/Services";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import ServiceIcon from "../ServiceIcon";
 import ServiceTooltip from "./ServiceTooltip";
 

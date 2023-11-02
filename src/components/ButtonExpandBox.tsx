@@ -2,7 +2,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "@chakra-ui/icons";
 import {
     Button,
     Flex,
-    FlexProps,
+    type FlexProps,
     forwardRef,
     useBoolean,
 } from "@chakra-ui/react";

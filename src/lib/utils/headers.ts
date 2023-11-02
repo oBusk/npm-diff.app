@@ -1,4 +1,4 @@
-import { ServerResponse } from "http";
+import { type ServerResponse } from "http";
 
 const minute = 60;
 const hour = 60 * minute;

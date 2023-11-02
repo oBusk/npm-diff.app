@@ -1,6 +1,6 @@
 import bundlephobia from "./bundlephobia";
-import BundlephobiaResponse from "./BundlephobiaResponse";
-import BundlephobiaResults from "./BundlephobiaResults";
+import type BundlephobiaResponse from "./BundlephobiaResponse";
+import type BundlephobiaResults from "./BundlephobiaResults";
 import hasSideEffects from "./hasSideEffects";
 import isTreeShakeable from "./isTreeShakeable";
 

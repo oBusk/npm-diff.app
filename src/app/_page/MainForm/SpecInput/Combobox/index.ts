@@ -1,12 +1,12 @@
-import ComboboxBox, { ComboboxBoxProps } from "./ComboboxBox";
-import ComboboxInput, { ComboboxInputProps } from "./ComboboxInput";
+import ComboboxBox, { type ComboboxBoxProps } from "./ComboboxBox";
+import ComboboxInput, { type ComboboxInputProps } from "./ComboboxInput";
 import ComboboxSuggestion, {
-    ComboboxSuggestionProps,
+    type ComboboxSuggestionProps,
 } from "./ComboboxSuggestion";
 import ComboboxSuggestionList, {
-    ComboboxSuggestionListProps,
+    type ComboboxSuggestionListProps,
 } from "./ComboboxSuggestionList";
-import ComboboxWrapper, { ComboboxWrapperProps } from "./ComboboxWrapper";
+import ComboboxWrapper, { type ComboboxWrapperProps } from "./ComboboxWrapper";
 
 export {
     ComboboxBox,

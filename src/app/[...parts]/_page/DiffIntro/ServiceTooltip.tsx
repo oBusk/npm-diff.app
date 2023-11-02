@@ -1,9 +1,9 @@
 import { forwardRef, Text } from "@chakra-ui/react";
 import B from "^/components/B";
 import Pkg from "^/components/Pkg";
-import Tooltip, { TooltipProps } from "^/components/Tooltip";
-import { Service } from "^/lib/Services";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import Tooltip, { type TooltipProps } from "^/components/Tooltip";
+import { type Service } from "^/lib/Services";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 
 export interface ServiceTooltipProps extends TooltipProps {
     pkg: SimplePackageSpec;

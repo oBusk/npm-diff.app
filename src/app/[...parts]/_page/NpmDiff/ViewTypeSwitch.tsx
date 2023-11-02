@@ -2,12 +2,12 @@ import { Link, LinkProps } from "@chakra-ui/next-js";
 import {
     Button,
     ButtonGroup,
-    ButtonGroupProps,
-    ButtonProps,
+    type ButtonGroupProps,
+    type ButtonProps,
     forwardRef,
 } from "@chakra-ui/react";
 import {
-    ReadonlyURLSearchParams,
+    type ReadonlyURLSearchParams,
     usePathname,
     useSearchParams,
 } from "next/navigation";

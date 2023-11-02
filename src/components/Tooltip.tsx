@@ -1,6 +1,6 @@
 import {
     Tooltip as ChakraTooltip,
-    TooltipProps as ChakraTooltipProps,
+    type TooltipProps as ChakraTooltipProps,
     forwardRef,
 } from "@chakra-ui/react";
 import { FlipColorMode } from "./FlipColorMode";

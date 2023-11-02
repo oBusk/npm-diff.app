@@ -4,14 +4,14 @@ import {
     Box,
     Code,
     Flex,
-    FlexProps,
+    type FlexProps,
     forwardRef,
     Heading,
     Text,
 } from "@chakra-ui/react";
-import { ReactNode } from "react";
-import { NpmDiffOptions } from "^/lib/npmDiff";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import { type ReactNode } from "react";
+import { type NpmDiffOptions } from "^/lib/npmDiff";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import Halfs from "./Halfs";
 import Options from "./Options";

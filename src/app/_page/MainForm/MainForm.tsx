@@ -4,14 +4,14 @@ import {
     Code,
     Flex,
     forwardRef,
-    StackProps,
+    type StackProps,
 } from "@chakra-ui/react";
 import npa from "npm-package-arg";
-import { FormEvent, useCallback, useMemo, useRef, useState } from "react";
+import { type FormEvent, useCallback, useMemo, useRef, useState } from "react";
 import Tooltip from "^/components/Tooltip";
-import { AutocompleteSuggestion } from "^/lib/autocomplete";
+import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import CenterInputAddon from "./CenterInputAddon";
-import SpecInput, { SpecInputRef } from "./SpecInput";
+import SpecInput, { type SpecInputRef } from "./SpecInput";
 
 const SIZE = "md";
 

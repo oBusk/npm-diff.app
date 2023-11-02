@@ -1,4 +1,4 @@
-import npa, { AliasResult } from "npm-package-arg";
+import npa, { type AliasResult } from "npm-package-arg";
 import pacote from "pacote";
 import { cache } from "react";
 

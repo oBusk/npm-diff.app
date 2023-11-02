@@ -3,8 +3,8 @@
 import {
     defineStyle,
     extendTheme,
-    ThemeConfig,
-    ThemeOverride,
+    type ThemeConfig,
+    type ThemeOverride,
 } from "@chakra-ui/react";
 import { mode } from "@chakra-ui/theme-tools";
 

@@ -4,9 +4,9 @@ import {
     Tag,
     TagLabel,
     TagLeftIcon,
-    TagProps,
+    type TagProps,
 } from "@chakra-ui/react";
-import { ElementType, ReactNode } from "react";
+import { type ElementType, type ReactNode } from "react";
 import Tooltip from "^/components/Tooltip";
 import TreeshakeIcon from "./assets/TreeshakeIcon";
 

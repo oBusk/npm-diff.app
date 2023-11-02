@@ -1,5 +1,5 @@
-import { IconButton, IconButtonProps } from "@chakra-ui/react";
-import { FunctionComponent } from "react";
+import { IconButton, type IconButtonProps } from "@chakra-ui/react";
+import { type FunctionComponent } from "react";
 import { DiGithubBadge } from "react-icons/di";
 import ExternalLink from "^/components/ExternalLink";
 import Tooltip from "^/components/Tooltip";

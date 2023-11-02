@@ -1,6 +1,6 @@
-import { Flex, FlexProps } from "@chakra-ui/react";
+import { Flex, type FlexProps } from "@chakra-ui/react";
 import { forwardRef } from "@chakra-ui/system";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 
 export interface HalfsProps
     extends Omit<FlexProps, "children" | "left" | "right"> {

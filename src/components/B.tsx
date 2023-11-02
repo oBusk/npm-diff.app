@@ -1,4 +1,4 @@
-import { chakra, HTMLChakraProps } from "@chakra-ui/react";
+import { chakra, type HTMLChakraProps } from "@chakra-ui/react";
 
 export interface BProps extends HTMLChakraProps<"b"> {}
 

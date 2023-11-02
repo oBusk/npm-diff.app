@@ -1,4 +1,4 @@
-import { forwardRef, Input, InputProps } from "@chakra-ui/react";
+import { forwardRef, Input, type InputProps } from "@chakra-ui/react";
 
 export interface ComboboxInputProps extends InputProps {
     isOpen: boolean;

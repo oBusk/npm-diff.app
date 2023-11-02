@@ -1,4 +1,4 @@
-import { forwardRef, HStack, StackProps } from "@chakra-ui/react";
+import { forwardRef, HStack, type StackProps } from "@chakra-ui/react";
 
 export interface FooterProps extends StackProps {}
 

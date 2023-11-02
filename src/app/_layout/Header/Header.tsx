@@ -1,6 +1,6 @@
 import { Link } from "@chakra-ui/next-js";
-import { Box, Flex, FlexProps, Heading, HStack } from "@chakra-ui/react";
-import { FunctionComponent } from "react";
+import { Box, Flex, type FlexProps, Heading, HStack } from "@chakra-ui/react";
+import { type FunctionComponent } from "react";
 import ColorModeToggle from "./ColorModeToggle";
 import { GithubLink } from "./GithubLink";
 import NavLink from "./NavLink";

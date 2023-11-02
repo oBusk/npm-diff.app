@@ -1,9 +1,15 @@
 "use client";
 
-import { Code, forwardRef, HStack, StackProps, Text } from "@chakra-ui/react";
-import { ReactNode } from "react";
 import {
-    BundlephobiaResults,
+    Code,
+    forwardRef,
+    HStack,
+    type StackProps,
+    Text,
+} from "@chakra-ui/react";
+import { type ReactNode } from "react";
+import {
+    type BundlephobiaResults,
     hasSideEffects,
     isTreeShakeable,
 } from "^/lib/api/bundlephobia";

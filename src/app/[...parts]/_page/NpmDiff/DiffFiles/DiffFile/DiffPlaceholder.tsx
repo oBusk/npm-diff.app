@@ -1,4 +1,4 @@
-import { Button, forwardRef, Stack, StackProps } from "@chakra-ui/react";
+import { Button, forwardRef, Stack, type StackProps } from "@chakra-ui/react";
 
 export interface DiffPlaceholderProps extends StackProps {
     reason?: string;

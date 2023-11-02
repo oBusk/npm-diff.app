@@ -2,8 +2,8 @@
 
 import { Stack, useBoolean } from "@chakra-ui/react";
 import { useRouter } from "next/navigation";
-import { FunctionComponent, useState } from "react";
-import { AutocompleteSuggestion } from "^/lib/autocomplete";
+import { type FunctionComponent, useState } from "react";
+import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import ExamplesList from "./_page/ExamplesList";
 import Intro from "./_page/Intro";

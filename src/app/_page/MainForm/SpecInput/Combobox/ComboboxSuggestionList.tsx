@@ -1,4 +1,4 @@
-import { forwardRef, ListProps, UnorderedList } from "@chakra-ui/react";
+import { forwardRef, type ListProps, UnorderedList } from "@chakra-ui/react";
 
 export interface ComboboxSuggestionListProps extends ListProps {}
 

@@ -1,6 +1,6 @@
-import { Box, BoxProps, forwardRef } from "@chakra-ui/react";
+import { Box, type BoxProps, forwardRef } from "@chakra-ui/react";
 import Pkg from "^/components/Pkg";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import ServiceLinks from "./ServiceLinks";
 
 interface SpecBoxProps extends BoxProps {

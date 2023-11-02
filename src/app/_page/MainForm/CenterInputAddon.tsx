@@ -1,8 +1,8 @@
 import {
     chakra,
     forwardRef,
-    InputAddon,
-    InputAddonProps,
+    type InputAddon,
+    type InputAddonProps,
     useMultiStyleConfig,
 } from "@chakra-ui/react";
 

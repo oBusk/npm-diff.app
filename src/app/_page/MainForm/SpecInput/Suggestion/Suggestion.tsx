@@ -1,6 +1,6 @@
 import { HStack, Text } from "@chakra-ui/react";
-import { FunctionComponent } from "react";
-import { AutocompleteSuggestion } from "^/lib/autocomplete";
+import { type FunctionComponent } from "react";
+import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import Title from "./Title";
 import VersionTag from "./VersionTag";
 

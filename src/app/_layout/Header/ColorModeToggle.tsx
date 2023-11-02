@@ -4,7 +4,7 @@ import { MoonIcon, SunIcon } from "@chakra-ui/icons";
 import {
     forwardRef,
     IconButton,
-    IconButtonProps,
+    type IconButtonProps,
     useColorMode,
 } from "@chakra-ui/react";
 import Tooltip from "^/components/Tooltip";

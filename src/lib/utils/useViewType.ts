@@ -1,6 +1,6 @@
 import { useBreakpointValue } from "@chakra-ui/react";
 import { useSearchParams } from "next/navigation";
-import { ViewType } from "react-diff-view";
+import { type ViewType } from "react-diff-view";
 import { DIFF_TYPE_PARAM_NAME } from "^/app/[...parts]/_page/paramNames";
 
 export default function useViewType(): ViewType {

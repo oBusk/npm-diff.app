@@ -1,6 +1,6 @@
 "use client";
 
-import { Box, BoxProps, HStack, Skeleton } from "@chakra-ui/react";
+import { Box, type BoxProps, HStack, Skeleton } from "@chakra-ui/react";
 import { Suspense } from "react";
 import { DiffFilesSkeleton } from "./DiffFiles";
 import ViewTypeSwitch from "./ViewTypeSwitch";

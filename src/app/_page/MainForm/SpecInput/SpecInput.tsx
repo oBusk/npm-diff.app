@@ -1,19 +1,19 @@
 import { Spinner, Text } from "@chakra-ui/react";
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import { AutocompleteSuggestion } from "^/lib/autocomplete";
+import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import {
     useNpmCombobox,
-    UseNpmComboboxProps,
+    type UseNpmComboboxProps,
 } from "^/lib/npm-combobox/useNpmCombobox";
 import {
     ComboboxBox,
-    ComboboxBoxProps,
+    type ComboboxBoxProps,
     ComboboxInput,
-    ComboboxInputProps,
+    type ComboboxInputProps,
     ComboboxSuggestion,
     ComboboxSuggestionList,
     ComboboxWrapper,
-    ComboboxWrapperProps,
+    type ComboboxWrapperProps,
 } from "./Combobox";
 import Suggestion from "./Suggestion";
 

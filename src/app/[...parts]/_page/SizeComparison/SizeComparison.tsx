@@ -1,11 +1,11 @@
 "use client";
 
-import { Box, Flex, Heading, LinkProps, Text } from "@chakra-ui/react";
-import { FunctionComponent, ReactNode } from "react";
+import { Box, Flex, Heading, type LinkProps, Text } from "@chakra-ui/react";
+import { type FunctionComponent, type ReactNode } from "react";
 import ExternalLink from "^/components/ExternalLink";
 import Span from "^/components/Span";
-import { Service, ServiceName, Services } from "^/lib/Services";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import { type Service, type ServiceName, Services } from "^/lib/Services";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { prettyByte } from "^/lib/utils/prettyByte";
 import Halfs from "../DiffIntro/Halfs";
 import ServiceTooltip from "../DiffIntro/ServiceTooltip";

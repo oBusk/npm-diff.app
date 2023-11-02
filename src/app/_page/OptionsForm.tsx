@@ -1,11 +1,11 @@
 import {
-    FlexProps,
+    type FlexProps,
     FormControl,
     FormHelperText,
     FormLabel,
     Input,
 } from "@chakra-ui/react";
-import { FunctionComponent } from "react";
+import { type FunctionComponent } from "react";
 import ButtonExpandBox from "^/components/ButtonExpandBox";
 
 export interface OptionsFormProps extends FlexProps {
