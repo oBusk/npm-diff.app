@@ -8,8 +8,16 @@
         "plugin:tailwindcss/recommended",
         "plugin:prettier/recommended"
     ],
-    "plugins": ["jest", "testing-library"],
+    "plugins": ["jest", "testing-library", "@typescript-eslint/eslint-plugin"],
     "rules": {
+        "@typescript-eslint/consistent-type-imports": [
+            "error",
+            {
+                "prefer": "type-imports",
+                "disallowTypeAnnotations": true,
+                "fixStyle": "inline-type-imports"
+            }
+        ],
         "import/order": [
             "error",
             {
@@ -34,11 +42,7 @@
                 "warnOnUnassignedImports": true
             }
         ],
-        "react/jsx-no-leaked-render": "error",
-        "sort-imports": [
-            "error",
-            { "ignoreCase": true, "ignoreDeclarationSort": true }
-        ]
+        "react/jsx-no-leaked-render": "error"
     },
     "overrides": [
         {
