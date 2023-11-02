@@ -1,4 +1,5 @@
-import type { Metadata, Viewport } from "next";
+import { type Metadata, type Viewport } from "next";
+import { type ReactNode } from "react";
 import LayoutClient from "./layout.client";
 
 export const metadata = {
@@ -20,11 +21,7 @@ export const viewport = {
     themeColor: "#3f444e",
 } satisfies Viewport;
 
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning>
             <head />
