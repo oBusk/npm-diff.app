@@ -4,7 +4,6 @@
         "paths": {
             "^/*": ["src/*"]
         },
-        "target": "es5",
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
         "skipLibCheck": true,
@@ -22,7 +21,9 @@
             {
                 "name": "next"
             }
-        ]
+        ],
+        "typeRoots": ["./node_modules/@types"],
+        "types": []
     },
     "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
     "exclude": ["node_modules"]
