@@ -76,7 +76,7 @@ const DiffPage = async ({
         return (
             <>
                 <DiffIntro
-                    alignSelf="stretch"
+                    className="self-stretch"
                     a={a}
                     b={b}
                     services={
@@ -99,7 +99,7 @@ const DiffPage = async ({
                     }
                     options={options}
                 />
-                <Suspense fallback={<NpmDiffSkeleton flex="1" />}>
+                <Suspense fallback={<NpmDiffSkeleton className="flex-1" />}>
                     <NpmDiff
                         a={a}
                         b={b}

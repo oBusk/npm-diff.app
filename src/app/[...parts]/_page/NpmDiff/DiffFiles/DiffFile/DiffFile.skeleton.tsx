@@ -1,54 +1,62 @@
-import { Box, Skeleton } from "@chakra-ui/react";
-import CollapsableBorderBox from "^/components/CollapsableBorderBox";
+import { type ElementRef, forwardRef } from "react";
+import CollapsableBorderBox, {
+    type CollapsableBorderBoxProps,
+} from "^/components/CollapsableBorderBox";
+import Skeleton from "^/components/ui/Skeleton";
+import { cx } from "^/lib/cva";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import { DiffFileHeaderSkeleton } from "./DiffFileHeader";
-import { Decoration } from "./react-diff-view";
 
-const FakeCodeRow = ({
-    length,
-    indent,
-}: {
-    length: number;
-    indent: number;
-}) => (
-    <Skeleton
-        marginTop="1em"
-        marginLeft={indent * 2 + "em"}
-        marginBottom="1em"
-        height="0.5em"
-        width={length + "em"}
-    />
-);
+export interface DiffFileSkeletonProps extends CollapsableBorderBoxProps {}
 
-export default function DiffFileSkeleton() {
-    return (
-        <CollapsableBorderBox
-            css={{
-                label: "DiffFile",
-                margin: "1em 0",
-                fontsize: "16px",
-                ...contentVisibility("700px"),
-            }}
-            header={<DiffFileHeaderSkeleton />}
-        >
-            <Box
-                borderWidth="1px 0"
-                background="gray.700"
-                padding="10px"
-                lineHeight={1.6}
-                fontSize="16px"
-            >
-                <Skeleton height="0.5em" margin="0.5em 0" width="10em" />
-            </Box>
-            <Box paddingLeft="3em">
-                <FakeCodeRow length={8} indent={0} />
-                <FakeCodeRow length={14} indent={0} />
-                <FakeCodeRow length={10} indent={0} />
-                <FakeCodeRow length={4} indent={1} />
-                <FakeCodeRow length={8} indent={2} />
-                <FakeCodeRow length={2} indent={1} />
-                <FakeCodeRow length={4} indent={0} />
-            </Box>
-        </CollapsableBorderBox>
-    );
-}
+const DiffFileSkeleton = forwardRef<
+    ElementRef<typeof CollapsableBorderBox>,
+    DiffFileSkeletonProps
+>(() => (
+    <CollapsableBorderBox
+        className={cx("my-4 text-base", contentVisibility("700px"))}
+        header={<DiffFileHeaderSkeleton />}
+    >
+        <div className="border-y bg-muted">
+            <Skeleton className="mb-2 ml-2 mt-4 inline-block  h-2 w-16 bg-muted-foreground" />
+        </div>
+        <div className="mx-4 flex flex-col">
+            <div className="flex">
+                <Skeleton className="my-2 mr-4 h-2 w-8" />
+                <Skeleton className="my-2 h-2 w-32" />
+            </div>
+            <div className="flex">
+                <Skeleton className="my-2 mr-4 h-2 w-8" />
+                <Skeleton className="my-2 h-2 w-56" />
+            </div>
+            <div className="flex">
+                <Skeleton className="my-2 mr-4 h-2 w-8" />
+                <Skeleton className="my-2 h-2 w-40" />
+            </div>
+            <div className="flex">
+                <Skeleton className="my-2 mr-4 h-2 w-8" />
+                <Skeleton className="my-2 ml-4 h-2 w-32" />
+            </div>
+            <div className="h-6"></div>
+            <div className="flex">
+                <Skeleton className="my-2 mr-4 h-2 w-8" />
+                <Skeleton className="my-2 ml-8 h-2 w-16" />
+            </div>
+            <div className="flex">
+                <Skeleton className="my-2 mr-4 h-2 w-8" />
+                <Skeleton className="my-2 ml-4 h-2 w-8" />
+            </div>
+            <div className="flex">
+                <Skeleton className="my-2 mr-4 h-2 w-8" />
+                <Skeleton className="my-2 ml-8 h-2 w-16" />
+            </div>
+            <div className="flex">
+                <Skeleton className="my-2 mr-4 h-2 w-8" />
+                <Skeleton className="my-2 h-2 w-16" />
+            </div>
+        </div>
+    </CollapsableBorderBox>
+));
+DiffFileSkeleton.displayName = "DiffFileSkeleton";
+
+export default DiffFileSkeleton;

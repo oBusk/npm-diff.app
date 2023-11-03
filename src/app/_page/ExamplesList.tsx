@@ -1,6 +1,6 @@
-import { Link } from "@chakra-ui/next-js";
-import { Heading, Stack, type StackProps } from "@chakra-ui/react";
-import { type FunctionComponent } from "react";
+import Link from "next/link";
+import { type ElementRef, forwardRef } from "react";
+import Stack, { type StackProps } from "^/components/ui/Stack";
 import EXAMPLES from "^/lib/examples";
 import { type QueryParams } from "^/lib/query";
 
@@ -11,40 +11,45 @@ export interface ExamplesListProps extends StackProps {
     queryParams: QueryParams;
 }
 
-const ExamplesList: FunctionComponent<ExamplesListProps> = ({
-    exampleMouseOver,
-    exampleMouseOut: onMouseOut,
-    exampleClicked: onClick,
-    queryParams: query,
-    ...props
-}) => {
-    const onMouseOver = (example: string) => {
-        const [a, b] = example.split("...");
+const ExamplesList = forwardRef<ElementRef<typeof Stack>, ExamplesListProps>(
+    (
+        {
+            exampleMouseOver,
+            exampleMouseOut: onMouseOut,
+            exampleClicked: onClick,
+            queryParams: query,
+            ...props
+        },
+        ref,
+    ) => {
+        const onMouseOver = (example: string) => {
+            const [a, b] = example.split("...");
 
-        exampleMouseOver(a, b);
-    };
+            exampleMouseOver(a, b);
+        };
 
-    return (
-        <Stack align="center" fontSize="sm" {...props}>
-            <Heading color="gray.300" size="md">
-                Examples
-            </Heading>
-            {EXAMPLES.map((ex) => (
-                <Link
-                    key={ex}
-                    href={{
-                        pathname: `/${ex}`,
-                        query: { ...query },
-                    }}
-                    onMouseOver={() => onMouseOver(ex)}
-                    onMouseOut={() => onMouseOut()}
-                    onClick={() => onClick()}
-                >
-                    {ex}
-                </Link>
-            ))}
-        </Stack>
-    );
-};
+        return (
+            <Stack align="center" {...props} ref={ref}>
+                <h2 className="text-xl font-bold">Examples</h2>
+                {EXAMPLES.map((ex) => (
+                    <Link
+                        className="my-1 hover:underline"
+                        key={ex}
+                        href={{
+                            pathname: `/${ex}`,
+                            query: { ...query },
+                        }}
+                        onMouseOver={() => onMouseOver(ex)}
+                        onMouseOut={() => onMouseOut()}
+                        onClick={() => onClick()}
+                    >
+                        {ex}
+                    </Link>
+                ))}
+            </Stack>
+        );
+    },
+);
+ExamplesList.displayName = "ExamplesList";
 
 export default ExamplesList;

@@ -1,24 +1,36 @@
-import { IconButton, type IconButtonProps } from "@chakra-ui/react";
-import { type FunctionComponent } from "react";
-import { DiGithubBadge } from "react-icons/di";
-import ExternalLink from "^/components/ExternalLink";
-import Tooltip from "^/components/Tooltip";
+import { Github } from "lucide-react";
+import { type ElementRef, forwardRef } from "react";
+import ExternalLink, {
+    type ExternalLinkProps,
+} from "^/components/ExternalLink";
+import { buttonVariants } from "^/components/ui/Button";
+import Tooltip from "^/components/ui/Tooltip";
 
-export interface GithubLinkProps extends Omit<IconButtonProps, "aria-label"> {}
+export interface GithubLinkProps
+    extends Omit<ExternalLinkProps, "aria-label"> {}
 
-export const GithubLink: FunctionComponent<GithubLinkProps> = (props) => {
-    const label = "View npm-diff.app on Github";
-    return (
-        <Tooltip label={label}>
-            <IconButton
-                as={ExternalLink}
-                href="https://github.com/oBusk/npm-diff.app"
-                aria-label={label}
-                size="sm"
-                fontSize="1.75em"
-                icon={<DiGithubBadge />}
-                {...props}
-            />
-        </Tooltip>
-    );
-};
+const GithubLink = forwardRef<ElementRef<typeof ExternalLink>, GithubLinkProps>(
+    ({ className, ...props }, ref) => {
+        const label = "View npm-diff.app on Github";
+        return (
+            <Tooltip label={label}>
+                <ExternalLink
+                    className={buttonVariants({
+                        className,
+                        variant: "ghost",
+                        size: "xs",
+                    })}
+                    aria-label={label}
+                    href="https://github.com/oBusk/npm-diff.app"
+                    {...props}
+                    ref={ref}
+                >
+                    <Github />
+                </ExternalLink>
+            </Tooltip>
+        );
+    },
+);
+GithubLink.displayName = "GithubLink";
+
+export default GithubLink;

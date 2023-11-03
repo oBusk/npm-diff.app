@@ -1,12 +1,14 @@
 import type { Options } from "libnpmdiff";
 import { Suspense } from "react";
 import type { FileData } from "react-diff-view";
+import Stack from "^/components/ui/Stack";
 import { gitDiffParse } from "^/lib/gitDiff";
 import npmDiff from "^/lib/npmDiff";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import countChanges from "^/lib/utils/countChanges";
+import DiffFiles from "./DiffFiles";
 import NoDiff from "./NoDiff";
-import NpmDiffClient from "./NpmDiff.client";
+import ViewTypeSwitch from "./ViewTypeSwitch";
 
 export interface NpmDiffProps {
     a: SimplePackageSpec;
@@ -33,16 +35,20 @@ const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
         .reduce((a, b) => a + b, 0);
 
     return (
-        // Wrap in suspense because it uses dynamic function https://beta.nextjs.org/docs/rendering/static-and-dynamic-rendering#using-dynamic-functions
-        <Suspense>
-            <NpmDiffClient
-                a={a}
-                b={b}
-                files={files}
-                additions={additions}
-                deletions={deletions}
-            />
-        </Suspense>
+        <>
+            <Stack direction="h" className="w-full justify-between">
+                <span>
+                    Showing <b>{files.length} changed files</b> with{" "}
+                    <b>{additions} additions</b> and{" "}
+                    <b>{deletions} deletions</b>
+                </span>
+                {/* Wrap in suspense because components use dynamic function https://beta.nextjs.org/docs/rendering/static-and-dynamic-rendering#using-dynamic-functions */}
+                <Suspense>
+                    <ViewTypeSwitch />
+                </Suspense>
+            </Stack>
+            <DiffFiles a={a} b={b} files={files} />
+        </>
     );
 };
 

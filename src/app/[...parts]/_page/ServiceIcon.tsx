@@ -1,5 +1,5 @@
 import Image, { type ImageProps } from "next/image";
-import { type FunctionComponent } from "react";
+import { type ElementRef, forwardRef } from "react";
 import { type Service } from "^/lib/Services";
 
 export interface ServiceIconProps
@@ -7,17 +7,18 @@ export interface ServiceIconProps
     service: Service;
 }
 
-const ServiceIcon: FunctionComponent<ServiceIconProps> = ({
-    service,
-    ...props
-}) => (
-    <Image
-        alt={service.name}
-        src={service.icon}
-        width={16}
-        height={16}
-        {...props}
-    />
+const ServiceIcon = forwardRef<ElementRef<typeof Image>, ServiceIconProps>(
+    ({ service, ...props }, ref) => (
+        <Image
+            alt={service.name}
+            src={service.icon}
+            width={16}
+            height={16}
+            {...props}
+            ref={ref}
+        />
+    ),
 );
+ServiceIcon.displayName = "ServiceIcon";
 
 export default ServiceIcon;

@@ -1,37 +1,43 @@
-import { Code, Heading, Text } from "@chakra-ui/react";
-import { forwardRef } from "@chakra-ui/system";
-import BorderBox from "^/components/BorderBox";
+import { type ElementRef, forwardRef } from "react";
+import BorderBox, { type BorderBoxProps } from "^/components/ui/BorderBox";
+import Code from "^/components/ui/Code";
+import Heading from "^/components/ui/Heading";
+import { cx } from "^/lib/cva";
 import { type NpmDiffOptions } from "^/lib/npmDiff";
 
-interface OptionsProps {
+interface OptionsProps extends BorderBoxProps {
     options: NpmDiffOptions;
 }
 
-const Options = forwardRef<OptionsProps, typeof BorderBox>(
-    ({ options: { diffFiles = [], ...options } = {} }, ref) => {
+const Options = forwardRef<ElementRef<typeof BorderBox>, OptionsProps>(
+    (
+        { options: { diffFiles = [], ...options } = {}, className, ...props },
+        ref,
+    ) => {
         const specifiedOptions = Object.entries(options).filter(
             ([, value]) => value != null,
         );
 
         return (
-            <BorderBox margin="10px 0" ref={ref}>
-                <Heading size="xs" marginBottom="1em">
+            <BorderBox className={cx("my-2", className)} {...props} ref={ref}>
+                <Heading h={4} className="mb-4 text-sm">
                     Options
                 </Heading>
                 {diffFiles ? (
-                    <Text>
+                    <span>
                         <b>files:</b>{" "}
                         <Code>{diffFiles.join(" ") || "\u00A0"}</Code>
-                    </Text>
+                    </span>
                 ) : null}
                 {specifiedOptions.map(([key, value]) => (
-                    <Text key={key}>
+                    <span key={key}>
                         <b>{key}:</b> <Code>{JSON.stringify(value)}</Code>
-                    </Text>
+                    </span>
                 ))}
             </BorderBox>
         );
     },
 );
+Options.displayName = "Options";
 
 export default Options;

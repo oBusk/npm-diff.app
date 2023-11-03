@@ -1,21 +1,29 @@
-import {
-    Box,
-    Button,
-    Code,
-    Flex,
-    forwardRef,
-    type StackProps,
-} from "@chakra-ui/react";
+"use client";
+
+import { Loader2 } from "lucide-react";
 import npa from "npm-package-arg";
-import { type FormEvent, useCallback, useMemo, useRef, useState } from "react";
-import Tooltip from "^/components/Tooltip";
+import {
+    type FormEventHandler,
+    forwardRef,
+    type HTMLAttributes,
+    useCallback,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
+import Button from "^/components/ui/Button";
+import Code from "^/components/ui/Code";
+import {
+    TooltipContent,
+    TooltipRoot,
+    TooltipTrigger,
+} from "^/components/ui/Tooltip";
 import { type AutocompleteSuggestion } from "^/lib/autocomplete";
+import { cx } from "^/lib/cva";
 import CenterInputAddon from "./CenterInputAddon";
 import SpecInput, { type SpecInputRef } from "./SpecInput";
 
-const SIZE = "md";
-
-export interface MainFormProps extends StackProps {
+export interface MainFormProps extends HTMLAttributes<HTMLFormElement> {
     overrideA: string | null;
     overrideB: string | null;
     isLoading: boolean;
@@ -23,7 +31,7 @@ export interface MainFormProps extends StackProps {
     fallbackSuggestions: AutocompleteSuggestion[];
 }
 
-const MainForm = forwardRef<MainFormProps, typeof Flex>(
+const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
     (
         {
             overrideA,
@@ -32,6 +40,7 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
             isLoading,
             handleSubmit,
             fallbackSuggestions,
+            className,
             ...props
         },
         ref,
@@ -61,8 +70,8 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                 : undefined;
         }, [a]);
 
-        const internalHandleSubmit = useCallback(
-            (event: FormEvent): void => {
+        const internalHandleSubmit = useCallback<FormEventHandler>(
+            (event) => {
                 event.preventDefault();
 
                 const target = event.target as typeof event.target & {
@@ -76,12 +85,13 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
         );
 
         return (
-            <Flex
-                as="form"
+            <form
+                className={cx(
+                    "flex flex-col lg:flex-row",
+                    "items-center justify-center",
+                    className,
+                )}
                 onSubmit={internalHandleSubmit}
-                align="center"
-                justify="center"
-                direction={{ base: "column", lg: "row" }}
                 ref={ref}
                 {...props}
             >
@@ -97,21 +107,19 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                             setTimeout(() => bCombobox.focus());
                         }
                     }}
-                    size={SIZE}
                     inputProps={{
-                        borderEndRadius: { lg: 0 },
-                        borderEndWidth: { lg: 0 },
+                        className: "lg:rounded-r-none lg:border-r-0",
                         ...(overrideA
                             ? {
                                   value: overrideA,
-                                  isDisabled: true,
+                                  disabled: true,
                               }
                             : undefined),
                     }}
                     fallbackSuggestions={fallbackSuggestions}
                 ></SpecInput>
-                <CenterInputAddon display={{ base: "none", lg: "flex" }}>
-                    ...
+                <CenterInputAddon className="hidden lg:flex">
+                    <span>...</span>
                 </CenterInputAddon>
                 <SpecInput
                     id="b"
@@ -119,69 +127,67 @@ const MainForm = forwardRef<MainFormProps, typeof Flex>(
                     inputValue={b}
                     onInputValueChange={setB}
                     optionalPackageFilter={bPackageFilter}
-                    size={SIZE}
                     wrapperProps={{
-                        marginTop: { base: "0.5rem", lg: 0 },
+                        className: "mt-2 lg:mt-0",
                     }}
                     inputProps={{
-                        borderStartRadius: { lg: 0 },
-                        borderStartWidth: { lg: 0 },
+                        className: "lg:rounded-l-none lg:border-l-0",
                         ...(overrideB
                             ? {
                                   value: overrideB,
-                                  isDisabled: true,
+                                  disabled: true,
                               }
                             : undefined),
                     }}
                     fallbackSuggestions={fallbackSuggestions}
                 ></SpecInput>
-                <Box
-                    marginInlineStart={{ lg: "2rem" }}
-                    marginTop={{ base: "0.5rem", lg: 0 }}
-                >
-                    <Tooltip
-                        {...(!a
-                            ? {
-                                  label: "Enter a package specification to compare",
-                                  background: "red.700",
-                              }
-                            : {
-                                  label: (
-                                      <>
-                                          Compare <Code>{a}</Code>{" "}
-                                          {!!b && (
-                                              <>
-                                                  and <Code>{b}</Code>
-                                              </>
-                                          )}{" "}
-                                          now!
-                                      </>
-                                  ),
-                              })}
-                        isOpen={isLoading ? false : undefined}
-                    >
-                        <Box>
-                            <Button
-                                isLoading={isLoading}
-                                size={SIZE}
-                                {...(!a
-                                    ? {
-                                          type: "button",
-                                          variant: "solid-disabled",
-                                      }
-                                    : {
-                                          type: "submit",
-                                          variant: "solid",
-                                      })}
-                            >
-                                npm diff! 📦🔃
-                            </Button>
-                        </Box>
-                    </Tooltip>
-                </Box>
-            </Flex>
+                <div className="mt-2 lg:ml-8 lg:mt-0">
+                    <TooltipRoot open={isLoading ? false : undefined}>
+                        <TooltipTrigger asChild>
+                            <span>
+                                <Button
+                                    type="submit"
+                                    variant="secondary"
+                                    size="default"
+                                    disabled={!a || isLoading}
+                                    className="relative overflow-hidden"
+                                >
+                                    {isLoading ? (
+                                        <div className="absolute inset-0 flex items-center justify-center">
+                                            <Loader2 className="animate-spin" />
+                                        </div>
+                                    ) : null}
+                                    <span
+                                        className={
+                                            isLoading ? "invisible" : undefined
+                                        }
+                                    >
+                                        npm diff! 📦🔃
+                                    </span>
+                                </Button>
+                            </span>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                            {!a ? (
+                                "Enter a package specification to compare"
+                            ) : (
+                                <>
+                                    Compare <Code>{a}</Code>{" "}
+                                    {!!b && (
+                                        <>
+                                            and <Code>{b}</Code>
+                                        </>
+                                    )}{" "}
+                                    now!
+                                </>
+                            )}
+                        </TooltipContent>
+                    </TooltipRoot>
+                </div>
+            </form>
         );
     },
 );
+MainForm.displayName = "MainForm";
 
 export default MainForm;

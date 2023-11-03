@@ -1,12 +1,27 @@
-import { Tag, type TagProps } from "@chakra-ui/react";
-import { type FunctionComponent, memo } from "react";
+import { forwardRef, type HTMLAttributes, memo } from "react";
+import { cx } from "^/lib/cva";
 import emphasized from "./emphasized";
 
-const VersionTag: FunctionComponent<TagProps & { value: string }> = ({
-    value,
-    ...props
-}) => {
-    return <Tag variant="outline">{emphasized(value)}</Tag>;
-};
+interface VersionTagProps extends HTMLAttributes<HTMLDivElement> {
+    children?: string;
+}
+
+const VersionTag = forwardRef<HTMLDivElement, VersionTagProps>(
+    ({ children, className, ...props }, ref) => {
+        return (
+            <div
+                className={cx(
+                    "rounded-md border border-current px-1.5 py-0.5 text-xs opacity-30",
+                    className,
+                )}
+                {...props}
+                ref={ref}
+            >
+                {emphasized(children)}
+            </div>
+        );
+    },
+);
+VersionTag.displayName = "VersionTag";
 
 export default memo(VersionTag);

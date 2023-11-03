@@ -1,5 +1,5 @@
-import { HStack, Text } from "@chakra-ui/react";
 import { type FunctionComponent } from "react";
+import Stack from "^/components/ui/Stack";
 import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import Title from "./Title";
 import VersionTag from "./VersionTag";
@@ -15,12 +15,12 @@ const Suggestion: FunctionComponent<SuggestionProps> = ({
     <>
         <Title name={name} version={version} />
 
-        {body ? <Text fontSize="xs">{body}</Text> : null}
-        <HStack marginTop="4px">
+        {body ? <p className="text-xs">{body}</p> : null}
+        <Stack direction="h" className="mt-1">
             {tags.map((tag) => (
-                <VersionTag key={tag} value={tag} />
+                <VersionTag key={tag}>{tag}</VersionTag>
             ))}
-        </HStack>
+        </Stack>
     </>
 );
 

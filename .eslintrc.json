@@ -1,9 +1,11 @@
 {
+    "root": true,
     "extends": [
         "next",
         "next/core-web-vitals",
         "plugin:import/recommended",
         "plugin:import/typescript",
+        "plugin:tailwindcss/recommended",
         "plugin:prettier/recommended"
     ],
     "plugins": ["jest", "testing-library", "@typescript-eslint/eslint-plugin"],
@@ -59,5 +61,10 @@
                 "plugin:testing-library/react"
             ]
         }
-    ]
+    ],
+    "settings": {
+        "tailwindcss": {
+            "callees": ["clsx", "cx", "cva", "twMerge"]
+        }
+    }
 }

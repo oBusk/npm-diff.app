@@ -1,13 +1,14 @@
-import { Spinner, Text } from "@chakra-ui/react";
+"use client";
+
+import { Loader2 } from "lucide-react";
 import { forwardRef, useImperativeHandle, useRef } from "react";
 import { type AutocompleteSuggestion } from "^/lib/autocomplete";
+import { cx } from "^/lib/cva";
 import {
     useNpmCombobox,
     type UseNpmComboboxProps,
 } from "^/lib/npm-combobox/useNpmCombobox";
 import {
-    ComboboxBox,
-    type ComboboxBoxProps,
     ComboboxInput,
     type ComboboxInputProps,
     ComboboxSuggestion,
@@ -24,7 +25,6 @@ export interface SpecInputRef {
 export interface SpecInputProps extends Omit<UseNpmComboboxProps, "fallback"> {
     wrapperProps?: ComboboxWrapperProps;
     inputProps?: Omit<ComboboxInputProps, "isOpen">;
-    size: ComboboxBoxProps["size"];
     fallbackSuggestions?: AutocompleteSuggestion[];
 }
 
@@ -35,17 +35,21 @@ const SuggestionListText = ({
     children: string;
     error?: boolean;
 }) => (
-    <Text padding="2em" align="center" color={error ? "red.500" : "gray.500"}>
+    <div
+        className={cx(
+            "p-8 text-center",
+            error ? "text-red-500" : "text-gray-500",
+        )}
+    >
         {children}
-    </Text>
+    </div>
 );
 
 const SpecInput = forwardRef<SpecInputRef, SpecInputProps>(
     (
         {
-            wrapperProps = {},
+            wrapperProps: { className: wrapperClassName, ...wrapperProps } = {},
             inputProps = {},
-            size,
             fallbackSuggestions = [],
 
             ...useNpmComboboxProps
@@ -80,16 +84,17 @@ const SpecInput = forwardRef<SpecInputRef, SpecInputProps>(
         );
 
         return (
-            <ComboboxWrapper width="100%" maxWidth="20em" {...wrapperProps}>
-                <ComboboxBox size={size}>
-                    <ComboboxInput
-                        isOpen={isOpen}
-                        {...getInputProps({
-                            ref: inputRef,
-                        })}
-                        {...inputProps}
-                    />
-                </ComboboxBox>
+            <ComboboxWrapper
+                className={cx("w-full max-w-xs", wrapperClassName)}
+                {...wrapperProps}
+            >
+                <ComboboxInput
+                    isOpen={isOpen}
+                    {...getInputProps({
+                        ref: inputRef,
+                    })}
+                    {...inputProps}
+                />
                 <ComboboxSuggestionList {...getMenuProps()}>
                     {isOpen ? (
                         <>
@@ -113,11 +118,7 @@ const SpecInput = forwardRef<SpecInputRef, SpecInputProps>(
                                 ))
                             )}
                             {loading ? (
-                                <Spinner
-                                    position="absolute"
-                                    right={2}
-                                    bottom={2}
-                                />
+                                <Loader2 className="absolute bottom-1 right-1 animate-spin" />
                             ) : null}
                         </>
                     ) : null}

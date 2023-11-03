@@ -1,7 +1,8 @@
 "use client";
 
-import { Button, Center, Code } from "@chakra-ui/react";
 import { useEffect } from "react";
+import Button from "^/components/ui/Button";
+import Code from "^/components/ui/Code";
 import type { ErrorComponent } from "^/next";
 import ErrorBox from "./_error/ErrorBox";
 
@@ -14,13 +15,13 @@ const DiffError: ErrorComponent = ({ error: error, reset }) => {
     }, [message]);
 
     return (
-        <Center>
-            <ErrorBox>
-                <h3>Something Went Wrong</h3>
-                <Code maxWidth={700}>{`${message}`}</Code>
-                <Button onClick={reset}>Try Again</Button>
-            </ErrorBox>
-        </Center>
+        <ErrorBox className="flex flex-col items-start gap-2 self-center">
+            <h3>Something Went Wrong</h3>
+            <Code className="max-w-2xl">{`${message}`}</Code>
+            <Button onClick={reset} variant="outline">
+                Try Again
+            </Button>
+        </ErrorBox>
     );
 };
 

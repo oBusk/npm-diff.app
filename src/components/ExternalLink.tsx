@@ -1,9 +1,13 @@
-import { forwardRef, Link, type LinkProps } from "@chakra-ui/react";
+import { type AnchorHTMLAttributes, forwardRef } from "react";
 
-export interface ExternalLinkProps extends LinkProps {}
+export interface ExternalLinkProps
+    extends AnchorHTMLAttributes<HTMLAnchorElement> {}
 
-const ExternalLink = forwardRef<ExternalLinkProps, "a">((props, ref) => (
-    <Link rel="noreferrer noopener" target="_blank" {...props} ref={ref} />
-));
+const ExternalLink = forwardRef<HTMLAnchorElement, ExternalLinkProps>(
+    (props, ref) => (
+        <a {...props} rel="noreferrer noopener" target="_blank" ref={ref} />
+    ),
+);
+ExternalLink.displayName = "ExternalLink";
 
 export default ExternalLink;

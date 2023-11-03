@@ -1,16 +1,17 @@
-import { forwardRef, HStack, type StackProps } from "@chakra-ui/react";
+import { forwardRef, type HTMLAttributes } from "react";
+import { cx } from "^/lib/cva";
 
-export interface FooterProps extends StackProps {}
+interface FooterProps extends HTMLAttributes<HTMLDivElement> {}
 
-const Footer = forwardRef<FooterProps, "footer">((props, ref) => {
-    return (
-        <HStack
-            as="footer"
-            css={{ label: "Footer", contain: "content" }}
+const Footer = forwardRef<HTMLDivElement, FooterProps>(
+    ({ className, ...props }, ref) => (
+        <footer
+            className={cx("contain-content flex", className)}
             {...props}
             ref={ref}
         />
-    );
-});
+    ),
+);
+Footer.displayName = "Footer";
 
 export default Footer;

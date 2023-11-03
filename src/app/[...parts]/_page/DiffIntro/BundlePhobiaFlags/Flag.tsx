@@ -1,35 +1,51 @@
 import {
+    type ComponentProps,
+    type ElementType,
     forwardRef,
-    Skeleton,
-    Tag,
-    TagLabel,
-    TagLeftIcon,
-    type TagProps,
-} from "@chakra-ui/react";
-import { type ElementType, type ReactNode } from "react";
-import Tooltip from "^/components/Tooltip";
-import TreeshakeIcon from "./assets/TreeshakeIcon";
+    type ReactNode,
+} from "react";
+import Skeleton from "^/components/ui/Skeleton";
+import Tooltip from "^/components/ui/Tooltip";
+import { cva, cx, type VariantProps } from "^/lib/cva";
 
-interface FlagProps extends TagProps {
-    icon: ElementType;
+const flagVariants = cva(
+    "mx-1 my-2 flex cursor-help rounded-md bg-muted p-1.5 text-xs text-muted-foreground",
+    {
+        variants: {
+            color: {
+                default: "bg-muted text-muted-foreground",
+                green: "bg-success text-success-foreground",
+                red: "bg-destructive text-destructive-foreground",
+            },
+        },
+        defaultVariants: {
+            color: "default",
+        },
+    },
+);
+
+interface FlagProps
+    extends Omit<ComponentProps<"div">, "color">,
+        VariantProps<typeof flagVariants> {
+    Icon: ElementType;
     label: string;
     tooltip?: ReactNode;
-    colorScheme?: undefined | "green" | "red";
 }
 
-const Flag = forwardRef<FlagProps, "div">(
-    ({ label, icon, tooltip, colorScheme, ...props }, ref) => {
+const Flag = forwardRef<HTMLDivElement, FlagProps>(
+    ({ label, Icon, tooltip, color, className, ...props }, ref) => {
         const tag = (
-            <Tag
-                colorScheme={colorScheme}
-                cursor="help"
-                margin="10px 0"
+            <div
+                className={flagVariants({
+                    color,
+                    className,
+                })}
                 {...props}
                 ref={ref}
             >
-                <TagLeftIcon boxSize="16px" as={icon} fill="currentColor" />
-                <TagLabel>{label}</TagLabel>
-            </Tag>
+                <Icon className="mr-1 inline-block h-4 w-4 fill-current" />{" "}
+                {label}
+            </div>
         );
 
         if (tooltip == null) {
@@ -37,19 +53,15 @@ const Flag = forwardRef<FlagProps, "div">(
         }
 
         return (
-            <Tooltip
-                label={tooltip}
-                closeOnClick={false}
-                shouldWrapChildren={true}
-            >
-                {tag}
-            </Tooltip>
+            /* TODO(#805) closeOnClick={false} */
+            <Tooltip label={tooltip}>{tag}</Tooltip>
         );
     },
 );
+Flag.displayName = "Flag";
 
 export default Flag;
 
 export const FlagSkeleton = () => (
-    <Skeleton margin="10px 0" width="130px" height="24px" />
+    <Skeleton className={cx(flagVariants(), "h-7 w-28")} />
 );

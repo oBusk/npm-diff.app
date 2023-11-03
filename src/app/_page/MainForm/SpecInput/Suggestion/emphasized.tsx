@@ -1,12 +1,3 @@
-import { chakra } from "@chakra-ui/react";
-
-const Em = chakra("em", {
-    baseStyle: {
-        fontStyle: "normal",
-        textDecoration: "underline",
-    },
-});
-
 const emphasized = (text = "NO_TEXT") => {
     return Array.from(
         text.matchAll(
@@ -15,7 +6,11 @@ const emphasized = (text = "NO_TEXT") => {
     )
         .map(({ groups: { before, em, after } = {} }, index) => [
             before,
-            em && <Em key={index}>{em}</Em>,
+            em && (
+                <em className="not-italic underline" key={index}>
+                    {em}
+                </em>
+            ),
             after,
         ])
         .flat();

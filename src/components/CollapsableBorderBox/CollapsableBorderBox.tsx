@@ -1,8 +1,9 @@
 "use client";
 
-import { Box, forwardRef, useBoolean } from "@chakra-ui/react";
-import { type ReactNode } from "react";
-import BorderBox, { type BorderBoxProps } from "../BorderBox";
+import { type ElementRef, forwardRef, type ReactNode } from "react";
+import { useBoolean } from "react-use";
+import BorderBox, { type BorderBoxProps } from "^/components/ui/BorderBox";
+import { cx } from "^/lib/cva";
 import CollapsableBorderBoxHeader from "./CollapsableBorderBoxHeader";
 
 export interface CollapsableBorderBoxProps extends BorderBoxProps {
@@ -11,22 +12,26 @@ export interface CollapsableBorderBoxProps extends BorderBoxProps {
 }
 
 /** A borderbox with a header that has `>` button to collapse the box, hiding `children`. */
-const CollapsableBorderBox = forwardRef<CollapsableBorderBoxProps, "div">(
-    ({ header, title, children, ...props }, ref) => {
-        const [isExpanded, setIsExpanded] = useBoolean(true);
+const CollapsableBorderBox = forwardRef<
+    ElementRef<typeof BorderBox>,
+    CollapsableBorderBoxProps
+>(({ header, title, children, className, ...props }, ref) => {
+    const [isExpanded, setIsExpanded] = useBoolean(true);
 
-        return (
-            <BorderBox padding={0} {...props} ref={ref}>
-                <CollapsableBorderBoxHeader
-                    isExpanded={isExpanded}
-                    toggleIsExpanded={setIsExpanded.toggle}
-                >
-                    {header}
-                </CollapsableBorderBoxHeader>
-                {isExpanded ? <Box overflow="auto">{children}</Box> : null}
-            </BorderBox>
-        );
-    },
-);
+    return (
+        <BorderBox className={cx("p-0", className)} {...props} ref={ref}>
+            <CollapsableBorderBoxHeader
+                isExpanded={isExpanded}
+                toggleIsExpanded={() => setIsExpanded()}
+            >
+                {header}
+            </CollapsableBorderBoxHeader>
+            {isExpanded ? (
+                <div className="mt-[-1px] overflow-auto">{children}</div>
+            ) : null}
+        </BorderBox>
+    );
+});
+CollapsableBorderBox.displayName = "CollapsableBorderBox";
 
 export default CollapsableBorderBox;

@@ -1,6 +1,11 @@
 import { type Metadata, type Viewport } from "next";
 import { type ReactNode } from "react";
-import LayoutClient from "./layout.client";
+import { ThemeProvider } from "^/components/ThemeProvider";
+import Stack from "^/components/ui/Stack";
+import { TooltipProvider } from "^/components/ui/Tooltip";
+import Footer from "./_layout/Footer";
+import Header from "./_layout/Header";
+import "./globals.css";
 
 export const metadata = {
     applicationName: "npm-diff.app",
@@ -25,8 +30,19 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     return (
         <html lang="en" suppressHydrationWarning>
             <head />
-            <body suppressHydrationWarning>
-                <LayoutClient>{children}</LayoutClient>
+            <body className="min-h-screen-s bg-background">
+                <ThemeProvider>
+                    <TooltipProvider>
+                        <Stack
+                            justify="between"
+                            className="min-h-screen-s relative overflow-auto px-4"
+                        >
+                            <Header className="bg-background" />
+                            {children}
+                            <Footer className="bg-background" />
+                        </Stack>
+                    </TooltipProvider>
+                </ThemeProvider>
             </body>
         </html>
     );

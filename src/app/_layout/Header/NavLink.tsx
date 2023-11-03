@@ -1,49 +1,57 @@
 "use client";
 
-import { Link } from "@chakra-ui/next-js";
-import { type LinkProps } from "@chakra-ui/react";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { type FunctionComponent, useEffect, useState } from "react";
+import {
+    type AnchorHTMLAttributes,
+    forwardRef,
+    useEffect,
+    useState,
+} from "react";
+import { cva } from "^/lib/cva";
 
-export interface NavLinkProps extends LinkProps {
-    href: string;
-}
+const navLinkVariants = cva(
+    "block rounded-md transition-all duration-200 focus:outline-none",
+    {
+        variants: {
+            isActive: {
+                // 40% opacity
+                true: "opacity-40",
+            },
+        },
+    },
+);
 
-const NavLink: FunctionComponent<NavLinkProps> = ({
-    href = "",
-    children,
-    ...props
-}) => {
-    const asPath = usePathname();
-    const [isActive, setIsActive] = useState(false);
+export interface NavLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {}
 
-    useEffect(() => {
-        if (asPath != null && location != null) {
-            setIsActive(
-                new URL(href, location.href).pathname ===
-                    new URL(asPath, location.href).pathname,
-            );
-        }
+const NavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(
+    ({ href = "", className, ...props }, ref) => {
+        const asPath = usePathname();
+        const [isActive, setIsActive] = useState(false);
 
-        return () => {
-            setIsActive(false);
-        };
-    }, [asPath, href]);
+        useEffect(() => {
+            if (asPath != null && location != null) {
+                setIsActive(
+                    new URL(href, location.href).pathname ===
+                        new URL(asPath, location.href).pathname,
+                );
+            }
 
-    return (
-        <Link
-            href={href}
-            opacity={isActive ? 0.4 : undefined}
-            transition="all 0.2s"
-            borderRadius="md"
-            _focus={{
-                boxShadow: "outline",
-            }}
-            {...props}
-        >
-            {children}
-        </Link>
-    );
-};
+            return () => {
+                setIsActive(false);
+            };
+        }, [asPath, href]);
+
+        return (
+            <Link
+                href={href}
+                className={navLinkVariants({ isActive, className })}
+                {...props}
+                ref={ref}
+            />
+        );
+    },
+);
+NavLink.displayName = "NavLink";
 
 export default NavLink;

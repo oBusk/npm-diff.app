@@ -1,24 +1,27 @@
-"use client";
-
-import { Box, type BoxProps, HStack, Skeleton } from "@chakra-ui/react";
-import { Suspense } from "react";
+import { type ComponentProps, forwardRef, Suspense } from "react";
+import Skeleton from "^/components/ui/Skeleton";
+import Stack from "^/components/ui/Stack";
 import { DiffFilesSkeleton } from "./DiffFiles";
 import ViewTypeSwitch from "./ViewTypeSwitch";
 
-export interface NpmDiffSkeletonProps extends BoxProps {}
+export interface NpmDiffSkeletonProps extends ComponentProps<"div"> {}
 
-const NpmDiffSkeleton = (props: NpmDiffSkeletonProps) => {
-    return (
-        <Box {...props}>
-            <HStack width="100%" justifyContent="space-between" {...props}>
-                <Skeleton width={400} height="0.5rem" />
+const NpmDiffSkeleton = forwardRef<HTMLDivElement, NpmDiffSkeletonProps>(
+    (props, ref) => (
+        <div {...props} ref={ref}>
+            <Stack
+                direction="h"
+                className="w-full items-center justify-between"
+            >
+                <Skeleton className="mt-1 h-2 w-64" />
                 <Suspense>
                     <ViewTypeSwitch />
                 </Suspense>
-            </HStack>
+            </Stack>
             <DiffFilesSkeleton />
-        </Box>
-    );
-};
+        </div>
+    ),
+);
+NpmDiffSkeleton.displayName = "NpmDiffSkeleton";
 
 export default NpmDiffSkeleton;

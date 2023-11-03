@@ -1,38 +1,53 @@
 "use client";
 
-import { MoonIcon, SunIcon } from "@chakra-ui/icons";
-import {
-    forwardRef,
-    IconButton,
-    type IconButtonProps,
-    useColorMode,
-} from "@chakra-ui/react";
-import Tooltip from "^/components/Tooltip";
+import { Moon, SunMedium } from "lucide-react";
+import { useTheme } from "next-themes";
+import { forwardRef } from "react";
+import Button, { type ButtonProps } from "^/components/ui/Button";
+import Tooltip from "^/components/ui/Tooltip";
+import { cx } from "^/lib/cva";
+import useMounted from "^/lib/utils/useMounted";
 
-export interface ColorModeToggleProps extends Partial<IconButtonProps> {}
+export interface ColorModeToggleProps extends ButtonProps {}
 
-const ColorModeToggle = forwardRef<ColorModeToggleProps, "button">(
-    ({ ...props }, ref) => {
-        const { colorMode, toggleColorMode } = useColorMode();
+const ColorModeToggle = forwardRef<HTMLButtonElement, ColorModeToggleProps>(
+    ({ className, ...props }, ref) => {
+        const mounted = useMounted();
+        const { setTheme, resolvedTheme } = useTheme();
 
-        const label = `Switch to ${
-            colorMode === "dark" ? "Light Mode" : "Dark Mode"
-        }`;
+        const label = mounted
+            ? `Switch to ${
+                  resolvedTheme === "dark" ? "Light Mode" : "Dark Mode"
+              }`
+            : "Loading...";
 
         return (
             <Tooltip label={label}>
-                <IconButton
-                    onClick={toggleColorMode}
+                <Button
+                    variant="ghost"
+                    size="xs"
+                    onClick={() =>
+                        setTheme(resolvedTheme === "dark" ? "light" : "dark")
+                    }
                     aria-label={label}
-                    size="sm"
-                    fontSize="1.2em"
-                    icon={colorMode === "dark" ? <SunIcon /> : <MoonIcon />}
+                    className={cx(
+                        "transition-opacity duration-500",
+                        !mounted && "opacity-0",
+                        className,
+                    )}
                     {...props}
                     ref={ref}
-                />
+                >
+                    {mounted && resolvedTheme === "dark" ? (
+                        <SunMedium />
+                    ) : (
+                        <Moon />
+                    )}
+                </Button>
             </Tooltip>
         );
     },
 );
+ColorModeToggle.displayName = "ColorModeToggle";
 
 export default ColorModeToggle;

@@ -1,16 +1,13 @@
-import {
-    Button,
-    Code,
-    Heading,
-    HStack,
-    Skeleton,
-    type StackProps,
-    VStack,
-} from "@chakra-ui/react";
 import { type FunctionComponent } from "react";
 import type { FileData } from "react-diff-view";
-import Span from "^/components/Span";
-import Tooltip from "^/components/Tooltip";
+import ExternalLink from "^/components/ExternalLink";
+import Button from "^/components/ui/Button";
+import Code from "^/components/ui/Code";
+import Heading from "^/components/ui/Heading";
+import Skeleton from "^/components/ui/Skeleton";
+import Stack, { type StackProps } from "^/components/ui/Stack";
+import Tooltip from "^/components/ui/Tooltip";
+import { cx } from "^/lib/cva";
 import { unpkg } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import type { CountedChanges } from "^/lib/utils/countChanges";
@@ -29,24 +26,27 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
     file: { type, oldPath, newPath },
     countedChanges: { additions, deletions },
     children,
+    className,
     ...props
 }) => (
-    <HStack justifyContent="space-between" width="100%" {...props}>
-        <Heading size="sm">
+    <Stack
+        direction="h"
+        align="center"
+        justify="between"
+        className={cx("w-full", className)}
+        {...props}
+    >
+        <Heading h={4} className="text-base">
             {type === "delete" ? oldPath : newPath}{" "}
             <Tooltip
                 label={`${
                     additions + deletions
                 } changes: ${additions} additions & ${deletions} deletions`}
             >
-                <Span>
-                    <Span color="green.200" padding="0 4px">
-                        +++{additions}
-                    </Span>
-                    <Span color="red.200" padding="0 4px">
-                        ---{deletions}
-                    </Span>
-                </Span>
+                <span>
+                    <span className="px-1 text-green-500">+++{additions}</span>
+                    <span className="px-1 text-red-500">---{deletions}</span>
+                </span>
             </Tooltip>
         </Heading>
         <Tooltip
@@ -57,48 +57,39 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
                 </>
             }
         >
-            <Button
-                size="sm"
-                variant="ghost"
-                rightIcon={<ServiceIcon service={unpkg} />}
-                as="a"
-                href={
-                    type === "delete"
-                        ? unpkg.url(a, oldPath)
-                        : unpkg.url(b, newPath)
-                }
-                rel="noopener noreferrer"
-                target="_blank"
-            >
-                View file
+            <Button size="sm" variant="ghost" asChild>
+                <ExternalLink
+                    href={
+                        type === "delete"
+                            ? unpkg.url(a, oldPath)
+                            : unpkg.url(b, newPath)
+                    }
+                >
+                    <ServiceIcon
+                        service={unpkg}
+                        className="mr-1.5 inline-block"
+                    />
+                    View file
+                </ExternalLink>
             </Button>
         </Tooltip>
-    </HStack>
+    </Stack>
 );
 
 export default DiffFileHeader;
 
-export function DiffFileHeaderSkeleton() {
-    return (
-        <HStack justifyContent="space-between" width="100%">
-            <Heading size="sm" as={HStack}>
-                <Skeleton width={170} height="0.5rem" />
-                <Span>
-                    <Span opacity={0.5} padding="0 4px">
-                        +++0
-                    </Span>
-                    <Span opacity={0.5} padding="0 4px">
-                        ---0
-                    </Span>
-                </Span>
-            </Heading>
-            <Button
-                size="sm"
-                variant="ghost"
-                rightIcon={<ServiceIcon service={unpkg} />}
-            >
-                View file
-            </Button>
-        </HStack>
-    );
-}
+export const DiffFileHeaderSkeleton = () => (
+    <Stack direction="h" justify="between" className="w-full">
+        <Heading h={4} className="flex items-center">
+            <Skeleton className="mt-1 h-2 w-44" />
+            <span>
+                <span className="px-1 opacity-50">+++0</span>
+                <span className="px-1 opacity-50">---0</span>
+            </span>
+        </Heading>
+        <Button size="sm" variant="ghost">
+            <ServiceIcon service={unpkg} className="mr-1.5 inline-block" /> View
+            file
+        </Button>
+    </Stack>
+);

@@ -1,40 +1,32 @@
-import { Heading, type HeadingProps } from "@chakra-ui/react";
-import { type FunctionComponent, memo } from "react";
-import Span from "^/components/Span";
+import { type ElementRef, forwardRef, memo } from "react";
+import Heading, { type HeadingProps } from "^/components/ui/Heading";
+import { cx } from "^/lib/cva";
 import emphasized from "./emphasized";
 
-const Title: FunctionComponent<
-    HeadingProps & { name?: string; version?: string }
-> = ({ name, version, ...props }) => {
-    const color = {
-        color: "gray.800",
-        _dark: {
-            color: "whiteAlpha.900",
-        },
-    } as const;
-    const fadedColor = {
-        color: "gray.400",
-        _dark: { color: "whiteAlpha.400" },
-    } as const;
+interface TitleProps extends HeadingProps {
+    name?: string;
+    version?: string;
+}
 
-    return (
+const Title = forwardRef<ElementRef<typeof Heading>, TitleProps>(
+    ({ name, version, className, ...props }, ref) => (
         <Heading
-            as="h3"
-            size="sm"
-            fontWeight="normal"
-            fontFamily="mono"
-            {...(version ? fadedColor : color)}
+            h={3}
+            className={cx("font-mono text-sm font-normal", className)}
             {...props}
+            ref={ref}
         >
             {version ? (
                 <>
-                    {name}@<Span {...color}>{emphasized(version)}</Span>
+                    <span className="opacity-30">{name}@</span>
+                    {emphasized(version)}
                 </>
             ) : (
                 emphasized(name)
             )}
         </Heading>
-    );
-};
+    ),
+);
+Title.displayName = "SuggestionTitle";
 
 export default memo(Title);

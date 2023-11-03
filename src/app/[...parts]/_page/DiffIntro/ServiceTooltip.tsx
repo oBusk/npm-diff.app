@@ -1,35 +1,36 @@
-import { forwardRef, Text } from "@chakra-ui/react";
-import B from "^/components/B";
-import Pkg from "^/components/Pkg";
-import Tooltip, { type TooltipProps } from "^/components/Tooltip";
+import { type ElementRef, forwardRef } from "react";
+import Pkg from "^/components/ui/Pkg";
+import Tooltip, { type TooltipProps } from "^/components/ui/Tooltip";
 import { type Service } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 
-export interface ServiceTooltipProps extends TooltipProps {
+export interface ServiceTooltipProps extends Omit<TooltipProps, "label"> {
     pkg: SimplePackageSpec;
     serviceName: Service["name"];
 }
 
-const ServiceTooltip = forwardRef<ServiceTooltipProps, any>(
-    ({ pkg, serviceName, ...props }, ref) => {
-        return (
-            <Tooltip
-                textAlign="center"
-                {...props}
-                ref={ref}
-                label={
-                    <>
-                        <Text whiteSpace="nowrap">
-                            View <Pkg pkg={pkg} />
-                        </Text>
-                        <Text>
-                            on <B>{serviceName}</B>
-                        </Text>
-                    </>
-                }
-            />
-        );
-    },
-);
+const ServiceTooltip = forwardRef<
+    ElementRef<typeof Tooltip>,
+    ServiceTooltipProps
+>(({ pkg, serviceName, ...props }, ref) => {
+    return (
+        <Tooltip
+            className="text-center"
+            {...props}
+            ref={ref}
+            label={
+                <>
+                    <span className="whitespace-nowrap">
+                        View <Pkg pkg={pkg} />
+                    </span>{" "}
+                    <span>
+                        on <b>{serviceName}</b>
+                    </span>
+                </>
+            }
+        />
+    );
+});
+ServiceTooltip.displayName = "ServiceTooltip";
 
 export default ServiceTooltip;
