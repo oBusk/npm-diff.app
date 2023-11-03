@@ -1,5 +1,5 @@
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
-import { ComponentProps, forwardRef } from "react";
+import { type ComponentProps, forwardRef } from "react";
 import Tooltip from "^/components/ui/Tooltip";
 import { cx } from "^/lib/cva";
 import Button from "../ui/Button";

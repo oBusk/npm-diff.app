@@ -1,12 +1,12 @@
 "use client";
 
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { ElementRef, forwardRef, ReactNode } from "react";
+import { type ElementRef, forwardRef, type ReactNode } from "react";
 import { useBoolean } from "react-use";
 import { cx } from "^/lib/cva";
 import BorderBox from "./BorderBox";
 import Button from "./Button";
-import Stack, { StackProps } from "./Stack";
+import Stack, { type StackProps } from "./Stack";
 import Tooltip from "./Tooltip";
 
 export interface ButtonExpandBoxProps extends StackProps {

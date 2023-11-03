@@ -1,5 +1,5 @@
 import { useSearchParams } from "next/navigation";
-import { ViewType } from "react-diff-view";
+import { type ViewType } from "react-diff-view";
 import { useMedia } from "react-use";
 import { DIFF_TYPE_PARAM_NAME } from "^/app/[...parts]/_page/paramNames";
 

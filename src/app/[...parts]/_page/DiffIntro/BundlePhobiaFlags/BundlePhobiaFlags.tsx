@@ -1,8 +1,8 @@
-import { ElementRef, forwardRef, ReactNode } from "react";
+import { type ElementRef, forwardRef, type ReactNode } from "react";
 import Code from "^/components/ui/Code";
-import Stack, { StackProps } from "^/components/ui/Stack";
+import Stack, { type StackProps } from "^/components/ui/Stack";
 import {
-    BundlephobiaResults,
+    type BundlephobiaResults,
     hasSideEffects,
     isTreeShakeable,
 } from "^/lib/api/bundlephobia";

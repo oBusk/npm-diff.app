@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { forwardRef, HTMLAttributes } from "react";
+import { forwardRef, type HTMLAttributes } from "react";
 import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import ColorModeToggle from "./ColorModeToggle";

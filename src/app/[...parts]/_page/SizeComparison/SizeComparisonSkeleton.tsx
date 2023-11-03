@@ -1,8 +1,8 @@
-import { ComponentProps, ReactNode } from "react";
+import { type ComponentProps, type ReactNode } from "react";
 import Heading from "^/components/ui/Heading";
 import Skeleton from "^/components/ui/Skeleton";
 import { cx } from "^/lib/cva";
-import { ServiceName, Services } from "^/lib/Services";
+import { type ServiceName, Services } from "^/lib/Services";
 import Halfs from "../DiffIntro/Halfs";
 
 export interface SkeletonSizeRow {

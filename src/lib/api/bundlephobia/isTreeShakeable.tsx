@@ -1,4 +1,4 @@
-import BundlephobiaResponse from "./BundlephobiaResponse";
+import type BundlephobiaResponse from "./BundlephobiaResponse";
 
 function isTreeShakeable(p: BundlephobiaResponse): boolean {
     // Based on functionality in bundlephobia:

@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes, ReactNode } from "react";
+import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { cx } from "^/lib/cva";
 
 export interface HalfsProps extends HTMLAttributes<HTMLElement> {

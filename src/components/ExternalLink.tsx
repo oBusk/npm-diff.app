@@ -1,4 +1,4 @@
-import { AnchorHTMLAttributes, forwardRef } from "react";
+import { type AnchorHTMLAttributes, forwardRef } from "react";
 
 export interface ExternalLinkProps
     extends AnchorHTMLAttributes<HTMLAnchorElement> {}

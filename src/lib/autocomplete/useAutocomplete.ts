@@ -1,7 +1,7 @@
 import { useAsync } from "react-use";
 import useThrottle from "^/lib/utils/useThrottle";
 import autocomplete from "./autocomplete";
-import AutocompleteSuggestion from "./AutocompleteSuggestion";
+import type AutocompleteSuggestion from "./AutocompleteSuggestion";
 
 export interface UseAutocompleteProps {
     query: string;

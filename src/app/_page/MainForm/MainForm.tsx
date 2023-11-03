@@ -3,9 +3,9 @@
 import { Loader2 } from "lucide-react";
 import npa from "npm-package-arg";
 import {
-    FormEventHandler,
+    type FormEventHandler,
     forwardRef,
-    HTMLAttributes,
+    type HTMLAttributes,
     useCallback,
     useMemo,
     useRef,
@@ -18,10 +18,10 @@ import {
     TooltipRoot,
     TooltipTrigger,
 } from "^/components/ui/Tooltip";
-import { AutocompleteSuggestion } from "^/lib/autocomplete";
+import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import { cx } from "^/lib/cva";
 import CenterInputAddon from "./CenterInputAddon";
-import SpecInput, { SpecInputRef } from "./SpecInput";
+import SpecInput, { type SpecInputRef } from "./SpecInput";
 
 export interface MainFormProps extends HTMLAttributes<HTMLFormElement> {
     overrideA: string | null;

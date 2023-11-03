@@ -1,7 +1,12 @@
-import { ComponentProps, ElementType, forwardRef, ReactNode } from "react";
+import {
+    type ComponentProps,
+    type ElementType,
+    forwardRef,
+    type ReactNode,
+} from "react";
 import Skeleton from "^/components/ui/Skeleton";
 import Tooltip from "^/components/ui/Tooltip";
-import { cva, cx, VariantProps } from "^/lib/cva";
+import { cva, cx, type VariantProps } from "^/lib/cva";
 
 const flagVariants = cva(
     "mx-1 my-2 flex cursor-help rounded-md bg-muted p-1.5 text-xs text-muted-foreground",

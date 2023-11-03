@@ -1,4 +1,4 @@
-import MainForm, { MainFormProps } from "./MainForm";
+import MainForm, { type MainFormProps } from "./MainForm";
 
 export type { MainFormProps };
 export default MainForm;

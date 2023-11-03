@@ -1,4 +1,4 @@
-import SimplePackageSpec from "../SimplePackageSpec";
+import type SimplePackageSpec from "../SimplePackageSpec";
 import { packagephobiaIcon } from "./assets";
 
 const Packagephobia = Object.freeze({

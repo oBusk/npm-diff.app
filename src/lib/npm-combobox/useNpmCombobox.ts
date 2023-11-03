@@ -1,7 +1,7 @@
 import { useCombobox } from "downshift";
 import { useCallback } from "react";
 import {
-    AutocompleteSuggestion,
+    type AutocompleteSuggestion,
     AutocompleteSuggestionTypes,
 } from "../autocomplete";
 import useAutocomplete from "../autocomplete/useAutocomplete";

@@ -1,8 +1,10 @@
-import { ElementRef, forwardRef } from "react";
-import ExternalLink, { ExternalLinkProps } from "^/components/ExternalLink";
+import { type ElementRef, forwardRef } from "react";
+import ExternalLink, {
+    type ExternalLinkProps,
+} from "^/components/ExternalLink";
 import { cx } from "^/lib/cva";
-import { Service } from "^/lib/Services";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import { type Service } from "^/lib/Services";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import ServiceIcon from "../ServiceIcon";
 import ServiceTooltip from "./ServiceTooltip";
 

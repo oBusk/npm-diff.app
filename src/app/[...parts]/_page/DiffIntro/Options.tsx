@@ -1,9 +1,9 @@
-import { ElementRef, forwardRef } from "react";
-import BorderBox, { BorderBoxProps } from "^/components/ui/BorderBox";
+import { type ElementRef, forwardRef } from "react";
+import BorderBox, { type BorderBoxProps } from "^/components/ui/BorderBox";
 import Code from "^/components/ui/Code";
 import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
-import { NpmDiffOptions } from "^/lib/npmDiff";
+import { type NpmDiffOptions } from "^/lib/npmDiff";
 
 interface OptionsProps extends BorderBoxProps {
     options: NpmDiffOptions;

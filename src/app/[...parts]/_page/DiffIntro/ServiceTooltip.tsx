@@ -1,8 +1,8 @@
-import { ElementRef, forwardRef } from "react";
+import { type ElementRef, forwardRef } from "react";
 import Pkg from "^/components/ui/Pkg";
-import Tooltip, { TooltipProps } from "^/components/ui/Tooltip";
-import { Service } from "^/lib/Services";
-import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import Tooltip, { type TooltipProps } from "^/components/ui/Tooltip";
+import { type Service } from "^/lib/Services";
+import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 
 export interface ServiceTooltipProps extends Omit<TooltipProps, "label"> {
     pkg: SimplePackageSpec;

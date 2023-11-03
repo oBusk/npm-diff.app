@@ -1,9 +1,9 @@
 import {
-    CxOptions,
-    CxReturn,
+    type CxOptions,
+    type CxReturn,
     cva as originalCva,
     cx as originalCx,
-    VariantProps,
+    type VariantProps,
 } from "class-variance-authority";
 import { twMerge } from "tailwind-merge";
 

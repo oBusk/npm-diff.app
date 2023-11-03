@@ -2,7 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnchorHTMLAttributes, forwardRef, useEffect, useState } from "react";
+import {
+    type AnchorHTMLAttributes,
+    forwardRef,
+    useEffect,
+    useState,
+} from "react";
 import { cva } from "^/lib/cva";
 
 const navLinkVariants = cva(

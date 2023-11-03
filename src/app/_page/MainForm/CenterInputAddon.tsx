@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes } from "react";
+import { forwardRef, type HTMLAttributes } from "react";
 import { cx } from "^/lib/cva";
 
 export interface InputAddonProps extends HTMLAttributes<HTMLDivElement> {}

@@ -1,6 +1,6 @@
-import { ElementRef, forwardRef } from "react";
-import Code, { CodeProps } from "^/components/ui/Code";
-import { NpmDiffOptions } from "^/lib/npmDiff";
+import { type ElementRef, forwardRef } from "react";
+import Code, { type CodeProps } from "^/components/ui/Code";
+import { type NpmDiffOptions } from "^/lib/npmDiff";
 
 export interface CommandProps extends CodeProps {
     aName: string;
