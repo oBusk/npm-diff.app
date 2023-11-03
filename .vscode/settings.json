@@ -2,7 +2,7 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "typescript.tsdk": "node_modules/typescript/lib",
     "typescript.enablePromptUseWorkspaceTsdk": true,
-    "prettier.prettierPath": "node_modules/prettier",
+    "prettier.prettierPath": "node_modules/prettier/index.cjs",
     "eslint.nodePath": "node_modules",
     "eslint.format.enable": true,
     "[typescript]": {
