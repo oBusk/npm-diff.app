@@ -5,6 +5,7 @@ import {
     Hunk as _Hunk,
     type HunkProps,
 } from "react-diff-view";
+import "react-diff-view/style/index.css";
 import "./react-diff-view.css";
 
 const Diff = _Diff;
