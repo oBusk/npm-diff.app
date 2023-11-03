@@ -40,6 +40,11 @@
                 "warnOnUnassignedImports": true
             }
         ],
+        // Sort imports to sort import members
+        "sort-imports": [
+            "error",
+            { "ignoreCase": true, "ignoreDeclarationSort": true }
+        ],
         "react/jsx-no-leaked-render": "error"
     },
     "overrides": [
