@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import {
-    type ReadonlyURLSearchParams,
+    ReadonlyURLSearchParams,
     usePathname,
     useSearchParams,
 } from "next/navigation";
-import { type ComponentProps, type ElementRef, forwardRef } from "react";
+import { ComponentProps, ElementRef, forwardRef } from "react";
 import type { ViewType } from "react-diff-view";
-import Button, { type ButtonProps } from "^/components/ui/Button";
+import Button, { ButtonProps } from "^/components/ui/Button";
 import { cx } from "^/lib/cva";
 import useViewType from "^/lib/utils/useViewType";
 import { DIFF_TYPE_PARAM_NAME } from "../paramNames";

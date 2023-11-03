@@ -1,18 +1,12 @@
 "use client";
 
-import {
-    type ElementRef,
-    forwardRef,
-    useCallback,
-    useMemo,
-    useState,
-} from "react";
+import { ElementRef, forwardRef, useCallback, useMemo, useState } from "react";
 import type { ChangeData, FileData, ViewType } from "react-diff-view";
 import CollapsableBorderBox, {
-    type CollapsableBorderBoxProps,
+    CollapsableBorderBoxProps,
 } from "^/components/CollapsableBorderBox";
 import { cx } from "^/lib/cva";
-import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import countChanges from "^/lib/utils/countChanges";
 import DiffFileHeader from "./DiffFileHeader";

@@ -1,6 +1,6 @@
-import { type FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import Stack from "^/components/ui/Stack";
-import { type AutocompleteSuggestion } from "^/lib/autocomplete";
+import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import Title from "./Title";
 import VersionTag from "./VersionTag";
 

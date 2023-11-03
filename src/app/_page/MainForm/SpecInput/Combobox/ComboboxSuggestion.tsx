@@ -1,5 +1,5 @@
-import { forwardRef, type HTMLAttributes } from "react";
-import { cva, type VariantProps } from "^/lib/cva";
+import { forwardRef, HTMLAttributes } from "react";
+import { cva, VariantProps } from "^/lib/cva";
 
 const comboboxSuggestionVariants = cva("cursor-pointer rounded-sm p-4", {
     variants: {

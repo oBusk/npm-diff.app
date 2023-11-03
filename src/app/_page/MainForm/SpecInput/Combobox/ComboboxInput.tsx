@@ -1,6 +1,6 @@
-import { type ElementRef, forwardRef } from "react";
-import Input, { type InputProps } from "^/components/ui/Input";
-import { cva, type VariantProps } from "^/lib/cva";
+import { ElementRef, forwardRef } from "react";
+import Input, { InputProps } from "^/components/ui/Input";
+import { cva, VariantProps } from "^/lib/cva";
 
 const comboboxInputVariants = cva(null, {
     variants: {

@@ -1,4 +1,4 @@
-import { type FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import type { HunkData } from "react-diff-view";
 import { cx } from "^/lib/cva";
 import contentVisibility from "^/lib/utils/contentVisibility";

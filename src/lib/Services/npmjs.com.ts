@@ -1,4 +1,4 @@
-import type SimplePackageSpec from "../SimplePackageSpec";
+import SimplePackageSpec from "../SimplePackageSpec";
 import { npmjsComIcon } from "./assets";
 
 const NpmjsCom = Object.freeze({

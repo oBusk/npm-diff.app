@@ -1,8 +1,8 @@
-import { type ComponentProps, forwardRef } from "react";
+import { ComponentProps, forwardRef } from "react";
 import Code from "^/components/ui/Code";
 import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
-import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 
 export interface NoDiffProps extends ComponentProps<"section"> {
     a: SimplePackageSpec;

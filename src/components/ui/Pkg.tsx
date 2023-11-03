@@ -1,6 +1,6 @@
-import { type ElementRef, forwardRef } from "react";
-import type SimplePackageSpec from "^/lib/SimplePackageSpec";
-import Code, { type CodeProps } from "./Code";
+import { ElementRef, forwardRef } from "react";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
+import Code, { CodeProps } from "./Code";
 
 export interface PkgProps extends CodeProps {
     pkg: SimplePackageSpec;

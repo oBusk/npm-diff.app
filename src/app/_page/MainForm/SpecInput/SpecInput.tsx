@@ -2,19 +2,19 @@
 
 import { Loader2 } from "lucide-react";
 import { forwardRef, useImperativeHandle, useRef } from "react";
-import { type AutocompleteSuggestion } from "^/lib/autocomplete";
+import { AutocompleteSuggestion } from "^/lib/autocomplete";
 import { cx } from "^/lib/cva";
 import {
     useNpmCombobox,
-    type UseNpmComboboxProps,
+    UseNpmComboboxProps,
 } from "^/lib/npm-combobox/useNpmCombobox";
 import {
     ComboboxInput,
-    type ComboboxInputProps,
+    ComboboxInputProps,
     ComboboxSuggestion,
     ComboboxSuggestionList,
     ComboboxWrapper,
-    type ComboboxWrapperProps,
+    ComboboxWrapperProps,
 } from "./Combobox";
 import Suggestion from "./Suggestion";
 

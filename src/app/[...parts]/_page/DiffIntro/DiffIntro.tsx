@@ -1,10 +1,10 @@
-import { type ElementRef, forwardRef, type ReactNode } from "react";
+import { ElementRef, forwardRef, ReactNode } from "react";
 import Code from "^/components/ui/Code";
 import Heading from "^/components/ui/Heading";
-import Stack, { type StackProps } from "^/components/ui/Stack";
+import Stack, { StackProps } from "^/components/ui/Stack";
 import { cx } from "^/lib/cva";
-import { type NpmDiffOptions } from "^/lib/npmDiff";
-import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import { NpmDiffOptions } from "^/lib/npmDiff";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
 import Halfs from "./Halfs";
 import Options from "./Options";

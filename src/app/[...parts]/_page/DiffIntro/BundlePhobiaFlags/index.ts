@@ -1,6 +1,4 @@
-import BundlephobiaFlags, {
-    type BundlephobiaFlagsProps,
-} from "./BundlePhobiaFlags";
+import BundlephobiaFlags, { BundlephobiaFlagsProps } from "./BundlePhobiaFlags";
 import BundlephobiaFlagsSkeleton from "./BundlePhobiaFlagsSkeleton";
 
 export default BundlephobiaFlags;

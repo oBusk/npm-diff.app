@@ -1,5 +1,5 @@
-import { type ElementRef, forwardRef, memo } from "react";
-import Heading, { type HeadingProps } from "^/components/ui/Heading";
+import { ElementRef, forwardRef, memo } from "react";
+import Heading, { HeadingProps } from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import emphasized from "./emphasized";
 

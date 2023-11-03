@@ -1,5 +1,5 @@
-import { type ElementRef, forwardRef } from "react";
-import BorderBox, { type BorderBoxProps } from "^/components/ui/BorderBox";
+import { ElementRef, forwardRef } from "react";
+import BorderBox, { BorderBoxProps } from "^/components/ui/BorderBox";
 import { cx } from "^/lib/cva";
 
 export interface ErrorBoxProps extends BorderBoxProps {}

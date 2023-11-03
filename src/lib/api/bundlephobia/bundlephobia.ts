@@ -1,8 +1,7 @@
 import npa from "npm-package-arg";
-import type TIMED_OUT from "../TimedOut";
-import { resultOrTimedOut } from "../TimedOut";
-import type BundlephobiaResponse from "./BundlephobiaResponse";
-import type BundlephobiaResults from "./BundlephobiaResults";
+import TIMED_OUT, { resultOrTimedOut } from "../TimedOut";
+import BundlephobiaResponse from "./BundlephobiaResponse";
+import BundlephobiaResults from "./BundlephobiaResults";
 
 async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
     const { scope } = npa(spec);

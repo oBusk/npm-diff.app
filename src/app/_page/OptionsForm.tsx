@@ -1,6 +1,6 @@
-import { type FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import ButtonExpandBox, {
-    type ButtonExpandBoxProps,
+    ButtonExpandBoxProps,
 } from "^/components/ui/ButtonExpandBox";
 import Input from "^/components/ui/Input";
 import Label from "^/components/ui/Label";

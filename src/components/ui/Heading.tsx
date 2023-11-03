@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLAttributes } from "react";
+import { forwardRef, HTMLAttributes } from "react";
 import { cx } from "^/lib/cva";
 
 export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {

@@ -4,7 +4,7 @@ import type { FileData } from "react-diff-view";
 import Stack from "^/components/ui/Stack";
 import { gitDiffParse } from "^/lib/gitDiff";
 import npmDiff from "^/lib/npmDiff";
-import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import countChanges from "^/lib/utils/countChanges";
 import DiffFiles from "./DiffFiles";
 import NoDiff from "./NoDiff";

@@ -1,4 +1,4 @@
-import type AutocompleteSuggestionTypes from "./AutocompleteSuggestionTypes";
+import AutocompleteSuggestionTypes from "./AutocompleteSuggestionTypes";
 
 interface AutocompleteSuggestion {
     type: AutocompleteSuggestionTypes;

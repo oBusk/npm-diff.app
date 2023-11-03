@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLAttributes, memo } from "react";
+import { forwardRef, HTMLAttributes, memo } from "react";
 import { cx } from "^/lib/cva";
 import emphasized from "./emphasized";
 

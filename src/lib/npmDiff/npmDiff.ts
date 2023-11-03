@@ -1,4 +1,4 @@
-import libnpmdiff, { type Options } from "libnpmdiff";
+import libnpmdiff, { Options } from "libnpmdiff";
 import { cache } from "react";
 
 interface ErrorETARGET {

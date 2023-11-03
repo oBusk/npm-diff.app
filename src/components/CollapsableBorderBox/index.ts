@@ -1,5 +1,5 @@
 import CollapsableBorderBox, {
-    type CollapsableBorderBoxProps,
+    CollapsableBorderBoxProps,
 } from "./CollapsableBorderBox";
 
 export type { CollapsableBorderBoxProps };

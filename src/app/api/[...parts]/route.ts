@@ -1,6 +1,6 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import destination from "^/lib/destination";
-import npmDiff, { type NpmDiffError } from "^/lib/npmDiff";
+import npmDiff, { NpmDiffError } from "^/lib/npmDiff";
 import { parseQuery } from "^/lib/query";
 import { defaultPageCachingHeaders } from "^/lib/utils/headers";
 import specsToDiff from "^/lib/utils/specsToDiff";

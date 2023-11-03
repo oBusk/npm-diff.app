@@ -1,6 +1,6 @@
-import type Result from "^/lib/api/npms/Result";
-import { type Suggestion } from "^/lib/api/npms/suggestions";
-import type AutocompleteSuggestion from "./AutocompleteSuggestion";
+import Result from "^/lib/api/npms/Result";
+import { Suggestion } from "^/lib/api/npms/suggestions";
+import AutocompleteSuggestion from "./AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "./AutocompleteSuggestionTypes";
 
 const packageSuggestion = ({

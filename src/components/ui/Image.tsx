@@ -1,4 +1,4 @@
-import NextImage, { type ImageProps as NextImageProps } from "next/image";
+import NextImage, { ImageProps as NextImageProps } from "next/image";
 import { cx } from "^/lib/cva";
 
 export interface ImageProps extends Omit<NextImageProps, "src"> {

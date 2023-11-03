@@ -1,6 +1,6 @@
-import { forwardRef, type HTMLAttributes } from "react";
+import { forwardRef, HTMLAttributes } from "react";
 import { Services } from "^/lib/Services";
-import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import ServiceLink from "./ServiceLink";
 
 export interface ServiceLinksProps extends HTMLAttributes<HTMLDivElement> {

@@ -1,10 +1,10 @@
 import npa from "npm-package-arg";
 import {
-    type SpecsEndpointResponse,
+    SpecsEndpointResponse,
     VERSIONS_PARAMETER_PACKAGE,
 } from "^/app/api/-/versions/types";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
-import type AutocompleteSuggestion from "../AutocompleteSuggestion";
+import AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
 import { matchVersions } from "./versions/matchVersions";
 

@@ -1,15 +1,15 @@
-import { type FunctionComponent } from "react";
+import { FunctionComponent } from "react";
 import type { FileData } from "react-diff-view";
 import ExternalLink from "^/components/ExternalLink";
 import Button from "^/components/ui/Button";
 import Code from "^/components/ui/Code";
 import Heading from "^/components/ui/Heading";
 import Skeleton from "^/components/ui/Skeleton";
-import Stack, { type StackProps } from "^/components/ui/Stack";
+import Stack, { StackProps } from "^/components/ui/Stack";
 import Tooltip from "^/components/ui/Tooltip";
 import { cx } from "^/lib/cva";
 import { unpkg } from "^/lib/Services";
-import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import type { CountedChanges } from "^/lib/utils/countChanges";
 import ServiceIcon from "../../../ServiceIcon";
 

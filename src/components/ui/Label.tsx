@@ -1,9 +1,5 @@
 import * as LabelPrimitive from "@radix-ui/react-label";
-import {
-    type ComponentPropsWithoutRef,
-    type ElementRef,
-    forwardRef,
-} from "react";
+import { ComponentPropsWithoutRef, ElementRef, forwardRef } from "react";
 import { cx } from "^/lib/cva";
 
 const Label = forwardRef<

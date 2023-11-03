@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { type ReactNode } from "react";
+import { ReactNode } from "react";
 import { ThemeProvider } from "^/components/ThemeProvider";
 import Stack from "^/components/ui/Stack";
 import { TooltipProvider } from "^/components/ui/Tooltip";

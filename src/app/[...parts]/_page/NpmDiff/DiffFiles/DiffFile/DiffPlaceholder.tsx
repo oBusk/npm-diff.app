@@ -1,6 +1,6 @@
-import { type ElementRef, forwardRef } from "react";
+import { ElementRef, forwardRef } from "react";
 import Button from "^/components/ui/Button";
-import Stack, { type StackProps } from "^/components/ui/Stack";
+import Stack, { StackProps } from "^/components/ui/Stack";
 import { cx } from "^/lib/cva";
 
 export interface DiffPlaceholderProps extends StackProps {

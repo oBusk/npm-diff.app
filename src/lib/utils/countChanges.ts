@@ -1,4 +1,4 @@
-import { type HunkData } from "react-diff-view";
+import { HunkData } from "react-diff-view";
 
 export interface CountedChanges {
     changes: number;

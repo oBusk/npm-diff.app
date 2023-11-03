@@ -1,4 +1,4 @@
-import { type ComponentProps, forwardRef, Suspense } from "react";
+import { ComponentProps, forwardRef, Suspense } from "react";
 import Skeleton from "^/components/ui/Skeleton";
 import Stack from "^/components/ui/Stack";
 import { DiffFilesSkeleton } from "./DiffFiles";

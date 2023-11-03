@@ -1,4 +1,4 @@
-import type SimplePackageSpec from "../SimplePackageSpec";
+import SimplePackageSpec from "../SimplePackageSpec";
 import { unpkgIcon } from "./assets";
 
 const unpkg = Object.freeze({

@@ -1,7 +1,7 @@
-import { forwardRef, type HTMLAttributes } from "react";
+import { forwardRef, HTMLAttributes } from "react";
 import Pkg from "^/components/ui/Pkg";
 import { cx } from "^/lib/cva";
-import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import SimplePackageSpec from "^/lib/SimplePackageSpec";
 import ServiceLinks from "./ServiceLinks";
 
 interface SpecBoxProps extends HTMLAttributes<HTMLElement> {

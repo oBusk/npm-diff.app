@@ -1,11 +1,11 @@
-import ComboboxInput, { type ComboboxInputProps } from "./ComboboxInput";
+import ComboboxInput, { ComboboxInputProps } from "./ComboboxInput";
 import ComboboxSuggestion, {
-    type ComboboxSuggestionProps,
+    ComboboxSuggestionProps,
 } from "./ComboboxSuggestion";
 import ComboboxSuggestionList, {
-    type ComboboxSuggestionListProps,
+    ComboboxSuggestionListProps,
 } from "./ComboboxSuggestionList";
-import ComboboxWrapper, { type ComboboxWrapperProps } from "./ComboboxWrapper";
+import ComboboxWrapper, { ComboboxWrapperProps } from "./ComboboxWrapper";
 
 export {
     ComboboxInput,

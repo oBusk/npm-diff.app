@@ -1,4 +1,4 @@
-import DiffFile, { type DiffFileProps } from "./DiffFile";
+import DiffFile, { DiffFileProps } from "./DiffFile";
 import DiffFileSkeleton from "./DiffFile.skeleton";
 
 export default DiffFile;

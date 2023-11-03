@@ -1,4 +1,4 @@
-import type AutocompleteSuggestion from "./AutocompleteSuggestion";
+import AutocompleteSuggestion from "./AutocompleteSuggestion";
 import getAutocompleteSuggestions from "./providers/getAutocompleteSuggestions";
 import getAutocompleteVersions from "./providers/getAutocompleteVersions";
 
