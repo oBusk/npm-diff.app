@@ -25,16 +25,23 @@ describe("canonicalSpec", () => {
     beforeAll(async () => {
         // We need to use a package that is on the registry for this.
         // Using `chalk` as arbitrary popular package.
+        const [latest, next, major, minor, pre] = await Promise.all([
+            pacote.manifest("chalk"),
+            pacote.manifest("chalk@next"),
+            pacote.manifest(`chalk@^2.1`),
+            pacote.manifest(`chalk@~2.1`),
+            pacote.manifest("chalk@^3.0.0-beta"),
+        ]);
 
-        const manifests: ExpectedResults<pacote.ManifestResult> = Object.freeze(
-            {
-                latest: await pacote.manifest("chalk"),
-                next: await pacote.manifest("chalk@next"),
-                "^2.1": await pacote.manifest(`chalk@^2.1`),
-                "~2.1": await pacote.manifest(`chalk@~2.1`),
-                "^3.0.0-beta": await pacote.manifest("chalk@^3.0.0-beta"),
-            },
-        );
+        const manifests: ExpectedResults<
+            pacote.AbbreviatedManifest & pacote.ManifestResult
+        > = Object.freeze({
+            latest,
+            next,
+            "^2.1": major,
+            "~2.1": minor,
+            "^3.0.0-beta": pre,
+        });
 
         const versions: ExpectedResults = Object.freeze({
             latest: manifests["latest"].version,
