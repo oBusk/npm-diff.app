@@ -23,7 +23,7 @@
             }
         ],
         "typeRoots": ["./node_modules/@types"],
-        "types": []
+        "types": ["jest"]
     },
     "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
     "exclude": ["node_modules"]
