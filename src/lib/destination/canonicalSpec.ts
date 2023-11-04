@@ -1,6 +1,6 @@
+import { unstable_cache } from "next/cache";
 import npa, { type AliasResult } from "npm-package-arg";
 import pacote from "pacote";
-import { cache } from "react";
 
 const hashFinder = /(?:\#.*)?$/;
 
@@ -58,12 +58,14 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
  * * https://github.com/npm/npm-package-arg#result-object
  * * https://docs.npmjs.com/cli/v7/commands/npm-install
  */
-const canonicalSpec = cache(async function _canonicalSpecs(
-    spec: string,
-): Promise<string> {
-    const result = npa(spec);
+const canonicalSpec = unstable_cache(
+    async function _canonicalSpecs(spec: string): Promise<string> {
+        const result = npa(spec);
 
-    return handleNpaResult(result);
-});
+        return handleNpaResult(result);
+    },
+    [],
+    { revalidate: 60 * 30 },
+);
 
 export default canonicalSpec;

@@ -1,5 +1,5 @@
 import libnpmdiff, { type Options } from "libnpmdiff";
-import { cache } from "react";
+import { unstable_cache } from "next/cache";
 
 interface ErrorETARGET {
     code: "ETARGET";
@@ -74,13 +74,6 @@ async function _npmDiff(
     }
 }
 
-const cachedNpmDiff = cache((str: string) => {
-    const args = JSON.parse(str) as Parameters<typeof _npmDiff>;
-
-    return _npmDiff(...args);
-});
-
-const npmDiff = (...args: Parameters<typeof _npmDiff>) =>
-    cachedNpmDiff(JSON.stringify(args));
+const npmDiff = unstable_cache(_npmDiff);
 
 export default npmDiff;
