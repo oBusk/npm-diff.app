@@ -35,13 +35,6 @@ export function generateMetadata({ params: { parts } }: DiffPageProps) {
     };
 }
 
-// So while it would be super cool to have a dynamic page with cached data to
-// have the fancy Suspense loading, there's no data caching for third party
-// data, only for `fetch()` calls. So if we don't want to redo the diff for
-// every page load, we need to have a static page.
-// https://beta.nextjs.org/docs/data-fetching/fetching#segment-cache-configuration
-export const dynamic = "force-static";
-
 const DiffPage = async ({
     params: { parts },
     searchParams,
