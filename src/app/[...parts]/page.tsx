@@ -74,14 +74,20 @@ const DiffPage = async ({
                     b={b}
                     services={
                         <>
-                            <Suspense fallback={<BundlephobiaDiffSkeleton />}>
+                            <Suspense
+                                fallback={<BundlephobiaDiffSkeleton />}
+                                key={canonicalSpecs.join("...")}
+                            >
                                 <BundlephobiaDiff
                                     a={a}
                                     b={b}
                                     specs={canonicalSpecs}
                                 />
                             </Suspense>
-                            <Suspense fallback={<PackagephobiaDiffSkeleton />}>
+                            <Suspense
+                                fallback={<PackagephobiaDiffSkeleton />}
+                                key={canonicalSpecs.join("...")}
+                            >
                                 <PackagephobiaDiff
                                     a={a}
                                     b={b}
@@ -92,7 +98,10 @@ const DiffPage = async ({
                     }
                     options={options}
                 />
-                <Suspense fallback={<NpmDiffSkeleton className="flex-1" />}>
+                <Suspense
+                    fallback={<NpmDiffSkeleton className="flex-1" />}
+                    key={JSON.stringify([canonicalSpecs, options])}
+                >
                     <NpmDiff
                         a={a}
                         b={b}
