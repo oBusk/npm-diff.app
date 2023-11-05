@@ -16,7 +16,7 @@ const Suggestion: FunctionComponent<SuggestionProps> = ({
         <Title name={name} version={version} />
 
         {body ? <p className="text-xs">{body}</p> : null}
-        <Stack direction="h" className="mt-1">
+        <Stack direction="h" className="mt-1 flex flex-wrap gap-1">
             {tags.map((tag) => (
                 <VersionTag key={tag}>{tag}</VersionTag>
             ))}

@@ -12,7 +12,7 @@ const Title = forwardRef<ElementRef<typeof Heading>, TitleProps>(
     ({ name, version, className, ...props }, ref) => (
         <Heading
             h={3}
-            className={cx("font-mono text-sm font-normal", className)}
+            className={cx("mb-1 font-mono text-sm font-normal", className)}
             {...props}
             ref={ref}
         >
