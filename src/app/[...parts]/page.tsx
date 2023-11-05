@@ -76,7 +76,9 @@ const DiffPage = async ({
                         <>
                             <Suspense
                                 fallback={<BundlephobiaDiffSkeleton />}
-                                key={canonicalSpecs.join("...")}
+                                key={
+                                    "bundlephobia-" + canonicalSpecs.join("...")
+                                }
                             >
                                 <BundlephobiaDiff
                                     a={a}
@@ -86,7 +88,10 @@ const DiffPage = async ({
                             </Suspense>
                             <Suspense
                                 fallback={<PackagephobiaDiffSkeleton />}
-                                key={canonicalSpecs.join("...")}
+                                key={
+                                    "packagephobia-" +
+                                    canonicalSpecs.join("...")
+                                }
                             >
                                 <PackagephobiaDiff
                                     a={a}
