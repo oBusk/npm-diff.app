@@ -43,10 +43,10 @@ const DiffFile = forwardRef<
         type === "delete"
             ? "This file was deleted."
             : countedChanges.changes > CHANGES_TO_RENDER
-            ? "Large diffs are not rendered by default."
-            : index > FILES_TO_RENDER
-            ? true
-            : null,
+              ? "Large diffs are not rendered by default."
+              : index > FILES_TO_RENDER
+                ? true
+                : null,
     );
     const render = useCallback(() => setAvoidRender(null), [setAvoidRender]);
 

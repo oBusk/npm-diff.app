@@ -43,7 +43,7 @@ const Flag = forwardRef<HTMLDivElement, FlagProps>(
                 {...props}
                 ref={ref}
             >
-                <Icon className="mr-1 inline-block h-4 w-4 fill-current" />{" "}
+                <Icon className="mr-1 inline-block size-4 fill-current" />{" "}
                 {label}
             </div>
         );

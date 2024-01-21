@@ -2,7 +2,7 @@
     "compilerOptions": {
         "baseUrl": ".",
         "paths": {
-            "^/*": ["src/*"]
+            "^/*": ["src/*"],
         },
         "lib": ["dom", "dom.iterable", "esnext"],
         "allowJs": true,
@@ -19,12 +19,12 @@
         "jsx": "preserve",
         "plugins": [
             {
-                "name": "next"
-            }
+                "name": "next",
+            },
         ],
         "typeRoots": ["./node_modules/@types"],
-        "types": ["jest"]
+        "types": ["jest"],
     },
     "include": ["next-env.d.ts", ".next/types/**/*.ts", "**/*.ts", "**/*.tsx"],
-    "exclude": ["node_modules"]
+    "exclude": ["node_modules"],
 }

@@ -45,7 +45,7 @@ const ButtonExpandBox = forwardRef<
                     onClick={toggleExpanded}
                     className={cx(isExpanded && "rounded-t-none border-t-0")}
                 >
-                    <Icon className="mr-0.5 h-4 w-4 " /> {buttonContent}
+                    <Icon className="mr-0.5 size-4" /> {buttonContent}
                 </Button>
             </Tooltip>
         </Stack>
