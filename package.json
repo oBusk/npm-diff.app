@@ -56,7 +56,7 @@
         "react-dom": "^18.2.0",
         "react-use": "^17.4.4",
         "semver": "^7.5.4",
-        "tailwind-merge": "^2.2.0",
+        "tailwind-merge": "^2.2.1",
         "tailwindcss-animate": "^1.0.7",
         "validate-npm-package-name": "^5.0.0"
     },
