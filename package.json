@@ -61,7 +61,7 @@
         "validate-npm-package-name": "^5.0.0"
     },
     "devDependencies": {
-        "@testing-library/jest-dom": "^6.2.0",
+        "@testing-library/jest-dom": "^6.4.2",
         "@testing-library/react": "^14.1.2",
         "@types/jest": "^29.5.11",
         "@types/libnpmdiff": "^2.0.3",
