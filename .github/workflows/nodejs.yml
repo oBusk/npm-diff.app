@@ -12,28 +12,12 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use volta versioning
-              uses: volta-cli/action@v4
-            - name: Get cache dir, Node Version and NPM Version
-              id: node-config
-              run: |
-                  echo "::set-output name=nodev::$(node -v)"
-                  echo "::set-output name=npmv::$(npm -v)"
-                  echo "::set-output name=dir::$(npm config get cache)"
-            - name: Cache npm cache
-              uses: actions/cache@v4
+            - name: Setup node
+              uses: actions/setup-node@v4
               with:
-                  path: ${{ steps.node-config.outputs.dir }}
-                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}
-            - name: Cache node_modules
-              uses: actions/cache@v4
-              with:
-                  path: "**/node_modules"
-                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  node-version-file: package.json
             - name: Install
-              run: npm install
+              run: npm ci
             - name: Check Linting
               run: npm run lint
 
@@ -46,28 +30,12 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use Volta Node/NPM
-              uses: volta-cli/action@v4
-            - name: Get cache dir, Node Version and NPM Version
-              id: node-config
-              run: |
-                  echo "::set-output name=nodev::$(node -v)"
-                  echo "::set-output name=npmv::$(npm -v)"
-                  echo "::set-output name=dir::$(npm config get cache)"
-            - name: Cache npm cache
-              uses: actions/cache@v4
+            - name: Setup node
+              uses: actions/setup-node@v4
               with:
-                  path: ${{ steps.node-config.outputs.dir }}
-                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}
-            - name: Cache node_modules
-              uses: actions/cache@v4
-              with:
-                  path: "**/node_modules"
-                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  node-version-file: package.json
             - name: Install
-              run: npm install
+              run: npm ci
             - name: Run tests
               run: npm run test-ci
 
@@ -80,35 +48,14 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            - name: Use volta versioning
-              uses: volta-cli/action@v4
-            - name: Get cache dir, Node Version and NPM Version
-              id: node-config
-              run: |
-                  echo "::set-output name=nodev::$(node -v)"
-                  echo "::set-output name=npmv::$(npm -v)"
-                  echo "::set-output name=dir::$(npm config get cache)"
-            - name: Cache npm cache
-              uses: actions/cache@v4
+            - name: Setup node
+              uses: actions/setup-node@v4
               with:
-                  path: ${{ steps.node-config.outputs.dir }}
-                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
-                  restore-keys: |
-                      ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}
-            - name: Cache node_modules
-              uses: actions/cache@v4
-              with:
-                  path: "**/node_modules"
-                  key: ${{ runner.os }}-node_${{ steps.node-config.outputs.nodev }}-npm_${{ steps.node-config.outputs.npmv }}-${{ hashFiles('**/package-lock.json') }}
+                  node-version-file: package.json
             - name: Install
-              run: npm install
-            - name: Cache next.js build cache
-              uses: actions/cache@v4
-              with:
-                  path: ${{ github.workspace }}/.next/cache
-                  key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('src/**/*') }}
-                  restore-keys: |
-                      ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}
+              run: npm ci
+            - name: Cache nextjs build cache
+              uses: jongwooo/next-cache@v1
             - name: Build
               run: npm run build
             - name: Check for uncommitted changes
