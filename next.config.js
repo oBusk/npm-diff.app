@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
     reactStrictMode: true,
     // Does not work with appDir
     // https://beta.nextjs.org/docs/styling/css-in-js
@@ -17,3 +17,5 @@ module.exports = {
         ],
     },
 };
+
+export default nextConfig;

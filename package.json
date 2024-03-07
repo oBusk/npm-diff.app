@@ -1,7 +1,7 @@
 {
     "name": "@obusk/npm-diff.app",
+    "type": "module",
     "private": true,
-    "version": "0.0.1",
     "description": "📦🔃 Inspect changes between npm packages in a webapp",
     "keywords": [
         "diff",
@@ -9,17 +9,29 @@
         "package",
         "vercel"
     ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/oBusk/npm-diff.app.git"
+    },
     "author": "Oscar Busk <oscar.busk@gmail.com>",
     "license": "ISC",
-    "volta": {
-        "node": "20.11.1"
-    },
     "engines": {
         "node": "20.x",
         "npm": "10.x"
     },
+    "volta": {
+        "node": "20.11.1"
+    },
     "simple-git-hooks": {
-        "pre-commit": "npm run lint-staged -- --quiet"
+        "pre-commit": "npm run lint-staged"
+    },
+    "lint-staged": {
+        "**/*.{ts,tsx,js,jsx}": [
+            "eslint --fix"
+        ],
+        "**/*.{md,yml,yaml,json}": [
+            "prettier --write"
+        ]
     },
     "scripts": {
         "dev": "next dev --turbo",
@@ -80,6 +92,6 @@
         "postcss": "^8.4.35",
         "prettier": "^3.2.5",
         "simple-git-hooks": "^2.10.0",
-        "typescript": "5.4.2"
+        "typescript": "~5.3.3"
     }
 }
