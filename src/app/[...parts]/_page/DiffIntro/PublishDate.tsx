@@ -1,6 +1,6 @@
 import { type ComponentProps } from "react";
 import Skeleton from "^/components/ui/Skeleton";
-import publishDate from "^/lib/api/npm/publish-date";
+import getVersionData from "^/lib/api/npm/getVersionData";
 import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
@@ -12,7 +12,9 @@ export interface PublishDateProps extends ComponentProps<"div"> {
 const shared = cx("flex h-5 items-center justify-center");
 
 async function PublishDate({ pkg, className, ...props }: PublishDateProps) {
-    const time = await publishDate(pkg);
+    const versionData = await getVersionData(pkg);
+
+    const time = versionData[pkg.version]?.time ?? null;
 
     return (
         <div className={cx(shared, className)} {...props}>
