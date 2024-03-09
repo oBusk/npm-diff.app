@@ -2,6 +2,7 @@ import { forwardRef, type HTMLAttributes } from "react";
 import Pkg from "^/components/ui/Pkg";
 import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import PublishDate from "./PublishDate";
 import ServiceLinks from "./ServiceLinks";
 
@@ -14,7 +15,11 @@ const SpecBox = forwardRef<HTMLElement, SpecBoxProps>(
     ({ pkg, pkgClassName, ...props }, ref) => (
         <section {...props} ref={ref}>
             <Pkg pkg={pkg} className={cx("px-1", pkgClassName)} />
-            <PublishDate pkg={pkg} className="font-normal" />
+            <PublishDate
+                key={"publishdate-" + simplePackageSpecToString(pkg)}
+                pkg={pkg}
+                className="font-normal"
+            />
             <ServiceLinks pkg={pkg} />
         </section>
     ),

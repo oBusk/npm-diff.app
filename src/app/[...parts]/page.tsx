@@ -11,7 +11,7 @@ import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
 import BundlephobiaDiff from "./_page/BundlephobiaDiff";
 import DiffIntro from "./_page/DiffIntro";
-import NpmDiff from "./_page/NpmDiff/NpmDiff";
+import NpmDiff from "./_page/NpmDiff";
 import NpmDiffSkeleton from "./_page/NpmDiff/NpmDiff.skeleton";
 import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
@@ -92,17 +92,13 @@ const DiffPage = async ({
                     }
                     options={options}
                 />
-                <Suspense
-                    fallback={<NpmDiffSkeleton className="flex-1" />}
+                <NpmDiff
+                    a={a}
+                    b={b}
+                    specs={canonicalSpecs}
+                    options={options}
                     key={JSON.stringify([canonicalSpecs, options])}
-                >
-                    <NpmDiff
-                        a={a}
-                        b={b}
-                        specs={canonicalSpecs}
-                        options={options}
-                    />
-                </Suspense>
+                />
             </>
         );
     }
