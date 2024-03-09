@@ -1,4 +1,5 @@
 import { type FunctionComponent } from "react";
+import ClientDate from "^/components/ClientDate";
 import Stack from "^/components/ui/Stack";
 import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import Title from "./Title";
@@ -21,9 +22,10 @@ const Suggestion: FunctionComponent<SuggestionProps> = ({
             className="mt-1 flex flex-wrap items-center gap-1 "
         >
             {time ? (
-                <p className="mr-2 text-xs opacity-30">
-                    {new Date(time).toLocaleDateString()}
-                </p>
+                <ClientDate
+                    className="mr-2 cursor-help text-xs opacity-30"
+                    time={time}
+                />
             ) : null}
             {tags.map((tag) => (
                 <VersionTag key={tag}>{tag}</VersionTag>

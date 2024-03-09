@@ -1,6 +1,6 @@
 import { type ComponentProps } from "react";
+import ClientDate from "^/components/ClientDate";
 import Skeleton from "^/components/ui/Skeleton";
-import Tooltip from "^/components/ui/Tooltip";
 import getVersionData from "^/lib/api/npm/getVersionData";
 import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
@@ -18,11 +18,11 @@ async function PublishDate({ pkg, className, ...props }: PublishDateProps) {
     const time = versionData[pkg.version]?.time ?? null;
 
     return (
-        <Tooltip label={time ? new Date(time).toLocaleString() : "Unknown"}>
-            <div className={cx(shared, "cursor-help", className)} {...props}>
-                {new Date(time).toLocaleDateString()}
-            </div>
-        </Tooltip>
+        <ClientDate
+            time={time}
+            className={cx(shared, "cursor-help", className)}
+            {...props}
+        />
     );
 }
 
