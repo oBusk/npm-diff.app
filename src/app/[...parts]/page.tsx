@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import { type ViewType } from "react-diff-view";
+import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
 import { parseQuery, type QueryParams } from "^/lib/query";
-import { createSimplePackageSpec } from "^/lib/SimplePackageSpec";
 import decodeParts from "^/lib/utils/decodeParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
