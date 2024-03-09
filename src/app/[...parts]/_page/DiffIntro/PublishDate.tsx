@@ -1,4 +1,4 @@
-import { type ComponentProps } from "react";
+import { type ComponentPropsWithoutRef } from "react";
 import ClientDate from "^/components/ClientDate";
 import Skeleton from "^/components/ui/Skeleton";
 import getVersionData from "^/lib/api/npm/getVersionData";
@@ -6,7 +6,7 @@ import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
 
-export interface PublishDateProps extends ComponentProps<"div"> {
+export interface PublishDateProps extends ComponentPropsWithoutRef<"div"> {
     pkg: SimplePackageSpec;
 }
 
