@@ -1,3 +1,7 @@
+import { type VersionData } from "^/lib/api/npm/getVersionData";
+
 export const VERSIONS_PARAMETER_PACKAGE = "package";
-export type Version = { version: string; tags?: string[] };
+export interface Version extends VersionData {
+    version: string;
+}
 export type SpecsEndpointResponse = Version[];

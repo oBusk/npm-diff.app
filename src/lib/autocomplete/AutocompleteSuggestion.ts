@@ -8,6 +8,8 @@ interface AutocompleteSuggestion {
     name: string;
     /** The version of the package, if available */
     version?: string;
+    /** The timestamp of the publication of the package, if available */
+    time?: string;
     /** A small description to show below the title in the dropdown */
     body?: string;
     tags?: string[];
