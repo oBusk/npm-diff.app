@@ -1,9 +1,9 @@
 import { type ComponentProps, type ReactNode } from "react";
-import Heading from "^/components/ui/Heading";
 import Skeleton from "^/components/ui/Skeleton";
 import { cx } from "^/lib/cva";
 import { type ServiceName, Services } from "^/lib/Services";
 import Halfs from "../DiffIntro/Halfs";
+import SizeComparisonHeading from "./SizeComparisonHeading";
 
 export interface SkeletonSizeRow {
     name: string;
@@ -40,7 +40,7 @@ const SizeComparisonSkeleton = ({
 
     return (
         <>
-            <Heading className="text-sm">{service.name}</Heading>
+            <SizeComparisonHeading>{service.name}</SizeComparisonHeading>
             {flags}
             <Halfs
                 className="w-full"

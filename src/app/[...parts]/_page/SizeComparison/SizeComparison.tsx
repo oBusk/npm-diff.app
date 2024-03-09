@@ -9,6 +9,7 @@ import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { prettyByte } from "^/lib/utils/prettyByte";
 import Halfs from "../DiffIntro/Halfs";
 import ServiceTooltip from "../DiffIntro/ServiceTooltip";
+import SizeComparisonHeading from "./SizeComparisonHeading";
 
 function differance(a: number, b: number): ReactNode {
     const diff = a - b;
@@ -115,9 +116,7 @@ const SizeComparison = ({
     const service = Services[serviceName];
     return (
         <>
-            <Heading h={3} className="text-xs">
-                {service.name}
-            </Heading>
+            <SizeComparisonHeading>{service.name}</SizeComparisonHeading>
             {flags}
             <Halfs
                 className="w-full"
