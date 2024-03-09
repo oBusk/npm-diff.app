@@ -9,15 +9,11 @@ import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import decodeParts from "^/lib/utils/decodeParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
-import BundlephobiaDiff, {
-    BundlephobiaDiffSkeleton,
-} from "./_page/BundlephobiaDiff";
+import BundlephobiaDiff from "./_page/BundlephobiaDiff";
 import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff/NpmDiff";
 import NpmDiffSkeleton from "./_page/NpmDiff/NpmDiff.skeleton";
-import PackagephobiaDiff, {
-    PackagephobiaDiffSkeleton,
-} from "./_page/PackagephobiaDiff";
+import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 
 export interface DiffPageProps {
@@ -75,31 +71,23 @@ const DiffPage = async ({
                     b={b}
                     services={
                         <>
-                            <Suspense
-                                fallback={<BundlephobiaDiffSkeleton />}
+                            <BundlephobiaDiff
+                                a={a}
+                                b={b}
+                                specs={canonicalSpecs}
                                 key={
                                     "bundlephobia-" + canonicalSpecs.join("...")
                                 }
-                            >
-                                <BundlephobiaDiff
-                                    a={a}
-                                    b={b}
-                                    specs={canonicalSpecs}
-                                />
-                            </Suspense>
-                            <Suspense
-                                fallback={<PackagephobiaDiffSkeleton />}
+                            />
+                            <PackagephobiaDiff
+                                a={a}
+                                b={b}
+                                specs={canonicalSpecs}
                                 key={
                                     "packagephobia-" +
                                     canonicalSpecs.join("...")
                                 }
-                            >
-                                <PackagephobiaDiff
-                                    a={a}
-                                    b={b}
-                                    specs={canonicalSpecs}
-                                />
-                            </Suspense>
+                            />
                         </>
                     }
                     options={options}

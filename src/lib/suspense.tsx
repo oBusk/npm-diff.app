@@ -12,20 +12,23 @@ import {
 export default function suspense<T>(
     WrappedComponent: ComponentType<T>,
     fallback: FunctionComponent<T> | ReactNode = <></>,
-): FunctionComponent<T> {
-    const c = (props: T): ReactElement => (
+): FunctionComponent<T & { key: string }> {
+    const C = ({ key, ...props }: T & { key: string }): ReactElement => (
         <SuspenseComp
+            key={key}
             fallback={
-                typeof fallback === "function" ? fallback(props) : fallback
+                typeof fallback === "function"
+                    ? fallback(props as any)
+                    : fallback
             }
         >
             <WrappedComponent {...(props as any)} />
         </SuspenseComp>
     );
 
-    c.displayName = `suspense(${
+    C.displayName = `suspense(${
         WrappedComponent.displayName ?? WrappedComponent.name
     })`;
 
-    return c;
+    return C;
 }

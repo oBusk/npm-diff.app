@@ -2,6 +2,7 @@ import packagephobia from "^/lib/api/packagephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
 import { Packagephobia } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import suspense from "^/lib/suspense";
 import measuredPromise from "^/lib/utils/measuredPromise";
 import SizeComparison, { SizeComparisonSkeleton } from "./SizeComparison";
 
@@ -13,7 +14,11 @@ export interface PackagephobiaDiffProps {
 
 const { name } = Packagephobia;
 
-const PackagephobiaDiff = async ({ specs, a, b }: PackagephobiaDiffProps) => {
+const PackagephobiaDiffInner = async ({
+    specs,
+    a,
+    b,
+}: PackagephobiaDiffProps) => {
     const { result, time } = await measuredPromise(packagephobia(specs));
 
     if (result == null) {
@@ -61,9 +66,7 @@ const PackagephobiaDiff = async ({ specs, a, b }: PackagephobiaDiffProps) => {
     );
 };
 
-export default PackagephobiaDiff;
-
-export const PackagephobiaDiffSkeleton = () => (
+const PackagephobiaDiffSkeleton = () => (
     <SizeComparisonSkeleton
         serviceName={name}
         sizeRows={[
@@ -80,3 +83,10 @@ export const PackagephobiaDiffSkeleton = () => (
         ]}
     />
 );
+
+const SuspendedPackagephobia = suspense(
+    PackagephobiaDiffInner,
+    PackagephobiaDiffSkeleton,
+);
+
+export default SuspendedPackagephobia;

@@ -2,6 +2,7 @@ import bundlephobia from "^/lib/api/bundlephobia";
 import TIMED_OUT from "^/lib/api/TimedOut";
 import { Bundlephobia } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import suspense from "^/lib/suspense";
 import measuredPromise from "^/lib/utils/measuredPromise";
 import BundlephobiaFlags, {
     BundlephobiaFlagsSkeleton,
@@ -16,7 +17,11 @@ export interface BundlephobiaDiffProps {
 
 const { name } = Bundlephobia;
 
-const BundlephobiaDiff = async ({ specs, a, b }: BundlephobiaDiffProps) => {
+const BundlephobiaDiffInner = async ({
+    specs,
+    a,
+    b,
+}: BundlephobiaDiffProps) => {
     const { result, time } = await measuredPromise(bundlephobia(specs));
 
     if (result == null) {
@@ -70,9 +75,7 @@ const BundlephobiaDiff = async ({ specs, a, b }: BundlephobiaDiffProps) => {
     );
 };
 
-export default BundlephobiaDiff;
-
-export const BundlephobiaDiffSkeleton = () => (
+const BundlephobiaDiffSkeleton = () => (
     <SizeComparisonSkeleton
         serviceName={name}
         flags={<BundlephobiaFlagsSkeleton />}
@@ -95,3 +98,10 @@ export const BundlephobiaDiffSkeleton = () => (
         ]}
     />
 );
+
+const BundlephobiaDiff = suspense(
+    BundlephobiaDiffInner,
+    BundlephobiaDiffSkeleton,
+);
+
+export default BundlephobiaDiff;
