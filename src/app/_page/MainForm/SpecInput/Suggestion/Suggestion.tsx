@@ -10,13 +10,21 @@ export interface SuggestionProps {
 }
 
 const Suggestion: FunctionComponent<SuggestionProps> = ({
-    item: { name, body, tags = [], version } = {},
+    item: { name, body, tags = [], version, time } = {},
 }) => (
     <>
         <Title name={name} version={version} />
 
         {body ? <p className="text-xs">{body}</p> : null}
-        <Stack direction="h" className="mt-1 flex flex-wrap gap-1">
+        <Stack
+            direction="h"
+            className="mt-1 flex flex-wrap items-center gap-1 "
+        >
+            {time ? (
+                <p className="mr-2 text-xs opacity-30">
+                    {new Date(time).toLocaleDateString()}
+                </p>
+            ) : null}
             {tags.map((tag) => (
                 <VersionTag key={tag}>{tag}</VersionTag>
             ))}

@@ -5,6 +5,7 @@ export interface Matched {
     version: string;
     versionEmphasized: string;
     tags?: string[];
+    time?: string;
 }
 
 const escapeRegex = (string: string) =>
@@ -167,11 +168,12 @@ export function matchVersions({
 
     return matches
         .sort((a, b) => rcompare(a.version, b.version))
-        .map(({ version, tags }) => ({
+        .map(({ version, tags, time }) => ({
             version,
             versionEmphasized: emphasize(version, rawSpec),
             ...(tags
                 ? { tags: tags.map((tag) => emphasize(tag, rawSpec)) }
                 : undefined),
+            time,
         }));
 }

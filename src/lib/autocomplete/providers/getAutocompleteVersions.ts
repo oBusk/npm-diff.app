@@ -57,13 +57,14 @@ async function getAutocompleteVersions(
                 optionalFilterNpa?.name === name &&
                 optionalFilterNpa.rawSpec) ||
             undefined,
-    }).map(({ version, versionEmphasized, tags }) => {
+    }).map(({ version, versionEmphasized, tags, time }) => {
         return {
             type: AutocompleteSuggestionTypes.Version,
             value: `${name}@${version}`,
             name,
             version: versionEmphasized,
             tags,
+            time,
         };
     });
 }
