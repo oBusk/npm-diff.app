@@ -1,6 +1,6 @@
 import { type ComponentProps, forwardRef } from "react";
-import Code from "^/components/ui/Code";
 import Heading from "^/components/ui/Heading";
+import Pkg from "^/components/ui/Pkg";
 import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 
@@ -20,14 +20,7 @@ const NoDiff = forwardRef<HTMLElement, NoDiffProps>(
             <Heading h={3} className="mb-4">
                 There&apos;s nothing to compare!
             </Heading>
-            <Code>
-                {a.name}@{a.version}
-            </Code>{" "}
-            and{" "}
-            <Code>
-                {b.name}@{b.version}
-            </Code>{" "}
-            are identical.
+            <Pkg pkg={a} /> and <Pkg pkg={b} /> are identical.
         </section>
     ),
 );

@@ -5,6 +5,7 @@ import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
 import { parseQuery, type QueryParams } from "^/lib/query";
+import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import decodeParts from "^/lib/utils/decodeParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
@@ -30,8 +31,8 @@ export function generateMetadata({ params: { parts } }: DiffPageProps) {
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
 
     return {
-        title: `Comparing ${a.name}@${a.version}...${b.name}@${b.version}`,
-        description: `A diff between the npm packages "${a.name}@${a.version}" and "${b.name}@${b.version}"`,
+        title: `Comparing ${simplePackageSpecToString(a)}...${simplePackageSpecToString(b)}`,
+        description: `A diff between the npm packages "${simplePackageSpecToString(a)}" and "${simplePackageSpecToString(b)}"`,
     };
 }
 

@@ -1,5 +1,6 @@
 import { type ElementRef, forwardRef } from "react";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import Code, { type CodeProps } from "./Code";
 
 export interface PkgProps extends CodeProps {
@@ -7,9 +8,9 @@ export interface PkgProps extends CodeProps {
 }
 
 const Pkg = forwardRef<ElementRef<typeof Code>, PkgProps>(
-    ({ pkg: { name, version }, ...props }: PkgProps, ref) => (
+    ({ pkg, ...props }: PkgProps, ref) => (
         <Code {...props} ref={ref}>
-            {name}@{version}
+            {simplePackageSpecToString(pkg)}
         </Code>
     ),
 );

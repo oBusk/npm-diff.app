@@ -1,12 +1,11 @@
 import { type ElementRef, forwardRef, type ReactNode } from "react";
-import Code from "^/components/ui/Code";
+import Pkg from "^/components/ui/Pkg";
 import Stack, { type StackProps } from "^/components/ui/Stack";
 import {
     type BundlephobiaResults,
     hasSideEffects,
     isTreeShakeable,
 } from "^/lib/api/bundlephobia";
-import { cx } from "^/lib/cva";
 import SideeffectIcon from "./assets/SideeffectIcon";
 import TreeshakeIcon from "./assets/TreeshakeIcon";
 import Flag from "./Flag";
@@ -19,16 +18,8 @@ const BundlephobiaFlags = forwardRef<
     ElementRef<typeof Stack>,
     BundlephobiaFlagsProps
 >(({ data: { a, b }, ...props }, ref) => {
-    const aTag = (
-        <Code>
-            {a.name}@{a.version}
-        </Code>
-    );
-    const bTag = (
-        <Code>
-            {b.name}@{b.version}
-        </Code>
-    );
+    const aTag = <Pkg pkg={a} />;
+    const bTag = <Pkg pkg={b} />;
 
     const treeShakeable = () => {
         const aIsTreeShakeable = isTreeShakeable(a);
