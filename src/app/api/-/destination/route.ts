@@ -8,7 +8,7 @@ function assureArrayLength(specs: string[]) {
     throw new Error("Too many specs");
 }
 
-export async function GET(req: NextRequest, { params }: { params: {} }) {
+export async function GET(req: NextRequest, {}: { params: {} }) {
     const { searchParams } = new URL(req.url);
 
     const specsOrVersions = assureArrayLength(
