@@ -2,7 +2,6 @@ import { type FunctionComponent, type ReactNode } from "react";
 import ExternalLink, {
     type ExternalLinkProps,
 } from "^/components/ExternalLink";
-import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import { type Service, type ServiceName, Services } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";

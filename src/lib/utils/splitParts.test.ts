@@ -1,4 +1,3 @@
-import exp from "constants";
 import splitParts from "./splitParts";
 
 describe("splitParts", () => {

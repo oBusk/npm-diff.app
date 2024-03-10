@@ -1,8 +1,7 @@
-import { forwardRef, Suspense } from "react";
+import { Suspense } from "react";
 import Skeleton from "^/components/ui/Skeleton";
 import Stack from "^/components/ui/Stack";
 import { DiffFilesSkeleton } from "./DiffFiles";
-import { type NpmDiffProps } from "./NpmDiff";
 import ViewTypeSwitch from "./ViewTypeSwitch";
 
 const NpmDiffSkeleton = () => (

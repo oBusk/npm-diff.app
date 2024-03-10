@@ -10,16 +10,13 @@ import {
 } from "react";
 import { cx } from "^/lib/cva";
 
-const TooltipProvider = forwardRef<
-    ElementRef<typeof Primitive.Provider>,
-    ComponentPropsWithoutRef<typeof Primitive.Provider>
->((props: ComponentProps<typeof Primitive.Provider>, ref) => (
+const TooltipProvider = (props: ComponentProps<typeof Primitive.Provider>) => (
     <Primitive.Provider
         delayDuration={250}
         skipDelayDuration={100}
         {...props}
     />
-));
+);
 TooltipProvider.displayName = Primitive.Provider.displayName;
 
 const TooltipRoot = Primitive.Root;
@@ -69,4 +66,4 @@ const Tooltip = forwardRef<ElementRef<typeof TooltipTrigger>, TooltipProps>(
 Tooltip.displayName = "Tooltip";
 
 export default Tooltip;
-export { TooltipRoot, TooltipTrigger, TooltipContent, TooltipProvider };
+export { TooltipContent, TooltipProvider, TooltipRoot, TooltipTrigger };

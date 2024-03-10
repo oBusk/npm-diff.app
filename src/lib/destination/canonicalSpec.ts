@@ -47,16 +47,16 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
  * An "canonical" registry specifier is a registry specifer that will always
  * return the same package.
  *
- * * Takes registry specifier of type `version` and returns it instantly, it is already canonical.
- * * Takes registry specifier of type `tag` or `range` and returns with version.
- * * Takes registry specifier of type `git`, `remote` and returns with commit.
- * * Takes registry specifier of type `alias` and resolves sub spec.
- * * Throws on specifier of type `directory` or `file`.
+ * - Takes registry specifier of type `version` and returns it instantly, it is already canonical.
+ * - Takes registry specifier of type `tag` or `range` and returns with version.
+ * - Takes registry specifier of type `git`, `remote` and returns with commit.
+ * - Takes registry specifier of type `alias` and resolves sub spec.
+ * - Throws on specifier of type `directory` or `file`.
  *
  * # Read More
  *
- * * https://github.com/npm/npm-package-arg#result-object
- * * https://docs.npmjs.com/cli/v7/commands/npm-install
+ * - https://github.com/npm/npm-package-arg#result-object
+ * - https://docs.npmjs.com/cli/v7/commands/npm-install
  */
 const canonicalSpec = unstable_cache(
     async function _canonicalSpecs(spec: string): Promise<string> {

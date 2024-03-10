@@ -34,7 +34,7 @@ async function getVersionDataInner(
 
     const versionData: VersionMap = {};
 
-    for (const [version, data] of Object.entries(versions)) {
+    for (const [version] of Object.entries(versions)) {
         versionData[version] = { time: time[version] };
     }
 
