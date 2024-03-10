@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import type { Destination } from "./lib/destination";
 import specsToDiff from "./lib/utils/specsToDiff";
 import splitParts from "./lib/utils/splitParts";
