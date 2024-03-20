@@ -34,7 +34,7 @@
         ]
     },
     "scripts": {
-        "dev": "next dev --turbo",
+        "dev": "next dev",
         "build": "next build",
         "start": "next start",
         "type-check": "tsc",
@@ -49,6 +49,8 @@
         "test-ci": "jest --ci"
     },
     "dependencies": {
+        "@obusk/edge-npm-package-arg": "file:../npm-edge/packages/npm-package-arg",
+        "@obusk/edge-pacote": "file:../npm-edge/packages/pacote",
         "@radix-ui/react-label": "^2.0.2",
         "@radix-ui/react-slot": "^1.0.2",
         "@radix-ui/react-tooltip": "^1.0.7",
