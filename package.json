@@ -73,7 +73,7 @@
         "validate-npm-package-name": "5.0.0"
     },
     "devDependencies": {
-        "@obusk/eslint-config-next": "^0.3.3",
+        "@obusk/eslint-config-next": "^0.4.0",
         "@testing-library/jest-dom": "^6.4.5",
         "@testing-library/react": "^15.0.7",
         "@types/jest": "^29.5.12",
