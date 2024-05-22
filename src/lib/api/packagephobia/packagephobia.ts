@@ -1,5 +1,3 @@
-import type TIMED_OUT from "../TimedOut";
-import { resultOrTimedOut } from "../TimedOut";
 import type PackagephobiaResponse from "./PackagephobiaResponse";
 import type PackagephobiaResults from "./PackagephobiaResult";
 
@@ -7,6 +5,9 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
     try {
         const response = await fetch(
             `https://packagephobia.com/v2/api.json?p=${spec}`,
+            {
+                signal: AbortSignal.timeout(7_500),
+            },
         );
 
         if (response.status !== 200) {
@@ -35,6 +36,6 @@ async function getPackages(
 export default async function packagephobia([aSpec, bSpec]: [
     string,
     string,
-]): Promise<PackagephobiaResults | null | TIMED_OUT> {
-    return resultOrTimedOut(getPackages(aSpec, bSpec));
+]): Promise<PackagephobiaResults | null> {
+    return getPackages(aSpec, bSpec);
 }

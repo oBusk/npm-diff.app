@@ -1,6 +1,4 @@
 import npa from "npm-package-arg";
-import type TIMED_OUT from "../TimedOut";
-import { resultOrTimedOut } from "../TimedOut";
 import type BundlephobiaResponse from "./BundlephobiaResponse";
 import type BundlephobiaResults from "./BundlephobiaResults";
 
@@ -14,6 +12,9 @@ async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
     try {
         const response = await fetch(
             `https://bundlephobia.com/api/size?package=${spec}`,
+            {
+                signal: AbortSignal.timeout(7_500),
+            },
         );
 
         if (response.status !== 200) {
@@ -41,6 +42,6 @@ async function getPackages(
 export default async function bundlephobia([aSpec, bSpec]: [
     string,
     string,
-]): Promise<BundlephobiaResults | null | TIMED_OUT> {
-    return resultOrTimedOut(getPackages(aSpec, bSpec));
+]): Promise<BundlephobiaResults | null> {
+    return getPackages(aSpec, bSpec);
 }

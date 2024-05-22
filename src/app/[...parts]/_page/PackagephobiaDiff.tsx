@@ -1,5 +1,4 @@
 import packagephobia from "^/lib/api/packagephobia";
-import TIMED_OUT from "^/lib/api/TimedOut";
 import { Packagephobia } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
@@ -23,11 +22,6 @@ const PackagephobiaDiffInner = async ({
 
     if (result == null) {
         console.warn(`${name} result is null`, { specs });
-        return null;
-    }
-
-    if (result === TIMED_OUT) {
-        console.warn(`${name} timed out`, { specs });
         return null;
     }
 
