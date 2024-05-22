@@ -2,7 +2,7 @@ import { DiffFileSkeleton } from "./DiffFile";
 
 export default function DiffFilesSkeleton() {
     return (
-        <div className="contain-content min-w-full">
+        <div className="min-w-full contain-content">
             <DiffFileSkeleton />
         </div>
     );
