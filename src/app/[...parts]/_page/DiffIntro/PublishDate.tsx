@@ -1,4 +1,3 @@
-import { type ComponentPropsWithoutRef } from "react";
 import ClientDate from "^/components/ClientDate";
 import Skeleton from "^/components/ui/Skeleton";
 import getVersionData from "^/lib/api/npm/getVersionData";
@@ -6,13 +5,14 @@ import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
 
-export interface PublishDateProps extends ComponentPropsWithoutRef<"div"> {
+export interface PublishDateProps {
+    className?: string;
     pkg: SimplePackageSpec;
 }
 
 const shared = cx("my-1 flex h-5 items-center justify-center");
 
-async function PublishDate({ pkg, className, ...props }: PublishDateProps) {
+async function PublishDate({ pkg, className }: PublishDateProps) {
     const versionData = await getVersionData(pkg);
 
     const time = versionData[pkg.version]?.time ?? null;
@@ -21,7 +21,6 @@ async function PublishDate({ pkg, className, ...props }: PublishDateProps) {
         <ClientDate
             time={time}
             className={cx(shared, "cursor-help", className)}
-            {...props}
         />
     );
 }
