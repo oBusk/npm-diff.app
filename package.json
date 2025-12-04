@@ -30,7 +30,7 @@
             "eslint --fix"
         ],
         "**/*.{md,yml,yaml,json}": [
-            "prettier --write"
+            "prettier --ignore-path .gitignore --ignore-path .prettierignore --write"
         ]
     },
     "scripts": {
@@ -41,9 +41,9 @@
         "lint": "next lint --ignore-path .gitignore",
         "postlint": "npm run prettier",
         "lint-fix": "next lint --ignore-path .gitignore --fix",
-        "prettier": "prettier **/*.{md,yml,yaml,json} --ignore-path .gitignore --check",
+        "prettier": "prettier --ignore-path .gitignore --ignore-path .prettierignore --check '**/*.{md,yml,yaml,json}'",
         "postlint-fix": "npm run prettier-fix",
-        "prettier-fix": "prettier **/*.{md,yml,yaml,json} --ignore-path .gitignore --write",
+        "prettier-fix": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write '**/*.{md,yml,yaml,json}'",
         "lint-staged": "lint-staged",
         "test": "jest --watch",
         "test-ci": "jest --ci"
