@@ -1,6 +1,6 @@
 name: Node.js CI
 permissions:
-  contents: read
+    contents: read
 
 on: [push, pull_request]
 
