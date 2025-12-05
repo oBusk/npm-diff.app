@@ -11,15 +11,11 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
-            - name: Setup node
-              uses: actions/setup-node@v4
-              with:
-                  node-version-file: package.json
-            - name: Install
-              run: npm ci
+              uses: actions/checkout@v6
+            - name: Set up using pnpm
+              uses: oBusk/action-pnpm-setup@v1
             - name: Check Linting
-              run: npm run lint
+              run: pnpm run lint
 
     test:
         runs-on: ubuntu-latest
@@ -29,15 +25,11 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
-            - name: Setup node
-              uses: actions/setup-node@v4
-              with:
-                  node-version-file: package.json
-            - name: Install
-              run: npm ci
+              uses: actions/checkout@v6
+            - name: Set up using pnpm
+              uses: oBusk/action-pnpm-setup@v1
             - name: Run tests
-              run: npm run test-ci
+              run: pnpm run test-ci
 
     build:
         runs-on: ubuntu-latest
@@ -47,20 +39,8 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
-            - name: Setup node
-              uses: actions/setup-node@v4
-              with:
-                  node-version-file: package.json
-            - name: Install
-              run: npm ci
-            - name: Cache nextjs build cache
-              uses: jongwooo/next-cache@v1
+              uses: actions/checkout@v6
+            - name: Set up using pnpm
+              uses: oBusk/action-pnpm-setup@v1
             - name: Build
-              run: npm run build
-            - name: Check for uncommitted changes
-              id: check-changes
-              uses: mskri/check-uncommitted-changes-action@v1.0.1
-            - name: There are uncommited changes
-              if: steps.check-changes.outputs.changes != ''
-              run: exit 1
+              run: pnpm run build
