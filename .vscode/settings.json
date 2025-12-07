@@ -16,5 +16,12 @@
     },
     "tailwindCSS.experimental.classRegex": [
         ["(?:cva|cx)\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-    ]
+    ],
+    "typescript.preferences.autoImportFileExcludePatterns": [
+        // Never suggest imports from .next types folder
+        "\\.next/"
+    ],
+    "files.exclude": {
+        "**/.next": true
+    }
 }
