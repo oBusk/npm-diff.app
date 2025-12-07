@@ -1,1 +1,2 @@
 .github/workflows/codeql.yml
+pnpm-lock.yaml
