@@ -1,3 +1,4 @@
+import { USER_AGENT } from "../user-agent";
 import type PackagephobiaResponse from "./PackagephobiaResponse";
 import type PackagephobiaResults from "./PackagephobiaResult";
 
@@ -7,6 +8,9 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
             `https://packagephobia.com/v2/api.json?p=${spec}`,
             {
                 signal: AbortSignal.timeout(7_500),
+                headers: {
+                    "User-Agent": USER_AGENT,
+                },
             },
         );
 
