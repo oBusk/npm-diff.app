@@ -1,15 +1,5 @@
 version: 2
 updates:
-    - package-ecosystem: npm
-      directory: /
-      schedule:
-          interval: daily
-      allow:
-          - dependency-type: production
-          - dependency-name: typescript
-      commit-message:
-          prefix: chore
-          include: scope
     - package-ecosystem: github-actions
       directory: /
       schedule:
