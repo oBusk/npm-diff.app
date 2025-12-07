@@ -9,13 +9,7 @@ const nextConfig = {
     eslint: {
         ignoreDuringBuilds: true,
     },
-    experimental: {
-        serverComponentsExternalPackages: [
-            "libnpmdiff",
-            "npm-package-arg",
-            "pacote",
-        ],
-    },
+    serverExternalPackages: ["libnpmdiff", "npm-package-arg", "pacote"],
 };
 
 export default nextConfig;
