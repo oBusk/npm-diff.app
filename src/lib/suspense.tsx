@@ -13,12 +13,15 @@ export default function suspense<T>(
     WrappedComponent: ComponentType<T>,
     fallback: FunctionComponent<T> | ReactNode = <></>,
 ): FunctionComponent<T & { key: string }> {
-    const C = ({ key, ...props }: T & { key: string }): ReactElement => (
+    const C = async ({
+        key,
+        ...props
+    }: T & { key: string }): Promise<ReactElement> => (
         <SuspenseComp
             key={key}
             fallback={
                 typeof fallback === "function"
-                    ? fallback(props as any)
+                    ? await fallback(props as any)
                     : fallback
             }
         >

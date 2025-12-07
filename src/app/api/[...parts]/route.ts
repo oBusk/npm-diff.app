@@ -11,10 +11,12 @@ enum STATUS_CODES {
     PERMANENT_REDIRECT = 308,
 }
 
-export async function GET(
-    req: NextRequest,
-    { params: { parts } }: { params: { parts: string[] } },
-) {
+export interface DiffApiContext {
+    params: Promise<{ parts: string | string[] }>;
+}
+
+export async function GET(req: NextRequest, { params }: DiffApiContext) {
+    const { parts } = await params;
     const { searchParams } = new URL(req.url);
     const options = Object.fromEntries(searchParams);
 

@@ -6,7 +6,7 @@ import { useUnmount } from "react-use";
 // Once this issue is closed, we should be able to remove this file
 const useThrottle = <T>(value: T, ms: number = 200) => {
     const [state, setState] = useState<T>(value);
-    const timeout = useRef<ReturnType<typeof setTimeout>>();
+    const timeout = useRef<ReturnType<typeof setTimeout>>(undefined);
     const nextValue = useRef(null) as any;
     const hasNextValue = useRef(0) as any;
 

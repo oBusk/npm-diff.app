@@ -7,7 +7,7 @@ import Footer from "./_layout/Footer";
 import Header from "./_layout/Header";
 import "./globals.css";
 
-export const metadata = {
+export const metadata: Metadata = {
     applicationName: "npm-diff.app",
     title: {
         default: "npm-diff.app 📦🔃",
@@ -20,7 +20,7 @@ export const metadata = {
         address: false,
         telephone: false,
     },
-} satisfies Metadata;
+};
 
 export const viewport = {
     themeColor: "#3f444e",

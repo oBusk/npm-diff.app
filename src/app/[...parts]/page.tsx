@@ -1,4 +1,6 @@
+import { type Metadata } from "next";
 import { redirect } from "next/navigation";
+import { type JSX } from "react";
 import { type ViewType } from "react-diff-view";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
@@ -15,11 +17,14 @@ import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 
 export interface DiffPageProps {
-    params: { parts: string | string[] };
-    searchParams: QueryParams & { [DIFF_TYPE_PARAM_NAME]: ViewType };
+    params: Promise<{ parts: string | string[] }>;
+    searchParams: Promise<QueryParams & { [DIFF_TYPE_PARAM_NAME]: ViewType }>;
 }
 
-export function generateMetadata({ params: { parts } }: DiffPageProps) {
+export async function generateMetadata({
+    params,
+}: DiffPageProps): Promise<Metadata> {
+    const { parts } = await params;
     const specs = splitParts(decodeParts(parts));
 
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
@@ -31,10 +36,11 @@ export function generateMetadata({ params: { parts } }: DiffPageProps) {
 }
 
 const DiffPage = async ({
-    params: { parts },
+    params,
     searchParams,
 }: DiffPageProps): Promise<JSX.Element> => {
-    const { diffFiles, ...optionsQuery } = searchParams;
+    const { parts } = await params;
+    const { diffFiles, ...optionsQuery } = await searchParams;
 
     const specsOrVersions = splitParts(decodeParts(parts));
     const { redirect: redirectTarget, canonicalSpecs } =
@@ -42,7 +48,7 @@ const DiffPage = async ({
 
     if (redirectTarget !== false) {
         const specsStr = specsToDiff(canonicalSpecs);
-        const searchStr = Object.entries(searchParams)
+        const searchStr = Object.entries(await searchParams)
             .map(([key, value]) => `${key}=${value}`)
             .join("&");
 
