@@ -66,4 +66,4 @@ const Tooltip = forwardRef<ElementRef<typeof TooltipTrigger>, TooltipProps>(
 Tooltip.displayName = "Tooltip";
 
 export default Tooltip;
-export { TooltipContent, TooltipProvider, TooltipRoot, TooltipTrigger };
+export { TooltipContent, TooltipProvider, TooltipTrigger };

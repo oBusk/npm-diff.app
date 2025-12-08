@@ -1,6 +1,5 @@
 "use client";
 
-import { Loader2 } from "lucide-react";
 import npa from "npm-package-arg";
 import {
     type FormEventHandler,
@@ -11,16 +10,12 @@ import {
     useRef,
     useState,
 } from "react";
-import Button from "^/components/ui/Button";
 import Code from "^/components/ui/Code";
-import {
-    TooltipContent,
-    TooltipRoot,
-    TooltipTrigger,
-} from "^/components/ui/Tooltip";
+import Tooltip from "^/components/ui/Tooltip";
 import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import { cx } from "^/lib/cva";
 import CenterInputAddon from "./CenterInputAddon";
+import DiffButton from "./DiffButton";
 import SpecInput, { type SpecInputRef } from "./SpecInput";
 
 export interface MainFormProps extends HTMLAttributes<HTMLFormElement> {
@@ -142,47 +137,29 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                     fallbackSuggestions={fallbackSuggestions}
                 ></SpecInput>
                 <div className="mt-2 lg:ml-8 lg:mt-0">
-                    <TooltipRoot open={isLoading ? false : undefined}>
-                        <TooltipTrigger asChild>
-                            <span>
-                                <Button
-                                    type="submit"
-                                    variant="secondary"
-                                    size="default"
-                                    disabled={!a || isLoading}
-                                    className="relative overflow-hidden"
-                                >
-                                    {isLoading ? (
-                                        <div className="absolute inset-0 flex items-center justify-center">
-                                            <Loader2 className="animate-spin" />
-                                        </div>
-                                    ) : null}
-                                    <span
-                                        className={
-                                            isLoading ? "invisible" : undefined
-                                        }
-                                    >
-                                        npm diff! 📦🔃
-                                    </span>
-                                </Button>
-                            </span>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                            {!a ? (
-                                "Enter a package specification to compare"
-                            ) : (
-                                <>
-                                    Compare <Code>{a}</Code>{" "}
-                                    {!!b && (
-                                        <>
-                                            and <Code>{b}</Code>
-                                        </>
-                                    )}{" "}
-                                    now!
-                                </>
-                            )}
-                        </TooltipContent>
-                    </TooltipRoot>
+                    {isLoading ? (
+                        <DiffButton isLoading={true} a={a} />
+                    ) : (
+                        <Tooltip
+                            label={
+                                !a ? (
+                                    "Enter a package specification to compare"
+                                ) : (
+                                    <>
+                                        Compare <Code>{a}</Code>{" "}
+                                        {!!b && (
+                                            <>
+                                                and <Code>{b}</Code>
+                                            </>
+                                        )}{" "}
+                                        now!
+                                    </>
+                                )
+                            }
+                        >
+                            <DiffButton isLoading={false} a={a} />
+                        </Tooltip>
+                    )}
                 </div>
             </form>
         );
