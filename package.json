@@ -21,11 +21,11 @@
     "devEngines": {
         "runtime": {
             "name": "node",
-            "version": "^24.11.1",
+            "version": "^24.12.0",
             "onFail": "download"
         }
     },
-    "packageManager": "pnpm@10.24.0",
+    "packageManager": "pnpm@10.25.0",
     "simple-git-hooks": {
         "pre-commit": "npm run lint-staged"
     },
@@ -58,12 +58,12 @@
         "@radix-ui/react-tooltip": "^1.2.8",
         "@vercel/analytics": "^1.6.1",
         "class-variance-authority": "^0.7.1",
-        "downshift": "^9.0.12",
+        "downshift": "^9.0.13",
         "gitdiff-parser": "^0.3.1",
         "jest": "^29.7.0",
         "libnpmdiff": "^6.1.4",
         "lucide-react": "^0.396.0",
-        "next": "15.4.9",
+        "next": "~15.4.10",
         "next-themes": "^0.3.0",
         "npm-package-arg": "^11.0.3",
         "pacote": "^18.0.6",
@@ -81,9 +81,9 @@
         "@obusk/eslint-config-next": "^15.6.1",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.0",
-        "@types/jest": "^29.5.14",
+        "@types/jest": "^30.0.0",
         "@types/libnpmdiff": "^2.0.3",
-        "@types/node": "^20.19.25",
+        "@types/node": "^24.10.2",
         "@types/npm-package-arg": "^6.1.4",
         "@types/pacote": "^11.1.8",
         "@types/react": "19.2.7",
@@ -92,17 +92,18 @@
         "@types/validate-npm-package-name": "^4.0.2",
         "autoprefixer": "^10.4.22",
         "eslint": "^9.39.1",
-        "jest-environment-jsdom": "^29.7.0",
-        "lint-staged": "^15.5.2",
+        "jest-environment-jsdom": "^30.2.0",
+        "lint-staged": "^16.2.7",
         "postcss": "^8.5.6",
         "prettier": "~3.3.2",
         "simple-git-hooks": "^2.13.1",
-        "typescript": "~5.4.5"
+        "typescript": "~5.9.3"
     },
     "pnpm": {
         "overrides": {
             "@types/react": "19.2.7",
-            "@types/react-dom": "19.2.3"
+            "@types/react-dom": "19.2.3",
+            "next@>=15.4.9 <15.4.10": ">=15.4.10"
         }
     }
 }
