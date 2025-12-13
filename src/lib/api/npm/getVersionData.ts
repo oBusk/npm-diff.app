@@ -28,8 +28,8 @@ async function getVersionDataInner(
         "dist-tags": tags,
         versions,
     } = await packument(specString, {
-        // Response is too large to cache
-        next: { revalidate: false },
+        // Response is too large to cache in Next's Data Cache; always fetch
+        cache: "no-store",
     });
 
     const versionData: VersionMap = {};
@@ -55,8 +55,10 @@ async function getVersionDataInner(
 const getVersionData =
     // Cache for request de-dupe
     cache(
-        // unstable cache to cache between requests
-        unstable_cache(getVersionDataInner, ["versionData"]),
+        // unstable cache to cache between requests (5 minute TTL)
+        unstable_cache(getVersionDataInner, ["versionData"], {
+            revalidate: 300,
+        }),
     );
 
 export default getVersionData;
