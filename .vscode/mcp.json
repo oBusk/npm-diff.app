@@ -1,0 +1,8 @@
+{
+    "servers": {
+        "next-devtools": {
+            "command": "pnpx",
+            "args": ["next-devtools-mcp@latest"]
+        }
+    }
+}
