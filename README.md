@@ -10,13 +10,13 @@
 ## Install
 
 ```bash
-npm install
+pnpm install
 ```
 
 ## Development
 
 ```
-npm run dev
+pnpm run dev
 ```
 
 ## Deployment

@@ -27,7 +27,7 @@
     },
     "packageManager": "pnpm@10.25.0",
     "simple-git-hooks": {
-        "pre-commit": "npm run lint-staged"
+        "pre-commit": "pnpm run lint-staged"
     },
     "lint-staged": {
         "**/*.{ts,tsx,js,jsx}": [
