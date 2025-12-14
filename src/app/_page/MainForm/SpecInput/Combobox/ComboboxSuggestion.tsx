@@ -10,7 +10,8 @@ const comboboxSuggestionVariants = cva("cursor-pointer rounded-sm p-4", {
 });
 
 export interface ComboboxSuggestionProps
-    extends HTMLAttributes<HTMLLIElement>,
+    extends
+        HTMLAttributes<HTMLLIElement>,
         VariantProps<typeof comboboxSuggestionVariants> {}
 
 const ComboboxSuggestion = forwardRef<HTMLLIElement, ComboboxSuggestionProps>(

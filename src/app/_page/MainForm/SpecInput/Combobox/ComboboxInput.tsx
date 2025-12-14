@@ -11,8 +11,7 @@ const comboboxInputVariants = cva(null, {
 });
 
 export interface ComboboxInputProps
-    extends InputProps,
-        VariantProps<typeof comboboxInputVariants> {}
+    extends InputProps, VariantProps<typeof comboboxInputVariants> {}
 
 const ComboboxInput = forwardRef<ElementRef<typeof Input>, ComboboxInputProps>(
     ({ isOpen, className, ...props }, ref) => (

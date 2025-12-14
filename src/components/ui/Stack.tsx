@@ -30,8 +30,7 @@ const stackVariants = cva("flex", {
 });
 
 export interface StackProps
-    extends HTMLAttributes<HTMLElement>,
-        VariantProps<typeof stackVariants> {}
+    extends HTMLAttributes<HTMLElement>, VariantProps<typeof stackVariants> {}
 
 const Stack = forwardRef<HTMLElement, StackProps>(
     ({ className, direction, align, justify, gap, ...props }, ref) => (

@@ -5,8 +5,10 @@ import ButtonExpandBox, {
 import Input from "^/components/ui/Input";
 import Label from "^/components/ui/Label";
 
-export interface OptionsFormProps
-    extends Omit<ButtonExpandBoxProps, "buttonContent" | "buttonLabel"> {
+export interface OptionsFormProps extends Omit<
+    ButtonExpandBoxProps,
+    "buttonContent" | "buttonLabel"
+> {
     files: string;
     filesChange: (value: string) => void;
 }

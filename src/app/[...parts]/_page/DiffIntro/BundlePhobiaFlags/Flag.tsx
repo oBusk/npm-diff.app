@@ -25,7 +25,8 @@ const flagVariants = cva(
 );
 
 interface FlagProps
-    extends Omit<ComponentProps<"div">, "color">,
+    extends
+        Omit<ComponentProps<"div">, "color">,
         VariantProps<typeof flagVariants> {
     Icon: ElementType;
     label: string;

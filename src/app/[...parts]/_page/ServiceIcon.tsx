@@ -2,8 +2,10 @@ import Image, { type ImageProps } from "next/image";
 import { type ElementRef, forwardRef } from "react";
 import { type Service } from "^/lib/Services";
 
-export interface ServiceIconProps
-    extends Omit<ImageProps, "src" | "alt" | "width" | "height"> {
+export interface ServiceIconProps extends Omit<
+    ImageProps,
+    "src" | "alt" | "width" | "height"
+> {
     service: Service;
 }
 

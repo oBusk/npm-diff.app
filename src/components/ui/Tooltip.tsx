@@ -45,8 +45,9 @@ const TooltipContent = forwardRef<
 ));
 TooltipContent.displayName = Primitive.Content.displayName;
 
-export interface TooltipProps
-    extends ComponentPropsWithoutRef<typeof TooltipTrigger> {
+export interface TooltipProps extends ComponentPropsWithoutRef<
+    typeof TooltipTrigger
+> {
     label: ReactNode | null;
 }
 

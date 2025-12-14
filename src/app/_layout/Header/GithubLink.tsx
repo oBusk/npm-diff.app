@@ -6,8 +6,10 @@ import ExternalLink, {
 import { buttonVariants } from "^/components/ui/Button";
 import Tooltip from "^/components/ui/Tooltip";
 
-export interface GithubLinkProps
-    extends Omit<ExternalLinkProps, "aria-label"> {}
+export interface GithubLinkProps extends Omit<
+    ExternalLinkProps,
+    "aria-label"
+> {}
 
 const GithubLink = forwardRef<ElementRef<typeof ExternalLink>, GithubLinkProps>(
     ({ className, ...props }, ref) => {

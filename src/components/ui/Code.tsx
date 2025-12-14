@@ -14,7 +14,8 @@ const codeVariants = cva("rounded-sm bg-muted text-sm", {
 });
 
 export interface CodeProps
-    extends HTMLAttributes<HTMLSpanElement>,
+    extends
+        HTMLAttributes<HTMLSpanElement>,
         VariantProps<typeof codeVariants> {}
 
 const Code = forwardRef<HTMLElement, CodeProps>(
