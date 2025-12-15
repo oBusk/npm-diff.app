@@ -7,7 +7,6 @@ settings:
 overrides:
   '@types/react': 19.2.7
   '@types/react-dom': 19.2.3
-  next@>=15.4.9 <15.4.10: '>=15.4.10'
 
 pnpmfileChecksum: sha256-6df3dluwAealWK4QamuNaQ76K4Dgxi7bEZa8krYvvJ8=
 
@@ -1469,7 +1468,7 @@ packages:
     peerDependencies:
       '@remix-run/react': ^2
       '@sveltejs/kit': ^1 || ^2
-      next: '>=15.4.10'
+      next: '>= 13'
       react: ^18 || ^19 || ^19.0.0-rc
       svelte: '>= 4'
       vue: ^3

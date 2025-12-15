@@ -102,8 +102,7 @@
     "pnpm": {
         "overrides": {
             "@types/react": "19.2.7",
-            "@types/react-dom": "19.2.3",
-            "next@>=15.4.9 <15.4.10": ">=15.4.10"
+            "@types/react-dom": "19.2.3"
         }
     }
 }
