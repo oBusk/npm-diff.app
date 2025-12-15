@@ -6,9 +6,6 @@ const nextConfig = {
     // compiler: {
     //     emotion: true,
     // },
-    eslint: {
-        ignoreDuringBuilds: true,
-    },
     serverExternalPackages: ["libnpmdiff", "npm-package-arg", "pacote"],
 };
 
