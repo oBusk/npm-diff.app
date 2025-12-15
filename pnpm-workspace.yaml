@@ -6,6 +6,7 @@ minimumReleaseAgeExclude:
     - next
     - react
     - react-dom
+    - eslint-config-next
     - "@obusk/eslint-config-next"
 
 onlyBuiltDependencies:
@@ -18,7 +19,3 @@ trustPolicyExclude:
     - tailwind-merge@2.6.0
     - undici-types@6.21.0
     - eslint-import-resolver-typescript@3.10.1
-
-hoistPattern:
-    - eslint-plugin-react-hooks
-    - "@next/eslint-plugin-next"
