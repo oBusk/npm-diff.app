@@ -6,6 +6,7 @@ minimumReleaseAgeExclude:
     - next
     - react
     - react-dom
+    - "@obusk/eslint-config-next"
 
 onlyBuiltDependencies:
     - sharp

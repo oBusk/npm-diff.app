@@ -42,9 +42,9 @@
         "build": "next build",
         "start": "next start",
         "type-check": "tsc",
-        "lint": "eslint",
+        "lint": "eslint .",
         "postlint": "pnpm run prettier",
-        "lint-fix": "eslint --fix",
+        "lint-fix": "eslint . --fix",
         "prettier": "prettier --ignore-path .gitignore --ignore-path .prettierignore --check '**/*.{md,yml,yaml,json}'",
         "postlint-fix": "pnpm run prettier-fix",
         "prettier-fix": "prettier --ignore-path .gitignore --ignore-path .prettierignore --write '**/*.{md,yml,yaml,json}'",
@@ -78,7 +78,7 @@
         "validate-npm-package-name": "5.0.0"
     },
     "devDependencies": {
-        "@obusk/eslint-config-next": "^15.6.1",
+        "@obusk/eslint-config-next": "^16.0.1-0",
         "@testing-library/jest-dom": "^6.9.1",
         "@testing-library/react": "^16.3.0",
         "@types/jest": "^30.0.0",
