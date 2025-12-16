@@ -41,7 +41,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "type-check": "tsc --noEmit",
+        "typecheck": "tsc --noEmit",
         "lint": "eslint .",
         "postlint": "pnpm run prettier",
         "lint-fix": "eslint . --fix",

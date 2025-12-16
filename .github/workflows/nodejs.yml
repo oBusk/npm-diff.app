@@ -45,7 +45,7 @@ jobs:
             - name: Set up using pnpm
               uses: oBusk/action-pnpm-setup@v1
             - name: Type check
-              run: pnpm run type-check
+              run: pnpm run typecheck
 
     build:
         runs-on: ubuntu-latest
