@@ -1,5 +1,5 @@
 configDependencies:
-    "@obusk/pnpm-plugin-defaults": 0.1.0+sha512-vsCchpE+K6g67YdDYYBCVQQFpfVFuVV423CCBbUEBm7FmWg/MI0Keuhkb6bjWpWaITE1PMSmcsrXbHv9FPFloA==
+    "@obusk/pnpm-plugin-defaults": 0.2.0+sha512-3oufTLQAL1SDdQ9iA5hLRnZjnBnU9uIEOBcwCKRtS+F6NyJphTq6RMIpaZgostZjQRHUaNbGSg6B2gn91drCSQ==
 
 minimumReleaseAgeExclude:
     - "@next/*"
