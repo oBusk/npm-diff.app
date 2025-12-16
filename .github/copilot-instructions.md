@@ -15,15 +15,34 @@
 
 - **Node.js**: 24.x (package.json specifies this; warnings appear with older versions but Node 20.x works for development)
 - **pnpm**: 10.26.0 (exact version specified in packageManager field)
-- Environment setup is handled automatically via `oBusk/action-pnpm-setup@v1` in CI and Copilot environments
+- Environment setup is handled automatically in CI and Copilot environments
 
 ## Next.js MCP Integration
 
-This repository is configured with the Next.js MCP server for enhanced development tooling:
+This repository uses the Next.js MCP (Model Context Protocol) server for enhanced development tooling. The MCP server provides coding agents with real-time access to your Next.js application.
 
-- **MCP Server**: `next-devtools-mcp` (configured in `.vscode/mcp.json`)
-- Provides Next.js-specific context, insights, and debugging capabilities
-- Automatically available when working with MCP-enabled tools
+### Capabilities
+
+The `next-devtools-mcp` server provides:
+
+- **Error Detection**: Retrieve current build errors, runtime errors, and type errors from dev server
+- **Live State Queries**: Access real-time application state and runtime information
+- **Page Metadata**: Query page routes, components, and rendering details
+- **Server Actions**: Inspect Server Actions and component hierarchies
+- **Development Logs**: Access development server logs and console output
+- **Next.js Knowledge Base**: Query comprehensive Next.js documentation and best practices
+- **Browser Testing**: Playwright MCP integration for verifying pages
+
+### Using MCP with Agents
+
+Agents can automatically discover and connect to your Next.js development server through MCP. This enables agents to:
+
+- Make context-aware suggestions based on your App Router structure
+- Query live application state and current configuration
+- Understand your page and layout hierarchy
+- Provide accurate implementations following your project's patterns
+- Detect and diagnose errors in real-time
+- Access Next.js best practices and documentation
 
 ## Build & Validation Commands
 
@@ -41,7 +60,6 @@ These commands must pass for CI to succeed (run in this order):
 
     - Runs ESLint on all TypeScript/JavaScript files
     - Automatically runs `pnpm run prettier` afterward (via postlint hook)
-    - Uses `@obusk/eslint-config-next` with temporary rule overrides
     - **Fix issues**: `pnpm run lint-fix` (also runs prettier-fix)
 
 2. **Tests** (timeout: 5 minutes in CI):
@@ -96,65 +114,42 @@ pnpm run dev
 
 ## Project Structure
 
-### Directory Layout
+### Main Directories
+
+- **`src/app/`** - Next.js App Router pages, layouts, and API routes
+- **`src/components/`** - Shared React components and UI primitives
+- **`src/lib/`** - Utility libraries (API clients, diff parsing, query handling)
+- **`public/`** - Static assets (icons, manifest)
+- **`.github/workflows/`** - CI/CD pipelines
+
+### Organizational Patterns
+
+**Underscore-prefixed directories** (`_page`, `_layout`): Used for grouping related components within a route directory. These are not part of the URL structure.
+
+Example:
 
 ```
-/
-├── .github/
-│   ├── workflows/
-│   │   ├── nodejs.yml          # Main CI (lint, test, typecheck, build)
-│   │   ├── codeql.yml          # Security scanning
-│   │   └── dependency-review.yml
-│   └── dependabot.yml
-├── public/                     # Static assets (icons, manifest)
-├── src/
-│   ├── app/                    # Next.js App Router pages
-│   │   ├── [...parts]/         # Dynamic diff page route
-│   │   │   ├── _page/          # Page components
-│   │   │   │   ├── DiffIntro/  # Package info header
-│   │   │   │   ├── NpmDiff/    # Main diff display
-│   │   │   │   └── SizeComparison/
-│   │   │   └── page.tsx        # Main diff page
-│   │   ├── _layout/            # Layout components (Header, Footer)
-│   │   ├── _page/              # Home page components
-│   │   │   └── MainForm/       # Package input form
-│   │   ├── about/              # About pages
-│   │   ├── api/                # API routes
-│   │   │   ├── -/              # Prefixed APIs (e.g., /-/versions)
-│   │   │   └── [...parts]/     # Dynamic API route
-│   │   ├── layout.tsx          # Root layout
-│   │   ├── page.tsx            # Home page
-│   │   └── globals.css         # Global styles
-│   ├── components/             # Shared React components
-│   │   └── ui/                 # UI primitives (shadcn/ui style)
-│   └── lib/                    # Utility libraries
-│       ├── api/                # API clients (npm, bundlephobia, etc.)
-│       ├── autocomplete/       # Package autocomplete logic
-│       ├── destination/        # URL/spec canonicalization
-│       ├── gitDiff/            # Git diff parsing
-│       ├── npmDiff/            # npm diff wrapper (uses libnpmdiff)
-│       ├── query/              # Query parameter parsing
-│       └── utils/              # General utilities
-├── __mocks__/                  # Jest mocks
-├── eslint.config.mjs           # ESLint configuration
-├── jest.config.js              # Jest configuration
-├── jest.setup.js               # Jest setup (mocks react.cache)
-├── next.config.js              # Next.js configuration
-├── postcss.config.mjs          # PostCSS configuration
-├── tailwind.config.ts          # Tailwind CSS configuration
-├── tsconfig.json               # TypeScript configuration
-├── pnpm-workspace.yaml         # pnpm workspace config
-└── package.json                # Dependencies and scripts
+src/app/[...parts]/
+  ├── _page/              # Components used by page.tsx
+  │   ├── DiffIntro/
+  │   ├── NpmDiff/
+  │   └── SizeComparison/
+  └── page.tsx            # Route page
 ```
+
+**API route prefixing**: API routes under `src/app/api/-/` use a `-` prefix to avoid conflicts with the catch-all `[...parts]` route. See `src/app/api/-/README.md` for details.
 
 ### Key Configuration Files
 
-- **next.config.js**: Enables React Strict Mode, configures server external packages (`libnpmdiff`, `npm-package-arg`, `pacote`)
 - **tsconfig.json**: Path alias `^/*` maps to `src/*` (use this in imports)
-- **eslint.config.mjs**: Uses `@obusk/eslint-config-next` with temporary rule overrides (many rules disabled for gradual migration)
-- **jest.config.js**: Uses `next/jest` for Next.js integration, jsdom environment, mocks defined in `__mocks__/`
-- **tailwind.config.ts**: Tailwind CSS with custom theme and animations
+- **next.config.js**: Configures server external packages (`libnpmdiff`, `npm-package-arg`, `pacote`)
+- **eslint.config.mjs**: ESLint configuration with Next.js rules
+- **jest.config.js**: Jest configuration for Next.js with jsdom environment
 - **.editorconfig**: 4-space indentation, LF line endings, 80-char line length
+
+### Generated Files
+
+**Do not commit changes to `next-env.d.ts`** - this file is auto-generated by Next.js and should not be manually edited or committed.
 
 ### Import Paths
 
@@ -165,35 +160,6 @@ import { something } from "^/lib/utils"; // Correct
 import { something } from "@/lib/utils"; // Wrong - @ not configured
 import { something } from "../../../lib/utils"; // Avoid - use alias
 ```
-
-## CI/CD Workflows
-
-### Main CI Pipeline (.github/workflows/nodejs.yml)
-
-Runs on every push and pull request. **All jobs must pass for PR to merge.**
-
-1. **lint**: Runs `pnpm run lint` (includes prettier check)
-2. **test**: Runs `pnpm run test-ci`
-3. **typecheck**: Runs `pnpm run typecheck`
-4. **build**: Runs `pnpm run build`
-
-Each job:
-
-- Uses `ubuntu-latest` runner
-- 5-minute timeout
-- Sets `CI=true` environment variable
-- Uses `oBusk/action-pnpm-setup@v1` for Node/pnpm setup
-
-### CodeQL Scanning (.github/workflows/codeql.yml)
-
-- Runs on push to main, PRs to main, and weekly schedule
-- Analyzes JavaScript/TypeScript and GitHub Actions
-- Build mode: none (no build required for JS/TS analysis)
-
-### Dependency Review (.github/workflows/dependency-review.yml)
-
-- Runs on pull requests only
-- Blocks PRs that introduce known-vulnerable packages
 
 ## Common Issues & Workarounds
 
@@ -254,34 +220,15 @@ API routes use a special `-` prefix to avoid conflicts with the catch-all `[...p
 5. `src/lib/gitDiff/` parses diff into React components
 6. `react-diff-view` renders the visual diff
 
-### Server vs. Client Components
+### Next.js App Router & Server vs. Client Components
 
-- Most components are React Server Components (no `"use client"` directive)
-- Client components have `.client.tsx` extension or explicit `"use client"` directive
-- Interactive forms/inputs are client components
+This project uses **Next.js App Router** (not Pages Router). Refer to the Next.js MCP for App Router best practices.
+
+- Most components are React Server Components by default (no directive needed)
+- **`"use client"` directive is REQUIRED** to mark components as client-side
+- The `.client.tsx` suffix is a naming convention used when there's a non-client file with the same name
+- Interactive forms/inputs must be client components
 - Diff rendering is server-side for better performance
-
-## Key Dependencies
-
-### Runtime
-
-- **next** (16.0.10): Framework (App Router, Turbopack, Edge Runtime)
-- **react** (19.2.3) & **react-dom**: UI library
-- **libnpmdiff** (6.1.4): Core npm diff functionality (server-only)
-- **pacote** (18.0.6): npm package fetching (server-only)
-- **npm-package-arg** (11.0.3): Parse npm package specifiers
-- **react-diff-view** (3.3.2): Visual diff rendering
-- **gitdiff-parser** (0.3.1): Parse git diff format
-- **tailwindcss** (3.4.19): Styling
-- **downshift** (9.0.13): Combobox/autocomplete
-
-### Dev Tools
-
-- **typescript** (5.9.3): TypeScript compiler
-- **eslint** (9.39.2): Linting (flat config format)
-- **prettier** (3.7.4): Code formatting
-- **jest** (30.2.0) & **@testing-library/react**: Testing
-- **@obusk/eslint-config-next**: Custom ESLint config
 
 ## Instructions for Coding Agents
 
