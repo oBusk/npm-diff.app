@@ -15,27 +15,23 @@
 
 - **Node.js**: 24.x (package.json specifies this; warnings appear with older versions but Node 20.x works for development)
 - **pnpm**: 10.26.0 (exact version specified in packageManager field)
-- **Install pnpm**: `npm install -g pnpm@10.26.0`
+- Environment setup is handled automatically via `oBusk/action-pnpm-setup@v1` in CI and Copilot environments
+
+## Next.js MCP Integration
+
+This repository is configured with the Next.js MCP server for enhanced development tooling:
+
+- **MCP Server**: `next-devtools-mcp` (configured in `.vscode/mcp.json`)
+- Provides Next.js-specific context, insights, and debugging capabilities
+- Automatically available when working with MCP-enabled tools
 
 ## Build & Validation Commands
 
-### Initial Setup
+**All commands use pnpm** - dependencies are installed automatically in Copilot environments.
 
-**ALWAYS run pnpm install first before any other command:**
+### CI Validation Commands
 
-```bash
-pnpm install
-```
-
-This takes ~10-15 seconds and is required after cloning or pulling dependency changes. The install process:
-
-- Installs config dependencies like `@obusk/pnpm-plugin-defaults`
-- May show engine warnings about Node version (safe to ignore if using Node 20+)
-- Sets up git hooks via `simple-git-hooks` (runs `pnpm run lint-staged` on pre-commit)
-
-### Validation Commands (in CI order)
-
-These commands must pass for CI to succeed. Run them in this order:
+These commands must pass for CI to succeed (run in this order):
 
 1. **Linting** (timeout: 5 minutes in CI):
 
@@ -291,7 +287,7 @@ API routes use a special `-` prefix to avoid conflicts with the catch-all `[...p
 
 ### Before Making Changes
 
-1. **Always run `pnpm install` first** if you haven't already
+1. Dependencies are installed automatically - just run commands with `pnpm`
 2. Run `pnpm run lint && pnpm run test-ci && pnpm run typecheck && pnpm run build` to establish baseline
 3. Make note of any pre-existing failures (not your responsibility to fix unrelated issues)
 
@@ -306,8 +302,7 @@ API routes use a special `-` prefix to avoid conflicts with the catch-all `[...p
 ### When Adding Dependencies
 
 1. Use `pnpm add <package>` or `pnpm add -D <package>` (never npm or yarn)
-2. After adding, run `pnpm install` again to update lockfile
-3. Test that build still works: `pnpm run build`
+2. Test that build still works: `pnpm run build`
 
 ### When Adding Tests
 
