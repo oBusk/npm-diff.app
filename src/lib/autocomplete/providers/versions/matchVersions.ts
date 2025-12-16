@@ -71,7 +71,7 @@ const getEligbleVersions = ({
 function findPreviousReleases(versions: readonly Version[]): Version[] {
     const result: Version[] = [];
 
-    versionsLoop: for (let entry of versions) {
+    versionsLoop: for (const entry of versions) {
         switch (result.length) {
             case 0:
             // We have no entries, so this is the first entry
@@ -154,7 +154,7 @@ export function matchVersions({
     if (matches.length < size) {
         // There wasn't enough matches from the previous mechanics, lets add some more.
 
-        for (let entry of eligibleVersions) {
+        for (const entry of eligibleVersions) {
             if (!matches.includes(entry)) {
                 matches.push(entry);
             }
@@ -168,12 +168,11 @@ export function matchVersions({
 
     return matches
         .sort((a, b) => rcompare(a.version, b.version))
-        .map(({ version, tags, time }) => ({
+        .map(({ version, tags }) => ({
             version,
             versionEmphasized: emphasize(version, rawSpec),
             ...(tags
                 ? { tags: tags.map((tag) => emphasize(tag, rawSpec)) }
                 : undefined),
-            time,
         }));
 }
