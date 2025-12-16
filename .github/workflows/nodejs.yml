@@ -33,6 +33,20 @@ jobs:
             - name: Run tests
               run: pnpm run test-ci
 
+    typecheck:
+        runs-on: ubuntu-latest
+        timeout-minutes: 5
+        env:
+            CI: true
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+            - name: Set up using pnpm
+              uses: oBusk/action-pnpm-setup@v1
+            - name: Type check
+              run: pnpm run type-check
+
     build:
         runs-on: ubuntu-latest
         timeout-minutes: 5
