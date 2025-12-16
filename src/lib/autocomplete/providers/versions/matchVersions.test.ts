@@ -1,4 +1,4 @@
-import { type Version } from "^/app/api/-/versions/route";
+import { type Version } from "^/app/api/-/versions/types";
 import { type Matched, matchVersions } from "./matchVersions";
 
 describe("matchVersions", () => {
@@ -31,8 +31,8 @@ describe("matchVersions", () => {
                 "11.1.2",
                 "11.1.3-beta.1",
                 "11.1.3-beta.2",
-            ].map((version) => ({ version })),
-            { version: "11.2.0", tags: ["latest"] },
+            ].map((version) => ({ version, time: `${Date.now()}` })),
+            { version: "11.2.0", time: `${Date.now()}`, tags: ["latest"] },
         ];
         fn = (rawSpec, optionalFilter) =>
             matchVersions({

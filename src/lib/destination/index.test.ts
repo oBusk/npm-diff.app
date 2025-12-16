@@ -25,15 +25,15 @@ describe("destination()", () => {
     let specs: ExpectedResults;
 
     beforeAll(async () => {
-        const manifests: ExpectedResults<pacote.ManifestResult> = Object.freeze(
-            {
-                "^2.1": await pacote.manifest(`chalk@^2.1`),
-                "~2.1": await pacote.manifest(`chalk@~2.1`),
-                latest: await pacote.manifest("chalk"),
-                "^3.0.0-beta": await pacote.manifest("chalk@^3.0.0-beta"),
-                next: await pacote.manifest("chalk@next"),
-            },
-        );
+        const manifests: ExpectedResults<
+            pacote.AbbreviatedManifest & pacote.ManifestResult
+        > = Object.freeze({
+            "^2.1": await pacote.manifest(`chalk@^2.1`),
+            "~2.1": await pacote.manifest(`chalk@~2.1`),
+            latest: await pacote.manifest("chalk"),
+            "^3.0.0-beta": await pacote.manifest("chalk@^3.0.0-beta"),
+            next: await pacote.manifest("chalk@next"),
+        });
 
         const versions: ExpectedResults = Object.freeze({
             "^2.1": manifests["^2.1"].version,
