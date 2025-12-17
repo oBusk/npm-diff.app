@@ -33,7 +33,7 @@ function useAutocomplete({
             throttledQuery === ""
                 ? fallback
                 : await autocomplete({
-                      query: throttledQuery,
+                      query: throttledQuery ?? "",
                       optionalPackageFilter,
                   }),
         [throttledQuery, fallback, optionalPackageFilter],
