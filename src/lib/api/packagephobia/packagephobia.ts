@@ -1,10 +1,10 @@
-import { userAgent } from "../user-agent";
+import { USER_AGENT } from "../user-agent";
 import type PackagephobiaResponse from "./PackagephobiaResponse";
 import type PackagephobiaResults from "./PackagephobiaResult";
 
 async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
     const requestHeaders = {
-        "User-Agent": userAgent(),
+        "User-Agent": USER_AGENT,
     };
 
     let response: Response | undefined;
