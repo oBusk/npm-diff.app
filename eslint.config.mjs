@@ -8,7 +8,6 @@ const eslintConfig = [
         rules: {
             "react-hooks/immutability": "off",
             "react-hooks/set-state-in-effect": "off",
-            "react-hooks/refs": "off",
         },
     },
 ];

@@ -90,6 +90,7 @@ const SpecInput = forwardRef<SpecInputRef, SpecInputProps>(
             >
                 <ComboboxInput
                     isOpen={isOpen}
+                    // eslint-disable-next-line react-hooks/refs
                     {...getInputProps({
                         ref: inputRef,
                     })}
