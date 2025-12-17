@@ -3,14 +3,18 @@ import type PackagephobiaResponse from "./PackagephobiaResponse";
 import type PackagephobiaResults from "./PackagephobiaResult";
 
 async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
+    const requestHeaders = {
+        "User-Agent": USER_AGENT,
+    };
+
+    let response: Response | undefined;
+
     try {
-        const response = await fetch(
+        response = await fetch(
             `https://packagephobia.com/v2/api.json?p=${spec}`,
             {
                 signal: AbortSignal.timeout(7_500),
-                headers: {
-                    "User-Agent": USER_AGENT,
-                },
+                headers: requestHeaders,
             },
         );
 
@@ -22,7 +26,15 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
 
         return json;
     } catch (e) {
-        console.error(`[${spec}] Packagephobia error:`, e);
+        console.error(`[${spec}] Packagephobia error:`, {
+            error: e,
+            ["Request Headers"]: requestHeaders,
+            ["Response Status"]: response?.status,
+            ["Response Status Text"]: response?.statusText,
+            ["Response Headers"]: response?.headers
+                ? Object.fromEntries(response.headers.entries())
+                : undefined,
+        });
     }
 
     return null;
