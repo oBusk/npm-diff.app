@@ -19,12 +19,8 @@ export interface DiffIntroProps extends StackProps {
 
 const DiffIntro = forwardRef<ElementRef<typeof Stack>, DiffIntroProps>(
     ({ a, b, services, options, className, ...props }, ref) => {
-        if (a.name == null) {
-            a.name = "ERROR";
-        }
-        if (b.name == null) {
-            b.name = "ERROR";
-        }
+        const aWithName = { ...a, name: a.name ?? "ERROR" };
+        const bWithName = { ...b, name: b.name ?? "ERROR" };
 
         return (
             <Stack
@@ -36,14 +32,22 @@ const DiffIntro = forwardRef<ElementRef<typeof Stack>, DiffIntroProps>(
                 <Heading className="mb-6 w-full text-center text-sm">
                     <span>Comparing</span>
                     <Halfs
-                        left={<SpecBox pkg={a} pkgClassName="rounded-r-none" />}
+                        left={
+                            <SpecBox
+                                pkg={aWithName}
+                                pkgClassName="rounded-r-none"
+                            />
+                        }
                         center={
                             <span>
                                 <Code className="rounded-none">...</Code>
                             </span>
                         }
                         right={
-                            <SpecBox pkg={b} pkgClassName="rounded-l-none" />
+                            <SpecBox
+                                pkg={bWithName}
+                                pkgClassName="rounded-l-none"
+                            />
                         }
                     />
                 </Heading>
