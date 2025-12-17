@@ -54,7 +54,7 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
             try {
                 // We don't really care if npa can't parse the input
                 aNpa = npa(a);
-            } catch (e) {
+            } catch {
                 //
             }
 

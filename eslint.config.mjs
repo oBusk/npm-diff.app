@@ -8,7 +8,6 @@ const eslintConfig = [
         rules: {
             "react-hooks/immutability": "off",
             "react-hooks/set-state-in-effect": "off",
-            "@typescript-eslint/no-unused-vars": "off",
             "react-hooks/refs": "off",
             "@typescript-eslint/ban-ts-comment": "off",
             "@typescript-eslint/no-unused-expressions": "off",

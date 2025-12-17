@@ -11,7 +11,7 @@ import { matchVersions } from "./versions/matchVersions";
 const npaSafe = (input: string): npa.Result => {
     try {
         return npa(input);
-    } catch (e) {
+    } catch {
         if (input.length > 1) {
             return npaSafe(input.slice(0, -1));
         } else {
