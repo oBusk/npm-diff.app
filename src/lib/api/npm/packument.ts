@@ -23,7 +23,7 @@ const defaultOpts = {
 };
 
 // https://github.com/npm/npm-registry-fetch/blob/9cd725786b1362df268afda7b6e2a6c3db8ab05e/index.js#L175-L189
-function pickRegistry(specStr: string, _opts: any = {}) {
+function pickRegistry(specStr: string, _opts: unknown = {}) {
     //  // All of this code relies on `npa()` being available, which it isn't on the edge
     //
     // const spec = npa(specStr);

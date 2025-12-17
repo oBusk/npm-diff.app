@@ -5,10 +5,10 @@ import { useUnmount } from "react-use";
 // https://github.com/streamich/react-use/issues/2343
 // Once this issue is closed, we should be able to remove this file
 const useThrottle = <T>(value: T, ms: number = 200) => {
-    const [state, setState] = useState<T>(value);
+    const [state, setState] = useState<T | null>(value);
     const timeout = useRef<ReturnType<typeof setTimeout>>(undefined);
-    const nextValue = useRef(null) as any;
-    const hasNextValue = useRef(0) as any;
+    const nextValue = useRef<T | null>(null);
+    const hasNextValue = useRef<boolean | 0>(0);
 
     useEffect(() => {
         if (!timeout.current) {

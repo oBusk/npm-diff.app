@@ -31,7 +31,7 @@ async function _npmDiff(
         });
 
         return result;
-    } catch (e: any) {
+    } catch (e: unknown) {
         console.error("_doDiff", {
             error: e,
             specs,
@@ -39,7 +39,9 @@ async function _npmDiff(
             duration: Date.now() - startTime,
         });
 
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const isEtarget = (e: any): e is ErrorETARGET => e.code === "ETARGET";
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const isE404 = (e: any): e is Error404 => e.code === "E404";
 
         if (isEtarget(e)) {

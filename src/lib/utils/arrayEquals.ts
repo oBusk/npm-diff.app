@@ -1,4 +1,4 @@
-function arrayEquals(a: any[], b: any[]) {
+function arrayEquals(a: unknown[], b: unknown[]) {
     if (a === b) {
         return true;
     }

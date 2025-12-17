@@ -21,10 +21,12 @@ export default function suspense<T>(
             key={key}
             fallback={
                 typeof fallback === "function"
-                    ? await fallback(props as any)
+                    ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      await fallback(props as any)
                     : fallback
             }
         >
+            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
             <WrappedComponent {...(props as any)} />
         </SuspenseComp>
     );

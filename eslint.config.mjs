@@ -11,7 +11,6 @@ const eslintConfig = [
             "react-hooks/set-state-in-effect": "off",
             "@typescript-eslint/no-unused-vars": "off",
             "react-hooks/refs": "off",
-            "@typescript-eslint/no-explicit-any": "off",
             "no-var": "off",
             "@typescript-eslint/ban-ts-comment": "off",
             "@typescript-eslint/no-unused-expressions": "off",
