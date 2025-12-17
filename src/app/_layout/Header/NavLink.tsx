@@ -31,6 +31,7 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(
 
         useEffect(() => {
             if (asPath != null && location != null) {
+                // eslint-disable-next-line react-hooks/set-state-in-effect
                 setIsActive(
                     new URL(href, location.href).pathname ===
                         new URL(asPath, location.href).pathname,
