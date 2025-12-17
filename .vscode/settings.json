@@ -12,7 +12,7 @@
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
     "[javascript]": {
-        "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+        "editor.defaultFormatter": "prettier.prettier-vscode"
     },
     "tailwindCSS.experimental.classRegex": [
         ["(?:cva|cx)\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
