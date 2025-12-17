@@ -8,7 +8,7 @@ describe("splitParts", () => {
         // Number input
         expect(() =>
             splitParts(
-                // @ts-expect-error
+                // @ts-expect-error - Testing invalid number input
                 1,
             ),
         ).toThrow(/Invalid query/i);
@@ -16,7 +16,7 @@ describe("splitParts", () => {
         // Number array input
         expect(() =>
             splitParts(
-                // @ts-expect-error
+                // @ts-expect-error - Testing invalid number array input
                 [1, 2, 3],
             ),
         ).toThrow(/Invalid query/i);
@@ -24,7 +24,7 @@ describe("splitParts", () => {
         // Object input
         expect(() =>
             splitParts(
-                // @ts-expect-error
+                // @ts-expect-error - Testing invalid object input
                 {},
             ),
         ).toThrow(/Invalid query/i);
