@@ -20,7 +20,7 @@ export interface NpmDiffProps {
 const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
     const diff = await npmDiff(specs, options);
 
-    let files: FileData[] = gitDiffParse(diff);
+    const files: FileData[] = gitDiffParse(diff);
 
     if (files.length === 0) {
         return <NoDiff a={a} b={b} />;

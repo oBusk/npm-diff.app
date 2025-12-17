@@ -13,8 +13,8 @@ function countChanges(hunks: HunkData[]): CountedChanges {
     let deletions = 0;
     let normal = 0;
 
-    for (let hunk of hunks) {
-        for (let change of hunk.changes) {
+    for (const hunk of hunks) {
+        for (const change of hunk.changes) {
             if (change.type === "insert") {
                 additions++;
             } else if (change.type === "delete") {
