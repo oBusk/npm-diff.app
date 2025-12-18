@@ -32,7 +32,9 @@ const ClientDateInner = ({ time, ...props }: ClientDateProps) => {
 
     return (
         <Tooltip label={label}>
-            <span {...props}>{date.toLocaleDateString(undefined)}</span>
+            <span {...props} suppressHydrationWarning>
+                {date.toLocaleDateString(undefined)}
+            </span>
         </Tooltip>
     );
 };
