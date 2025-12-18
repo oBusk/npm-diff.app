@@ -1,4 +1,8 @@
-import { useCombobox } from "downshift";
+import {
+    type GetPropsCommonOptions,
+    useCombobox,
+    type UseComboboxGetInputPropsOptions,
+} from "downshift";
 import { useCallback } from "react";
 import {
     type AutocompleteSuggestion,
@@ -106,8 +110,11 @@ export const useNpmCombobox = ({
         },
     });
 
-    const getInputProps = useCallback<typeof combobox.getInputProps<{}>>(
-        (props, otherOptions) =>
+    const getInputProps = useCallback(
+        (
+            props: UseComboboxGetInputPropsOptions,
+            otherOptions?: GetPropsCommonOptions,
+        ) =>
             combobox.getInputProps<{}>(
                 {
                     ...props,
