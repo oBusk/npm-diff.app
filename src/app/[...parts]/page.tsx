@@ -1,3 +1,5 @@
+"use cache: private";
+
 import { type Metadata } from "next";
 import { redirect } from "next/navigation";
 import { type JSX } from "react";
@@ -15,6 +17,13 @@ import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff";
 import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
+
+// CACHE COMPONENTS: Using "use cache: private" to allow runtime prefetching
+// while keeping content dynamic (route params change per request)
+// Decision: This route displays package diffs based on dynamic params
+// - Same for all users with same params (prefetchable)
+// - Changes based on route params (needs dynamic data)
+// - Can be prefetched with actual runtime values for instant navigation
 
 export interface DiffPageProps {
     params: Promise<{ parts: string | string[] }>;

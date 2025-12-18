@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import getVersionData from "^/lib/api/npm/getVersionData";
 import { type Version, VERSIONS_PARAMETER_PACKAGE } from "./types";
 
-export const runtime = "edge";
+// MIGRATED: Removed export const runtime = "edge" (incompatible with Cache Components)
+// TODO: Evaluate if edge runtime optimization is needed - can be configured differently with CC
 
 export async function GET(request: Request) {
     const start = Date.now();

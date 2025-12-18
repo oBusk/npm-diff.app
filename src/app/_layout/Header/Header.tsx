@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { forwardRef, type HTMLAttributes } from "react";
+import { forwardRef, type HTMLAttributes, Suspense } from "react";
 import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import ColorModeToggle from "./ColorModeToggle";
@@ -33,11 +33,20 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                     npm-diff.app 📦🔃
                 </Heading>
             </Link>
-            <div className="flex items-center justify-end">
-                <NavLink href="/about">about</NavLink>
-                <span>/</span>
-                <NavLink href="/about/api">api</NavLink>
-            </div>
+            {/* CACHE COMPONENTS: Wrap NavLink in Suspense because it uses usePathname() (dynamic API) */}
+            <Suspense
+                fallback={
+                    <div className="flex items-center justify-end">
+                        <span className="opacity-60">about / api</span>
+                    </div>
+                }
+            >
+                <div className="flex items-center justify-end">
+                    <NavLink href="/about">about</NavLink>
+                    <span>/</span>
+                    <NavLink href="/about/api">api</NavLink>
+                </div>
+            </Suspense>
         </nav>
     ),
 );
