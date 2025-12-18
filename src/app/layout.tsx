@@ -1,5 +1,5 @@
 import { type Metadata, type Viewport } from "next";
-import { type ReactNode } from "react";
+import { type ReactNode, Suspense } from "react";
 import { ThemeProvider } from "^/components/ThemeProvider";
 import Stack from "^/components/ui/Stack";
 import { TooltipProvider } from "^/components/ui/Tooltip";
@@ -31,18 +31,21 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <html lang="en" suppressHydrationWarning>
             <head />
             <body className="min-h-screen-s bg-background">
-                <ThemeProvider>
-                    <TooltipProvider>
-                        <Stack
-                            justify="between"
-                            className="min-h-screen-s relative overflow-auto px-4"
-                        >
-                            <Header className="bg-background" />
-                            {children}
-                            <Footer className="bg-background" />
-                        </Stack>
-                    </TooltipProvider>
-                </ThemeProvider>
+                {/* CACHE COMPONENTS: Wrap ThemeProvider in Suspense because next-themes uses client-side APIs */}
+                <Suspense fallback={null}>
+                    <ThemeProvider>
+                        <TooltipProvider>
+                            <Stack
+                                justify="between"
+                                className="min-h-screen-s relative overflow-auto px-4"
+                            >
+                                <Header className="bg-background" />
+                                {children}
+                                <Footer className="bg-background" />
+                            </Stack>
+                        </TooltipProvider>
+                    </ThemeProvider>
+                </Suspense>
             </body>
         </html>
     );
