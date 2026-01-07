@@ -5,7 +5,6 @@ import {
     type FormEventHandler,
     forwardRef,
     type HTMLAttributes,
-    useCallback,
     useMemo,
     useRef,
     useState,
@@ -65,19 +64,16 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                 : undefined;
         }, [a]);
 
-        const internalHandleSubmit = useCallback<FormEventHandler>(
-            (event) => {
-                event.preventDefault();
+        const internalHandleSubmit: FormEventHandler = (event) => {
+            event.preventDefault();
 
-                const target = event.target as typeof event.target & {
-                    ["a-input"]: HTMLInputElement;
-                    ["b-input"]: HTMLInputElement;
-                };
+            const target = event.target as typeof event.target & {
+                ["a-input"]: HTMLInputElement;
+                ["b-input"]: HTMLInputElement;
+            };
 
-                handleSubmit(target["a-input"].value, target["b-input"].value);
-            },
-            [handleSubmit],
-        );
+            handleSubmit(target["a-input"].value, target["b-input"].value);
+        };
 
         return (
             <form

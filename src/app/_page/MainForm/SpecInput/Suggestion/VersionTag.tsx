@@ -1,4 +1,4 @@
-import { forwardRef, type HTMLAttributes, memo } from "react";
+import { forwardRef, type HTMLAttributes } from "react";
 import { cx } from "^/lib/cva";
 import emphasized from "./emphasized";
 
@@ -24,4 +24,4 @@ const VersionTag = forwardRef<HTMLDivElement, VersionTagProps>(
 );
 VersionTag.displayName = "VersionTag";
 
-export default memo(VersionTag);
+export default VersionTag;

@@ -3,7 +3,6 @@ import {
     useCombobox,
     type UseComboboxGetInputPropsOptions,
 } from "downshift";
-import { useCallback } from "react";
 import {
     type AutocompleteSuggestion,
     AutocompleteSuggestionTypes,
@@ -110,45 +109,42 @@ export const useNpmCombobox = ({
         },
     });
 
-    const getInputProps = useCallback(
-        (
-            props: UseComboboxGetInputPropsOptions,
-            otherOptions?: GetPropsCommonOptions,
-        ) =>
-            combobox.getInputProps<{}>(
-                {
-                    ...props,
-                    onKeyDown: (event) => {
-                        // If consumer passed in a onKeyDown, call it first
-                        props?.onKeyDown?.(event);
+    const getInputProps = (
+        props: UseComboboxGetInputPropsOptions,
+        otherOptions?: GetPropsCommonOptions,
+    ) =>
+        combobox.getInputProps<{}>(
+            {
+                ...props,
+                onKeyDown: (event) => {
+                    // If consumer passed in a onKeyDown, call it first
+                    props?.onKeyDown?.(event);
 
-                        // Add special handler to select a package and keep focus when
-                        // pressing tab
-                        if (!event.defaultPrevented && event.key === "Tab") {
-                            const { highlightedIndex, selectItem } = combobox;
-                            const highlightedItem = items[highlightedIndex];
+                    // Add special handler to select a package and keep focus when
+                    // pressing tab
+                    if (!event.defaultPrevented && event.key === "Tab") {
+                        const { highlightedIndex, selectItem } = combobox;
+                        const highlightedItem = items[highlightedIndex];
 
-                            if (highlightedItem) {
-                                selectItem(highlightedItem);
+                        if (highlightedItem) {
+                            selectItem(highlightedItem);
 
-                                if (
-                                    // Highlighted item is package (not version)
-                                    highlightedItem.type ===
-                                        AutocompleteSuggestionTypes.Package &&
-                                    // And we're not tabbing backwards
-                                    !event.shiftKey
-                                ) {
-                                    // Keep the focus on the input
-                                    event.preventDefault();
-                                }
+                            if (
+                                // Highlighted item is package (not version)
+                                highlightedItem.type ===
+                                    AutocompleteSuggestionTypes.Package &&
+                                // And we're not tabbing backwards
+                                !event.shiftKey
+                            ) {
+                                // Keep the focus on the input
+                                event.preventDefault();
                             }
                         }
-                    },
+                    }
                 },
-                otherOptions,
-            ),
-        [combobox, items],
-    );
+            },
+            otherOptions,
+        );
 
     return {
         items,

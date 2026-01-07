@@ -1,4 +1,4 @@
-import { type ElementRef, forwardRef, memo } from "react";
+import { type ElementRef, forwardRef } from "react";
 import Heading, { type HeadingProps } from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import emphasized from "./emphasized";
@@ -29,4 +29,4 @@ const Title = forwardRef<ElementRef<typeof Heading>, TitleProps>(
 );
 Title.displayName = "SuggestionTitle";
 
-export default memo(Title);
+export default Title;

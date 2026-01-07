@@ -1,6 +1,6 @@
 "use client";
 
-import { type HTMLProps, memo } from "react";
+import { type HTMLProps } from "react";
 import Tooltip from "./ui/Tooltip";
 
 export interface ClientDateProps extends HTMLProps<HTMLDivElement> {
@@ -12,7 +12,7 @@ const currentTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 /**
  * Prints dates in the clients timezone, but also shows the UTC time in a tooltip.
  */
-const ClientDateInner = ({ time, ...props }: ClientDateProps) => {
+const ClientDate = ({ time, ...props }: ClientDateProps) => {
     const date = new Date(time);
 
     const label = (
@@ -38,7 +38,5 @@ const ClientDateInner = ({ time, ...props }: ClientDateProps) => {
         </Tooltip>
     );
 };
-
-const ClientDate = memo(ClientDateInner);
 
 export default ClientDate;

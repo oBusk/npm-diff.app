@@ -48,7 +48,7 @@ const DiffFile = forwardRef<
                 ? true
                 : null,
     );
-    const render = useCallback(() => setAvoidRender(null), [setAvoidRender]);
+    const render = () => setAvoidRender(null);
 
     const generateAnchorID = useCallback(
         (change: ChangeData) =>
