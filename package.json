@@ -91,6 +91,7 @@
         "@types/semver": "^7.7.1",
         "@types/validate-npm-package-name": "^4.0.2",
         "autoprefixer": "^10.4.23",
+        "babel-plugin-react-compiler": "^1.0.0",
         "eslint": "^9.39.2",
         "jest-environment-jsdom": "^30.2.0",
         "lint-staged": "^16.2.7",
