@@ -1,5 +1,4 @@
 import libnpmdiff, { type Options } from "libnpmdiff";
-import { unstable_cache } from "next/cache";
 
 interface ErrorETARGET {
     code: "ETARGET";
@@ -15,7 +14,7 @@ interface Error404 {
     pkgid: string;
 }
 
-async function _npmDiff(
+async function npmDiff(
     specs: [string, string],
     options: Options,
 ): Promise<string> {
@@ -75,7 +74,5 @@ async function _npmDiff(
         };
     }
 }
-
-const npmDiff = unstable_cache(_npmDiff);
 
 export default npmDiff;
