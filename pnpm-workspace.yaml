@@ -14,6 +14,10 @@ onlyBuiltDependencies:
     - simple-git-hooks
     - unrs-resolver
 
+overrides:
+    "@types/react": 19.2.7
+    "@types/react-dom": 19.2.3
+
 trustPolicyExclude:
     - semver@6.3.1
     - tailwind-merge@2.6.0
