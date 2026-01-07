@@ -1,5 +1,6 @@
 import { type Metadata } from "next";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 import { type JSX } from "react";
 import { type ViewType } from "react-diff-view";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
@@ -39,6 +40,9 @@ const DiffPage = async ({
     params,
     searchParams,
 }: DiffPageProps): Promise<JSX.Element> => {
+    // Cache Components: Mark this route as dynamic since it uses params/searchParams
+    await connection();
+
     const { parts } = await params;
     const { diffFiles, ...optionsQuery } = await searchParams;
 

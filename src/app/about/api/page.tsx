@@ -23,8 +23,8 @@ export const metadata = {
     description: "API documentation for npm-diff.app",
 } satisfies Metadata;
 
-// We need nodejs since we use Npm libs https://beta.nextjs.org/docs/api-reference/segment-config#runtime
-export const runtime = "nodejs";
+// MIGRATED from: export const runtime = "nodejs"
+// → Removed (nodejs is the default, no need to specify with Cache Components)
 const AboutApiPage = async () => {
     const specsOrVersions = splitParts(EXAMPLE_QUERY);
     const { canonicalSpecs: specs } = await destination(specsOrVersions);

@@ -2,7 +2,10 @@ import { NextResponse } from "next/server";
 import getVersionData from "^/lib/api/npm/getVersionData";
 import { type Version, VERSIONS_PARAMETER_PACKAGE } from "./types";
 
-export const runtime = "edge";
+// MIGRATED from: export const runtime = "edge"
+// → Route Segment Config is incompatible with Cache Components
+// → Edge runtime support requires different approach with Cache Components
+// → Switched to default nodejs runtime for Cache Components compatibility
 
 export async function GET(request: Request) {
     const start = Date.now();
