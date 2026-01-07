@@ -1,4 +1,3 @@
-import { unstable_cache } from "next/cache";
 import npa, { type AliasResult } from "npm-package-arg";
 import pacote from "pacote";
 
@@ -58,14 +57,10 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
  * - https://github.com/npm/npm-package-arg#result-object
  * - https://docs.npmjs.com/cli/v7/commands/npm-install
  */
-const canonicalSpec = unstable_cache(
-    async function _canonicalSpecs(spec: string): Promise<string> {
-        const result = npa(spec);
+function canonicalSpec(spec: string): Promise<string> {
+    const result = npa(spec);
 
-        return handleNpaResult(result);
-    },
-    [],
-    { revalidate: 60 * 30 },
-);
+    return handleNpaResult(result);
+}
 
 export default canonicalSpec;

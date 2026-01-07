@@ -1,5 +1,3 @@
-import { unstable_cache } from "next/cache";
-import { cache } from "react";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import packument from "./packument";
@@ -17,7 +15,7 @@ export type VersionMap = {
     [version: string]: VersionData;
 };
 
-async function getVersionDataInner(
+async function getVersionData(
     spec: string | SimplePackageSpec,
 ): Promise<VersionMap> {
     const specString =
@@ -51,14 +49,5 @@ async function getVersionDataInner(
 
     return versionData;
 }
-
-const getVersionData =
-    // Cache for request de-dupe
-    cache(
-        // unstable cache to cache between requests (5 minute TTL)
-        unstable_cache(getVersionDataInner, ["versionData"], {
-            revalidate: 300,
-        }),
-    );
 
 export default getVersionData;
