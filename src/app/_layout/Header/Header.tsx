@@ -1,10 +1,10 @@
 import Link from "next/link";
-import { forwardRef, type HTMLAttributes } from "react";
+import { forwardRef, type HTMLAttributes, Suspense } from "react";
 import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import ColorModeToggle from "./ColorModeToggle";
 import GithubLink from "./GithubLink";
-import NavLink from "./NavLink";
+import NavLink, { NavLinkFallback } from "./NavLink";
 
 export interface HeaderProps extends HTMLAttributes<HTMLElement> {}
 
@@ -34,9 +34,23 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                 </Heading>
             </Link>
             <div className="flex items-center justify-end">
-                <NavLink href="/about">about</NavLink>
-                <span>/</span>
-                <NavLink href="/about/api">api</NavLink>
+                <Suspense
+                    fallback={
+                        <>
+                            <NavLinkFallback href="/about">
+                                about
+                            </NavLinkFallback>
+                            <span>/</span>
+                            <NavLinkFallback href="/about/api">
+                                api
+                            </NavLinkFallback>
+                        </>
+                    }
+                >
+                    <NavLink href="/about">about</NavLink>
+                    <span>/</span>
+                    <NavLink href="/about/api">api</NavLink>
+                </Suspense>
             </div>
         </nav>
     ),
