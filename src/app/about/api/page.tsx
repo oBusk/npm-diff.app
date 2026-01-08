@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cacheLife } from "next/cache";
 import ExternalLink from "^/components/ExternalLink";
 import Code from "^/components/ui/Code";
 import Heading from "^/components/ui/Heading";
@@ -24,6 +25,10 @@ export const metadata: Metadata = {
 };
 
 const AboutApiPage = async () => {
+    "use cache";
+
+    cacheLife("max");
+
     const specsOrVersions = splitParts(EXAMPLE_QUERY);
     const { canonicalSpecs: specs } = await destination(specsOrVersions);
 
