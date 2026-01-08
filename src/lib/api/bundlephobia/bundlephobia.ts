@@ -1,11 +1,16 @@
+import { cacheLife } from "next/cache";
 import npa from "npm-package-arg";
+import { USER_AGENT } from "../user-agent";
 import type BundlephobiaResponse from "./BundlephobiaResponse";
 import type BundlephobiaResults from "./BundlephobiaResults";
 
 async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
+    "use cache";
+
     const { scope } = npa(spec);
 
     if (scope === "@types") {
+        cacheLife("max");
         return null;
     }
 
@@ -14,18 +19,74 @@ async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
             `https://bundlephobia.com/api/size?package=${spec}`,
             {
                 signal: AbortSignal.timeout(7_500),
+                headers: {
+                    "User-Agent": USER_AGENT,
+                },
+                // Opt out of fetch-level caching, we have caching in function
+                cache: "no-store",
             },
         );
 
-        if (response.status !== 200) {
-            throw new Error(`${response.status} ${response.statusText}`);
+        if (response.status === 200) {
+            // If we succeed, cache as long as we're allowed
+            cacheLife("max");
+
+            const json: BundlephobiaResponse = await response.json();
+
+            return json;
+        } else if (response.status === 403) {
+            // Bundlephobia returns 403 forbidden for packages that are not supposed to be bundled.
+            // This is a stable, permanent behaviour, so we cache forever.
+            // For a list of packages; https://github.com/pastelsky/bundlephobia/blob/bundlephobia/server/config.js
+            cacheLife("max");
+
+            console.warn(`[${spec}] Bundlephobia returned 403 Forbidden`);
+
+            return null;
+        } else if (response.status === 404) {
+            // Package not found, cache for a while
+            cacheLife("hours");
+
+            console.warn(`[${spec}] Bundlephobia returned 404 Not Found`);
+
+            return null;
+        } else if (response.status === 500) {
+            // Server error, this is most likely because the package is too large or complex for Bundlephobia to handle.
+            // We don't want to retry too often, but we also don't want to cache forever in case the issue is resolved.
+            cacheLife("days");
+
+            console.error(
+                `[${spec}] Bundlephobia returned 500 Internal Server Error`,
+            );
+
+            return null;
+        } else {
+            // For other, unexpected statuses, we cache briefly and log the error.
+            cacheLife("hours");
+
+            console.error(
+                `[${spec}] Bundlephobia returned unexpected status: ${response.status} ${response.statusText}`,
+            );
+
+            return null;
         }
-
-        const json: BundlephobiaResponse = await response.json();
-
-        return json;
     } catch (e) {
-        console.error(`[${spec}] Bundlephobia error:`, e);
+        if (e instanceof Error && e.name === "TimeoutError") {
+            // Timing out is typical for large or complex packages.
+            // We don't want to retry too often, but we also don't want to cache forever in case the issue is resolved.
+            cacheLife("days");
+
+            console.error(`[${spec}] Bundlephobia request timed out`);
+
+            return null;
+        } else {
+            // For other, unexpected errors, we cache briefly and log the error.
+            cacheLife("hours");
+
+            console.error(`[${spec}] Bundlephobia error:`, e);
+
+            return null;
+        }
     }
 
     return null;

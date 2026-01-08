@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import bundlephobia from "^/lib/api/bundlephobia";
 import { Bundlephobia } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
@@ -22,6 +23,9 @@ const BundlephobiaDiffInner = async ({
     b,
 }: BundlephobiaDiffProps) => {
     "use cache";
+
+    // The shortest cacheLife that `bundlephobia` uses is hours, so we can use that here too.
+    cacheLife("hours");
 
     const { result, time } = await measuredPromise(bundlephobia(specs));
 
