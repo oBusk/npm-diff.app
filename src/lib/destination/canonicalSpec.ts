@@ -58,7 +58,7 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
  * - https://github.com/npm/npm-package-arg#result-object
  * - https://docs.npmjs.com/cli/v7/commands/npm-install
  */
-function canonicalSpec(spec: string): Promise<string> {
+async function canonicalSpec(spec: string): Promise<string> {
     "use cache";
 
     cacheLife("hours");
