@@ -1,6 +1,6 @@
 import { type Metadata } from "next";
 import { redirect } from "next/navigation";
-import { type JSX } from "react";
+import { type JSX, Suspense } from "react";
 import { type ViewType } from "react-diff-view";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
@@ -35,7 +35,7 @@ export async function generateMetadata({
     };
 }
 
-const DiffPage = async ({
+const DiffPageInner = async ({
     params,
     searchParams,
 }: DiffPageProps): Promise<JSX.Element> => {
@@ -106,6 +106,14 @@ const DiffPage = async ({
             </>
         );
     }
+};
+
+const DiffPage = (props: DiffPageProps) => {
+    return (
+        <Suspense>
+            <DiffPageInner {...props} />
+        </Suspense>
+    );
 };
 
 export default DiffPage;
