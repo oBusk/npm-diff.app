@@ -26,14 +26,6 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
 
         return json;
     } catch (e) {
-        const echoResponse = await fetch("https://postman-echo.com/get", {
-            signal: AbortSignal.timeout(7_500),
-            headers: {
-                "User-Agent": USER_AGENT,
-                "X-Debug-User-Agent": USER_AGENT, // add a second header for comparison
-            },
-        });
-
         console.error(`[${spec}] Packagephobia error:`, {
             error: e,
             ["Request Headers"]: requestHeaders,
@@ -42,9 +34,6 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
             ["Response Headers"]: response?.headers
                 ? Object.fromEntries(response.headers.entries())
                 : undefined,
-            ["Echo Response"]: echoResponse.ok
-                ? await echoResponse.json()
-                : `Failed to fetch echo response: ${echoResponse.status} ${echoResponse.statusText}`,
         });
     }
 
