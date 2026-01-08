@@ -9,9 +9,9 @@ import {
     externalServicesLightmode,
 } from "./_page/assets";
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "About",
-} satisfies Metadata;
+};
 
 export default function AboutPage() {
     return (

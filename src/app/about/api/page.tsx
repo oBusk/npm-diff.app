@@ -18,10 +18,10 @@ const EXAMPLE_RELATIVE_LINK = `${API_PATH}/${EXAMPLE_QUERY}` as const;
 const DOMAIN = "https://npm-diff.app";
 const EXAMPLE_ABSOLUTE_URL = `${DOMAIN}${EXAMPLE_RELATIVE_LINK}` as const;
 
-export const metadata = {
+export const metadata: Metadata = {
     title: "API",
     description: "API documentation for npm-diff.app",
-} satisfies Metadata;
+};
 
 // We need nodejs since we use Npm libs https://beta.nextjs.org/docs/api-reference/segment-config#runtime
 export const runtime = "nodejs";
