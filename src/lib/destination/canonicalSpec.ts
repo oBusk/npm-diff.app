@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import npa, { type AliasResult } from "npm-package-arg";
 import pacote from "pacote";
 
@@ -58,6 +59,10 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
  * - https://docs.npmjs.com/cli/v7/commands/npm-install
  */
 function canonicalSpec(spec: string): Promise<string> {
+    "use cache";
+
+    cacheLife("hours");
+
     const result = npa(spec);
 
     return handleNpaResult(result);

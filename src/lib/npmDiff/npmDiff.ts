@@ -1,4 +1,5 @@
 import libnpmdiff, { type Options } from "libnpmdiff";
+import { cacheLife } from "next/cache";
 
 interface ErrorETARGET {
     code: "ETARGET";
@@ -18,6 +19,10 @@ async function npmDiff(
     specs: [string, string],
     options: Options,
 ): Promise<string> {
+    "use cache";
+
+    cacheLife("max");
+
     let startTime = 0;
     try {
         startTime = Date.now();

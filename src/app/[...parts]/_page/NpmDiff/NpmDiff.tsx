@@ -1,4 +1,5 @@
 import type { Options } from "libnpmdiff";
+import { cacheLife } from "next/cache";
 import { Suspense } from "react";
 import type { FileData } from "react-diff-view";
 import Stack from "^/components/ui/Stack";
@@ -18,6 +19,10 @@ export interface NpmDiffProps {
 }
 
 const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
+    "use cache";
+
+    cacheLife("max");
+
     const diff = await npmDiff(specs, options);
 
     const files: FileData[] = gitDiffParse(diff);

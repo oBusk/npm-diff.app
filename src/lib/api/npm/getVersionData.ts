@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import packument from "./packument";
@@ -18,6 +19,10 @@ export type VersionMap = {
 async function getVersionData(
     spec: string | SimplePackageSpec,
 ): Promise<VersionMap> {
+    "use cache";
+
+    cacheLife("hours");
+
     const specString =
         typeof spec === "string" ? spec : simplePackageSpecToString(spec);
 

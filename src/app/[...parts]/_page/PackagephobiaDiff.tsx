@@ -18,6 +18,8 @@ const PackagephobiaDiffInner = async ({
     a,
     b,
 }: PackagephobiaDiffProps) => {
+    "use cache";
+
     const { result, time } = await measuredPromise(packagephobia(specs));
 
     if (result == null) {
