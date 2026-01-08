@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import packagephobia from "^/lib/api/packagephobia";
 import { Packagephobia } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
@@ -19,6 +20,9 @@ const PackagephobiaDiffInner = async ({
     b,
 }: PackagephobiaDiffProps) => {
     "use cache";
+
+    // Cache for the shortest window that packagephobia is cached
+    cacheLife("hours");
 
     const { result, time } = await measuredPromise(packagephobia(specs));
 
