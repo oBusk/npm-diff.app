@@ -52,4 +52,17 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(function NavLink(
     );
 });
 
+export const NavLinkFallback = forwardRef<HTMLAnchorElement, NavLinkProps>(
+    function NavLinkFallback({ href = "", className, ...props }, ref) {
+        return (
+            <Link
+                href={href}
+                className={navLinkVariants({ className })}
+                {...props}
+                ref={ref}
+            />
+        );
+    },
+);
+
 export default NavLink;
