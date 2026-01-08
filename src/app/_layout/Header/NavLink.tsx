@@ -1,58 +1,55 @@
 "use client";
 
-import Link from "next/link";
+import Link, { type LinkProps } from "next/link";
 import { usePathname } from "next/navigation";
-import {
-    type AnchorHTMLAttributes,
-    forwardRef,
-    useEffect,
-    useState,
-} from "react";
+import { type ComponentPropsWithoutRef, forwardRef } from "react";
+import type { UrlObject } from "url";
 import { cva } from "^/lib/cva";
 
 const navLinkVariants = cva(
     "block rounded-md transition-all duration-200 focus:outline-none",
     {
         variants: {
-            isActive: {
-                // 40% opacity
-                true: "opacity-40",
-            },
+            isActive: { true: "opacity-40" },
         },
     },
 );
 
-export interface NavLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {}
+export type NavLinkProps = ComponentPropsWithoutRef<typeof Link>;
 
-const NavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(
-    ({ href = "", className, ...props }, ref) => {
-        const asPath = usePathname();
-        const [isActive, setIsActive] = useState(false);
+function normalizePathname(path: string): string {
+    if (!path) return "/";
+    return path.length > 1 && path.endsWith("/") ? path.slice(0, -1) : path;
+}
 
-        useEffect(() => {
-            if (asPath != null && location != null) {
-                // eslint-disable-next-line react-hooks/set-state-in-effect
-                setIsActive(
-                    new URL(href, location.href).pathname ===
-                        new URL(asPath, location.href).pathname,
-                );
-            }
+function hrefToPathname(href: LinkProps["href"]): string {
+    if (typeof href === "string") {
+        // Extract pathname from "/x?y=1#z" safely
+        return new URL(href, "http://n").pathname;
+    }
+    return (href as UrlObject).pathname ?? "/";
+}
 
-            return () => {
-                setIsActive(false);
-            };
-        }, [asPath, href]);
+const NavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(function NavLink(
+    { href, className, ...props },
+    ref,
+) {
+    const pathname = usePathname();
 
-        return (
-            <Link
-                href={href}
-                className={navLinkVariants({ isActive, className })}
-                {...props}
-                ref={ref}
-            />
-        );
-    },
-);
-NavLink.displayName = "NavLink";
+    const current = normalizePathname(pathname);
+    const target = normalizePathname(hrefToPathname(href));
+
+    const isActive = current === target;
+
+    return (
+        <Link
+            ref={ref}
+            href={href}
+            className={navLinkVariants({ isActive, className })}
+            aria-current={isActive ? "page" : undefined}
+            {...props}
+        />
+    );
+});
 
 export default NavLink;
