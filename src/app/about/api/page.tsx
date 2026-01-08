@@ -23,8 +23,6 @@ export const metadata: Metadata = {
     description: "API documentation for npm-diff.app",
 };
 
-// We need nodejs since we use Npm libs https://beta.nextjs.org/docs/api-reference/segment-config#runtime
-export const runtime = "nodejs";
 const AboutApiPage = async () => {
     const specsOrVersions = splitParts(EXAMPLE_QUERY);
     const { canonicalSpecs: specs } = await destination(specsOrVersions);

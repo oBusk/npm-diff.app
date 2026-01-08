@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import getVersionData from "^/lib/api/npm/getVersionData";
 import { type Version, VERSIONS_PARAMETER_PACKAGE } from "./types";
 
-export const runtime = "edge";
-
 export async function GET(request: Request) {
     const start = Date.now();
 
