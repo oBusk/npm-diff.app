@@ -21,6 +21,8 @@ const BundlephobiaDiffInner = async ({
     a,
     b,
 }: BundlephobiaDiffProps) => {
+    "use cache";
+
     const { result, time } = await measuredPromise(bundlephobia(specs));
 
     if (result == null) {
