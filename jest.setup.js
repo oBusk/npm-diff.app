@@ -12,4 +12,5 @@ jest.mock("react", () => {
 // Override untable_cache method to avoid caching in tests
 jest.mock("next/cache", () => ({
     unstable_cache: (fn) => fn,
+    cacheLife: jest.fn(),
 }));
