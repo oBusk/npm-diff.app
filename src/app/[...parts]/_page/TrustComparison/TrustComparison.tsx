@@ -2,9 +2,9 @@
 
 import {
     CheckCircle2,
+    FileCode,
     GitCompareArrows,
     Info,
-    PackageOpen,
     Shield,
     XCircle,
 } from "lucide-react";
@@ -109,16 +109,20 @@ const TrustBox: FunctionComponent<TrustBoxProps> = ({
                 )}
             >
                 <div aria-hidden="true">{icon}</div>
-                <p className="text-sm font-semibold">{label}</p>
-                <Tooltip label={tooltip}>
-                    <button
-                        type="button"
-                        className="inline-flex cursor-help opacity-60 hover:opacity-100"
-                        aria-label="More information"
-                    >
-                        <Info className="size-4" />
-                    </button>
-                </Tooltip>
+                <div className="flex items-center gap-1">
+                    <p className="text-sm font-semibold">{label}</p>
+                    {evidence !== undefined ? (
+                        <Tooltip label={tooltip}>
+                            <button
+                                type="button"
+                                className="inline-flex cursor-help opacity-60 hover:opacity-100"
+                                aria-label="More information"
+                            >
+                                <Info className="size-4" />
+                            </button>
+                        </Tooltip>
+                    ) : null}
+                </div>
             </div>
             {isDowngrade ? (
                 <p className="text-xs text-red-600 dark:text-red-400">
@@ -129,14 +133,17 @@ const TrustBox: FunctionComponent<TrustBoxProps> = ({
                 <p className="text-xs text-green-600 dark:text-green-400">
                     ✓ Trust improvement
                 </p>
-            ) : null}
+            ) : (
+                // Reserve space to keep alignment when there's no upgrade/downgrade message
+                <p className="invisible text-xs">Placeholder</p>
+            )}
             {provenanceUrl ? (
                 <div className="text-xs">
                     <ExternalLink
                         href={provenanceUrl}
                         className="inline-flex items-center gap-1 text-blue-600 hover:underline dark:text-blue-400"
                     >
-                        <PackageOpen className="size-3" />
+                        <FileCode className="size-3" />
                         Source
                     </ExternalLink>
                 </div>
@@ -201,8 +208,8 @@ const TrustComparison: FunctionComponent<TrustComparisonProps> = ({
                 }
             />
             {compareUrl ? (
-                <div className="mt-2 text-center">
-                    <Button variant="outline" size="sm" asChild>
+                <div className="mb-4 mt-2 text-center">
+                    <Button variant="secondary" size="sm" asChild>
                         <ExternalLink
                             href={compareUrl}
                             className="inline-flex items-center gap-2"
@@ -212,7 +219,9 @@ const TrustComparison: FunctionComponent<TrustComparisonProps> = ({
                         </ExternalLink>
                     </Button>
                 </div>
-            ) : null}
+            ) : (
+                <div className="mb-4" />
+            )}
         </>
     );
 };
