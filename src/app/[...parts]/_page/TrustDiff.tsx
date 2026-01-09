@@ -21,11 +21,7 @@ const TrustDiffInner = async ({ specs, a, b }: TrustDiffProps) => {
 
     console.log("Trust comparison", { specs, time });
 
-    // Don't render if both packages have no trust evidence
-    if (result.a.evidence == null && result.b.evidence == null) {
-        return null;
-    }
-
+    // Always render - showing "no trust evidence" is also valuable information
     return (
         <TrustComparison
             a={a}
