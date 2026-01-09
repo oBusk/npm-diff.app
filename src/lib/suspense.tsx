@@ -12,13 +12,13 @@ import {
 export default function suspense<T>(
     WrappedComponent: ComponentType<T>,
     fallback: FunctionComponent<T> | ReactNode = <></>,
-): FunctionComponent<T & { key: string }> {
+): FunctionComponent<T & { suspenseKey: string }> {
     const C = async ({
-        key,
+        suspenseKey,
         ...props
-    }: T & { key: string }): Promise<ReactElement> => (
+    }: T & { suspenseKey: string }): Promise<ReactElement> => (
         <SuspenseComp
-            key={key}
+            key={suspenseKey}
             fallback={
                 typeof fallback === "function"
                     ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
