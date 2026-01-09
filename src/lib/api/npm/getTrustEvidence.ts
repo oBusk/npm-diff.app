@@ -11,38 +11,48 @@ export interface TrustInfo {
     provenanceUrl?: string;
 }
 
-// Types for provenance attestation structures
-interface ProvenanceAttestation {
-    dsseEnvelope?: {
-        payload: string;
-        [key: string]: unknown;
-    };
-    predicate?: unknown;
-    [key: string]: unknown;
-}
-
-interface SLSAPredicate {
+// Types for SLSA provenance v1.0 structures
+interface SLSAv1Predicate {
     buildDefinition?: {
         externalParameters?: {
-            source?: {
-                repository?: string;
+            workflow?: {
                 ref?: string;
+                repository?: string;
+                path?: string;
             };
         };
+        resolvedDependencies?: Array<{
+            uri?: string;
+            digest?: {
+                gitCommit?: string;
+                sha1?: string;
+            };
+        }>;
     };
-    materials?: Array<{
-        uri?: string;
-        digest?: {
-            sha1?: string;
-        };
-    }>;
 }
 
-interface ProvenancePayload {
+interface SLSAV1Payload {
+    _type?: string;
     subject?: Array<{
         name?: string;
     }>;
-    predicate?: SLSAPredicate;
+    predicateType?: string;
+    predicate?: SLSAv1Predicate;
+}
+
+interface AttestationBundle {
+    predicateType?: string;
+    dsseEnvelope?: {
+        payload: string;
+        payloadType?: string;
+        [key: string]: unknown;
+    };
+    [key: string]: unknown;
+}
+
+interface ProvenanceReference {
+    url?: string;
+    predicateType?: string;
 }
 
 // Extended types for manifest with trust-related fields
@@ -53,7 +63,9 @@ interface ExtendedNpmUser {
 
 interface ExtendedDist {
     attestations?: {
-        provenance?: ProvenanceAttestation;
+        url?: string;
+        provenance?: ProvenanceReference;
+        [key: string]: unknown;
     };
     [key: string]: unknown;
 }
@@ -67,9 +79,7 @@ export function getTrustEvidenceFromManifest(
     manifest: Manifest,
 ): TrustEvidence {
     // Check for trustedPublisher on _npmUser
-    const npmUser = manifest._npmUser as unknown as
-        | ExtendedNpmUser
-        | undefined;
+    const npmUser = manifest._npmUser as unknown as ExtendedNpmUser | undefined;
     if (npmUser?.trustedPublisher) {
         return "trustedPublisher";
     }
@@ -82,84 +92,110 @@ export function getTrustEvidenceFromManifest(
 }
 
 /**
+ * Fetch attestation bundle from npm registry
+ */
+async function fetchAttestationBundle(
+    url: string,
+): Promise<AttestationBundle[] | null> {
+    try {
+        const response = await fetch(url, {
+            headers: {
+                Accept: "application/json",
+            },
+        });
+        if (!response.ok) {
+            return null;
+        }
+        const data = (await response.json()) as { attestations?: unknown };
+        if (
+            data.attestations &&
+            Array.isArray(data.attestations) &&
+            data.attestations.length > 0
+        ) {
+            return data.attestations as AttestationBundle[];
+        }
+    } catch (e) {
+        console.warn("Failed to fetch attestation bundle", e);
+    }
+    return null;
+}
+
+/**
  * Extract provenance URL from manifest if available
  */
-function getProvenanceUrl(manifest: Manifest): string | undefined {
-    // The attestations property is not in the standard PackageDist type but may be present
+async function getProvenanceUrl(
+    manifest: Manifest,
+): Promise<string | undefined> {
     const dist = manifest.dist as unknown as ExtendedDist | undefined;
     const attestations = dist?.attestations;
-    if (!attestations) {
+    if (!attestations?.url) {
         return undefined;
     }
 
-    // Provenance is typically the first attestation with SLSA predicate type
-    const provenance = attestations.provenance;
-    if (!provenance) {
+    // Fetch the attestation bundle from npm registry
+    const bundles = await fetchAttestationBundle(attestations.url);
+    if (!bundles) {
         return undefined;
     }
 
-    // Try to extract the source repository URL from provenance
-    // Based on SLSA provenance v0.2 and v1.0 format
+    // Find the SLSA provenance attestation
+    const provenanceBundle = bundles.find(
+        (bundle) =>
+            bundle.dsseEnvelope &&
+            (bundle.predicateType === "https://slsa.dev/provenance/v1" ||
+                bundle.predicateType?.includes("slsa.dev/provenance")),
+    );
+
+    if (!provenanceBundle?.dsseEnvelope?.payload) {
+        return undefined;
+    }
+
     try {
-        // The provenance attestation contains a bundle with a dsseEnvelope
-        // which has a payload that needs to be decoded
-        let predicateObj: ProvenancePayload;
+        // Decode base64 payload
+        const payload = Buffer.from(
+            provenanceBundle.dsseEnvelope.payload,
+            "base64",
+        ).toString("utf-8");
+        const predicateObj = JSON.parse(payload) as SLSAV1Payload;
 
-        // Check if provenance is already an object or needs to be parsed
-        if (typeof provenance === "string") {
-            predicateObj = JSON.parse(provenance) as ProvenancePayload;
-        } else if (provenance.dsseEnvelope?.payload) {
-            // Decode base64 payload
-            const payload = Buffer.from(
-                provenance.dsseEnvelope.payload,
-                "base64",
-            ).toString("utf-8");
-            predicateObj = JSON.parse(payload) as ProvenancePayload;
-        } else {
-            predicateObj = provenance as ProvenancePayload;
+        // Extract from SLSA v1.0 format
+        const predicate = predicateObj.predicate;
+        if (!predicate?.buildDefinition) {
+            return undefined;
         }
 
-        // Extract source commit from predicate
-        // SLSA v0.2 format: predicate.materials[].uri
-        // SLSA v1.0 format: predicate.buildDefinition.externalParameters.source
-        const predicate =
-            predicateObj.predicate ||
-            (predicateObj as unknown as SLSAPredicate);
-
-        // Try SLSA v1.0 format first
-        if (predicate.buildDefinition?.externalParameters?.source) {
-            const source = predicate.buildDefinition.externalParameters.source;
-            if (source.repository && source.ref) {
-                return extractGitHubUrl(source.repository, source.ref);
-            }
+        // Get repository URL from external parameters
+        const repository =
+            predicate.buildDefinition.externalParameters?.workflow?.repository;
+        if (!repository) {
+            return undefined;
         }
 
-        // Try SLSA v0.2 format
-        if (Array.isArray(predicate.materials)) {
-            for (const material of predicate.materials) {
-                if (
-                    material.uri &&
-                    material.uri.includes("github.com") &&
-                    material.digest?.sha1
-                ) {
-                    return extractGitHubUrl(material.uri, material.digest.sha1);
-                }
-            }
+        // Validate it's a GitHub URL (security: only allow github.com as the exact hostname)
+        if (!isValidGitHubUrl(repository)) {
+            return undefined;
         }
 
-        // Fallback: try to find any GitHub reference in the subject
-        if (predicateObj.subject && Array.isArray(predicateObj.subject)) {
-            for (const subject of predicateObj.subject) {
-                if (subject.name && subject.name.includes("github.com")) {
-                    const match = subject.name.match(
-                        /github\.com[:/]([^/]+\/[^/@]+)(?:@|\/tree\/)([a-f0-9]{40})/,
-                    );
-                    if (match) {
-                        return `https://github.com/${match[1]}/commit/${match[2]}`;
-                    }
-                }
-            }
+        // Get commit SHA from resolvedDependencies
+        const deps = predicate.buildDefinition.resolvedDependencies;
+        if (!deps || !Array.isArray(deps) || deps.length === 0) {
+            return undefined;
         }
+
+        const commitSha = deps[0]?.digest?.gitCommit;
+        if (!commitSha || !/^[a-f0-9]{40}$/i.test(commitSha)) {
+            return undefined;
+        }
+
+        // Extract owner/repo from GitHub URL
+        const repoMatch = repository.match(
+            /^https:\/\/github\.com\/([^/]+\/[^/]+?)(?:\.git)?$/,
+        );
+        if (!repoMatch) {
+            return undefined;
+        }
+
+        return `https://github.com/${repoMatch[1]}/commit/${commitSha}`;
     } catch (e) {
         console.warn("Failed to parse provenance URL", e);
     }
@@ -168,34 +204,17 @@ function getProvenanceUrl(manifest: Manifest): string | undefined {
 }
 
 /**
- * Extract a GitHub commit URL from a repository URL and commit reference
+ * Validate that a URL is a proper GitHub repository URL
+ * Security: Only allow github.com as the exact hostname (not as part of path or subdomain)
  */
-function extractGitHubUrl(
-    repoUrl: string,
-    commitRef: string,
-): string | undefined {
-    // Handle various GitHub URL formats
-    const match = repoUrl.match(/github\.com[:/]([^/]+\/[^/.@]+?)(?:\.git)?$/);
-    if (!match) {
-        return undefined;
+function isValidGitHubUrl(url: string): boolean {
+    try {
+        const parsed = new URL(url);
+        // Only allow github.com as the hostname
+        return parsed.hostname === "github.com" && parsed.protocol === "https:";
+    } catch {
+        return false;
     }
-
-    const repo = match[1];
-
-    // Extract commit SHA from ref (could be refs/heads/main or just a SHA)
-    const commitSha = commitRef;
-    if (commitRef.startsWith("refs/")) {
-        // This is a branch ref, not a commit SHA
-        // We can't create a direct commit URL without the actual SHA
-        return undefined;
-    }
-
-    // Validate it looks like a SHA (40 hex characters)
-    if (/^[a-f0-9]{40}$/i.test(commitSha)) {
-        return `https://github.com/${repo}/commit/${commitSha}`;
-    }
-
-    return undefined;
 }
 
 /**
@@ -221,7 +240,9 @@ async function getTrustInfoForVersion(
 
     const evidence = getTrustEvidenceFromManifest(manifest);
     const provenanceUrl =
-        evidence === "provenance" ? getProvenanceUrl(manifest) : undefined;
+        evidence === "provenance"
+            ? await getProvenanceUrl(manifest)
+            : undefined;
 
     return { evidence, provenanceUrl };
 }
