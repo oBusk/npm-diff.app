@@ -1,6 +1,6 @@
 import { cacheLife } from "next/cache";
+import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
-import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import packument from "./packument";
 
 // Packuments include a lot of data, often enough to make them too large for the cache.
@@ -16,21 +16,21 @@ export type VersionMap = {
     [version: string]: VersionData;
 };
 
-async function getVersionData(
-    spec: string | SimplePackageSpec,
-): Promise<VersionMap> {
+/**
+ * Separate function that takes only packagename for better caching.
+ *
+ * We want `a@1.2.3` and `a@2.0.0` to share the same cache entry for `a`.
+ */
+async function getVersionMap(packageName: string): Promise<VersionMap> {
     "use cache";
 
     cacheLife("hours");
-
-    const specString =
-        typeof spec === "string" ? spec : simplePackageSpecToString(spec);
 
     const {
         time,
         "dist-tags": tags,
         versions,
-    } = await packument(specString, {
+    } = await packument(packageName, {
         // Response is too large to cache in Next's Data Cache; always fetch
         cache: "no-store",
     });
@@ -53,6 +53,15 @@ async function getVersionData(
     }
 
     return versionData;
+}
+
+async function getVersionData(
+    spec: string | SimplePackageSpec,
+): Promise<VersionMap> {
+    const { name } =
+        typeof spec === "string" ? createSimplePackageSpec(spec) : spec;
+
+    return getVersionMap(name);
 }
 
 export default getVersionData;
