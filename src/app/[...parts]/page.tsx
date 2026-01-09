@@ -15,6 +15,7 @@ import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff";
 import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
+import TrustDiff from "./_page/TrustDiff";
 
 export interface DiffPageProps {
     params: Promise<{ parts: string | string[] }>;
@@ -75,6 +76,14 @@ const DiffPageInner = async ({
                     b={b}
                     services={
                         <>
+                            <TrustDiff
+                                a={a}
+                                b={b}
+                                specs={canonicalSpecs}
+                                suspenseKey={
+                                    "trust-" + canonicalSpecs.join("...")
+                                }
+                            />
                             <BundlephobiaDiff
                                 a={a}
                                 b={b}
