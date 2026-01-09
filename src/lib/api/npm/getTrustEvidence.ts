@@ -42,9 +42,12 @@ interface SLSAV1Payload {
 
 interface AttestationBundle {
     predicateType?: string;
-    dsseEnvelope?: {
-        payload: string;
-        payloadType?: string;
+    bundle?: {
+        dsseEnvelope?: {
+            payload: string;
+            payloadType?: string;
+            [key: string]: unknown;
+        };
         [key: string]: unknown;
     };
     [key: string]: unknown;
@@ -141,19 +144,19 @@ async function getProvenanceUrl(
     // Find the SLSA provenance attestation
     const provenanceBundle = bundles.find(
         (bundle) =>
-            bundle.dsseEnvelope &&
+            bundle.bundle?.dsseEnvelope &&
             (bundle.predicateType === "https://slsa.dev/provenance/v1" ||
                 bundle.predicateType?.includes("slsa.dev/provenance")),
     );
 
-    if (!provenanceBundle?.dsseEnvelope?.payload) {
+    if (!provenanceBundle?.bundle?.dsseEnvelope?.payload) {
         return undefined;
     }
 
     try {
         // Decode base64 payload
         const payload = Buffer.from(
-            provenanceBundle.dsseEnvelope.payload,
+            provenanceBundle.bundle.dsseEnvelope.payload,
             "base64",
         ).toString("utf-8");
         const predicateObj = JSON.parse(payload) as SLSAV1Payload;
