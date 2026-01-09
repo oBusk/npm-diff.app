@@ -1,11 +1,11 @@
 "use client";
 
 import {
-    CheckCircle2,
+    Check,
     FileCode,
     GitCompareArrows,
     Info,
-    Shield,
+    ShieldCheck,
     XCircle,
 } from "lucide-react";
 import { type FunctionComponent } from "react";
@@ -52,16 +52,11 @@ function getTrustTooltip(evidence: TrustEvidence): string {
 function getTrustIcon(evidence: TrustEvidence): React.ReactNode {
     switch (evidence) {
         case "trustedPublisher":
-            // Shield with checkmark
-            return (
-                <div className="relative">
-                    <Shield className="size-12" />
-                    <CheckCircle2 className="absolute -right-1 -top-1 size-5" />
-                </div>
-            );
+            // Shield with checkmark centered
+            return <ShieldCheck className="size-12" />;
         case "provenance":
-            // Checkmark
-            return <CheckCircle2 className="size-12" />;
+            // Simple checkmark
+            return <Check className="size-12" />;
         default:
             // X mark
             return <XCircle className="size-12" />;
