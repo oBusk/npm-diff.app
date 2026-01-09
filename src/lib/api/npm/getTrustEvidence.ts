@@ -198,7 +198,7 @@ async function getProvenanceUrl(
             return undefined;
         }
 
-        return `https://github.com/${repoMatch[1]}/commit/${commitSha}`;
+        return `https://github.com/${repoMatch[1]}/tree/${commitSha}`;
     } catch (e) {
         console.warn("Failed to parse provenance URL", e);
     }
@@ -242,8 +242,10 @@ async function getTrustInfoForVersion(
     }
 
     const evidence = getTrustEvidenceFromManifest(manifest);
+    // Both provenance and trustedPublisher have provenance data
+    // (trustedPublisher always includes provenance)
     const provenanceUrl =
-        evidence === "provenance"
+        evidence === "provenance" || evidence === "trustedPublisher"
             ? await getProvenanceUrl(manifest)
             : undefined;
 

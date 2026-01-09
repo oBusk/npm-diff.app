@@ -151,11 +151,12 @@ const TrustComparison: FunctionComponent<TrustComparisonProps> = ({
  * Extract GitHub compare URL from two provenance URLs
  */
 function getGitHubCompareUrl(aUrl: string, bUrl: string): string | undefined {
+    // Match both /commit/ and /tree/ URLs
     const aMatch = aUrl.match(
-        /github\.com\/([^/]+\/[^/]+)\/commit\/([a-f0-9]+)/,
+        /github\.com\/([^/]+\/[^/]+)\/(?:commit|tree)\/([a-f0-9]+)/,
     );
     const bMatch = bUrl.match(
-        /github\.com\/([^/]+\/[^/]+)\/commit\/([a-f0-9]+)/,
+        /github\.com\/([^/]+\/[^/]+)\/(?:commit|tree)\/([a-f0-9]+)/,
     );
 
     if (aMatch && bMatch && aMatch[1] === bMatch[1]) {
