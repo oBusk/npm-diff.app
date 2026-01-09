@@ -1,5 +1,17 @@
+"use client";
+
+import {
+    CheckCircle2,
+    GitCompareArrows,
+    Info,
+    PackageOpen,
+    Shield,
+    XCircle,
+} from "lucide-react";
 import { type FunctionComponent } from "react";
 import ExternalLink from "^/components/ExternalLink";
+import Button from "^/components/ui/Button";
+import Tooltip from "^/components/ui/Tooltip";
 import type { TrustEvidence } from "^/lib/api/npm/getTrustEvidence";
 import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
@@ -37,17 +49,22 @@ function getTrustTooltip(evidence: TrustEvidence): string {
     }
 }
 
-function getTrustIcon(evidence: TrustEvidence): string {
+function getTrustIcon(evidence: TrustEvidence): React.ReactNode {
     switch (evidence) {
         case "trustedPublisher":
             // Shield with checkmark
-            return "🛡️✓";
+            return (
+                <div className="relative">
+                    <Shield className="size-12" />
+                    <CheckCircle2 className="absolute -right-1 -top-1 size-5" />
+                </div>
+            );
         case "provenance":
             // Checkmark
-            return "✓";
+            return <CheckCircle2 className="size-12" />;
         default:
             // X mark
-            return "✕";
+            return <XCircle className="size-12" />;
     }
 }
 
@@ -87,21 +104,21 @@ const TrustBox: FunctionComponent<TrustBoxProps> = ({
         <div className="flex flex-col items-center gap-2 p-2">
             <div
                 className={cx(
-                    "flex flex-col items-center gap-1 text-center",
+                    "flex flex-col items-center gap-2 text-center",
                     colorClass,
                 )}
-                title={tooltip}
             >
-                <div className="text-4xl" aria-hidden="true">
-                    {icon}
-                </div>
+                <div aria-hidden="true">{icon}</div>
                 <p className="text-sm font-semibold">{label}</p>
-                <span
-                    className="inline-block cursor-help text-xs opacity-60"
-                    title={tooltip}
-                >
-                    ℹ️
-                </span>
+                <Tooltip label={tooltip}>
+                    <button
+                        type="button"
+                        className="inline-flex cursor-help opacity-60 hover:opacity-100"
+                        aria-label="More information"
+                    >
+                        <Info className="size-4" />
+                    </button>
+                </Tooltip>
             </div>
             {isDowngrade ? (
                 <p className="text-xs text-red-600 dark:text-red-400">
@@ -117,9 +134,10 @@ const TrustBox: FunctionComponent<TrustBoxProps> = ({
                 <div className="text-xs">
                     <ExternalLink
                         href={provenanceUrl}
-                        className="text-blue-600 hover:underline dark:text-blue-400"
+                        className="inline-flex items-center gap-1 text-blue-600 hover:underline dark:text-blue-400"
                     >
-                        📦 Source
+                        <PackageOpen className="size-3" />
+                        Source
                     </ExternalLink>
                 </div>
             ) : null}
@@ -183,13 +201,16 @@ const TrustComparison: FunctionComponent<TrustComparisonProps> = ({
                 }
             />
             {compareUrl ? (
-                <div className="mt-2 text-center text-xs">
-                    <ExternalLink
-                        href={compareUrl}
-                        className="text-blue-600 hover:underline dark:text-blue-400"
-                    >
-                        ⇄ Compare source
-                    </ExternalLink>
+                <div className="mt-2 text-center">
+                    <Button variant="outline" size="sm" asChild>
+                        <ExternalLink
+                            href={compareUrl}
+                            className="inline-flex items-center gap-2"
+                        >
+                            <GitCompareArrows className="size-4" />
+                            Compare source
+                        </ExternalLink>
+                    </Button>
                 </div>
             ) : null}
         </>
