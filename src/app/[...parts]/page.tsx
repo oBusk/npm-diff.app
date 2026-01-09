@@ -79,7 +79,7 @@ const DiffPageInner = async ({
                                 a={a}
                                 b={b}
                                 specs={canonicalSpecs}
-                                key={
+                                suspenseKey={
                                     "bundlephobia-" + canonicalSpecs.join("...")
                                 }
                             />
@@ -87,7 +87,7 @@ const DiffPageInner = async ({
                                 a={a}
                                 b={b}
                                 specs={canonicalSpecs}
-                                key={
+                                suspenseKey={
                                     "packagephobia-" +
                                     canonicalSpecs.join("...")
                                 }
@@ -101,7 +101,7 @@ const DiffPageInner = async ({
                     b={b}
                     specs={canonicalSpecs}
                     options={options}
-                    key={JSON.stringify([canonicalSpecs, options])}
+                    suspenseKey={JSON.stringify([canonicalSpecs, options])}
                 />
             </>
         );

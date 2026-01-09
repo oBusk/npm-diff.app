@@ -16,7 +16,7 @@ const SpecBox = forwardRef<HTMLElement, SpecBoxProps>(
         <section {...props} ref={ref}>
             <Pkg pkg={pkg} className={cx("px-1", pkgClassName)} />
             <PublishDate
-                key={"publishdate-" + simplePackageSpecToString(pkg)}
+                suspenseKey={"publishdate-" + simplePackageSpecToString(pkg)}
                 pkg={pkg}
                 className="font-normal"
             />
