@@ -22,7 +22,32 @@ function getTrustLabel(evidence: TrustEvidence): string {
         case "provenance":
             return "Provenance";
         default:
-            return "No trust evidence";
+            return "No Evidence";
+    }
+}
+
+function getTrustTooltip(evidence: TrustEvidence): string {
+    switch (evidence) {
+        case "trustedPublisher":
+            return "Published using a trusted GitHub Actions workflow with OIDC authentication. Highest level of trust.";
+        case "provenance":
+            return "Published with SLSA provenance attestation. Cryptographically verifiable build information.";
+        default:
+            return "This package was published without provenance attestation or trusted publisher verification.";
+    }
+}
+
+function getTrustIcon(evidence: TrustEvidence): string {
+    switch (evidence) {
+        case "trustedPublisher":
+            // Shield with checkmark
+            return "🛡️✓";
+        case "provenance":
+            // Checkmark
+            return "✓";
+        default:
+            // X mark
+            return "✕";
     }
 }
 
@@ -54,28 +79,52 @@ const TrustBox: FunctionComponent<TrustBoxProps> = ({
     isUpgrade = false,
 }) => {
     const label = getTrustLabel(evidence);
+    const tooltip = getTrustTooltip(evidence);
+    const icon = getTrustIcon(evidence);
     const colorClass = getTrustColor(evidence, isDowngrade);
 
-    const content = (
-        <div className={cx("p-2 text-center", colorClass)}>
-            <p className="font-semibold">{label}</p>
-            {isDowngrade ? <p className="text-xs">⚠️ Trust downgrade</p> : null}
-            {isUpgrade ? <p className="text-xs">✓ Trust improvement</p> : null}
+    return (
+        <div className="flex flex-col items-center gap-2 p-2">
+            <div
+                className={cx(
+                    "flex flex-col items-center gap-1 text-center",
+                    colorClass,
+                )}
+                title={tooltip}
+            >
+                <div className="text-4xl" aria-hidden="true">
+                    {icon}
+                </div>
+                <p className="text-sm font-semibold">{label}</p>
+                <span
+                    className="inline-block cursor-help text-xs opacity-60"
+                    title={tooltip}
+                >
+                    ℹ️
+                </span>
+            </div>
+            {isDowngrade ? (
+                <p className="text-xs text-red-600 dark:text-red-400">
+                    ⚠️ Trust downgrade
+                </p>
+            ) : null}
+            {isUpgrade ? (
+                <p className="text-xs text-green-600 dark:text-green-400">
+                    ✓ Trust improvement
+                </p>
+            ) : null}
+            {provenanceUrl ? (
+                <div className="text-xs">
+                    <ExternalLink
+                        href={provenanceUrl}
+                        className="text-blue-600 hover:underline dark:text-blue-400"
+                    >
+                        📦 Source
+                    </ExternalLink>
+                </div>
+            ) : null}
         </div>
     );
-
-    if (provenanceUrl) {
-        return (
-            <ExternalLink
-                href={provenanceUrl}
-                className="rounded-lg hover:bg-muted"
-            >
-                {content}
-            </ExternalLink>
-        );
-    }
-
-    return content;
 };
 
 export interface TrustComparisonProps {
@@ -139,7 +188,7 @@ const TrustComparison: FunctionComponent<TrustComparisonProps> = ({
                         href={compareUrl}
                         className="text-blue-600 hover:underline dark:text-blue-400"
                     >
-                        Compare source on GitHub
+                        ⇄ Compare source
                     </ExternalLink>
                 </div>
             ) : null}
