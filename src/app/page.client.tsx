@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { type FunctionComponent, useState } from "react";
+import { type FunctionComponent, useEffect, useState } from "react";
 import { useBoolean } from "react-use";
 import Stack from "^/components/ui/Stack";
 import { type AutocompleteSuggestion } from "^/lib/autocomplete";
@@ -76,4 +76,27 @@ const IndexPageClient: FunctionComponent<LandingProps> = ({
     );
 };
 
-export default IndexPageClient;
+// Wrapper to reset state on unmount
+// This is to handle nexjts stupid assumption with cacheComponents
+// that all pages are wrapped in <Activity> which maintains state across navigations
+// See:
+// https://nextjs.org/docs/app/getting-started/cache-components#navigation-uses-activity
+// https://github.com/vercel/next.js/discussions/85502
+// https://github.com/vercel/next.js/issues/86577
+const IndexPageClientWrapper: FunctionComponent<LandingProps> = ({
+    fallbackSuggestions,
+}) => {
+    const [key, setKey] = useState(0);
+
+    useEffect(() => {
+        return function onUnmount() {
+            setKey((prev) => prev + 1);
+        };
+    }, []);
+
+    return (
+        <IndexPageClient fallbackSuggestions={fallbackSuggestions} key={key} />
+    );
+};
+
+export default IndexPageClientWrapper;
