@@ -1,4 +1,4 @@
-import { Check, Info, ShieldCheck, XCircle } from "lucide-react";
+import { Check, FileCode, Info, ShieldCheck, XCircle } from "lucide-react";
 import ExternalLink from "^/components/ExternalLink";
 import Skeleton from "^/components/ui/Skeleton";
 import Tooltip from "^/components/ui/Tooltip";
@@ -12,9 +12,23 @@ import suspense from "^/lib/suspense";
 export interface TrustBadgeProps {
     className?: string;
     pkg: SimplePackageSpec;
+    comparisonPkg?: SimplePackageSpec;
+    isTarget?: boolean;
 }
 
-const shared = cx("my-1 flex h-5 items-center justify-center gap-1");
+const TRUST_RANK = {
+    trustedPublisher: 2,
+    provenance: 1,
+    undefined: 0,
+} as const;
+
+function getTrustRank(evidence: TrustEvidence): number {
+    return TRUST_RANK[evidence ?? "undefined"];
+}
+
+const shared = cx(
+    "my-1 flex min-h-6 flex-col items-center justify-center gap-1",
+);
 
 function getTrustLabel(evidence: TrustEvidence): string {
     switch (evidence) {
@@ -39,7 +53,7 @@ function getTrustTooltip(evidence: TrustEvidence): string {
 }
 
 function getTrustIcon(evidence: TrustEvidence): React.ReactNode {
-    const iconClass = "size-4";
+    const iconClass = "size-5";
     switch (evidence) {
         case "trustedPublisher":
             return <ShieldCheck className={iconClass} />;
@@ -61,47 +75,79 @@ function getTrustColor(evidence: TrustEvidence): string {
     }
 }
 
-async function TrustBadge({ pkg, className }: TrustBadgeProps) {
+async function TrustBadge({
+    pkg,
+    className,
+    comparisonPkg,
+    isTarget,
+}: TrustBadgeProps) {
     const { evidence, provenanceUrl } = await getTrustEvidence(pkg);
+
+    // Determine trust change if comparing
+    let isDowngrade = false;
+    let isUpgrade = false;
+    if (comparisonPkg && isTarget) {
+        const { evidence: comparisonEvidence } =
+            await getTrustEvidence(comparisonPkg);
+        const currentRank = getTrustRank(evidence);
+        const comparisonRank = getTrustRank(comparisonEvidence);
+        isDowngrade = currentRank < comparisonRank;
+        isUpgrade = currentRank > comparisonRank;
+    }
 
     const label = getTrustLabel(evidence);
     const tooltip = getTrustTooltip(evidence);
     const icon = getTrustIcon(evidence);
     const colorClass = getTrustColor(evidence);
 
-    const content = (
-        <div
-            className={cx(shared, colorClass, "text-xs font-medium", className)}
-        >
-            {icon}
-            <span>{label}</span>
-            {evidence !== undefined ? (
-                <Tooltip label={tooltip}>
-                    <button
-                        type="button"
-                        className="inline-flex cursor-help opacity-60 hover:opacity-100"
-                        aria-label="More information"
+    return (
+        <div className={cx(shared, className)}>
+            <div
+                className={cx(
+                    "flex items-center justify-center gap-1 rounded px-2 py-1",
+                    colorClass,
+                    "text-sm font-semibold",
+                    isDowngrade &&
+                        "bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300",
+                )}
+            >
+                {icon}
+                <span>{label}</span>
+                {evidence !== undefined ? (
+                    <Tooltip label={tooltip}>
+                        <button
+                            type="button"
+                            className="inline-flex cursor-help opacity-60 hover:opacity-100"
+                            aria-label="More information"
+                        >
+                            <Info className="size-3.5" />
+                        </button>
+                    </Tooltip>
+                ) : null}
+            </div>
+            {isDowngrade ? (
+                <div className="text-xs font-semibold text-red-600 dark:text-red-400">
+                    ⚠️ Trust downgrade
+                </div>
+            ) : null}
+            {isUpgrade ? (
+                <div className="text-xs font-semibold text-green-600 dark:text-green-400">
+                    ✓ Trust improved
+                </div>
+            ) : null}
+            {provenanceUrl ? (
+                <div className="text-xs">
+                    <ExternalLink
+                        href={provenanceUrl}
+                        className="inline-flex items-center gap-1 text-blue-600 hover:underline dark:text-blue-400"
                     >
-                        <Info className="size-3" />
-                    </button>
-                </Tooltip>
+                        <FileCode className="size-3" />
+                        Source
+                    </ExternalLink>
+                </div>
             ) : null}
         </div>
     );
-
-    if (provenanceUrl) {
-        return (
-            <ExternalLink
-                href={provenanceUrl}
-                className="hover:underline"
-                title="View source on GitHub"
-            >
-                {content}
-            </ExternalLink>
-        );
-    }
-
-    return content;
 }
 
 function TrustBadgeFallback({ className }: TrustBadgeProps) {
