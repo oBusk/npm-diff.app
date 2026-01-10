@@ -5,6 +5,7 @@ import {
     type FormEventHandler,
     forwardRef,
     type HTMLAttributes,
+    useImperativeHandle,
     useMemo,
     useRef,
     useState,
@@ -17,6 +18,10 @@ import CenterInputAddon from "./CenterInputAddon";
 import DiffButton from "./DiffButton";
 import SpecInput, { type SpecInputRef } from "./SpecInput";
 
+export interface MainFormRef {
+    focusNext: () => void;
+}
+
 export interface MainFormProps extends HTMLAttributes<HTMLFormElement> {
     overrideA: string | null;
     overrideB: string | null;
@@ -25,7 +30,7 @@ export interface MainFormProps extends HTMLAttributes<HTMLFormElement> {
     fallbackSuggestions: AutocompleteSuggestion[];
 }
 
-const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
+const MainForm = forwardRef<MainFormRef, MainFormProps>(
     (
         {
             overrideA,
@@ -39,9 +44,24 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
         },
         ref,
     ) => {
+        const aRef = useRef<SpecInputRef>(null);
         const bRef = useRef<SpecInputRef>(null);
         const [a, setA] = useState<string>("");
         const [b, setB] = useState<string>("");
+
+        useImperativeHandle(
+            ref,
+            () => ({
+                focusNext: () => {
+                    if (b?.length) {
+                        bRef.current?.focus();
+                    } else {
+                        aRef.current?.focus();
+                    }
+                },
+            }),
+            [b],
+        );
 
         const bPackageFilter = useMemo(() => {
             if (!a) {
@@ -83,11 +103,11 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                     className,
                 )}
                 onSubmit={internalHandleSubmit}
-                ref={ref}
                 {...props}
             >
                 <SpecInput
                     id="a"
+                    ref={aRef}
                     inputValue={a}
                     onInputValueChange={setA}
                     initialIsOpen={true}
