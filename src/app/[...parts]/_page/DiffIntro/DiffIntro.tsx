@@ -6,7 +6,6 @@ import { cx } from "^/lib/cva";
 import { type NpmDiffOptions } from "^/lib/npmDiff";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
-import CompareSourceButton from "./CompareSourceButton";
 import Halfs from "./Halfs";
 import Options from "./Options";
 import SpecBox from "./SpecBox";
@@ -54,11 +53,6 @@ const DiffIntro = forwardRef<ElementRef<typeof Stack>, DiffIntroProps>(
                                 pkgClassName="rounded-l-none"
                             />
                         }
-                    />
-                    <CompareSourceButton
-                        suspenseKey={"comparesource-" + a.name + b.name}
-                        a={aWithName}
-                        b={bWithName}
                     />
                 </Heading>
                 {services}

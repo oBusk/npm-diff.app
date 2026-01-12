@@ -5,7 +5,6 @@ import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import PublishDate from "./PublishDate";
 import ServiceLinks from "./ServiceLinks";
-import TrustBadge from "./TrustBadge";
 
 interface SpecBoxProps extends HTMLAttributes<HTMLElement> {
     pkg: SimplePackageSpec;
@@ -24,13 +23,6 @@ const SpecBox = forwardRef<HTMLElement, SpecBoxProps>(
     ({ pkg, pkgClassName, comparisonPkg, isTarget, ...props }, ref) => (
         <section {...props} ref={ref}>
             <Pkg pkg={pkg} className={cx("px-1", pkgClassName)} />
-            <TrustBadge
-                suspenseKey={"trustbadge-" + simplePackageSpecToString(pkg)}
-                pkg={pkg}
-                comparisonPkg={comparisonPkg}
-                isTarget={isTarget}
-                className="font-normal"
-            />
             <PublishDate
                 suspenseKey={"publishdate-" + simplePackageSpecToString(pkg)}
                 pkg={pkg}

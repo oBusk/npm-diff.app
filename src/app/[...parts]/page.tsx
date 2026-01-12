@@ -15,6 +15,7 @@ import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff";
 import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
+import SourceDiff from "./_page/SourceDiff/SourceDiff";
 
 export interface DiffPageProps {
     params: Promise<{ parts: string | string[] }>;
@@ -75,6 +76,7 @@ const DiffPageInner = async ({
                     b={b}
                     services={
                         <>
+                            <SourceDiff a={a} b={b} />
                             <BundlephobiaDiff
                                 a={a}
                                 b={b}
