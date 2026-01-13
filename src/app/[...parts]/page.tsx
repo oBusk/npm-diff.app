@@ -76,7 +76,13 @@ const DiffPageInner = async ({
                     b={b}
                     services={
                         <>
-                            <Sources a={a} b={b} />
+                            <Sources
+                                a={a}
+                                b={b}
+                                suspenseKey={
+                                    "sources-" + canonicalSpecs.join("...")
+                                }
+                            />
                             <BundlephobiaDiff
                                 a={a}
                                 b={b}
