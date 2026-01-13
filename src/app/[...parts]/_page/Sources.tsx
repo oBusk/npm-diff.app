@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import ExternalLink from "^/components/ExternalLink";
 import Button from "^/components/ui/Button";
 import Heading from "^/components/ui/Heading";
@@ -21,6 +22,10 @@ function createGithubCompareHref(
 }
 
 async function Sources({ a, b }: SourceDiffProps) {
+    "use cache";
+
+    cacheLife("hours");
+
     const [sourceA, sourceB] = await Promise.all([
         getSourceInformation(a),
         getSourceInformation(b),

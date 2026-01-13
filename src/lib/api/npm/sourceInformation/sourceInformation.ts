@@ -56,10 +56,7 @@ async function getSourceFromManifest(
 export async function getSourceInformation(
     spec: SimplePackageSpec,
 ): Promise<null | SourceInformation> {
-    const pack = await packument(simplePackageSpecToString(spec), {
-        // Response is too large to cache in Next's Data Cache; always fetch
-        cache: "no-store",
-    });
+    const pack = await packument(simplePackageSpecToString(spec));
 
     const manifest = pack.versions[spec.version];
     if (!manifest) {
