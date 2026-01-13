@@ -1,3 +1,4 @@
+import { cacheLife } from "next/cache";
 import type {
     Manifest as PacoteManifest,
     PackageDist as PacotePackageDist,
@@ -103,20 +104,23 @@ export interface Packument extends PacotePackument {
     versions: Record<string, Manifest>;
 }
 
-// https://github.com/npm/pacote/blob/bd67be1ea53ab02c2be781a3fc2283eb9fcba3c8/lib/registry.js#L76
 /**
- * Own very simple implementation of `packument` to get packument from registry without using `pacote`.
+ * Separate function that takes only packagename for better caching.
  *
- * `pacote` and most other npm packages use various caching which relies on `fs` which cannot load in
- * edge functions.
+ * We want `a@1.2.3` and `a@2.0.0` to share the same cache entry for `a`.
  */
-export default async function packument(spec: string, opts?: RequestInit) {
-    const registry = pickRegistry(spec, opts);
-    // This will not run on edge functions because it expects the node `global` object to be available.
-    // const escapedName = npa(spec).escapedName;
-    const name = packageName(spec);
+async function packumentForPackage(
+    packageName: string,
+    registry: string,
+    opts?: RequestInit,
+) {
+    "use cache";
+
+    cacheLife("hours");
+
     // https://github.com/npm/npm-package-arg/blob/c7571f4db7c91eac21714cbd63735fe9079fefd8/npa.js#L123-L124
-    const escapedName = name.replace(/\//gi, "%2f");
+    const escapedName = packageName.replace(/\//gi, "%2f");
+
     const packumentUrl = registry.replace(/\/*$/, "/") + escapedName;
 
     const p = await fetch(packumentUrl, {
@@ -125,8 +129,28 @@ export default async function packument(spec: string, opts?: RequestInit) {
         headers: {},
         // never check integrity for packuments themselves
         integrity: undefined,
+        cache: "no-store",
     });
+
     const pack: Packument = await p.json();
 
     return pack;
+}
+
+// https://github.com/npm/pacote/blob/bd67be1ea53ab02c2be781a3fc2283eb9fcba3c8/lib/registry.js#L76
+/**
+ * Own very simple implementation of `packument` to get packument from registry without using `pacote`.
+ *
+ * `pacote` and most other npm packages use various caching which relies on `fs` which cannot load in
+ * edge functions.
+ */
+export default function packument(spec: string, opts?: RequestInit) {
+    const registry = pickRegistry(spec, opts);
+    // This will not run on edge functions because it expects the node `global` object to be available.
+    // const escapedName = npa(spec).escapedName;
+    const name = packageName(spec);
+    // https://github.com/npm/npm-package-arg/blob/c7571f4db7c91eac21714cbd63735fe9079fefd8/npa.js#L123-L124
+    const escapedName = name.replace(/\//gi, "%2f");
+
+    return packumentForPackage(escapedName, registry, opts);
 }
