@@ -1,4 +1,9 @@
-import type { Packument } from "pacote";
+import type {
+    Manifest as PacoteManifest,
+    PackageDist as PacotePackageDist,
+    Packument as PacotePackument,
+    Person as PacotePerson,
+} from "pacote";
 import validatePackageName from "validate-npm-package-name";
 
 // https://github.dev/npm/npm-registry-fetch/blob/9cd725786b1362df268afda7b6e2a6c3db8ab05e/default-opts.js#L2-L21
@@ -67,6 +72,35 @@ function packageName(arg: string): string {
         else arg = arg;
     }
     return n!;
+}
+
+export interface ProvenanceReference {
+    predicateType: string;
+}
+
+export interface PackageDistAttestations {
+    url: string;
+    provenance: ProvenanceReference;
+}
+
+export interface PackageDist extends PacotePackageDist {
+    attestations?: PackageDistAttestations;
+}
+
+export interface Person extends PacotePerson {
+    trustedPublisher?: boolean;
+}
+
+export interface Manifest extends PacoteManifest {
+    dist: PackageDist;
+    _npmUser: Person;
+}
+
+/**
+ * > Example: https://registry.npmjs.org/@obusk/eslint-config-next
+ */
+export interface Packument extends PacotePackument {
+    versions: Record<string, Manifest>;
 }
 
 // https://github.com/npm/pacote/blob/bd67be1ea53ab02c2be781a3fc2283eb9fcba3c8/lib/registry.js#L76
