@@ -99,6 +99,7 @@ function SourcesFallback() {
                 Sources
             </Heading>
             <Halfs
+                className="items-center"
                 left={<Skeleton className="h-5 w-16" />}
                 center={
                     <span className="p-4">
