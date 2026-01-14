@@ -5,6 +5,11 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
     serverExternalPackages: ["libnpmdiff", "npm-package-arg", "pacote"],
     cacheComponents: true,
+    logging: {
+        fetches: {
+            fullUrl: true,
+        },
+    },
 };
 
 export default nextConfig;
