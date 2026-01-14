@@ -1,5 +1,5 @@
+import { npa } from "@internal/npm-spec";
 import { cacheLife } from "next/cache";
-import npa from "npm-package-arg";
 import { USER_AGENT } from "../user-agent";
 import type BundlephobiaResponse from "./BundlephobiaResponse";
 import type BundlephobiaResults from "./BundlephobiaResults";

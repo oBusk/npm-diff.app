@@ -14,6 +14,9 @@ importers:
 
   .:
     dependencies:
+      '@internal/npm-spec':
+        specifier: workspace:*
+        version: link:packages/npm-spec
       '@radix-ui/react-label':
         specifier: ^2.1.8
         version: 2.1.8(@types/react-dom@19.2.3(@types/react@19.2.7))(@types/react@19.2.7)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -50,12 +53,6 @@ importers:
       next-themes:
         specifier: ^0.4.6
         version: 0.4.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      npm-package-arg:
-        specifier: ^11.0.3
-        version: 11.0.3
-      pacote:
-        specifier: ^18.0.6
-        version: 18.0.6
       react:
         specifier: 19.2.3
         version: 19.2.3
@@ -102,12 +99,6 @@ importers:
       '@types/node':
         specifier: ^24.10.4
         version: 24.10.4
-      '@types/npm-package-arg':
-        specifier: ^6.1.4
-        version: 6.1.4
-      '@types/pacote':
-        specifier: ^11.1.8
-        version: 11.1.8
       '@types/react':
         specifier: 19.2.7
         version: 19.2.7
@@ -147,6 +138,37 @@ importers:
       simple-git-hooks:
         specifier: ^2.13.1
         version: 2.13.1
+      typescript:
+        specifier: ~5.9.3
+        version: 5.9.3
+
+  packages/npm-spec:
+    dependencies:
+      npm-package-arg:
+        specifier: ^11.0.3
+        version: 11.0.3
+      pacote:
+        specifier: ^18.0.6
+        version: 18.0.6
+      semver:
+        specifier: ^7.7.3
+        version: 7.7.3
+      validate-npm-package-name:
+        specifier: 5.0.0
+        version: 5.0.0
+    devDependencies:
+      '@types/npm-package-arg':
+        specifier: ^6.1.4
+        version: 6.1.4
+      '@types/pacote':
+        specifier: ^11.1.8
+        version: 11.1.8
+      '@types/semver':
+        specifier: ^7.7.1
+        version: 7.7.1
+      '@types/validate-npm-package-name':
+        specifier: ^4.0.2
+        version: 4.0.2
       typescript:
         specifier: ~5.9.3
         version: 5.9.3

@@ -53,6 +53,7 @@
         "test-ci": "jest --ci"
     },
     "dependencies": {
+        "@internal/npm-spec": "workspace:*",
         "@radix-ui/react-label": "^2.1.8",
         "@radix-ui/react-slot": "^1.2.4",
         "@radix-ui/react-tooltip": "^1.2.8",
@@ -65,8 +66,6 @@
         "lucide-react": "^0.562.0",
         "next": "^16.1.1",
         "next-themes": "^0.4.6",
-        "npm-package-arg": "^11.0.3",
-        "pacote": "^18.0.6",
         "react": "19.2.3",
         "react-diff-view": "^3.3.2",
         "react-dom": "19.2.3",
@@ -84,8 +83,6 @@
         "@types/jest": "^30.0.0",
         "@types/libnpmdiff": "^2.0.3",
         "@types/node": "^24.10.4",
-        "@types/npm-package-arg": "^6.1.4",
-        "@types/pacote": "^11.1.8",
         "@types/react": "19.2.7",
         "@types/react-dom": "19.2.3",
         "@types/semver": "^7.7.1",

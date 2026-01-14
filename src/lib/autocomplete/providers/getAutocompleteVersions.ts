@@ -1,4 +1,4 @@
-import npa from "npm-package-arg";
+import { parsePackageSpec } from "^/lib/parsePackageSpec.client";
 import {
     type SpecsEndpointResponse,
     VERSIONS_PARAMETER_PACKAGE,
@@ -8,14 +8,14 @@ import type AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
 import { matchVersions } from "./versions/matchVersions";
 
-const npaSafe = (input: string): npa.Result => {
+const npaSafe = (input: string): ReturnType<typeof parsePackageSpec> => {
     try {
-        return npa(input);
+        return parsePackageSpec(input);
     } catch {
         if (input.length > 1) {
             return npaSafe(input.slice(0, -1));
         } else {
-            return npa("");
+            return parsePackageSpec("");
         }
     }
 };

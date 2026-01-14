@@ -1,5 +1,5 @@
 import pacote from "pacote";
-import d, { type Redirect } from ".";
+import d, { type Redirect } from "./destination";
 
 interface ExpectedResults<T = string> {
     readonly "^2.1": T;

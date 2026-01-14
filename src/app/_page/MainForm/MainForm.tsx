@@ -1,6 +1,5 @@
 "use client";
 
-import npa from "npm-package-arg";
 import {
     type FormEventHandler,
     forwardRef,
@@ -13,6 +12,7 @@ import Code from "^/components/ui/Code";
 import Tooltip from "^/components/ui/Tooltip";
 import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import { cx } from "^/lib/cva";
+import { parsePackageSpec } from "^/lib/parsePackageSpec.client";
 import CenterInputAddon from "./CenterInputAddon";
 import DiffButton from "./DiffButton";
 import SpecInput, { type SpecInputRef } from "./SpecInput";
@@ -48,11 +48,11 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                 return undefined;
             }
 
-            let aNpa: npa.Result | undefined;
+            let aNpa: ReturnType<typeof parsePackageSpec> | undefined;
 
             try {
                 // We don't really care if npa can't parse the input
-                aNpa = npa(a);
+                aNpa = parsePackageSpec(a);
             } catch {
                 //
             }

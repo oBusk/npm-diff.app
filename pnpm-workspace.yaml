@@ -1,3 +1,6 @@
+packages:
+    - packages/*
+
 configDependencies:
     "@obusk/pnpm-plugin-defaults": 0.2.0+sha512-3oufTLQAL1SDdQ9iA5hLRnZjnBnU9uIEOBcwCKRtS+F6NyJphTq6RMIpaZgostZjQRHUaNbGSg6B2gn91drCSQ==
 

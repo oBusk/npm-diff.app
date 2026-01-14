@@ -1,4 +1,4 @@
-import type { Packument } from "pacote";
+import type { Packument } from "@internal/npm-spec";
 import validatePackageName from "validate-npm-package-name";
 
 // https://github.dev/npm/npm-registry-fetch/blob/9cd725786b1362df268afda7b6e2a6c3db8ab05e/default-opts.js#L2-L21
