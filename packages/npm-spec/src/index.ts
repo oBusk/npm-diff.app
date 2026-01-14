@@ -16,3 +16,6 @@ export type { Result as NpaResult, AliasResult } from "npm-package-arg";
 
 // Re-export pacote types for consumers
 export type { Packument } from "pacote";
+
+// Re-export validate-npm-package-name for consumers
+export { default as validatePackageName } from "validate-npm-package-name";

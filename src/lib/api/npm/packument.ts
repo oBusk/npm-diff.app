@@ -1,5 +1,5 @@
 import type { Packument } from "@internal/npm-spec";
-import validatePackageName from "validate-npm-package-name";
+import { validatePackageName } from "@internal/npm-spec";
 
 // https://github.dev/npm/npm-registry-fetch/blob/9cd725786b1362df268afda7b6e2a6c3db8ab05e/default-opts.js#L2-L21
 const defaultOpts = {

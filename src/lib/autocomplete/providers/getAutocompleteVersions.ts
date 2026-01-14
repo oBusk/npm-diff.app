@@ -1,8 +1,8 @@
-import { parsePackageSpec } from "^/lib/parsePackageSpec.client";
 import {
     type SpecsEndpointResponse,
     VERSIONS_PARAMETER_PACKAGE,
 } from "^/app/api/-/versions/types";
+import { parsePackageSpec } from "^/lib/parsePackageSpec.client";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import type AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
