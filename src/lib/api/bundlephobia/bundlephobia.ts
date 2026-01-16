@@ -28,10 +28,10 @@ async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
         );
 
         if (response.status === 200) {
+            const json: BundlephobiaResponse = await response.json();
+
             // If we succeed, cache as long as we're allowed
             cacheLife("max");
-
-            const json: BundlephobiaResponse = await response.json();
 
             return json;
         } else if (response.status === 403) {
@@ -76,7 +76,7 @@ async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
             // We don't want to retry too often, but we also don't want to cache forever in case the issue is resolved.
             cacheLife("days");
 
-            console.error(`[${spec}] Bundlephobia request timed out`);
+            console.warn(`[${spec}] Bundlephobia request timed out`);
 
             return null;
         } else {

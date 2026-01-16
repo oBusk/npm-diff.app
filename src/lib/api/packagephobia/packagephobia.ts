@@ -20,10 +20,10 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
         );
 
         if (response.status === 200) {
+            const json: PackagephobiaResponse = await response.json();
+
             // If we succeed, cache as long as we're allowed
             cacheLife("max");
-
-            const json: PackagephobiaResponse = await response.json();
 
             return json;
         } else if (response.status === 404) {
