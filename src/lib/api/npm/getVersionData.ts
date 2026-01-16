@@ -26,14 +26,7 @@ async function getVersionMap(packageName: string): Promise<VersionMap> {
 
     cacheLife("hours");
 
-    const {
-        time,
-        "dist-tags": tags,
-        versions,
-    } = await packument(packageName, {
-        // Response is too large to cache in Next's Data Cache; always fetch
-        cache: "no-store",
-    });
+    const { time, "dist-tags": tags, versions } = await packument(packageName);
 
     const versionData: VersionMap = {};
 

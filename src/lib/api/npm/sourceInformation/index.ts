@@ -1,0 +1,1 @@
+export { getSourceInformation } from "./sourceInformation";
