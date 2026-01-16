@@ -9,10 +9,18 @@ import ServiceLinks from "./ServiceLinks";
 interface SpecBoxProps extends HTMLAttributes<HTMLElement> {
     pkg: SimplePackageSpec;
     pkgClassName?: string;
+    /**
+     * Other package for comparison. If provided, will show trust warnings/improvements.
+     */
+    comparisonPkg?: SimplePackageSpec;
+    /**
+     * Whether this is the "from" or "to" package in the comparison
+     */
+    isTarget?: boolean;
 }
 
 const SpecBox = forwardRef<HTMLElement, SpecBoxProps>(
-    ({ pkg, pkgClassName, ...props }, ref) => (
+    ({ pkg, pkgClassName, comparisonPkg, isTarget, ...props }, ref) => (
         <section {...props} ref={ref}>
             <Pkg pkg={pkg} className={cx("px-1", pkgClassName)} />
             <PublishDate
