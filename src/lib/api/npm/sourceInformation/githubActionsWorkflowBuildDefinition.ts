@@ -1,5 +1,4 @@
 import { type BuildDefinition } from "./predicates/slsaProvenance";
-import { type SourceInformation } from "./sourceInformation";
 
 export const GithubActionsWorkflowBuildType =
     "https://slsa-framework.github.io/github-actions-buildtypes/workflow/v1";
@@ -68,7 +67,7 @@ export function isValidGitHubUrl(url: string): boolean {
 
 export function parseGithubActionsWorkflowBuildDefinition(
     buildDefinition: GithubActionsWorkflowBuildDefinition,
-): SourceInformation {
+) {
     // Get repository URL from external parameters
     const repository = buildDefinition.externalParameters.workflow.repository;
     if (!repository) {
@@ -91,8 +90,16 @@ export function parseGithubActionsWorkflowBuildDefinition(
         throw new Error("No commit hash found in resolved dependencies");
     }
 
+    // Get workflow path
+    const workflowPath = buildDefinition.externalParameters.workflow.path;
+    if (!workflowPath) {
+        throw new Error("No workflow path found in provenance");
+    }
+
     return {
+        buildPlatform: "GitHub Actions",
         commitHash,
         repository,
+        buildFile: workflowPath,
     };
 }

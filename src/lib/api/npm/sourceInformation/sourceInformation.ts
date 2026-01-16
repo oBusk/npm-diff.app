@@ -12,6 +12,10 @@ import { SlsaProvenancePredicateType } from "./predicates/slsaProvenance";
 export interface SourceInformation {
     commitHash: string;
     repository: string;
+    buildPlatform: string;
+    buildFile: string;
+    buildSummaryUrl: string;
+    publicLedger: string;
 }
 
 /**
@@ -41,13 +45,39 @@ async function getSourceFromManifest(
     }
     const provenanceStatement = parseAttestationBundle(provenanceBundle);
 
+    const tlogIndex =
+        provenanceBundle.bundle.verificationMaterial.tlogEntries[0].logIndex;
+    if (tlogIndex == null) {
+        throw new Error("No tlog index found in verification material");
+    }
+    if (Number(tlogIndex).toString() !== tlogIndex.toString()) {
+        throw new Error("Invalid tlog index format");
+    }
+    const publicLedger = `https://search.sigstore.dev/?logIndex=${tlogIndex}`;
+
+    console.log(
+        "Provenance Statement:",
+        JSON.stringify(provenanceStatement, null, 2),
+    );
+
     const buildDefinition = provenanceStatement.predicate.buildDefinition;
     if (buildDefinition == null) {
         throw new Error("No build definition found in provenance");
     }
 
+    // Get build summary URL from runDetails
+    const buildSummaryUrl =
+        provenanceStatement.predicate.runDetails.metadata.invocationId;
+    if (!buildSummaryUrl) {
+        throw new Error("No build summary URL found in provenance");
+    }
+
     if (isGithubActionsWorkflowBuildDefinition(buildDefinition)) {
-        return parseGithubActionsWorkflowBuildDefinition(buildDefinition);
+        return {
+            ...parseGithubActionsWorkflowBuildDefinition(buildDefinition),
+            buildSummaryUrl,
+            publicLedger,
+        };
     } else {
         throw new Error("Unsupported build definition type");
     }

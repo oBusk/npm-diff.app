@@ -15,7 +15,7 @@ import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff";
 import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
-import Sources from "./_page/Sources";
+import Sources from "./_page/Sources/Sources";
 
 export interface DiffPageProps {
     params: Promise<{ parts: string | string[] }>;

@@ -2,9 +2,9 @@ import { forwardRef, type HTMLAttributes, type ReactNode } from "react";
 import { cx } from "^/lib/cva";
 
 export interface HalfsProps extends HTMLAttributes<HTMLElement> {
-    left: ReactNode;
+    left?: ReactNode;
     center?: ReactNode;
-    right: ReactNode;
+    right?: ReactNode;
 }
 
 const Halfs = forwardRef<HTMLElement, HalfsProps>(
