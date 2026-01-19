@@ -1,4 +1,4 @@
-import { type BuildDefinition } from "./predicates/slsaProvenance";
+import { type BuildDefinition } from "..";
 
 export const GithubActionsWorkflowBuildType =
     "https://slsa-framework.github.io/github-actions-buildtypes/workflow/v1";

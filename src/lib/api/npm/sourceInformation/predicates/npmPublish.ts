@@ -1,6 +1,4 @@
-import type { AttestationBundle } from "../attestationBundle";
-import type { InTotoStatement } from "../inToto";
-import type { DsseBundleV0_2 } from "../sigstore";
+import type { InTotoStatement } from "../protocols/inToto";
 
 /**
  * The identifier for npm publish attestation predicate type.
@@ -10,20 +8,6 @@ import type { DsseBundleV0_2 } from "../sigstore";
 export type NpmPublishPredicateType = typeof NpmPublishPredicateType;
 export const NpmPublishPredicateType =
     "https://github.com/npm/attestation/tree/main/specs/publish/v0.1";
-
-/**
- * {@link NpmPublishPredicate},
- * encoded in an {@link InTotoStatement},
- * wrapped in a {@link DsseBundleV0_2 SigStore DSSE Bundle},
- * wrapped in an {@link AttestationBundle}.
- *
- * > Example:
- * > https://registry.npmjs.org/-/npm/v1/attestations/@obusk%2feslint-config-next@15.1.2-6
- */
-export type NpmAttestationPublishBundle = AttestationBundle<
-    NpmPublishPredicateType,
-    DsseBundleV0_2
->;
 
 /**
  * The predicate for npm publish attestations. Extracted from a {@link NpmAttestationPublishBundle}.

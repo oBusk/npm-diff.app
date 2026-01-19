@@ -4,7 +4,7 @@ import {
     FileCode,
     ScrollText,
 } from "lucide-react";
-import { type SourceInformation } from "^/lib/api/npm/sourceInformation/sourceInformation";
+import { type SourceInformation } from "^/lib/api/npm/sourceInformation";
 import ProvenanceCardButton from "./ProvenanceCardButton";
 
 export interface ProvenanceCardProps {

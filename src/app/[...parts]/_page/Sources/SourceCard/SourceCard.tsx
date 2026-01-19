@@ -1,7 +1,7 @@
 import { GitCommit, Github, Gitlab } from "lucide-react";
 import ExternalLink from "^/components/ExternalLink";
 import Heading from "^/components/ui/Heading";
-import { type SourceInformation } from "^/lib/api/npm/sourceInformation/sourceInformation";
+import { type SourceInformation } from "^/lib/api/npm/sourceInformation";
 import { cx } from "^/lib/cva";
 import ProvenanceCard from "./ProvenanceCard";
 

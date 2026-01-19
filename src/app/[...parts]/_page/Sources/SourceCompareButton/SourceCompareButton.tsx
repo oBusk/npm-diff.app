@@ -1,4 +1,4 @@
-import { type SourceInformation } from "^/lib/api/npm/sourceInformation/sourceInformation";
+import { type SourceInformation } from "^/lib/api/npm/sourceInformation";
 import { CompareButton } from "./CompareButton";
 
 export interface SourceCompareButtonProps {

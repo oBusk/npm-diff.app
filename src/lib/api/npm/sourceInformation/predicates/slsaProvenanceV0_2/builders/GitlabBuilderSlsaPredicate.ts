@@ -1,7 +1,7 @@
 import {
     type SlsaProvenanceV0_2Invocation,
     type SlsaProvenanceV0_2Predicate,
-} from "./predicates/slsaProvenance";
+} from "..";
 
 interface GitlabBuilderInvocation extends SlsaProvenanceV0_2Invocation {
     parameters: {

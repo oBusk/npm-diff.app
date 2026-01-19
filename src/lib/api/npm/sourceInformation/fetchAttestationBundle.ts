@@ -1,10 +1,6 @@
 import { type PackageDistAttestations } from "../packument";
-import { type NpmAttestationPublishBundle } from "./predicates/npmPublish";
-import {
-    type SlsaProvenanceBundle,
-    type SlsaProvenanceV0_2Bundle,
-} from "./predicates/slsaProvenance";
-import { SupportedAttestationPredicates } from "./sourceInformation";
+import { SupportedAttestationPredicates } from "./getSourceFromManifest";
+import { type AttestationBundle } from "./protocols/attestationBundle";
 
 /**
  * What npm registry returns for attestations (as of december 2025)
@@ -13,11 +9,7 @@ import { SupportedAttestationPredicates } from "./sourceInformation";
  * > https://registry.npmjs.org/-/npm/v1/attestations/@obusk%2feslint-config-next@15.1.2-6
  */
 interface AttestationsResponse {
-    attestations?: (
-        | NpmAttestationPublishBundle
-        | SlsaProvenanceBundle
-        | SlsaProvenanceV0_2Bundle
-    )[];
+    attestations?: AttestationBundle[];
 }
 
 /**
@@ -35,6 +27,7 @@ export async function fetchAttestationBundles(
             attestations.provenance?.predicateType,
         )
     ) {
+        // We want to avoid fetching attestations we know we can't handle
         throw new Error(
             `Unsupported provenance predicate type: "${
                 attestations.provenance?.predicateType
