@@ -39,9 +39,9 @@ async function Sources({ a, b }: SourcesProps) {
     }
 
     return (
-        <div>
+        <>
             <Halfs
-                className="items-center"
+                className="w-full items-center"
                 left={
                     sourceA ? <SourceCard sourceInformation={sourceA} /> : <></>
                 }
@@ -51,7 +51,7 @@ async function Sources({ a, b }: SourcesProps) {
                 }
             />
             <Halfs
-                className="items-center"
+                className="w-full items-center"
                 left={<></>}
                 center={
                     <span className="p-4">
@@ -138,7 +138,7 @@ async function Sources({ a, b }: SourcesProps) {
                 }
                 right={<></>}
             />
-        </div>
+        </>
     );
 }
 
