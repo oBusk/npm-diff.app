@@ -69,13 +69,16 @@ export function parseGithubActionsWorkflowBuildDefinition(
     buildDefinition: GithubActionsWorkflowBuildDefinition,
 ) {
     // Get repository URL from external parameters
-    const repository = buildDefinition.externalParameters.workflow.repository;
-    if (!repository) {
+    const repositoryUrl =
+        buildDefinition.externalParameters.workflow.repository;
+    if (!repositoryUrl) {
         throw new Error("No repository URL found in provenance");
     }
+    const repositoryUrlObj = new URL(repositoryUrl);
+    const repositoryPath = repositoryUrlObj.pathname.slice(1); // remove leading '/'
 
     // Validate it's a GitHub URL (security: only allow github.com as the exact hostname)
-    if (!isValidGitHubUrl(repository)) {
+    if (!isValidGitHubUrl(repositoryUrl)) {
         throw new Error("Invalid GitHub repository URL");
     }
 
@@ -99,7 +102,9 @@ export function parseGithubActionsWorkflowBuildDefinition(
     return {
         buildPlatform: "GitHub Actions",
         commitHash,
-        repository,
-        buildFile: workflowPath,
+        repositoryPath,
+        repositoryUrl,
+        buildFileName: workflowPath,
+        buildFileHref: `${repositoryUrl}/blob/${commitHash}/${workflowPath}`,
     };
 }

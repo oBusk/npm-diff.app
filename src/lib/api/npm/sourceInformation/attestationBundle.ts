@@ -8,8 +8,15 @@ import {
     type SlsaProvenanceBundle,
     SlsaProvenancePredicateType,
     type SlsaProvenanceStatement,
+    type SlsaProvenanceV0_2Bundle,
+    SlsaProvenanceV0_2PredicateType,
+    type SlsaProvenanceV0_2Statement,
 } from "./predicates/slsaProvenance";
-import type { SigStoreBundleV0_2, SigStoreBundleV0_3 } from "./sigstore";
+import type {
+    SigStoreBundleV0_1,
+    SigStoreBundleV0_2,
+    SigStoreBundleV0_3,
+} from "./sigstore";
 
 /**
  * What npm registry returns for attestations (as of december 2025)
@@ -19,7 +26,8 @@ import type { SigStoreBundleV0_2, SigStoreBundleV0_3 } from "./sigstore";
  */
 export interface AttestationBundle<
     T extends string = string,
-    B extends SigStoreBundleV0_2 | SigStoreBundleV0_3 =
+    B extends SigStoreBundleV0_1 | SigStoreBundleV0_2 | SigStoreBundleV0_3 =
+        | SigStoreBundleV0_1
         | SigStoreBundleV0_2
         | SigStoreBundleV0_3,
 > {
@@ -34,28 +42,31 @@ export interface AttestationBundle<
  *
  * @throws {Error} If the attestation bundle type is not one of the known types.
  */
-export function parseAttestationBundle(
-    attestationBundle: NpmAttestationPublishBundle,
-): NpmPublishStatement;
-export function parseAttestationBundle(
-    attestationBundle: SlsaProvenanceBundle,
-): SlsaProvenanceStatement;
-export function parseAttestationBundle(
-    attBun: NpmAttestationPublishBundle | SlsaProvenanceBundle,
-) {
-    if (attBun.predicateType === NpmPublishPredicateType) {
-        const result: NpmPublishStatement = parseDsseEnvelope(
-            attBun.bundle.dsseEnvelope,
+export function parseAttestationBundle<
+    T extends
+        | NpmAttestationPublishBundle
+        | SlsaProvenanceV0_2Bundle
+        | SlsaProvenanceBundle,
+>(
+    attBun: T,
+): T extends NpmAttestationPublishBundle
+    ? NpmPublishStatement
+    : T extends SlsaProvenanceV0_2Bundle
+      ? SlsaProvenanceV0_2Statement
+      : T extends SlsaProvenanceBundle
+        ? SlsaProvenanceStatement
+        : never {
+    if (
+        ![
+            NpmPublishPredicateType,
+            SlsaProvenancePredicateType,
+            SlsaProvenanceV0_2PredicateType,
+        ].includes(attBun.predicateType)
+    ) {
+        throw new Error(
+            `Unsupported attestation bundle predicate type: "${attBun.predicateType}"`,
         );
-
-        return result;
-    } else if (attBun.predicateType === SlsaProvenancePredicateType) {
-        const result: SlsaProvenanceStatement = parseDsseEnvelope(
-            attBun.bundle.dsseEnvelope,
-        );
-
-        return result;
-    } else {
-        throw new Error("Unknown attestation bundle type");
     }
+
+    return parseDsseEnvelope(attBun.bundle.dsseEnvelope);
 }

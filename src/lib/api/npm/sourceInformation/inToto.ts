@@ -1,3 +1,10 @@
+/**
+ * https://github.com/in-toto/attestation/blob/main/spec/v0.1.0/field_types.md#DigestSet
+ */
+export interface DigestSet {
+    [algorithm: string]: string;
+}
+
 interface InTotoSubject {
     name: string;
     digest: {

@@ -57,35 +57,80 @@ async function Sources({ a, b }: SourcesProps) {
                     <span className="p-4">
                         {sourceA &&
                         sourceB &&
-                        sourceA.repository === sourceB.repository ? (
-                            <Tooltip
-                                label={
-                                    <span className="flex items-center gap-1.5">
-                                        <span>Compare</span>
-                                        <code className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs">
-                                            {sourceA.commitHash.substring(0, 8)}
-                                        </code>
-                                        <span>with</span>
-                                        <code className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs">
-                                            {sourceB.commitHash.substring(0, 8)}
-                                        </code>{" "}
-                                        on Github.com
-                                    </span>
-                                }
-                            >
-                                <Button asChild variant="secondary">
-                                    <ExternalLink
-                                        href={createGithubCompareHref(
-                                            sourceA.repository,
-                                            sourceA.commitHash,
-                                            sourceB.commitHash,
-                                        )}
-                                    >
-                                        <GitCompare className="mr-2 size-4" />
-                                        Compare Sources
-                                    </ExternalLink>
-                                </Button>
-                            </Tooltip>
+                        sourceA.repositoryUrl === sourceB.repositoryUrl ? (
+                            sourceA.repositoryUrl.startsWith(
+                                "https://github.com",
+                            ) ? (
+                                <Tooltip
+                                    label={
+                                        <span className="flex items-center gap-1.5">
+                                            <span>Compare</span>
+                                            <code className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs">
+                                                {sourceA.commitHash.substring(
+                                                    0,
+                                                    8,
+                                                )}
+                                            </code>
+                                            <span>with</span>
+                                            <code className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs">
+                                                {sourceB.commitHash.substring(
+                                                    0,
+                                                    8,
+                                                )}
+                                            </code>{" "}
+                                            on Github.com
+                                        </span>
+                                    }
+                                >
+                                    <Button asChild variant="secondary">
+                                        <ExternalLink
+                                            href={createGithubCompareHref(
+                                                sourceA.repositoryPath,
+                                                sourceA.commitHash,
+                                                sourceB.commitHash,
+                                            )}
+                                        >
+                                            <GitCompare className="mr-2 size-4" />
+                                            Compare Sources
+                                        </ExternalLink>
+                                    </Button>
+                                </Tooltip>
+                            ) : sourceA.repositoryUrl.startsWith(
+                                  "https://gitlab.com",
+                              ) ? (
+                                <Tooltip
+                                    label={
+                                        <span className="flex items-center gap-1.5">
+                                            <span>Compare</span>
+                                            <code className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs">
+                                                {sourceA.commitHash.substring(
+                                                    0,
+                                                    8,
+                                                )}
+                                            </code>
+                                            <span>with</span>
+                                            <code className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-xs">
+                                                {sourceB.commitHash.substring(
+                                                    0,
+                                                    8,
+                                                )}
+                                            </code>{" "}
+                                            on GitLab.com
+                                        </span>
+                                    }
+                                >
+                                    <Button asChild variant="secondary">
+                                        <ExternalLink
+                                            href={`${sourceA.repositoryUrl}/-/compare/${sourceA.commitHash}...${sourceB.commitHash}`}
+                                        >
+                                            <GitCompare className="mr-2 size-4" />
+                                            Compare Sources
+                                        </ExternalLink>
+                                    </Button>
+                                </Tooltip>
+                            ) : (
+                                <></>
+                            )
                         ) : (
                             <></>
                         )}

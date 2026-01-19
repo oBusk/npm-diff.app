@@ -50,6 +50,19 @@ interface TimeStampVerificationData {
     }>;
 }
 
+export interface SigStoreBundleV0_1<KindVersion extends string = string> {
+    mediaType: "application/vnd.dev.sigstore.bundle+json;version=0.1";
+    verificationMaterial: {
+        x509CertificateChain: {
+            certificates: Array<{
+                rawBytes: string;
+            }>;
+        };
+        tlogEntries: Array<TlogEntry<KindVersion>>;
+        timestampVerificationData: TimeStampVerificationData | null;
+    };
+}
+
 export interface SigStoreBundleV0_2<KindVersion extends string = string> {
     mediaType: "application/vnd.dev.sigstore.bundle+json;version=0.2";
     verificationMaterial: {
@@ -129,6 +142,10 @@ export interface SigStoreBundleV0_3<KindVersion extends string = string> {
  */
 export interface InTotoEnvelope extends DsseEnvelope {
     payloadType: "application/vnd.in-toto+json";
+}
+
+export interface DsseBundleV0_1 extends SigStoreBundleV0_1<"intoto"> {
+    dsseEnvelope: InTotoEnvelope;
 }
 
 export interface DsseBundleV0_2 extends SigStoreBundleV0_2<"intoto"> {

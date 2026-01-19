@@ -37,14 +37,14 @@ export default function ProvenanceCard({
                                         Build File
                                     </div>
                                     <code className="rounded-sm bg-muted px-1.5 py-0.5 text-xs">
-                                        {sourceInformation.buildFile}
+                                        {sourceInformation.buildFileName}
                                     </code>
                                 </div>
                             }
                         >
                             <Button asChild variant="default" size="xs">
                                 <ExternalLink
-                                    href={`${sourceInformation.repository}/blob/${sourceInformation.commitHash}/${sourceInformation.buildFile}`}
+                                    href={sourceInformation.buildFileHref}
                                 >
                                     <FileCode className="size-4" />
                                 </ExternalLink>

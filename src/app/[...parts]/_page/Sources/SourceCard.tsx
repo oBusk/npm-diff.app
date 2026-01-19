@@ -1,4 +1,4 @@
-import { GitCommit, Github } from "lucide-react";
+import { GitCommit, Github, Gitlab } from "lucide-react";
 import ExternalLink from "^/components/ExternalLink";
 import Heading from "^/components/ui/Heading";
 import { type SourceInformation } from "^/lib/api/npm/sourceInformation/sourceInformation";
@@ -14,11 +14,6 @@ export default function SourceCard({
     className,
     ...props
 }: SourceCardProps) {
-    // Extract owner/repo from repository URL (e.g., https://github.com/owner/repo)
-    const repoPath = sourceInformation.repository
-        .replace(/^https?:\/\/(www\.)?github\.com\//, "")
-        .replace(/\.git$/, "");
-
     return (
         <div
             className={cx("rounded-xl border border-border", className)}
@@ -32,21 +27,27 @@ export default function SourceCard({
             <div className="p-3">
                 <div className="space-y-3">
                     <ExternalLink
-                        href={sourceInformation.repository}
+                        href={sourceInformation.repositoryUrl}
                         className="flex items-center justify-between gap-2 rounded p-2 hover:bg-muted/50"
                     >
                         <span className="text-sm">Repo:</span>
                         <div className="flex items-center gap-1.5">
-                            {sourceInformation.repository.includes(
-                                "github.com",
-                            ) && <Github className="size-3.5 shrink-0" />}
+                            {sourceInformation.repositoryUrl.startsWith(
+                                "https://github.com",
+                            ) ? (
+                                <Github className="size-3.5 shrink-0" />
+                            ) : sourceInformation.repositoryUrl.startsWith(
+                                  "https://gitlab.com",
+                              ) ? (
+                                <Gitlab className="size-3.5 shrink-0" />
+                            ) : null}
                             <span className="text-sm font-medium">
-                                {repoPath}
+                                {sourceInformation.repositoryPath}
                             </span>
                         </div>
                     </ExternalLink>
                     <ExternalLink
-                        href={`${sourceInformation.repository}/tree/${sourceInformation.commitHash}`}
+                        href={`${sourceInformation.repositoryUrl}/tree/${sourceInformation.commitHash}`}
                         className="flex items-center justify-between gap-2 rounded p-2 hover:bg-muted/50"
                     >
                         <span className="text-sm">Commit:</span>

@@ -2,8 +2,9 @@ import { type PackageDistAttestations } from "../packument";
 import { type NpmAttestationPublishBundle } from "./predicates/npmPublish";
 import {
     type SlsaProvenanceBundle,
-    SlsaProvenancePredicateType,
+    type SlsaProvenanceV0_2Bundle,
 } from "./predicates/slsaProvenance";
+import { SupportedAttestationPredicates } from "./sourceInformation";
 
 /**
  * What npm registry returns for attestations (as of december 2025)
@@ -12,7 +13,11 @@ import {
  * > https://registry.npmjs.org/-/npm/v1/attestations/@obusk%2feslint-config-next@15.1.2-6
  */
 interface AttestationsResponse {
-    attestations?: [NpmAttestationPublishBundle, SlsaProvenanceBundle];
+    attestations?: (
+        | NpmAttestationPublishBundle
+        | SlsaProvenanceBundle
+        | SlsaProvenanceV0_2Bundle
+    )[];
 }
 
 /**
@@ -26,9 +31,15 @@ export async function fetchAttestationBundles(
     }
 
     if (
-        attestations.provenance?.predicateType !== SlsaProvenancePredicateType
+        !SupportedAttestationPredicates.includes(
+            attestations.provenance?.predicateType,
+        )
     ) {
-        throw new Error("Unsupported provenance predicate type");
+        throw new Error(
+            `Unsupported provenance predicate type: "${
+                attestations.provenance?.predicateType
+            }"`,
+        );
     }
 
     if (
@@ -36,7 +47,7 @@ export async function fetchAttestationBundles(
             `https://registry.npmjs.org/-/npm/v1/attestations/`,
         )
     ) {
-        throw new Error("Unexpected attestation URL");
+        throw new Error(`Unsupported attestation URL: "${attestations.url}"`);
     }
 
     const response = await fetch(attestations.url, {
