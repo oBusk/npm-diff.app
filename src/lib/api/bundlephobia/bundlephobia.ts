@@ -60,6 +60,16 @@ async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
             );
 
             return null;
+        } else if (response.status === 520) {
+            // Found when Bundlephobia has cloudflare issues.
+            // Like https://github.com/pastelsky/bundlephobia/issues/823
+            // https://developers.cloudflare.com/support/troubleshooting/http-status-codes/cloudflare-5xx-errors/error-520/
+            // We cache for a while, it usually takes a while to come back.
+            cacheLife("days");
+
+            console.warn(`[${spec}] Bundlephobia returned 520 Unknown Error`);
+
+            return null;
         } else {
             // For other, unexpected statuses, we cache briefly and log the error.
             cacheLife("hours");
