@@ -1,6 +1,6 @@
 import { type PackageDistAttestations } from "../packument";
-import { SupportedAttestationPredicates } from "./getSourceFromManifest";
 import { type AttestationBundle } from "./protocols/attestationBundle";
+import { SupportedAttestationPredicates } from "./supportedPredicates";
 
 /**
  * What npm registry returns for attestations (as of december 2025)

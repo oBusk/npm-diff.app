@@ -1,2 +1,2 @@
 export { getSourceInformation } from "./getSourceInformation";
-export type { SourceInformation } from "./SourceInformation";
+export type { SourceInformation } from "./sourceInformation";

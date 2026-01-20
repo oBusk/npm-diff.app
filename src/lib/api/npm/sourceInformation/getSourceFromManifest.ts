@@ -11,21 +11,21 @@ import {
     type SlsaProvenanceStatement,
 } from "./predicates/slsaProvenanceV1";
 import { parseDsseEnvelope } from "./protocols/dsse";
+import type {
+    SigStoreBundleV0_1,
+    SigStoreBundleV0_2,
+    SigStoreBundleV0_3,
+} from "./protocols/sigstore";
 import { type SourceInformation } from ".";
 
-/**
- * This list needs to be in sync with the types used in `getSourceFromManifest`
- */
-export const SupportedAttestationPredicates = [
-    SlsaProvenancePredicateType,
-    SlsaProvenanceV0_2PredicateType,
-];
-export type SupportedAttestationPredicate =
-    (typeof SupportedAttestationPredicates)[number];
+type SigStoreBundleWithTlogEntries =
+    | SigStoreBundleV0_1
+    | SigStoreBundleV0_2
+    | SigStoreBundleV0_3;
 
-export function extractPublicLedgerUrl(bundle: {
-    verificationMaterial: { tlogEntries: { logIndex: string }[] };
-}): string {
+export function extractPublicLedgerUrl(
+    bundle: SigStoreBundleWithTlogEntries,
+): string {
     const tlogIndex = bundle.verificationMaterial.tlogEntries[0].logIndex;
     if (tlogIndex == null) {
         throw new Error("No tlog index found in verification material");
