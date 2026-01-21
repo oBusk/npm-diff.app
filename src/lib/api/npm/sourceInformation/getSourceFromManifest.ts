@@ -43,6 +43,8 @@ export function extractPublicLedgerUrl(
 export async function getSourceFromManifest(
     manifest: Manifest,
 ): Promise<SourceInformation | undefined> {
+    const trustedPublisher = manifest._npmUser?.trustedPublisher != null;
+
     const dist = manifest.dist;
     const attestations = dist?.attestations;
     if (!attestations) {
@@ -68,6 +70,7 @@ export async function getSourceFromManifest(
         );
 
         return {
+            trustedPublisher,
             ...parseSlsaProvenancePredicate(provenanceStatement.predicate),
             publicLedger,
         };
@@ -86,6 +89,7 @@ export async function getSourceFromManifest(
             );
 
         return {
+            trustedPublisher,
             ...parseSlsaProvenanceV0_2Predicate(provenanceStatement.predicate),
             publicLedger,
         };

@@ -15,4 +15,10 @@ export interface SourceInformation {
     buildSummaryUrl: string;
     /** The id of the entry in the public ledger in rekor */
     publicLedger: string;
+    /**
+     * Whether the release was published with Trusted Publisher
+     *
+     * > https://docs.npmjs.com/trusted-publishers
+     */
+    trustedPublisher: boolean;
 }

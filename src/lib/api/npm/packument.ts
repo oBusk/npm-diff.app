@@ -88,8 +88,15 @@ export interface PackageDist extends PacotePackageDist {
     attestations?: PackageDistAttestations;
 }
 
+export interface TrustedPublisher {
+    /** E.g. "github" */
+    id: string;
+    /** E.g "oidc:12345678-1234-1234-1234-1234567890ab" */
+    oidcConfigId: string;
+}
+
 export interface Person extends PacotePerson {
-    trustedPublisher?: boolean;
+    trustedPublisher?: TrustedPublisher;
 }
 
 export interface Manifest extends PacoteManifest {
