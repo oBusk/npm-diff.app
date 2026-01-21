@@ -4,6 +4,8 @@ import { getSourceInformation } from "^/lib/api/npm/sourceInformation";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
 import Halfs from "../DiffIntro/Halfs";
+import { NeitherHasProvenance } from "./NeitherHasProvenance";
+import { NoProvenanceCard } from "./NoProvenanceCard";
 import SourceCard from "./SourceCard";
 import SourceCompareButton from "./SourceCompareButton";
 
@@ -23,13 +25,19 @@ async function Sources({ a, b }: SourcesProps) {
     ]);
 
     if (!sourceA && !sourceB) {
-        return null;
+        return <NeitherHasProvenance className="mb-4" />;
     }
 
     return (
         <Halfs
             className="mb-4 w-full items-center"
-            left={sourceA ? <SourceCard sourceInformation={sourceA} /> : <></>}
+            left={
+                sourceA ? (
+                    <SourceCard sourceInformation={sourceA} />
+                ) : (
+                    <NoProvenanceCard />
+                )
+            }
             center={
                 sourceA && sourceB ? (
                     <span className="p-4">
