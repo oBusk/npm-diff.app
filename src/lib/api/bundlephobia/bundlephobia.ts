@@ -55,7 +55,7 @@ async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
             // We don't want to retry too often, but we also don't want to cache forever in case the issue is resolved.
             cacheLife("days");
 
-            console.error(
+            console.warn(
                 `[${spec}] Bundlephobia returned 500 Internal Server Error`,
             );
 
