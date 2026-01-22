@@ -21,6 +21,9 @@ const stackVariants = cva("flex", {
             evenly: "justify-evenly",
         },
         gap: {
+            2: "gap-2",
+            3: "gap-3",
+            4: "gap-4",
             8: "gap-8",
         },
     },
