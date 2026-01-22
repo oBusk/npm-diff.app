@@ -4,6 +4,7 @@ import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import ColorModeToggle from "./ColorModeToggle";
 import GithubLink from "./GithubLink";
+import MobileMenu from "./MobileMenu";
 import NavLink, { NavLinkFallback } from "./NavLink";
 
 export interface HeaderProps extends HTMLAttributes<HTMLElement> {}
@@ -33,7 +34,8 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                     npm-diff.app 📦🔃
                 </Heading>
             </Link>
-            <div className="flex items-center justify-end">
+            {/* Desktop menu - hidden on mobile */}
+            <div className="hidden items-center justify-end md:flex">
                 <Suspense
                     fallback={
                         <>
@@ -77,6 +79,10 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                         Trust
                     </NavLink>
                 </Suspense>
+            </div>
+            {/* Mobile menu - shown on small screens */}
+            <div className="flex items-center justify-end md:hidden">
+                <MobileMenu />
             </div>
         </nav>
     ),
