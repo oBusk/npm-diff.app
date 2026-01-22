@@ -1,13 +1,19 @@
 import { cacheLife } from "next/cache";
 import Skeleton from "^/components/ui/Skeleton";
-import { getSourceInformation } from "^/lib/api/npm/sourceInformation";
+import {
+    auditSourceTrust,
+    getSourceInformation,
+} from "^/lib/api/npm/sourceInformation";
+import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
 import Halfs from "../DiffIntro/Halfs";
 import { NeitherHasProvenance } from "./NeitherHasProvenance";
 import { NoProvenanceCard } from "./NoProvenanceCard";
 import SourceCard from "./SourceCard";
 import SourceCompareButton from "./SourceCompareButton";
+import { TrustAuditFindings } from "./TrustAuditFindings";
 
 export interface SourcesProps {
     a: SimplePackageSpec;
@@ -28,15 +34,25 @@ async function Sources({ a, b }: SourcesProps) {
         return <NeitherHasProvenance className="mb-4" />;
     }
 
+    const findings = auditSourceTrust(sourceA, sourceB);
+
+    const aLabel = simplePackageSpecToString(a);
+
     return (
         <Halfs
-            className="mb-4 w-full items-center"
+            className={cx(
+                "mb-4 w-full",
+                findings.length > 0 &&
+                    "rounded-xl bg-gradient-to-b from-red-900/50 via-transparent to-transparent p-0.5",
+            )}
             left={
-                sourceA ? (
-                    <SourceCard sourceInformation={sourceA} />
-                ) : (
-                    <NoProvenanceCard />
-                )
+                <div className="flex w-full max-w-md flex-col gap-2">
+                    {sourceA ? (
+                        <SourceCard sourceInformation={sourceA} />
+                    ) : (
+                        <NoProvenanceCard />
+                    )}
+                </div>
             }
             center={
                 sourceA && sourceB ? (
@@ -48,7 +64,21 @@ async function Sources({ a, b }: SourcesProps) {
                     </span>
                 ) : null
             }
-            right={sourceB ? <SourceCard sourceInformation={sourceB} /> : <></>}
+            right={
+                <div className="flex w-full max-w-md flex-col gap-2">
+                    {sourceB ? (
+                        <SourceCard sourceInformation={sourceB} />
+                    ) : (
+                        <></>
+                    )}
+                    <TrustAuditFindings
+                        findings={findings}
+                        aLabel={aLabel}
+                        sourceA={sourceA}
+                        sourceB={sourceB}
+                    />
+                </div>
+            }
         />
     );
 }

@@ -17,7 +17,10 @@ export default function SourceCard({
 }: SourceCardProps) {
     return (
         <div
-            className={cx("rounded-xl border border-border", className)}
+            className={cx(
+                "rounded-xl border border-border bg-background",
+                className,
+            )}
             {...props}
         >
             <div className="w-full border-b p-2">
