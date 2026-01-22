@@ -8,19 +8,21 @@ export function NewFeatureSourceTrust() {
         <Link
             href="/about/source-trust"
             className={cx(
-                "mx-auto max-w-md",
+                "mx-auto w-full max-w-sm lg:max-w-md",
                 "rounded-xl border",
                 "p-2",
                 "bg-gradient-to-b from-blue-900/25 to-transparent",
                 "hover:bg-gradient-to-b hover:from-blue-900/50 ",
             )}
         >
-            <Heading h={4} className="text-center">
+            <Heading h={4} className="text-center text-base lg:text-xl">
                 New Feature: Source and Trust
             </Heading>
             <div className="flex">
-                <ShieldCheck className="mr-2 size-32 text-blue-400" />
-                <div className="flex flex-col justify-center gap-2 text-sm text-muted-foreground">
+                <ShieldCheck
+                    className={cx("mr-2 size-16 text-blue-400", "lg:size-28")}
+                />
+                <div className="flex flex-col justify-center gap-2 text-xs text-muted-foreground lg:text-sm">
                     <p>
                         Diff view now shows source information and trust
                         warnings
