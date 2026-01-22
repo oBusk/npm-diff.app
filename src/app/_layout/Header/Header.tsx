@@ -37,25 +37,45 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                 <Suspense
                     fallback={
                         <>
-                            <NavLinkFallback href="/about">
-                                about
+                            <NavLinkFallback
+                                href="/about"
+                                className="rounded-r-none border-r-0"
+                            >
+                                About
                             </NavLinkFallback>
-                            <span>/</span>
-                            <NavLinkFallback href="/about/api">
-                                api
+                            <NavLinkFallback
+                                href="/about/api"
+                                className="rounded-none border-r-0"
+                            >
+                                API
                             </NavLinkFallback>
-                            <span>/</span>
-                            <NavLinkFallback href="/about/source-trust">
-                                trust
+                            <NavLinkFallback
+                                href="/about/source-trust"
+                                className="rounded-l-none"
+                            >
+                                Trust
                             </NavLinkFallback>
                         </>
                     }
                 >
-                    <NavLink href="/about">about</NavLink>
-                    <span>/</span>
-                    <NavLink href="/about/api">api</NavLink>
-                    <span>/</span>
-                    <NavLink href="/about/source-trust">trust</NavLink>
+                    <NavLink
+                        href="/about"
+                        className="rounded-r-none border-r-0"
+                    >
+                        About
+                    </NavLink>
+                    <NavLink
+                        href="/about/api"
+                        className="rounded-none border-r-0"
+                    >
+                        API
+                    </NavLink>
+                    <NavLink
+                        href="/about/source-trust"
+                        className="rounded-l-none"
+                    >
+                        Trust
+                    </NavLink>
                 </Suspense>
             </div>
         </nav>
