@@ -19,11 +19,11 @@ interface ResourceDescriptor {
     digest?: {
         [algorithm: string]: string;
     };
-    name: string;
-    downloadLocation: string;
-    mediaType: string;
-    content: string;
-    annotations: {
+    name?: string;
+    downloadLocation?: string;
+    mediaType?: string;
+    content?: string;
+    annotations?: {
         [key: string]: unknown; // any JSON type
     };
 }
