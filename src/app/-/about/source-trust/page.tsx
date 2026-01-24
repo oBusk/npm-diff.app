@@ -9,9 +9,44 @@ import Stack from "^/components/ui/Stack";
 import { getSourceInformation } from "^/lib/api/npm/sourceInformation";
 
 export const metadata: Metadata = {
-    title: "Source & Trust",
+    title: "Source & Trust – Auditing npm package provenance and trusted publishing",
     description:
-        "Audit npm package trust and provenance to protect against supply chain attacks",
+        "Learn about the Source & Trust feature for auditing npm packages for supply chain risks using provenance attestation and trusted publishing. Understand how the app verifies source repositories, build workflows, and helps you detect trust regressions before upgrading dependencies.",
+
+    alternates: {
+        canonical: "https://npm-diff.app/-/about/source-trust",
+    },
+
+    robots: {
+        index: true,
+        follow: true,
+    },
+
+    keywords: [
+        "npm provenance",
+        "npm trusted publishing",
+        "supply chain security",
+        "npm security audit",
+        "package provenance",
+        "dependency security",
+        "npm-diff",
+    ],
+
+    openGraph: {
+        title: "Source & Trust – npm-diff.app feature overview",
+        description:
+            "Overview of the Source & Trust feature. Understand and audit npm package trust signals, including provenance attestations and trusted publishing, and detect dangerous trust regressions before upgrading dependencies.",
+        url: "https://npm-diff.app/-/about/source-trust",
+        siteName: "npm-diff.app",
+        type: "article",
+    },
+
+    twitter: {
+        card: "summary_large_image",
+        title: "Source & Trust – npm-diff.app feature overview",
+        description:
+            "Learn how the Source & Trust feature helps you audit npm packages for supply chain risks using provenance and trusted publishing, and catch trust regressions before they bite you.",
+    },
 };
 
 export default async function SourceTrustPage() {
