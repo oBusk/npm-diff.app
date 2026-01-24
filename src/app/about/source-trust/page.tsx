@@ -1,14 +1,7 @@
-import {
-    AlertTriangle,
-    CheckCircle2,
-    ShieldAlert,
-    ShieldCheck,
-} from "lucide-react";
+import { AlertTriangle, BadgeCheck, ShieldCheck } from "lucide-react";
 import type { Metadata } from "next";
 import { cacheLife } from "next/cache";
 import SourceCard from "^/app/[...parts]/_page/Sources/SourceCard";
-import ProvenanceCard from "^/app/[...parts]/_page/Sources/SourceCard/ProvenanceCard";
-import { TrustedPublisherCard } from "^/app/[...parts]/_page/Sources/SourceCard/TrustedPublisherCard";
 import ExternalLink from "^/components/ExternalLink";
 import BorderBox from "^/components/ui/BorderBox";
 import Heading from "^/components/ui/Heading";
@@ -37,45 +30,49 @@ export default async function SourceTrustPage() {
             <div className="w-full text-center">
                 <Heading className="mb-4">Source & Trust</Heading>
                 <p className="text-lg text-muted-foreground">
-                    Audit npm package trust signals in a world of increasing
+                    Audit npm package trust signals in an era of increasing
                     supply chain attacks
                 </p>
             </div>
 
-            <BorderBox className="w-full">
-                <Stack gap={4} align="start">
-                    <div className="flex items-center gap-2">
-                        <ShieldAlert className="size-6 text-red-500" />
-                        <Heading h={2} className="m-0">
-                            Why This Matters
-                        </Heading>
-                    </div>
-                    <p>
-                        Supply chain attacks targeting npm packages are
-                        increasingly common. Malicious actors can compromise
-                        legitimate packages, inject backdoors, or hijack publish
-                        credentials. The Source & Trust feature helps you
-                        identify trust signals and spot potential security
-                        regressions when comparing package versions.
-                    </p>
-                </Stack>
-            </BorderBox>
+            <div className="w-full space-y-4">
+                <p>
+                    <strong>npm-diff.app</strong> was created as a tool to audit
+                    updates of packages to ensure safe and stable upgrades.
+                    Making updates in a safe and defensive way has become
+                    increasingly important over the years, with package
+                    hijacking and takeovers becoming increasingly prevalent.
+                </p>
+                <p>
+                    The new <strong>Source & Trust feature</strong> enables
+                    deeper auditing by linking releases to their original
+                    sources and evaluating their trust signals using the npm
+                    registry&rsquo;s Provenance and Trusted Publishing features.
+                </p>
+                <p>
+                    <strong>
+                        Source & Trust does not determine whether a package is
+                        safe.
+                    </strong>{" "}
+                    It helps you make better-informed trust decisions.
+                </p>
+            </div>
 
             <div className="w-full space-y-6">
                 <div>
                     <div className="mb-4 flex items-center gap-2">
-                        <CheckCircle2 className="size-6 text-green-500" />
+                        <BadgeCheck className="size-6 text-green-500" />
                         <Heading h={2} className="m-0">
                             Provenance Attestation
                         </Heading>
                     </div>
                     <Stack gap={3} align="start">
                         <p>
-                            Provenance (via Sigstore) is a cryptographically
-                            signed attestation that links a package to its
-                            source code repository and build environment. When a
-                            package is published with provenance, npm stores
-                            verifiable metadata about:
+                            Provenance is a cryptographically signed attestation
+                            that links a package to its source code repository
+                            and build environment. When a package is published
+                            with provenance, npm records verifiable metadata
+                            about:
                         </p>
                         <ul className="list-inside list-disc space-y-1 pl-4">
                             <li>Which repository the code came from</li>
@@ -106,78 +103,38 @@ export default async function SourceTrustPage() {
                                 that:
                             </p>
                             <ul className="mt-2 list-inside list-disc space-y-1 pl-4 text-sm">
-                                <li>the repository itself is trustworthy</li>
-                                <li>the code is safe</li>
                                 <li>
-                                    the repository is the &ldquo;correct&rdquo;
-                                    one for that package name
+                                    the repository itself is the
+                                    &ldquo;correct&rdquo; repository for that
+                                    package
                                 </li>
+                                <li>
+                                    the release does not contain other code
+                                    injected at build time
+                                </li>
+                                <li>the source code itself is safe</li>
                             </ul>
                         </BorderBox>
-                        <div>
-                            <Heading h={3} className="mb-2 font-semibold">
-                                How npm-diff.app displays provenance
-                            </Heading>
-                            <p>
-                                When viewing a diff, npm-diff.app shows source
-                                information for both versions side-by-side. For
-                                packages with provenance, you&rsquo;ll see:
-                            </p>
-                            <ul className="mt-2 list-inside list-disc space-y-1 pl-4">
-                                <li>
-                                    Repository URL and commit hash (with links
-                                    to GitHub/GitLab)
-                                </li>
-                                <li>
-                                    Build platform badge (GitHub Actions or
-                                    GitLab CI/CD)
-                                </li>
-                                <li>
-                                    Workflow file name with link to the exact
-                                    version used
-                                </li>
-                                <li>
-                                    Public ledger verification link
-                                    (Sigstore/Rekor)
-                                </li>
-                            </ul>
-                        </div>
-                        {iniSourceInfo ? (
-                            <>
-                                <Heading h={3} className="mb-3 font-semibold">
-                                    Example: ini@6.0.0
-                                </Heading>
-                                <div className="max-w-md space-y-3">
-                                    <p className="text-sm text-muted-foreground">
-                                        Here&rsquo;s what the complete source
-                                        card looks like for a package with
-                                        provenance:
-                                    </p>
-                                    <SourceCard
-                                        sourceInformation={iniSourceInfo}
-                                    />
-                                    <p className="text-sm text-muted-foreground">
-                                        Provenance card standalone:
-                                    </p>
-                                    <ProvenanceCard
-                                        sourceInformation={iniSourceInfo}
-                                    />
-                                </div>
-                            </>
-                        ) : null}
+
                         <div className="text-sm">
                             <p className="font-semibold">Read more:</p>
-                            <ul className="mt-1 space-y-1">
+                            <ul className="mt-1 list-inside list-disc space-y-1">
                                 <li>
-                                    <ExternalLink href="https://github.blog/security/supply-chain-security/introducing-npm-package-provenance/">
-                                        Introducing npm package provenance
-                                        (GitHub Blog)
+                                    <ExternalLink
+                                        href="https://github.blog/security/supply-chain-security/introducing-npm-package-provenance/"
+                                        className="underline"
+                                    >
+                                        GitHub Blog - Introducing npm package
+                                        provenance
                                     </ExternalLink>
                                 </li>
                                 <li>
-                                    <ExternalLink href="https://docs.npmjs.com/generating-provenance-statements">
-                                        Generating provenance statements (npm
-                                        docs)
+                                    <ExternalLink
+                                        href="https://docs.npmjs.com/generating-provenance-statements"
+                                        className="underline"
+                                    >
+                                        npm documentation - Generating
+                                        provenance statements
                                     </ExternalLink>
                                 </li>
                             </ul>
@@ -197,56 +154,71 @@ export default async function SourceTrustPage() {
                             Trusted Publishing is npm&rsquo;s recommended
                             authentication method that eliminates the need for
                             long-lived access tokens in CI/CD environments.
-                            Instead of storing npm tokens as secrets in your CI
-                            environment, Trusted Publishing allows GitHub
-                            Actions and GitLab CI/CD to publish directly using
-                            short-lived, automatically rotating credentials.
                         </p>
                         <p>
-                            This significantly reduces the risk of token theft
-                            and unauthorized package publication. When a package
-                            is published with Trusted Publishing, the npm
-                            registry verifies that the publish request came from
-                            an authorized CI/CD workflow configured by the
-                            package maintainer.
+                            This reduces the use of stealable tokens, which are
+                            the primary attack vector in many package takeovers.
+                            This also helps ensure that a release is not
+                            published from a repository other than the one the
+                            maintainer has configured.
                         </p>
-                        <div>
-                            <Heading h={3} className="mb-2 font-semibold">
-                                How npm-diff.app highlights trusted publishing
-                            </Heading>
-                            <p>
-                                Packages published with Trusted Publishing
-                                display a distinct &ldquo;Trusted
-                                Publisher&rdquo; badge in the source information
-                                panel. This indicates that the package was
-                                published using secure, token-less
-                                authentication instead of legacy npm tokens.
+
+                        <BorderBox variant="warning" className="w-full">
+                            <p className="text-sm">
+                                <strong>Important:</strong> Trusted publishing
+                                only guarantees that one particular release was
+                                published from the specified repository. It does
+                                <strong>not</strong> guarantee that any future
+                                releases will be published securely.
                             </p>
-                        </div>
+                        </BorderBox>
+
                         <div className="text-sm">
                             <p className="font-semibold">Read more:</p>
-                            <ul className="mt-1 space-y-1">
+                            <ul className="mt-1 list-inside list-disc space-y-1">
                                 <li>
-                                    <ExternalLink href="https://docs.npmjs.com/trusted-publishers">
-                                        Trusted Publishers (npm docs)
+                                    <ExternalLink
+                                        href="https://docs.npmjs.com/trusted-publishers"
+                                        className="underline"
+                                    >
+                                        npm documentation - Trusted Publishers
                                     </ExternalLink>
                                 </li>
                             </ul>
                         </div>
+                    </Stack>
+                </div>
+
+                <div>
+                    <div className="mb-4 flex items-center gap-2">
+                        <Heading h={2} className="m-0">
+                            📦🔃 npm-diff.app source & trust
+                        </Heading>
+                    </div>
+
+                    <Stack gap={3} align="start">
+                        <p>
+                            When comparing releases that were published with
+                            provenance, npm-diff.app displays detailed
+                            information about the source and build environment
+                            for that release. This allows you to look up the
+                            exact commit, repository, and build workflow that
+                            was used to produce the package.
+                        </p>
+                        <p>
+                            If a release was published using Trusted Publishing,
+                            npm-diff.app highlights this with a distinct
+                            &ldquo;Trusted Publisher&rdquo; badge in the source
+                            information panel.
+                        </p>
+
                         {iniSourceInfo ? (
                             <>
-                                <Heading h={3} className="mb-3 font-semibold">
-                                    Example: ini@6.0.0
-                                </Heading>
-                                <div className="max-w-md">
-                                    <p className="mb-3 text-sm text-muted-foreground">
-                                        The Trusted Publisher badge appears
-                                        below the provenance information:
-                                    </p>
-                                    <TrustedPublisherCard
-                                        sourceInformation={iniSourceInfo}
-                                    />
-                                </div>
+                                <Heading h={5}>Example: ini@6.0.0</Heading>
+                                <SourceCard
+                                    sourceInformation={iniSourceInfo}
+                                    className="w-full max-w-sm"
+                                />
                             </>
                         ) : null}
                     </Stack>
@@ -261,13 +233,11 @@ export default async function SourceTrustPage() {
                     </div>
                     <Stack gap={3} align="start">
                         <p>
-                            When comparing two package versions, npm-diff.app
-                            automatically audits for trust degradation and
-                            security concerns. These warnings are designed to
-                            catch security and trust regressions between
-                            versions — cases where the newer version is, from a
-                            supply-chain perspective, strictly worse than the
-                            previous one.
+                            In addition to presenting this information for
+                            manual auditing, npm-diff.app also highlights
+                            potential trust issues when comparing two releases.
+                            These warnings are designed to draw attention to
+                            changes that may warrant further investigation:
                         </p>
                         <div className="w-full space-y-4">
                             <BorderBox variant="danger" className="w-full">
