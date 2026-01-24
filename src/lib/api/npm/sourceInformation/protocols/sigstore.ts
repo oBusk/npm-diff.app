@@ -13,7 +13,7 @@ interface TlogEntry<KindVersion extends string> {
     };
     kindVersion: {
         kind: KindVersion;
-        version: "string";
+        version: string;
     };
     /** Unix Timestamp */
     integratedTime: string;
