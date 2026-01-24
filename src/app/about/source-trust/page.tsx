@@ -5,10 +5,15 @@ import {
     ShieldCheck,
 } from "lucide-react";
 import type { Metadata } from "next";
+import { cacheLife } from "next/cache";
+import SourceCard from "^/app/[...parts]/_page/Sources/SourceCard";
+import ProvenanceCard from "^/app/[...parts]/_page/Sources/SourceCard/ProvenanceCard";
+import { TrustedPublisherCard } from "^/app/[...parts]/_page/Sources/SourceCard/TrustedPublisherCard";
 import ExternalLink from "^/components/ExternalLink";
 import BorderBox from "^/components/ui/BorderBox";
 import Heading from "^/components/ui/Heading";
 import Stack from "^/components/ui/Stack";
+import { getSourceInformation } from "^/lib/api/npm/sourceInformation";
 
 export const metadata: Metadata = {
     title: "Source & Trust",
@@ -16,7 +21,17 @@ export const metadata: Metadata = {
         "Audit npm package trust and provenance to protect against supply chain attacks",
 };
 
-export default function SourceTrustPage() {
+export default async function SourceTrustPage() {
+    "use cache";
+
+    cacheLife("max");
+
+    // Fetch source information for ini@6.0.0 as an example
+    const iniSourceInfo = await getSourceInformation({
+        name: "ini",
+        version: "6.0.0",
+    });
+
     return (
         <Stack gap={8} align="start" className="mx-auto max-w-3xl p-5">
             <div className="w-full text-center">
@@ -127,6 +142,29 @@ export default function SourceTrustPage() {
                                 </li>
                             </ul>
                         </div>
+                        {iniSourceInfo ? (
+                            <>
+                                <Heading h={3} className="mb-3 font-semibold">
+                                    Example: ini@6.0.0
+                                </Heading>
+                                <div className="max-w-md space-y-3">
+                                    <p className="text-sm text-muted-foreground">
+                                        Here&rsquo;s what the complete source
+                                        card looks like for a package with
+                                        provenance:
+                                    </p>
+                                    <SourceCard
+                                        sourceInformation={iniSourceInfo}
+                                    />
+                                    <p className="text-sm text-muted-foreground">
+                                        Provenance card standalone:
+                                    </p>
+                                    <ProvenanceCard
+                                        sourceInformation={iniSourceInfo}
+                                    />
+                                </div>
+                            </>
+                        ) : null}
                         <div className="text-sm">
                             <p className="font-semibold">Read more:</p>
                             <ul className="mt-1 space-y-1">
@@ -195,6 +233,22 @@ export default function SourceTrustPage() {
                                 </li>
                             </ul>
                         </div>
+                        {iniSourceInfo ? (
+                            <>
+                                <Heading h={3} className="mb-3 font-semibold">
+                                    Example: ini@6.0.0
+                                </Heading>
+                                <div className="max-w-md">
+                                    <p className="mb-3 text-sm text-muted-foreground">
+                                        The Trusted Publisher badge appears
+                                        below the provenance information:
+                                    </p>
+                                    <TrustedPublisherCard
+                                        sourceInformation={iniSourceInfo}
+                                    />
+                                </div>
+                            </>
+                        ) : null}
                     </Stack>
                 </div>
 
