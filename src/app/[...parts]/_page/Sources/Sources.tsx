@@ -34,7 +34,9 @@ async function Sources({ a, b }: SourcesProps) {
         return <NeitherHasProvenance className="mb-4" />;
     }
 
-    const findings = auditSourceTrust(sourceA, sourceB);
+    // Analyze trust only if both packages are the same
+    const findings =
+        a.name === b.name ? auditSourceTrust(sourceA, sourceB) : [];
 
     const aLabel = simplePackageSpecToString(a);
 
