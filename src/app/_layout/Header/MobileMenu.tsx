@@ -63,7 +63,7 @@ const MobileMenu = forwardRef<HTMLDivElement, MobileMenuProps>((props, ref) => {
                                             API
                                         </NavLinkFallback>
                                         <NavLinkFallback
-                                            href="/about/source-trust"
+                                            href="/-/about/source-trust"
                                             className="w-full justify-start"
                                             onClick={closeMenu}
                                         >
@@ -87,7 +87,7 @@ const MobileMenu = forwardRef<HTMLDivElement, MobileMenuProps>((props, ref) => {
                                     API
                                 </NavLink>
                                 <NavLink
-                                    href="/about/source-trust"
+                                    href="/-/about/source-trust"
                                     className="w-full justify-start"
                                     onClick={closeMenu}
                                 >

@@ -6,7 +6,7 @@ import { cx } from "^/lib/cva";
 export function NewFeatureSourceTrust() {
     return (
         <Link
-            href="/about/source-trust"
+            href="/-/about/source-trust"
             className={cx(
                 "mx-auto w-full max-w-sm lg:max-w-md",
                 "rounded-xl border",

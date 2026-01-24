@@ -52,7 +52,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                                 API
                             </NavLinkFallback>
                             <NavLinkFallback
-                                href="/about/source-trust"
+                                href="/-/about/source-trust"
                                 className="rounded-l-none"
                             >
                                 Trust
@@ -73,7 +73,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                         API
                     </NavLink>
                     <NavLink
-                        href="/about/source-trust"
+                        href="/-/about/source-trust"
                         className="rounded-l-none"
                     >
                         Trust
