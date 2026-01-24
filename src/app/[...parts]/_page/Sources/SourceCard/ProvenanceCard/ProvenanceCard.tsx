@@ -48,7 +48,7 @@ export default function ProvenanceCard({
                             Icon={ScrollText}
                         />
                         <ProvenanceCardButton
-                            tooltip="View source repository"
+                            tooltip="View build summary"
                             href={sourceInformation.buildSummaryUrl}
                             Icon={ExternalLinkIcon}
                         />
