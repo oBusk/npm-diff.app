@@ -4,6 +4,7 @@ import Heading from "^/components/ui/Heading";
 import { type SourceInformation } from "^/lib/api/npm/sourceInformation";
 import { cx } from "^/lib/cva";
 import ProvenanceCard from "./ProvenanceCard";
+import { ProvenanceInfoIcon } from "./ProvenanceInfoIcon";
 import { TrustedPublisherCard } from "./TrustedPublisherCard";
 
 export interface SourceCardProps extends React.HTMLProps<HTMLDivElement> {
@@ -23,10 +24,11 @@ export default function SourceCard({
             )}
             {...props}
         >
-            <div className="w-full border-b p-2">
+            <div className="flex w-full items-center justify-between border-b p-2">
                 <Heading h={4} className="text-base">
                     Source
                 </Heading>
+                <ProvenanceInfoIcon />
             </div>
             <div className="p-3">
                 <div className="space-y-3">
