@@ -19,7 +19,8 @@ export default function SourceCard({
     return (
         <div
             className={cx(
-                "rounded-xl border border-border bg-background",
+                "rounded-xl border border-border",
+                "bg-gradient-to-b from-blue-900/25 via-background to-background",
                 className,
             )}
             {...props}
