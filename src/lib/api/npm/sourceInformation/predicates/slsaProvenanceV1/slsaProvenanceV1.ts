@@ -16,11 +16,8 @@ export const SlsaProvenancePredicateType = "https://slsa.dev/provenance/v1";
  */
 interface ResourceDescriptor {
     uri: string;
-    digest: {
-        sha256: string;
-        sha512: string;
-        gitCommit: string;
-        [key: string]: string;
+    digest?: {
+        [algorithm: string]: string;
     };
     name: string;
     downloadLocation: string;
