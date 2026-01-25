@@ -17,7 +17,7 @@ export type GithubActionsWorkflowBuildType =
 export interface GithubActionsWorkflowBuildDefinition extends BuildDefinition {
     buildType: GithubActionsWorkflowBuildType;
     externalParameters: {
-        // There might be lot's of other externalParameters here
+        // There might be lots of other externalParameters here
         workflow: {
             /**
              * E.g. "refs/tags/v1.0.0"
