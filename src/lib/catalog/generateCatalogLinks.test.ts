@@ -59,47 +59,54 @@ describe("generateCatalogLinks", () => {
 
     it("should generate minor links correctly", () => {
         const versions: Version[] = [
-            { version: "1.2.0", time: "2024-01-03" },
-            { version: "1.1.0", time: "2024-01-02" },
+            { version: "1.2.5", time: "2024-01-06" },
+            { version: "1.2.0", time: "2024-01-05" },
+            { version: "1.1.8", time: "2024-01-04" },
+            { version: "1.1.0", time: "2024-01-03" },
+            { version: "1.0.5", time: "2024-01-02" },
             { version: "1.0.0", time: "2024-01-01" },
         ];
 
         const links = generateCatalogLinks("pkg", versions);
 
+        // Minor diffs should be from last of previous minor to first of next minor
         expect(links).toContainEqual({
-            from: "pkg@1.1.0",
+            from: "pkg@1.1.8",
             to: "pkg@1.2.0",
             type: "minor",
-            label: "1.1.0 → 1.2.0",
+            label: "1.1.8 → 1.2.0",
         });
         expect(links).toContainEqual({
-            from: "pkg@1.0.0",
+            from: "pkg@1.0.5",
             to: "pkg@1.1.0",
             type: "minor",
-            label: "1.0.0 → 1.1.0",
+            label: "1.0.5 → 1.1.0",
         });
     });
 
     it("should generate major links correctly", () => {
         const versions: Version[] = [
-            { version: "3.0.0", time: "2024-01-03" },
+            { version: "3.5.2", time: "2024-01-05" },
+            { version: "3.0.0", time: "2024-01-04" },
+            { version: "2.8.1", time: "2024-01-03" },
             { version: "2.0.0", time: "2024-01-02" },
-            { version: "1.0.0", time: "2024-01-01" },
+            { version: "1.9.5", time: "2024-01-01" },
         ];
 
         const links = generateCatalogLinks("pkg", versions);
 
+        // Major diffs should be from last of previous major to first of next major
         expect(links).toContainEqual({
-            from: "pkg@2.0.0",
+            from: "pkg@2.8.1",
             to: "pkg@3.0.0",
             type: "major",
-            label: "2.0.0 → 3.0.0",
+            label: "2.8.1 → 3.0.0",
         });
         expect(links).toContainEqual({
-            from: "pkg@1.0.0",
+            from: "pkg@1.9.5",
             to: "pkg@2.0.0",
             type: "major",
-            label: "1.0.0 → 2.0.0",
+            label: "1.9.5 → 2.0.0",
         });
     });
 

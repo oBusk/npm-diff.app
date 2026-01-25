@@ -99,28 +99,64 @@ function generateMinorLinks(
     const links: CatalogLink[] = [];
     const seen = new Set<string>();
 
-    for (let i = 0; i < versions.length - 1; i++) {
-        const current = versions[i];
+    // Group versions by major
+    const versionsByMajor = new Map<number, Version[]>();
+    for (const version of versions) {
+        const maj = major(version.version);
+        if (!versionsByMajor.has(maj)) {
+            versionsByMajor.set(maj, []);
+        }
+        versionsByMajor.get(maj)!.push(version);
+    }
 
-        // Find the previous minor version (same major, different minor)
-        for (let j = i + 1; j < versions.length; j++) {
-            const candidate = versions[j];
+    // For each major version, find minor bumps
+    for (const [, versionsInMajor] of versionsByMajor) {
+        // Group by minor within this major
+        const versionsByMinor = new Map<number, Version[]>();
+        for (const version of versionsInMajor) {
+            const min = minor(version.version);
+            if (!versionsByMinor.has(min)) {
+                versionsByMinor.set(min, []);
+            }
+            versionsByMinor.get(min)!.push(version);
+        }
 
-            if (
-                major(current.version) === major(candidate.version) &&
-                minor(current.version) !== minor(candidate.version)
-            ) {
-                const key = `${candidate.version}...${current.version}`;
-                if (!seen.has(key)) {
-                    seen.add(key);
-                    links.push({
-                        from: `${packageName}@${candidate.version}`,
-                        to: `${packageName}@${current.version}`,
-                        type: "minor",
-                        label: `${candidate.version} → ${current.version}`,
-                    });
-                }
-                break;
+        const sortedMinors = Array.from(versionsByMinor.keys()).sort(
+            (a, b) => b - a,
+        );
+
+        // Create diffs from last version of minor X to first version (X.0) of minor X+1
+        for (let i = 0; i < sortedMinors.length - 1; i++) {
+            const currentMinor = sortedMinors[i];
+            const previousMinor = sortedMinors[i + 1];
+
+            const currentMinorVersions = versionsByMinor.get(currentMinor)!;
+            const previousMinorVersions = versionsByMinor.get(previousMinor)!;
+
+            // Get first version of current minor (patch = 0, or lowest if .0 doesn't exist)
+            const dotZero = currentMinorVersions.find(
+                (v) => patch(v.version) === 0,
+            );
+            const firstOfCurrent =
+                dotZero ||
+                currentMinorVersions.sort((a, b) =>
+                    rcompare(b.version, a.version),
+                )[currentMinorVersions.length - 1];
+
+            // Get last version of previous minor (highest patch)
+            const lastOfPrevious = previousMinorVersions.sort((a, b) =>
+                rcompare(a.version, b.version),
+            )[0];
+
+            const key = `${lastOfPrevious.version}...${firstOfCurrent.version}`;
+            if (!seen.has(key)) {
+                seen.add(key);
+                links.push({
+                    from: `${packageName}@${lastOfPrevious.version}`,
+                    to: `${packageName}@${firstOfCurrent.version}`,
+                    type: "minor",
+                    label: `${lastOfPrevious.version} → ${firstOfCurrent.version}`,
+                });
             }
         }
     }
@@ -135,26 +171,52 @@ function generateMajorLinks(
     const links: CatalogLink[] = [];
     const seen = new Set<string>();
 
-    for (let i = 0; i < versions.length - 1; i++) {
-        const current = versions[i];
+    // Group versions by major
+    const versionsByMajor = new Map<number, Version[]>();
+    for (const version of versions) {
+        const maj = major(version.version);
+        if (!versionsByMajor.has(maj)) {
+            versionsByMajor.set(maj, []);
+        }
+        versionsByMajor.get(maj)!.push(version);
+    }
 
-        // Find the previous major version
-        for (let j = i + 1; j < versions.length; j++) {
-            const candidate = versions[j];
+    const sortedMajors = Array.from(versionsByMajor.keys()).sort(
+        (a, b) => b - a,
+    );
 
-            if (major(current.version) !== major(candidate.version)) {
-                const key = `${candidate.version}...${current.version}`;
-                if (!seen.has(key)) {
-                    seen.add(key);
-                    links.push({
-                        from: `${packageName}@${candidate.version}`,
-                        to: `${packageName}@${current.version}`,
-                        type: "major",
-                        label: `${candidate.version} → ${current.version}`,
-                    });
-                }
-                break;
-            }
+    // Create diffs from last version of major X to first version (X.0.0) of major X+1
+    for (let i = 0; i < sortedMajors.length - 1; i++) {
+        const currentMajor = sortedMajors[i];
+        const previousMajor = sortedMajors[i + 1];
+
+        const currentMajorVersions = versionsByMajor.get(currentMajor)!;
+        const previousMajorVersions = versionsByMajor.get(previousMajor)!;
+
+        // Get first version of current major (X.0.0, or lowest if .0.0 doesn't exist)
+        const dotZeroDotZero = currentMajorVersions.find(
+            (v) => minor(v.version) === 0 && patch(v.version) === 0,
+        );
+        const firstOfCurrent =
+            dotZeroDotZero ||
+            currentMajorVersions.sort((a, b) => rcompare(b.version, a.version))[
+                currentMajorVersions.length - 1
+            ];
+
+        // Get last version of previous major (highest version)
+        const lastOfPrevious = previousMajorVersions.sort((a, b) =>
+            rcompare(a.version, b.version),
+        )[0];
+
+        const key = `${lastOfPrevious.version}...${firstOfCurrent.version}`;
+        if (!seen.has(key)) {
+            seen.add(key);
+            links.push({
+                from: `${packageName}@${lastOfPrevious.version}`,
+                to: `${packageName}@${firstOfCurrent.version}`,
+                type: "major",
+                label: `${lastOfPrevious.version} → ${firstOfCurrent.version}`,
+            });
         }
     }
 

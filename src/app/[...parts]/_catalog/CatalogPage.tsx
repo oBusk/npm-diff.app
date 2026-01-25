@@ -21,13 +21,13 @@ const CatalogPage = ({ packageName, links }: CatalogPageProps) => {
                 </p>
             </header>
 
-            {majorLinks.length > 0 && (
+            {patchLinks.length > 0 && (
                 <section>
                     <h2 className="mb-4 text-2xl font-semibold">
-                        Major Version Updates
+                        Patch Version Updates
                     </h2>
                     <div className="flex flex-col gap-2">
-                        {majorLinks.map((link) => (
+                        {patchLinks.map((link) => (
                             <Link
                                 key={`${link.from}...${link.to}`}
                                 href={`/${link.from}...${link.to}`}
@@ -65,13 +65,13 @@ const CatalogPage = ({ packageName, links }: CatalogPageProps) => {
                 </section>
             )}
 
-            {patchLinks.length > 0 && (
+            {majorLinks.length > 0 && (
                 <section>
                     <h2 className="mb-4 text-2xl font-semibold">
-                        Patch Version Updates
+                        Major Version Updates
                     </h2>
                     <div className="flex flex-col gap-2">
-                        {patchLinks.map((link) => (
+                        {majorLinks.map((link) => (
                             <Link
                                 key={`${link.from}...${link.to}`}
                                 href={`/${link.from}...${link.to}`}
