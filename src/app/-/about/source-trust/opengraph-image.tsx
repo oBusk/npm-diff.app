@@ -79,7 +79,7 @@ export default async function Image() {
                         lineHeight: 1.1,
                     }}
                 >
-                    Trust & Source
+                    Source & Trust
                 </h1>
             </div>
             <svg
