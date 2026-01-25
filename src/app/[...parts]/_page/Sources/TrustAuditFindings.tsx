@@ -47,7 +47,9 @@ export function TrustAuditFindings({
                         subtitle = `The publish was triggered via ${sourceB.buildFileName}, changing from ${sourceA.buildFileName}. While potentially a refactor, an unexpected change in the build "recipe" warrants an audit.`;
                         break;
                     default:
-                        return null;
+                        throw new Error(
+                            `Unknown finding type: ${(finding as { type: string }).type}`,
+                        );
                 }
 
                 return (
