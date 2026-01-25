@@ -10,7 +10,7 @@ export interface TrustedPublisherCardProps {
 export function TrustedPublisherCard({
     sourceInformation,
 }: TrustedPublisherCardProps) {
-    if (!sourceInformation.trustedPublisher) {
+    if (!sourceInformation.hasTrustedPublisher) {
         return null;
     }
 

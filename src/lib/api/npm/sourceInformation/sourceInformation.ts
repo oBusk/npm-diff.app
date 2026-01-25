@@ -20,5 +20,5 @@ export interface SourceInformation {
      *
      * > https://docs.npmjs.com/trusted-publishers
      */
-    trustedPublisher: boolean;
+    hasTrustedPublisher: boolean;
 }

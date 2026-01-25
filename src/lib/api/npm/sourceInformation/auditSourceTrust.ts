@@ -32,7 +32,7 @@ export function auditSourceTrust(
     //    - A was published with trusted publisher but B is not (lost trusted publisher)
     const provenanceDowngrade = hasA && !hasB;
     const trustedPublisherDowngrade = Boolean(
-        sourceA?.trustedPublisher && !sourceB?.trustedPublisher,
+        sourceA?.hasTrustedPublisher && !sourceB?.hasTrustedPublisher,
     );
 
     if (provenanceDowngrade || trustedPublisherDowngrade) {

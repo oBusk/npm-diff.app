@@ -14,7 +14,7 @@ function makeSourceInformation(
             "https://github.com/owner/repo/actions/workflows/publish.yml",
         buildSummaryUrl: "https://github.com/owner/repo/actions/runs/1",
         publicLedger: "rekor-entry-id",
-        trustedPublisher: false,
+        hasTrustedPublisher: false,
         ...overrides,
     };
 }
@@ -43,8 +43,8 @@ describe("auditSourceTrust", () => {
     });
 
     it("flags a red lost-trusted-publisher finding when trusted publisher is lost", () => {
-        const sourceA = makeSourceInformation({ trustedPublisher: true });
-        const sourceB = makeSourceInformation({ trustedPublisher: false });
+        const sourceA = makeSourceInformation({ hasTrustedPublisher: true });
+        const sourceB = makeSourceInformation({ hasTrustedPublisher: false });
 
         const findings = auditSourceTrust(sourceA, sourceB);
 
@@ -58,10 +58,10 @@ describe("auditSourceTrust", () => {
 
     it("does not flag trust downgrade findings when trust increases or stays the same", () => {
         const withoutTrustedPublisher = makeSourceInformation({
-            trustedPublisher: false,
+            hasTrustedPublisher: false,
         });
         const withTrustedPublisher = makeSourceInformation({
-            trustedPublisher: true,
+            hasTrustedPublisher: true,
         });
 
         // Upgrade in trust
@@ -122,12 +122,12 @@ describe("auditSourceTrust", () => {
 
     it("returns multiple findings when several conditions are met", () => {
         const sourceA = makeSourceInformation({
-            trustedPublisher: true,
+            hasTrustedPublisher: true,
             repositoryUrl: "https://github.com/owner/repo",
             buildFileName: ".github/workflows/publish.yml",
         });
         const sourceB = makeSourceInformation({
-            trustedPublisher: false,
+            hasTrustedPublisher: false,
             repositoryUrl: "https://gitlab.com/other/repo",
             repositoryPath: "other/repo",
             buildFileName: ".github/workflows/release.yml",
