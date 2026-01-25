@@ -21,7 +21,20 @@ const EXAMPLE_ABSOLUTE_URL = `${DOMAIN}${EXAMPLE_RELATIVE_LINK}` as const;
 
 export const metadata: Metadata = {
     title: "API",
-    description: "API documentation for npm-diff.app",
+    description:
+        "API documentation for npm-diff.app. Access programmatic diff capabilities for npm packages using the same API that powers the web interface.",
+    openGraph: {
+        title: "npm-diff.app API",
+        description:
+            "API documentation for npm-diff.app. Access programmatic diff capabilities for npm packages.",
+        url: "https://npm-diff.app/-/about/api",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "npm-diff.app API",
+        description:
+            "API documentation for npm-diff.app. Access programmatic diff capabilities for npm packages.",
+    },
 };
 
 const AboutApiPage = async () => {
