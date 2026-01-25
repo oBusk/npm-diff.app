@@ -7,7 +7,7 @@ import ProvenanceCard from "./ProvenanceCard";
 import { ProvenanceInfoIcon } from "./ProvenanceInfoIcon";
 import { TrustedPublisherCard } from "./TrustedPublisherCard";
 
-export interface SourceCardProps extends React.HTMLProps<HTMLDivElement> {
+export interface SourceCardProps extends React.ComponentProps<"div"> {
     sourceInformation: SourceInformation;
 }
 
