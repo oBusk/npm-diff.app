@@ -10,8 +10,6 @@ export type GithubActionsWorkflowBuildType =
  *
  * Defines what properties npm/github populates the parameters with
  *
- * TODO: There's some version of this for GitLab too, I guess
- *
  * > https://slsa-framework.github.io/github-actions-buildtypes/workflow/v1
  */
 export interface GithubActionsWorkflowBuildDefinition extends BuildDefinition {
