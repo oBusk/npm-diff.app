@@ -40,13 +40,13 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                     fallback={
                         <>
                             <NavLinkFallback
-                                href="/about"
+                                href="/-/about"
                                 className="rounded-r-none border-r-0"
                             >
                                 About
                             </NavLinkFallback>
                             <NavLinkFallback
-                                href="/about/api"
+                                href="/-/about/api"
                                 className="rounded-none border-r-0"
                             >
                                 API
@@ -61,13 +61,13 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                     }
                 >
                     <NavLink
-                        href="/about"
+                        href="/-/about"
                         className="rounded-r-none border-r-0"
                     >
                         About
                     </NavLink>
                     <NavLink
-                        href="/about/api"
+                        href="/-/about/api"
                         className="rounded-none border-r-0"
                     >
                         API

@@ -49,14 +49,14 @@ const MobileMenu = forwardRef<HTMLDivElement, MobileMenuProps>((props, ref) => {
                                 fallback={
                                     <>
                                         <NavLinkFallback
-                                            href="/about"
+                                            href="/-/about"
                                             className="w-full justify-start"
                                             onClick={closeMenu}
                                         >
                                             About
                                         </NavLinkFallback>
                                         <NavLinkFallback
-                                            href="/about/api"
+                                            href="/-/about/api"
                                             className="w-full justify-start"
                                             onClick={closeMenu}
                                         >
@@ -73,14 +73,14 @@ const MobileMenu = forwardRef<HTMLDivElement, MobileMenuProps>((props, ref) => {
                                 }
                             >
                                 <NavLink
-                                    href="/about"
+                                    href="/-/about"
                                     className="w-full justify-start"
                                     onClick={closeMenu}
                                 >
                                     About
                                 </NavLink>
                                 <NavLink
-                                    href="/about/api"
+                                    href="/-/about/api"
                                     className="w-full justify-start"
                                     onClick={closeMenu}
                                 >

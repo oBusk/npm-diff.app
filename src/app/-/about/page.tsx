@@ -29,7 +29,7 @@ export default function AboutPage() {
                     <Code>libnpmdiff</Code>
                 </ExternalLink>{" "}
                 package to perform a diff between the packages you chose. We
-                then visualize the differance.
+                then visualize the difference.
             </p>
             <Heading>Redirection</Heading>
             <p>
@@ -63,7 +63,7 @@ export default function AboutPage() {
                 <ExternalLink href="https://packagephobia.com">
                     packagephobia
                 </ExternalLink>{" "}
-                to give an overview of the differances between the two, measured
+                to give an overview of the differences between the two, measured
                 in install and bundle size.
             </p>
         </Stack>
