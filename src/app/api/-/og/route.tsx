@@ -106,6 +106,7 @@ export async function GET(request: NextRequest) {
                 {/* Package name */}
                 <div
                     style={{
+                        display: "flex",
                         fontSize: "48px",
                         fontWeight: 700,
                         color: "white",
@@ -123,6 +124,7 @@ export async function GET(request: NextRequest) {
                 {/* Version comparison */}
                 <div
                     style={{
+                        display: "flex",
                         fontSize: "32px",
                         fontWeight: 500,
                         color: "rgba(156, 163, 175, 1)",
@@ -151,6 +153,7 @@ export async function GET(request: NextRequest) {
                     >
                         <div
                             style={{
+                                display: "flex",
                                 fontSize: "48px",
                                 fontWeight: 700,
                                 color: "rgba(147, 197, 253, 1)",
@@ -160,6 +163,7 @@ export async function GET(request: NextRequest) {
                         </div>
                         <div
                             style={{
+                                display: "flex",
                                 fontSize: "18px",
                                 color: "rgba(156, 163, 175, 1)",
                             }}
@@ -178,6 +182,7 @@ export async function GET(request: NextRequest) {
                     >
                         <div
                             style={{
+                                display: "flex",
                                 fontSize: "48px",
                                 fontWeight: 700,
                                 color: "rgba(34, 197, 94, 1)",
@@ -187,6 +192,7 @@ export async function GET(request: NextRequest) {
                         </div>
                         <div
                             style={{
+                                display: "flex",
                                 fontSize: "18px",
                                 color: "rgba(156, 163, 175, 1)",
                             }}
@@ -205,6 +211,7 @@ export async function GET(request: NextRequest) {
                     >
                         <div
                             style={{
+                                display: "flex",
                                 fontSize: "48px",
                                 fontWeight: 700,
                                 color: "rgba(239, 68, 68, 1)",
@@ -214,6 +221,7 @@ export async function GET(request: NextRequest) {
                         </div>
                         <div
                             style={{
+                                display: "flex",
                                 fontSize: "18px",
                                 color: "rgba(156, 163, 175, 1)",
                             }}
@@ -259,6 +267,7 @@ export async function GET(request: NextRequest) {
                                 </svg>
                                 <span
                                     style={{
+                                        display: "flex",
                                         color: "rgba(134, 239, 172, 1)",
                                         fontSize: "18px",
                                         fontWeight: 600,
@@ -294,6 +303,7 @@ export async function GET(request: NextRequest) {
                                 </svg>
                                 <span
                                     style={{
+                                        display: "flex",
                                         color: "rgba(147, 197, 253, 1)",
                                         fontSize: "18px",
                                         fontWeight: 600,
@@ -310,6 +320,7 @@ export async function GET(request: NextRequest) {
             {/* Footer */}
             <div
                 style={{
+                    display: "flex",
                     position: "absolute",
                     bottom: 40,
                     left: 80,
