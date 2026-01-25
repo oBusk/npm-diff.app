@@ -4,6 +4,7 @@ import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import ColorModeToggle from "./ColorModeToggle";
 import GithubLink from "./GithubLink";
+import MobileMenu from "./MobileMenu";
 import NavLink, { NavLinkFallback } from "./NavLink";
 
 export interface HeaderProps extends HTMLAttributes<HTMLElement> {}
@@ -33,24 +34,55 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
                     npm-diff.app 📦🔃
                 </Heading>
             </Link>
-            <div className="flex items-center justify-end">
+            {/* Desktop menu - hidden on mobile */}
+            <div className="hidden items-center justify-end md:flex">
                 <Suspense
                     fallback={
                         <>
-                            <NavLinkFallback href="/about">
-                                about
+                            <NavLinkFallback
+                                href="/about"
+                                className="rounded-r-none border-r-0"
+                            >
+                                About
                             </NavLinkFallback>
-                            <span>/</span>
-                            <NavLinkFallback href="/about/api">
-                                api
+                            <NavLinkFallback
+                                href="/about/api"
+                                className="rounded-none border-r-0"
+                            >
+                                API
+                            </NavLinkFallback>
+                            <NavLinkFallback
+                                href="/-/about/source-trust"
+                                className="rounded-l-none"
+                            >
+                                Trust
                             </NavLinkFallback>
                         </>
                     }
                 >
-                    <NavLink href="/about">about</NavLink>
-                    <span>/</span>
-                    <NavLink href="/about/api">api</NavLink>
+                    <NavLink
+                        href="/about"
+                        className="rounded-r-none border-r-0"
+                    >
+                        About
+                    </NavLink>
+                    <NavLink
+                        href="/about/api"
+                        className="rounded-none border-r-0"
+                    >
+                        API
+                    </NavLink>
+                    <NavLink
+                        href="/-/about/source-trust"
+                        className="rounded-l-none"
+                    >
+                        Trust
+                    </NavLink>
                 </Suspense>
+            </div>
+            {/* Mobile menu - shown on small screens */}
+            <div className="flex items-center justify-end md:hidden">
+                <MobileMenu />
             </div>
         </nav>
     ),

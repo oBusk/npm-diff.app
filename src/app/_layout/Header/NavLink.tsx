@@ -4,16 +4,8 @@ import Link, { type LinkProps } from "next/link";
 import { usePathname } from "next/navigation";
 import { type ComponentPropsWithoutRef, forwardRef } from "react";
 import type { UrlObject } from "url";
-import { cva } from "^/lib/cva";
-
-const navLinkVariants = cva(
-    "block rounded-md transition-all duration-200 focus:outline-none",
-    {
-        variants: {
-            isActive: { true: "opacity-40" },
-        },
-    },
-);
+import { buttonVariants } from "^/components/ui/Button";
+import { cx } from "^/lib/cva";
 
 export type NavLinkProps = ComponentPropsWithoutRef<typeof Link>;
 
@@ -45,7 +37,10 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(function NavLink(
         <Link
             ref={ref}
             href={href}
-            className={navLinkVariants({ isActive, className })}
+            className={cx(
+                buttonVariants({ variant: "outline", size: "sm", isActive }),
+                className,
+            )}
             aria-current={isActive ? "page" : undefined}
             {...props}
         />
@@ -57,7 +52,10 @@ export const NavLinkFallback = forwardRef<HTMLAnchorElement, NavLinkProps>(
         return (
             <Link
                 href={href}
-                className={navLinkVariants({ className })}
+                className={cx(
+                    buttonVariants({ variant: "outline", size: "sm" }),
+                    className,
+                )}
                 {...props}
                 ref={ref}
             />
