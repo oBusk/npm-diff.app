@@ -88,7 +88,7 @@ export function parseGithubActionsWorkflowBuildDefinition(
         throw new Error("No resolved dependencies found in provenance");
     }
 
-    const commitHash = deps[0].digest.gitCommit;
+    const commitHash = deps[0].digest?.gitCommit;
     if (!commitHash) {
         throw new Error("No commit hash found in resolved dependencies");
     }
