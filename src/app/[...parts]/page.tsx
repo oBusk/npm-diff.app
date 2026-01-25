@@ -2,6 +2,8 @@ import { type Metadata } from "next";
 import { redirect } from "next/navigation";
 import { type JSX, Suspense } from "react";
 import { type ViewType } from "react-diff-view";
+import getVersionData from "^/lib/api/npm/getVersionData";
+import { generateCatalogLinks } from "^/lib/catalog/generateCatalogLinks";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
@@ -10,6 +12,7 @@ import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import decodeParts from "^/lib/utils/decodeParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
+import CatalogPage from "./_catalog/CatalogPage";
 import BundlephobiaDiff from "./_page/BundlephobiaDiff";
 import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff";
@@ -28,6 +31,15 @@ export async function generateMetadata({
     const { parts } = await params;
     const specs = splitParts(decodeParts(parts));
 
+    // Check if this is a catalog page (single package)
+    if (specs.length === 1) {
+        const pkgSpec = createSimplePackageSpec(specs[0]);
+        return {
+            title: `${pkgSpec.name} - Version Catalog`,
+            description: `Browse and compare different versions of ${pkgSpec.name}`,
+        };
+    }
+
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
 
     return {
@@ -44,6 +56,21 @@ const DiffPageInner = async ({
     const { diffFiles, ...optionsQuery } = await searchParams;
 
     const specsOrVersions = splitParts(decodeParts(parts));
+
+    // Check if this is a catalog request (single package without version comparison)
+    if (specsOrVersions.length === 1) {
+        const spec = createSimplePackageSpec(specsOrVersions[0]);
+        const versionMap = await getVersionData(spec);
+        const versions = Object.entries(versionMap).map(([version, data]) => ({
+            version,
+            ...data,
+        }));
+
+        const links = generateCatalogLinks(spec.name, versions);
+
+        return <CatalogPage packageName={spec.name} links={links} />;
+    }
+
     const { redirect: redirectTarget, canonicalSpecs } =
         await destination(specsOrVersions);
 
