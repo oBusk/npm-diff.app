@@ -6,11 +6,6 @@ export interface Comparison {
     type: "major" | "minor" | "patch";
 }
 
-interface VersionInfo {
-    version: string;
-    publishDate: string;
-}
-
 /**
  * Generates exactly 10 comparison links for a package, following these rules:
  * - 3 Major bumps: First release of major vs last release of previous major
@@ -181,7 +176,11 @@ function findPatchBumps(sortedVersions: string[]): Comparison[] {
     const comparisons: Comparison[] = [];
 
     // Take consecutive versions (most recent patches)
-    for (let i = 0; i < sortedVersions.length - 1 && comparisons.length < 10; i++) {
+    for (
+        let i = 0;
+        i < sortedVersions.length - 1 && comparisons.length < 10;
+        i++
+    ) {
         const to = sortedVersions[i];
         const from = sortedVersions[i + 1];
 
