@@ -34,7 +34,9 @@ describe("generateComparisons", () => {
         ];
         const versionMap: Record<string, { time: string }> = {};
         versions.forEach((v, i) => {
-            versionMap[v] = { time: `2020-01-${String(i + 1).padStart(2, "0")}` };
+            versionMap[v] = {
+                time: `2020-01-${String(i + 1).padStart(2, "0")}`,
+            };
         });
 
         const result = generateComparisons(versions, versionMap);
@@ -42,14 +44,7 @@ describe("generateComparisons", () => {
     });
 
     it("identifies major bumps correctly", () => {
-        const versions = [
-            "1.0.0",
-            "1.9.4",
-            "2.0.0",
-            "2.5.0",
-            "3.0.0",
-            "3.1.0",
-        ];
+        const versions = ["1.0.0", "1.9.4", "2.0.0", "2.5.0", "3.0.0", "3.1.0"];
         const versionMap: Record<string, { time: string }> = {
             "1.0.0": { time: "2020-01-01" },
             "1.9.4": { time: "2020-06-01" },
@@ -150,7 +145,9 @@ describe("generateComparisons", () => {
         ];
         const versionMap: Record<string, { time: string }> = {};
         versions.forEach((v, i) => {
-            versionMap[v] = { time: `2020-${String(i + 1).padStart(2, "0")}-01` };
+            versionMap[v] = {
+                time: `2020-${String(i + 1).padStart(2, "0")}-01`,
+            };
         });
 
         const result = generateComparisons(versions, versionMap);
@@ -158,7 +155,7 @@ describe("generateComparisons", () => {
         // Should have 10 major bumps (since there are no minor/patch bumps)
         expect(result).toHaveLength(10);
         const majorBumps = result.filter((c) => c.type === "major");
-        expect(majorBumps.length).toBe(10);
+        expect(majorBumps).toHaveLength(10);
     });
 
     it("sorts comparisons by publish date (newest first)", () => {
@@ -181,16 +178,12 @@ describe("generateComparisons", () => {
     });
 
     it("handles versions with prerelease tags", () => {
-        const versions = [
-            "1.0.0",
-            "1.0.1",
-            "2.0.0-beta.1",
-            "2.0.0",
-            "2.0.1",
-        ];
+        const versions = ["1.0.0", "1.0.1", "2.0.0-beta.1", "2.0.0", "2.0.1"];
         const versionMap: Record<string, { time: string }> = {};
         versions.forEach((v, i) => {
-            versionMap[v] = { time: `2020-01-${String(i + 1).padStart(2, "0")}` };
+            versionMap[v] = {
+                time: `2020-01-${String(i + 1).padStart(2, "0")}`,
+            };
         });
 
         const result = generateComparisons(versions, versionMap);
