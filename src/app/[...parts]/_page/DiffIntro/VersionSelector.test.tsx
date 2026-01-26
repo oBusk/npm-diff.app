@@ -1,6 +1,6 @@
 // @jest-environment jsdom
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { useRouter } from "next/navigation";
 import VersionSelector from "./VersionSelector";
 
@@ -79,7 +79,7 @@ describe("VersionSelector", () => {
             json: async () => mockVersions,
         } as Response);
 
-        const { container } = render(
+        render(
             <VersionSelector
                 currentSpec={{ name: "react", version: "18.0.0" }}
                 otherSpec={{ name: "react", version: "17.0.0" }}
@@ -91,11 +91,8 @@ describe("VersionSelector", () => {
             expect(screen.getByRole("combobox")).toBeInTheDocument();
         });
 
-        const select = container.querySelector("select");
-        if (select) {
-            select.value = "18.2.0";
-            select.dispatchEvent(new Event("change", { bubbles: true }));
-        }
+        const select = screen.getByRole("combobox") as HTMLSelectElement;
+        fireEvent.change(select, { target: { value: "18.2.0" } });
 
         await waitFor(() => {
             expect(mockPush).toHaveBeenCalledWith(
@@ -115,7 +112,7 @@ describe("VersionSelector", () => {
             json: async () => mockVersions,
         } as Response);
 
-        const { container } = render(
+        render(
             <VersionSelector
                 currentSpec={{ name: "react", version: "17.0.0" }}
                 otherSpec={{ name: "react", version: "18.0.0" }}
@@ -127,11 +124,8 @@ describe("VersionSelector", () => {
             expect(screen.getByRole("combobox")).toBeInTheDocument();
         });
 
-        const select = container.querySelector("select");
-        if (select) {
-            select.value = "18.2.0";
-            select.dispatchEvent(new Event("change", { bubbles: true }));
-        }
+        const select = screen.getByRole("combobox") as HTMLSelectElement;
+        fireEvent.change(select, { target: { value: "18.2.0" } });
 
         await waitFor(() => {
             expect(mockPush).toHaveBeenCalledWith(

@@ -1,5 +1,3 @@
-"use client";
-
 import { forwardRef, type HTMLAttributes } from "react";
 import Pkg from "^/components/ui/Pkg";
 import PkgWithVersionSelector from "^/components/ui/PkgWithVersionSelector";
