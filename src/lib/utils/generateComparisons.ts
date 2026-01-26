@@ -185,9 +185,11 @@ function findPatchBumps(sortedVersions: string[]): Comparison[] {
         const from = sortedVersions[i + 1];
 
         // Only consider it a patch bump if major and minor are the same
+        // and the versions are actually different (not just different prerelease tags)
         if (
             semver.major(to) === semver.major(from) &&
-            semver.minor(to) === semver.minor(from)
+            semver.minor(to) === semver.minor(from) &&
+            semver.patch(to) !== semver.patch(from)
         ) {
             comparisons.push({
                 from,
