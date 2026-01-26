@@ -8,7 +8,13 @@ import Header from "./_layout/Header";
 import "./globals.css";
 
 export const metadata: Metadata = {
-    metadataBase: new URL("https://npm-diff.app"),
+    metadataBase: new URL(
+        process.env.VERCEL_URL
+            ? `https://${process.env.VERCEL_URL}`
+            : process.env.NODE_ENV === "development"
+              ? "http://localhost:3000"
+              : "https://npm-diff.app",
+    ),
     applicationName: "npm-diff.app",
     title: {
         default: "npm-diff.app 📦🔃",
