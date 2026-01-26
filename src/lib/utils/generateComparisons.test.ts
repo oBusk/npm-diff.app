@@ -195,4 +195,34 @@ describe("generateComparisons", () => {
             expect(comparison.to).toBeTruthy();
         });
     });
+
+    it("does not create patch comparisons for versions with same major.minor.patch but different prerelease", () => {
+        const versions = [
+            "19.3.0-canary-f93b9fd4-20251217",
+            "19.3.0-canary-f6a48828-20251019",
+            "19.3.0-canary-fb2177c1-20251114",
+            "19.2.4",
+            "19.2.3",
+        ];
+        const versionMap: Record<string, { time: string }> = {};
+        versions.forEach((v, i) => {
+            versionMap[v] = {
+                time: `2025-12-${String(i + 1).padStart(2, "0")}`,
+            };
+        });
+
+        const result = generateComparisons(versions, versionMap);
+
+        // Should not include any patch comparisons between 19.3.0-canary versions
+        // since they all have the same major.minor.patch
+        const patchBumps = result.filter((c) => c.type === "patch");
+        const invalidPatches = patchBumps.filter(
+            (c) =>
+                (c.from.startsWith("19.3.0-canary") &&
+                    c.to.startsWith("19.3.0-canary")) ||
+                (c.from.includes("-canary") && c.to.includes("-canary")),
+        );
+
+        expect(invalidPatches).toHaveLength(0);
+    });
 });
