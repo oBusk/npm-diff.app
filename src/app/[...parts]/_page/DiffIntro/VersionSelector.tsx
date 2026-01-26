@@ -25,20 +25,28 @@ export default function VersionSelector({
     const router = useRouter();
     const [versions, setVersions] = useState<Version[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
 
     useEffect(() => {
         const fetchVersions = async () => {
             try {
                 setIsLoading(true);
+                setHasError(false);
                 const response = await fetch(
                     `/api/-/versions?package=${encodeURIComponent(currentSpec.name)}`,
                 );
                 if (response.ok) {
                     const data: Version[] = await response.json();
                     setVersions(data);
+                } else {
+                    console.error(
+                        `Failed to fetch versions: ${response.status} ${response.statusText}`,
+                    );
+                    setHasError(true);
                 }
             } catch (error) {
                 console.error("Failed to fetch versions:", error);
+                setHasError(true);
             } finally {
                 setIsLoading(false);
             }
@@ -67,6 +75,15 @@ export default function VersionSelector({
     };
 
     if (isLoading) {
+        return (
+            <span className={className} aria-busy="true" aria-live="polite">
+                {currentSpec.version}
+            </span>
+        );
+    }
+
+    if (hasError || versions.length === 0) {
+        // Fallback to plain text if we can't fetch versions
         return <span className={className}>{currentSpec.version}</span>;
     }
 
