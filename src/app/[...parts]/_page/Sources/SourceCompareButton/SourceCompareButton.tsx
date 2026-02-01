@@ -1,4 +1,5 @@
 import { type SourceInformation } from "^/lib/api/npm/sourceInformation";
+import { isGitHubUrl, isGitLabUrl } from "^/lib/utils/isAllowedRepositoryHost";
 import { CompareButton } from "./CompareButton";
 
 export interface SourceCompareButtonProps {
@@ -12,7 +13,7 @@ export default function SourceCompareButton({
 }: SourceCompareButtonProps) {
     if (sourceA.repositoryUrl !== sourceB.repositoryUrl) {
         return null;
-    } else if (sourceA.repositoryUrl.startsWith("https://github.com")) {
+    } else if (isGitHubUrl(sourceA.repositoryUrl)) {
         return (
             <CompareButton
                 commitA={sourceA.commitHash}
@@ -21,7 +22,7 @@ export default function SourceCompareButton({
                 serviceName="GitHub.com"
             />
         );
-    } else if (sourceA.repositoryUrl.startsWith("https://gitlab.com")) {
+    } else if (isGitLabUrl(sourceA.repositoryUrl)) {
         return (
             <CompareButton
                 commitA={sourceA.commitHash}

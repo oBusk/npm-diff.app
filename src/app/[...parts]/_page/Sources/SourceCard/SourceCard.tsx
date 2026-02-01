@@ -3,6 +3,7 @@ import ExternalLink from "^/components/ExternalLink";
 import Heading from "^/components/ui/Heading";
 import { type SourceInformation } from "^/lib/api/npm/sourceInformation";
 import { cx } from "^/lib/cva";
+import { isGitHubUrl, isGitLabUrl } from "^/lib/utils/isAllowedRepositoryHost";
 import ProvenanceCard from "./ProvenanceCard";
 import { ProvenanceInfoIcon } from "./ProvenanceInfoIcon";
 import { TrustedPublisherCard } from "./TrustedPublisherCard";
@@ -39,13 +40,9 @@ export default function SourceCard({
                     >
                         <span className="text-sm">Repo:</span>
                         <div className="flex items-center gap-1.5">
-                            {sourceInformation.repositoryUrl.startsWith(
-                                "https://github.com",
-                            ) ? (
+                            {isGitHubUrl(sourceInformation.repositoryUrl) ? (
                                 <Github className="size-3.5 shrink-0" />
-                            ) : sourceInformation.repositoryUrl.startsWith(
-                                  "https://gitlab.com",
-                              ) ? (
+                            ) : isGitLabUrl(sourceInformation.repositoryUrl) ? (
                                 <Gitlab className="size-3.5 shrink-0" />
                             ) : null}
                             <span className="text-sm font-medium">
