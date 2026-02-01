@@ -1,5 +1,10 @@
+allowBuilds:
+    sharp: true
+    simple-git-hooks@2.13.1: true
+    unrs-resolver: true
+
 configDependencies:
-    "@obusk/pnpm-plugin-defaults": 0.2.0+sha512-3oufTLQAL1SDdQ9iA5hLRnZjnBnU9uIEOBcwCKRtS+F6NyJphTq6RMIpaZgostZjQRHUaNbGSg6B2gn91drCSQ==
+    "@obusk/pnpm-plugin-defaults": 0.3.0+sha512-Vc6B0IfZgB+ydRh0eYpmxV7eCEC5fjDcKX+WrpSd3NiIaFS7yLrXRaWVSoIOLvAYIKbcsYXUa+ZFCf5zVw3nSw==
 
 minimumReleaseAgeExclude:
     - "@next/*"
@@ -9,11 +14,6 @@ minimumReleaseAgeExclude:
     - eslint-config-next
     - "@obusk/eslint-config-next"
 
-onlyBuiltDependencies:
-    - sharp
-    - simple-git-hooks
-    - unrs-resolver
-
 overrides:
     "@types/react": 19.2.9
     "@types/react-dom": 19.2.3
@@ -21,5 +21,4 @@ overrides:
 trustPolicyExclude:
     - semver@6.3.1
     - tailwind-merge@2.6.0
-    - undici-types@6.21.0
     - eslint-import-resolver-typescript@3.10.1
