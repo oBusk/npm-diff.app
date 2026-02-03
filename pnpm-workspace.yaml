@@ -15,10 +15,10 @@ minimumReleaseAgeExclude:
     - "@obusk/eslint-config-next"
 
 overrides:
-    "@types/react": 19.2.9
+    "@types/react": 19.2.10
     "@types/react-dom": 19.2.3
 
 trustPolicyExclude:
     - semver@6.3.1
-    - tailwind-merge@2.6.0
+    - tailwind-merge@2.6.1
     - eslint-import-resolver-typescript@3.10.1
