@@ -61,8 +61,10 @@ export default function ComparisonList({
                             prefetch={false}
                             aria-label={`Compare ${diffString} (${comparison.type} version change)`}
                         >
-                            <div className="flex items-center gap-2 font-mono">
-                                <span>{packageName}@</span>
+                            <div className="flex items-center font-mono">
+                                <span className="text-muted-foreground">
+                                    {packageName}@
+                                </span>
                                 <VersionWithHighlight
                                     version={comparison.from}
                                     highlightIndex={highlightIndex}
@@ -70,7 +72,9 @@ export default function ComparisonList({
                                 <span className="text-muted-foreground">
                                     ...
                                 </span>
-                                <span>{packageName}@</span>
+                                <span className="text-muted-foreground">
+                                    {packageName}@
+                                </span>
                                 <VersionWithHighlight
                                     version={comparison.to}
                                     highlightIndex={highlightIndex}

@@ -1,6 +1,7 @@
 import { cacheLife } from "next/cache";
 import { Suspense } from "react";
 import Skeleton from "^/components/ui/Skeleton";
+import getVersionData from "^/lib/api/npm/getVersionData";
 import packument from "^/lib/api/npm/packument";
 import { generateComparisons } from "^/lib/utils/generateComparisons";
 import ComparisonList from "./ComparisonList";
@@ -15,17 +16,11 @@ async function CatalogPageInner({ packageName }: CatalogPageProps) {
 
     cacheLife("hours");
 
-    // Fetch package data - packument is already cached and contains everything we need
-    const pack = await packument(packageName);
-
-    // Extract version data from packument
-    const versionMap: Record<string, { time: string }> = {};
-    for (const [version] of Object.entries(pack.versions)) {
-        const time = pack.time[version];
-        if (time) {
-            versionMap[version] = { time };
-        }
-    }
+    // Fetch package data
+    const [pack, versionMap] = await Promise.all([
+        packument(packageName),
+        getVersionData(packageName),
+    ]);
 
     // Get all versions
     const versions = Object.keys(versionMap);

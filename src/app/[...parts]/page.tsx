@@ -16,6 +16,7 @@ import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
 import BundlephobiaDiff from "./_page/BundlephobiaDiff";
 import CatalogPage from "./_page/catalog/CatalogPage";
+import { generateCatalogMetadata } from "./_page/catalog/generateCatalogMetadata";
 import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff";
 import PackagephobiaDiff from "./_page/PackagephobiaDiff";
@@ -33,28 +34,11 @@ export async function generateMetadata({
     const { parts } = await params;
     const specs = splitParts(decodeParts(parts));
 
-    // Check if this is a catalog page (single package name without version)
-    if (specs.length === 1 && isCatalogPage(specs[0])) {
-        const packageName = getCatalogPackageName(specs[0]);
+    // Check if this is a catalog page
+    if (isCatalogPage(specs)) {
+        const packageName = getCatalogPackageName(specs);
         if (packageName) {
-            return {
-                title: `${packageName} - npm Package Catalog`,
-                description: `Browse and compare different versions of the ${packageName} npm package. View suggested version comparisons including major, minor, and patch updates.`,
-                keywords: [
-                    packageName,
-                    "npm",
-                    "package",
-                    "version",
-                    "diff",
-                    "comparison",
-                    "changelog",
-                ],
-                openGraph: {
-                    title: `${packageName} - npm Package Catalog`,
-                    description: `Browse and compare different versions of the ${packageName} npm package`,
-                    type: "website",
-                },
-            };
+            return generateCatalogMetadata(packageName);
         }
     }
 
@@ -75,9 +59,9 @@ const DiffPageInner = async ({
 
     const specsOrVersions = splitParts(decodeParts(parts));
 
-    // Check if this is a catalog page (single package name without version)
-    if (specsOrVersions.length === 1 && isCatalogPage(specsOrVersions[0])) {
-        const packageName = getCatalogPackageName(specsOrVersions[0]);
+    // Check if this is a catalog page
+    if (isCatalogPage(specsOrVersions)) {
+        const packageName = getCatalogPackageName(specsOrVersions);
         if (packageName) {
             return <CatalogPage packageName={packageName} />;
         }
