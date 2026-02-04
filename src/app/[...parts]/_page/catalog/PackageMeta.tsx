@@ -87,31 +87,29 @@ export default function PackageMeta({ packument }: PackageMetaProps) {
                     </div>
                 )}
 
-                {Boolean(
-                    latestManifest.maintainers &&
-                    latestManifest.maintainers.length > 0,
-                ) && (
+                {latestManifest.maintainers &&
+                latestManifest.maintainers.length > 0 ? (
                     <div className="text-sm">
                         <span className="text-muted-foreground">
                             Maintainers:{" "}
                         </span>
-                        <span>{latestManifest.maintainers?.length}</span>
+                        <span>{latestManifest.maintainers.length}</span>
                     </div>
-                )}
+                ) : null}
             </Stack>
 
-            {Boolean(keywords && keywords.length > 0) && (
+            {keywords && keywords.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
-                    {keywords?.slice(0, 10).map((keyword, index) => (
+                    {keywords.slice(0, 10).map((keyword) => (
                         <span
-                            key={index}
+                            key={keyword}
                             className="rounded-md bg-muted px-2 py-1 text-xs text-muted-foreground"
                         >
                             {keyword}
                         </span>
                     ))}
                 </div>
-            )}
+            ) : null}
 
             <Stack direction="v" gap={2}>
                 <ExternalLink
@@ -121,23 +119,23 @@ export default function PackageMeta({ packument }: PackageMetaProps) {
                     View on npm →
                 </ExternalLink>
 
-                {Boolean(repositoryUrl) && (
+                {repositoryUrl ? (
                     <ExternalLink
                         href={repositoryUrl}
                         className="text-sm text-blue-600 hover:underline dark:text-blue-400"
                     >
                         Repository →
                     </ExternalLink>
-                )}
+                ) : null}
 
-                {Boolean(homepageUrl && homepageUrl !== repositoryUrl) && (
+                {homepageUrl && homepageUrl !== repositoryUrl ? (
                     <ExternalLink
                         href={homepageUrl}
                         className="text-sm text-blue-600 hover:underline dark:text-blue-400"
                     >
                         Homepage →
                     </ExternalLink>
-                )}
+                ) : null}
             </Stack>
         </BorderBox>
     );
