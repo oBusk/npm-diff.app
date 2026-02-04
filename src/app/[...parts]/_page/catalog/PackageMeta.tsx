@@ -123,7 +123,7 @@ export default function PackageMeta({ packument }: PackageMetaProps) {
 
                 {Boolean(repositoryUrl) && (
                     <ExternalLink
-                        href={repositoryUrl!}
+                        href={repositoryUrl}
                         className="text-sm text-blue-600 hover:underline dark:text-blue-400"
                     >
                         Repository →
@@ -132,7 +132,7 @@ export default function PackageMeta({ packument }: PackageMetaProps) {
 
                 {Boolean(homepageUrl && homepageUrl !== repositoryUrl) && (
                     <ExternalLink
-                        href={homepageUrl!}
+                        href={homepageUrl}
                         className="text-sm text-blue-600 hover:underline dark:text-blue-400"
                     >
                         Homepage →
