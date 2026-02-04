@@ -19,11 +19,9 @@ export function generateComparisons(
     _versionMap: Record<string, { time: string }>,
 ): Comparison[] {
     // Filter out invalid versions and prereleases
-    const validVersions = versions.filter((v) => {
-        if (!semver.valid(v)) return false;
-        // Filter out prerelease versions (like 19.3.0-canary-xxx)
-        return !semver.prerelease(v);
-    });
+    const validVersions = versions.filter(
+        (v) => semver.valid(v) && !semver.prerelease(v),
+    );
 
     // Sort versions by semver in descending order (newest first)
     const sortedVersions = validVersions.sort((a, b) => semver.rcompare(a, b));
@@ -72,8 +70,8 @@ export function generateComparisons(
         ...selectedPatches,
     ];
 
-    // Sort by semver version (newest first)
-    return allComparisons.sort((a, b) => semver.rcompare(a.to, b.to));
+    // Sort by from version (newest first)
+    return allComparisons.sort((a, b) => semver.rcompare(a.from, b.from));
 }
 
 /**
@@ -88,66 +86,108 @@ function findAllBumps(sortedVersions: string[]): {
     const minorBumps: Comparison[] = [];
     const patchBumps: Comparison[] = [];
 
-    // Track last seen version for each major.minor
-    const lastInMajor = new Map<number, string>();
-    const lastInMinor = new Map<string, string>();
+    // Group versions by major and minor
+    const majorGroups = new Map<number, string[]>();
+    const minorGroups = new Map<string, string[]>();
 
-    for (let i = sortedVersions.length - 1; i >= 0; i--) {
-        const current = sortedVersions[i];
-        const currentMajor = semver.major(current);
-        const currentMinor = semver.minor(current);
-        const currentPatch = semver.patch(current);
-        const minorKey = `${currentMajor}.${currentMinor}`;
+    for (const version of sortedVersions) {
+        const major = semver.major(version);
+        const minor = semver.minor(version);
+        const minorKey = `${major}.${minor}`;
 
-        // Check for major bump
-        const prevMajorLast = lastInMajor.get(currentMajor - 1);
-        if (prevMajorLast) {
-            majorBumps.push({
-                from: prevMajorLast,
-                to: current,
-                type: "major",
-            });
+        if (!majorGroups.has(major)) {
+            majorGroups.set(major, []);
         }
+        majorGroups.get(major)!.push(version);
 
-        // Check for minor bump (within same major)
-        const prevMinorKey = `${currentMajor}.${currentMinor - 1}`;
-        const prevMinorLast = lastInMinor.get(prevMinorKey);
-        if (prevMinorLast) {
+        if (!minorGroups.has(minorKey)) {
+            minorGroups.set(minorKey, []);
+        }
+        minorGroups.get(minorKey)!.push(version);
+    }
+
+    // Find major bumps: first release of major vs last release of previous major
+    const majors = Array.from(majorGroups.keys()).sort((a, b) => b - a);
+    for (let i = 0; i < majors.length - 1; i++) {
+        const currentMajor = majors[i];
+        const previousMajor = majors[i + 1];
+
+        const currentVersions = majorGroups.get(currentMajor)!;
+        const previousVersions = majorGroups.get(previousMajor)!;
+
+        // First of current (last in sorted array) vs last of previous (first in sorted array)
+        const firstOfCurrent = currentVersions[currentVersions.length - 1];
+        const lastOfPrevious = previousVersions[0];
+
+        majorBumps.push({
+            from: lastOfPrevious,
+            to: firstOfCurrent,
+            type: "major",
+        });
+    }
+
+    // Find minor bumps: first release of minor vs last release of previous minor (within same major)
+    const minorKeys = Array.from(minorGroups.keys()).sort((a, b) => {
+        const [aMajor, aMinor] = a.split(".").map(Number);
+        const [bMajor, bMinor] = b.split(".").map(Number);
+        if (aMajor !== bMajor) return bMajor - aMajor;
+        return bMinor - aMinor;
+    });
+
+    for (let i = 0; i < minorKeys.length - 1; i++) {
+        const currentKey = minorKeys[i];
+        const nextKey = minorKeys[i + 1];
+
+        const [currentMajor, currentMinor] = currentKey.split(".").map(Number);
+        const [nextMajor, nextMinor] = nextKey.split(".").map(Number);
+
+        // Only compare if same major and sequential minors
+        if (currentMajor === nextMajor && currentMinor === nextMinor + 1) {
+            const currentVersions = minorGroups.get(currentKey)!;
+            const nextVersions = minorGroups.get(nextKey)!;
+
+            // First of current (last in sorted array) vs last of next (first in sorted array)
+            const firstOfCurrent = currentVersions[currentVersions.length - 1];
+            const lastOfPrevious = nextVersions[0];
+
             minorBumps.push({
-                from: prevMinorLast,
-                to: current,
+                from: lastOfPrevious,
+                to: firstOfCurrent,
                 type: "minor",
             });
         }
+    }
 
-        // Check for patch bump (sequential versions in same minor)
-        if (i > 0) {
-            const next = sortedVersions[i - 1];
-            const nextMajor = semver.major(next);
-            const nextMinor = semver.minor(next);
-            const nextPatch = semver.patch(next);
+    // Find patch bumps: most recent sequential patches
+    for (let i = 0; i < sortedVersions.length - 1; i++) {
+        const to = sortedVersions[i];
+        const from = sortedVersions[i + 1];
 
-            if (
-                currentMajor === nextMajor &&
-                currentMinor === nextMinor &&
-                currentPatch === nextPatch - 1
-            ) {
-                patchBumps.push({
-                    from: current,
-                    to: next,
-                    type: "patch",
-                });
-            }
+        const toMajor = semver.major(to);
+        const toMinor = semver.minor(to);
+        const toPatch = semver.patch(to);
+
+        const fromMajor = semver.major(from);
+        const fromMinor = semver.minor(from);
+        const fromPatch = semver.patch(from);
+
+        // Check if it's a sequential patch bump
+        if (
+            toMajor === fromMajor &&
+            toMinor === fromMinor &&
+            toPatch === fromPatch + 1
+        ) {
+            patchBumps.push({
+                from,
+                to,
+                type: "patch",
+            });
         }
-
-        // Update tracking
-        lastInMajor.set(currentMajor, current);
-        lastInMinor.set(minorKey, current);
     }
 
     return {
-        major: majorBumps.reverse(), // Reverse to get newest first
-        minor: minorBumps.reverse(),
-        patch: patchBumps.reverse(),
+        major: majorBumps,
+        minor: minorBumps,
+        patch: patchBumps,
     };
 }

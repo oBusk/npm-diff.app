@@ -1,5 +1,4 @@
 import Link from "next/link";
-import semver from "semver";
 import BorderBox from "^/components/ui/BorderBox";
 import Heading from "^/components/ui/Heading";
 import Stack from "^/components/ui/Stack";
@@ -12,27 +11,17 @@ export interface ComparisonListProps {
 }
 
 /**
- * Returns which part of the semver changed: 0 (major), 1 (minor), or 2 (patch)
+ * Returns which part of the semver changed based on comparison type
  */
-function getChangedPart(from: string, to: string): number {
-    const fromParsed = semver.parse(from);
-    const toParsed = semver.parse(to);
-
-    if (!fromParsed || !toParsed) {
-        return -1;
+function getHighlightIndex(type: "major" | "minor" | "patch"): number {
+    switch (type) {
+        case "major":
+            return 0;
+        case "minor":
+            return 1;
+        case "patch":
+            return 2;
     }
-
-    if (fromParsed.major !== toParsed.major) {
-        return 0; // major changed
-    }
-    if (fromParsed.minor !== toParsed.minor) {
-        return 1; // minor changed
-    }
-    if (fromParsed.patch !== toParsed.patch) {
-        return 2; // patch changed
-    }
-
-    return -1;
 }
 
 /**
@@ -55,16 +44,14 @@ export default function ComparisonList({
     return (
         <BorderBox className="flex flex-col gap-4">
             <Heading h={2} className="text-2xl">
-                Version Comparisons
+                Suggested Diffs
             </Heading>
 
             <Stack direction="v" gap={2}>
                 {comparisons.map((comparison, index) => {
-                    const changedPart = getChangedPart(
-                        comparison.from,
-                        comparison.to,
-                    );
-                    const url = `/${packageName}@${comparison.from}...${packageName}@${comparison.to}`;
+                    const highlightIndex = getHighlightIndex(comparison.type);
+                    const diffString = `${packageName}@${comparison.from}...${packageName}@${comparison.to}`;
+                    const url = `/${diffString}`;
 
                     return (
                         <Link
@@ -72,16 +59,21 @@ export default function ComparisonList({
                             href={url}
                             className="flex items-center justify-between rounded-md border border-input p-3 transition-colors hover:border-blue-500/50 hover:bg-blue-500/5"
                             prefetch={false}
+                            aria-label={`Compare ${diffString} (${comparison.type} version change)`}
                         >
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 font-mono">
+                                <span>{packageName}@</span>
                                 <VersionWithHighlight
                                     version={comparison.from}
-                                    highlightIndex={changedPart}
+                                    highlightIndex={highlightIndex}
                                 />
-                                <span className="text-muted-foreground">→</span>
+                                <span className="text-muted-foreground">
+                                    ...
+                                </span>
+                                <span>{packageName}@</span>
                                 <VersionWithHighlight
                                     version={comparison.to}
-                                    highlightIndex={changedPart}
+                                    highlightIndex={highlightIndex}
                                 />
                             </div>
                             <span className="text-xs capitalize text-muted-foreground">

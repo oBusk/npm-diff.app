@@ -1,6 +1,5 @@
 import { type Metadata } from "next";
 import { redirect } from "next/navigation";
-import npa from "npm-package-arg";
 import { type JSX, Suspense } from "react";
 import { type ViewType } from "react-diff-view";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
@@ -9,6 +8,10 @@ import destination from "^/lib/destination";
 import { parseQuery, type QueryParams } from "^/lib/query";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import decodeParts from "^/lib/utils/decodeParts";
+import {
+    getCatalogPackageName,
+    isCatalogPage,
+} from "^/lib/utils/isCatalogPage";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
 import BundlephobiaDiff from "./_page/BundlephobiaDiff";
@@ -31,12 +34,26 @@ export async function generateMetadata({
     const specs = splitParts(decodeParts(parts));
 
     // Check if this is a catalog page (single package name without version)
-    if (specs.length === 1) {
-        const parsed = npa(specs[0]);
-        if (parsed.rawSpec === "*" && parsed.name) {
+    if (specs.length === 1 && isCatalogPage(specs[0])) {
+        const packageName = getCatalogPackageName(specs[0]);
+        if (packageName) {
             return {
-                title: `${parsed.name} - Package Catalog`,
-                description: `Version catalog and comparison links for the npm package "${parsed.name}"`,
+                title: `${packageName} - npm Package Catalog`,
+                description: `Browse and compare different versions of the ${packageName} npm package. View suggested version comparisons including major, minor, and patch updates.`,
+                keywords: [
+                    packageName,
+                    "npm",
+                    "package",
+                    "version",
+                    "diff",
+                    "comparison",
+                    "changelog",
+                ],
+                openGraph: {
+                    title: `${packageName} - npm Package Catalog`,
+                    description: `Browse and compare different versions of the ${packageName} npm package`,
+                    type: "website",
+                },
             };
         }
     }
@@ -59,11 +76,10 @@ const DiffPageInner = async ({
     const specsOrVersions = splitParts(decodeParts(parts));
 
     // Check if this is a catalog page (single package name without version)
-    if (specsOrVersions.length === 1) {
-        const parsed = npa(specsOrVersions[0]);
-        if (parsed.rawSpec === "*" && parsed.name) {
-            // This is a catalog page
-            return <CatalogPage packageName={parsed.name} />;
+    if (specsOrVersions.length === 1 && isCatalogPage(specsOrVersions[0])) {
+        const packageName = getCatalogPackageName(specsOrVersions[0]);
+        if (packageName) {
+            return <CatalogPage packageName={packageName} />;
         }
     }
 
