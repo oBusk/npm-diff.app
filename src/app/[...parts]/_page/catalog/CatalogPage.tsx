@@ -4,17 +4,24 @@ import Skeleton from "^/components/ui/Skeleton";
 import getVersionData from "^/lib/api/npm/getVersionData";
 import packument from "^/lib/api/npm/packument";
 import { generateComparisons } from "^/lib/utils/generateComparisons";
+import { getCatalogPackageName } from "^/lib/utils/isCatalogPage";
 import ComparisonList from "./ComparisonList";
 import PackageMeta from "./PackageMeta";
 
 export interface CatalogPageProps {
-    packageName: string;
+    specs: string[];
 }
 
-async function CatalogPageInner({ packageName }: CatalogPageProps) {
+async function CatalogPageInner({ specs }: CatalogPageProps) {
     "use cache";
 
     cacheLife("hours");
+
+    const packageName = getCatalogPackageName(specs);
+
+    if (!packageName) {
+        throw new Error("Invalid catalog page specs");
+    }
 
     // Fetch package data
     const [pack, versionMap] = await Promise.all([
