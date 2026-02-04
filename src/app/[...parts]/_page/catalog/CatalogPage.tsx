@@ -21,7 +21,10 @@ async function CatalogPageInner({ packageName }: CatalogPageProps) {
     // Extract version data from packument
     const versionMap: Record<string, { time: string }> = {};
     for (const [version] of Object.entries(pack.versions)) {
-        versionMap[version] = { time: pack.time[version] };
+        const time = pack.time[version];
+        if (time) {
+            versionMap[version] = { time };
+        }
     }
 
     // Get all versions
