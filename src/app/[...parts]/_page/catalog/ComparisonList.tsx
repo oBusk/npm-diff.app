@@ -3,6 +3,7 @@ import BorderBox from "^/components/ui/BorderBox";
 import Heading from "^/components/ui/Heading";
 import Stack from "^/components/ui/Stack";
 import type { Comparison } from "^/lib/utils/generateComparisons";
+import specsToDiff from "^/lib/utils/specsToDiff";
 import VersionWithHighlight from "./VersionWithHighlight";
 
 export interface ComparisonListProps {
@@ -48,18 +49,19 @@ export default function ComparisonList({
             </Heading>
 
             <Stack direction="v" gap={2}>
-                {comparisons.map((comparison, index) => {
+                {comparisons.map((comparison) => {
                     const highlightIndex = getHighlightIndex(comparison.type);
-                    const diffString = `${packageName}@${comparison.from}...${packageName}@${comparison.to}`;
-                    const url = `/${diffString}`;
+                    const fromSpec = `${packageName}@${comparison.from}`;
+                    const toSpec = `${packageName}@${comparison.to}`;
+                    const diffPath = specsToDiff([fromSpec, toSpec]);
 
                     return (
                         <Link
-                            key={index}
-                            href={url}
+                            key={`${comparison.from}-${comparison.to}`}
+                            href={`/${diffPath}`}
                             className="flex items-center justify-between rounded-md border border-input p-3 transition-colors hover:border-blue-500/50 hover:bg-blue-500/5"
                             prefetch={false}
-                            aria-label={`Compare ${diffString} (${comparison.type} version change)`}
+                            aria-label={`Compare ${fromSpec}...${toSpec} (${comparison.type} version change)`}
                         >
                             <div className="flex items-center font-mono">
                                 <span className="text-muted-foreground">
