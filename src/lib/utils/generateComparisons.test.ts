@@ -1,3 +1,4 @@
+import semver from "semver";
 import { generateComparisons } from "./generateComparisons";
 
 describe("generateComparisons", () => {
@@ -158,7 +159,7 @@ describe("generateComparisons", () => {
         expect(majorBumps).toHaveLength(10);
     });
 
-    it("sorts comparisons by publish date (newest first)", () => {
+    it("sorts comparisons by semver version (newest first)", () => {
         const versions = ["1.0.0", "1.0.1", "2.0.0", "2.0.1"];
         const versionMap: Record<string, { time: string }> = {
             "1.0.0": { time: "2020-01-01" },
@@ -169,16 +170,26 @@ describe("generateComparisons", () => {
 
         const result = generateComparisons(versions, versionMap);
 
-        // Should be sorted by the "to" version's publish date, newest first
+        // Should be sorted by semver version (newest first), not by publish date
         for (let i = 0; i < result.length - 1; i++) {
-            const timeA = versionMap[result[i].to].time;
-            const timeB = versionMap[result[i + 1].to].time;
-            expect(timeA >= timeB).toBe(true);
+            const versionA = result[i].to;
+            const versionB = result[i + 1].to;
+            // versionA should be greater than or equal to versionB (semver compare)
+            expect(
+                semver.gte(versionA, versionB) || versionA === versionB,
+            ).toBe(true);
         }
     });
 
-    it("handles versions with prerelease tags", () => {
-        const versions = ["1.0.0", "1.0.1", "2.0.0-beta.1", "2.0.0", "2.0.1"];
+    it("filters out prerelease versions", () => {
+        const versions = [
+            "1.0.0",
+            "1.0.1",
+            "2.0.0-beta.1",
+            "2.0.0-rc.1",
+            "2.0.0",
+            "2.0.1",
+        ];
         const versionMap: Record<string, { time: string }> = {};
         versions.forEach((v, i) => {
             versionMap[v] = {
@@ -188,11 +199,11 @@ describe("generateComparisons", () => {
 
         const result = generateComparisons(versions, versionMap);
 
-        // Should include all valid semver versions, including prereleases
+        // Should not include any prerelease versions in comparisons
         expect(result.length).toBeGreaterThan(0);
         result.forEach((comparison) => {
-            expect(comparison.from).toBeTruthy();
-            expect(comparison.to).toBeTruthy();
+            expect(comparison.from).not.toMatch(/-/);
+            expect(comparison.to).not.toMatch(/-/);
         });
     });
 

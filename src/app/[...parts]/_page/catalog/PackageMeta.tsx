@@ -30,6 +30,12 @@ export default function PackageMeta({ packument }: PackageMetaProps) {
                   .replace(/\.git$/, "");
     const homepageUrl = latestManifest.homepage;
 
+    // Calculate total versions
+    const totalVersions = Object.keys(packument.versions).length;
+
+    // Get keywords
+    const keywords = latestManifest.keywords;
+
     return (
         <BorderBox className="flex h-fit flex-col gap-4">
             <Stack direction="v" gap={2}>
@@ -37,7 +43,13 @@ export default function PackageMeta({ packument }: PackageMetaProps) {
                     {packument.name}
                 </Heading>
                 <div className="text-sm text-muted-foreground">
-                    Latest: <span className="font-mono">{latestVersion}</span>
+                    <span className="font-mono">{latestVersion}</span>
+                    {latestTime ? (
+                        <>
+                            <span className="mx-2">•</span>
+                            <ClientDate time={latestTime} />
+                        </>
+                    ) : null}
                 </div>
             </Stack>
 
@@ -48,15 +60,6 @@ export default function PackageMeta({ packument }: PackageMetaProps) {
             ) : null}
 
             <Stack direction="v" gap={2}>
-                {latestTime ? (
-                    <div className="text-sm">
-                        <span className="text-muted-foreground">
-                            Last Published:{" "}
-                        </span>
-                        <ClientDate time={latestTime} />
-                    </div>
-                ) : null}
-
                 {latestManifest.license ? (
                     <div className="text-sm">
                         <span className="text-muted-foreground">License: </span>
@@ -74,7 +77,41 @@ export default function PackageMeta({ packument }: PackageMetaProps) {
                         </span>
                     </div>
                 ) : null}
+
+                {totalVersions > 0 && (
+                    <div className="text-sm">
+                        <span className="text-muted-foreground">
+                            Versions:{" "}
+                        </span>
+                        <span>{totalVersions}</span>
+                    </div>
+                )}
+
+                {Boolean(
+                    latestManifest.maintainers &&
+                    latestManifest.maintainers.length > 0,
+                ) && (
+                    <div className="text-sm">
+                        <span className="text-muted-foreground">
+                            Maintainers:{" "}
+                        </span>
+                        <span>{latestManifest.maintainers?.length}</span>
+                    </div>
+                )}
             </Stack>
+
+            {Boolean(keywords && keywords.length > 0) && (
+                <div className="flex flex-wrap gap-2">
+                    {keywords?.slice(0, 10).map((keyword, index) => (
+                        <span
+                            key={index}
+                            className="rounded-md bg-muted px-2 py-1 text-xs text-muted-foreground"
+                        >
+                            {keyword}
+                        </span>
+                    ))}
+                </div>
+            )}
 
             <Stack direction="v" gap={2}>
                 <ExternalLink
@@ -84,23 +121,23 @@ export default function PackageMeta({ packument }: PackageMetaProps) {
                     View on npm →
                 </ExternalLink>
 
-                {repositoryUrl ? (
+                {Boolean(repositoryUrl) && (
                     <ExternalLink
-                        href={repositoryUrl}
+                        href={repositoryUrl!}
                         className="text-sm text-blue-600 hover:underline dark:text-blue-400"
                     >
                         Repository →
                     </ExternalLink>
-                ) : null}
+                )}
 
-                {homepageUrl && homepageUrl !== repositoryUrl ? (
+                {Boolean(homepageUrl && homepageUrl !== repositoryUrl) && (
                     <ExternalLink
-                        href={homepageUrl}
+                        href={homepageUrl!}
                         className="text-sm text-blue-600 hover:underline dark:text-blue-400"
                     >
                         Homepage →
                     </ExternalLink>
-                ) : null}
+                )}
             </Stack>
         </BorderBox>
     );

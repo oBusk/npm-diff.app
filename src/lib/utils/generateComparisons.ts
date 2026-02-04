@@ -16,25 +16,29 @@ export interface Comparison {
  */
 export function generateComparisons(
     versions: string[],
-    versionMap: Record<string, { time: string }>,
+    _versionMap: Record<string, { time: string }>,
 ): Comparison[] {
+    // Filter out invalid versions and prereleases
+    const validVersions = versions.filter((v) => {
+        if (!semver.valid(v)) return false;
+        // Filter out prerelease versions (like 19.3.0-canary-xxx)
+        return !semver.prerelease(v);
+    });
+
     // Sort versions by semver in descending order (newest first)
-    const sortedVersions = versions
-        .filter((v) => semver.valid(v))
-        .sort((a, b) => semver.rcompare(a, b));
+    const sortedVersions = validVersions.sort((a, b) => semver.rcompare(a, b));
 
     if (sortedVersions.length < 2) {
         return [];
     }
 
-    const majorBumps = findMajorBumps(sortedVersions);
-    const minorBumps = findMinorBumps(sortedVersions);
-    const patchBumps = findPatchBumps(sortedVersions);
+    // Find all bumps in a single pass
+    const bumps = findAllBumps(sortedVersions);
 
     // Target counts: 3 majors, 3 minors, 4 patches
-    let selectedMajors = majorBumps.slice(0, 3);
-    let selectedMinors = minorBumps.slice(0, 3);
-    let selectedPatches = patchBumps.slice(0, 4);
+    let selectedMajors = bumps.major.slice(0, 3);
+    let selectedMinors = bumps.minor.slice(0, 3);
+    let selectedPatches = bumps.patch.slice(0, 4);
 
     // Backfill logic: Majors > Minors > Patches
     const totalSelected =
@@ -43,19 +47,19 @@ export function generateComparisons(
 
     if (needed > 0) {
         // Try to backfill from majors first
-        const extraMajors = majorBumps.slice(3, 3 + needed);
+        const extraMajors = bumps.major.slice(3, 3 + needed);
         selectedMajors = [...selectedMajors, ...extraMajors];
 
         const stillNeeded = needed - extraMajors.length;
         if (stillNeeded > 0) {
             // Then from minors
-            const extraMinors = minorBumps.slice(3, 3 + stillNeeded);
+            const extraMinors = bumps.minor.slice(3, 3 + stillNeeded);
             selectedMinors = [...selectedMinors, ...extraMinors];
 
             const finalNeeded = stillNeeded - extraMinors.length;
             if (finalNeeded > 0) {
                 // Finally from patches
-                const extraPatches = patchBumps.slice(4, 4 + finalNeeded);
+                const extraPatches = bumps.patch.slice(4, 4 + finalNeeded);
                 selectedPatches = [...selectedPatches, ...extraPatches];
             }
         }
@@ -68,136 +72,82 @@ export function generateComparisons(
         ...selectedPatches,
     ];
 
-    // Sort by publish date (newest first)
-    return allComparisons.sort((a, b) => {
-        const timeA = versionMap[a.to]?.time || "";
-        const timeB = versionMap[b.to]?.time || "";
-        return timeB.localeCompare(timeA);
-    });
+    // Sort by semver version (newest first)
+    return allComparisons.sort((a, b) => semver.rcompare(a.to, b.to));
 }
 
 /**
- * Find all major version bumps
- * E.g., 2.0.0 vs 1.9.4 (first of major 2 vs last of major 1)
+ * Find all bumps (major, minor, patch) in a single pass through versions
  */
-function findMajorBumps(sortedVersions: string[]): Comparison[] {
-    const majorGroups = new Map<number, string[]>();
+function findAllBumps(sortedVersions: string[]): {
+    major: Comparison[];
+    minor: Comparison[];
+    patch: Comparison[];
+} {
+    const majorBumps: Comparison[] = [];
+    const minorBumps: Comparison[] = [];
+    const patchBumps: Comparison[] = [];
 
-    // Group versions by major
-    for (const version of sortedVersions) {
-        const major = semver.major(version);
-        if (!majorGroups.has(major)) {
-            majorGroups.set(major, []);
+    // Track last seen version for each major.minor
+    const lastInMajor = new Map<number, string>();
+    const lastInMinor = new Map<string, string>();
+
+    for (let i = sortedVersions.length - 1; i >= 0; i--) {
+        const current = sortedVersions[i];
+        const currentMajor = semver.major(current);
+        const currentMinor = semver.minor(current);
+        const currentPatch = semver.patch(current);
+        const minorKey = `${currentMajor}.${currentMinor}`;
+
+        // Check for major bump
+        const prevMajorLast = lastInMajor.get(currentMajor - 1);
+        if (prevMajorLast) {
+            majorBumps.push({
+                from: prevMajorLast,
+                to: current,
+                type: "major",
+            });
         }
-        majorGroups.get(major)!.push(version);
-    }
 
-    const majors = Array.from(majorGroups.keys()).sort((a, b) => b - a);
-    const comparisons: Comparison[] = [];
-
-    for (let i = 0; i < majors.length - 1; i++) {
-        const currentMajor = majors[i];
-        const previousMajor = majors[i + 1];
-
-        const currentVersions = majorGroups.get(currentMajor)!;
-        const previousVersions = majorGroups.get(previousMajor)!;
-
-        // First of current major vs last of previous major
-        const firstOfCurrent = currentVersions[currentVersions.length - 1];
-        const lastOfPrevious = previousVersions[0];
-
-        comparisons.push({
-            from: lastOfPrevious,
-            to: firstOfCurrent,
-            type: "major",
-        });
-    }
-
-    return comparisons;
-}
-
-/**
- * Find all minor version bumps
- * E.g., 2.1.0 vs 2.0.12 (first of minor 1 vs last of minor 0)
- */
-function findMinorBumps(sortedVersions: string[]): Comparison[] {
-    const minorGroups = new Map<string, string[]>();
-
-    // Group versions by major.minor
-    for (const version of sortedVersions) {
-        const key = `${semver.major(version)}.${semver.minor(version)}`;
-        if (!minorGroups.has(key)) {
-            minorGroups.set(key, []);
-        }
-        minorGroups.get(key)!.push(version);
-    }
-
-    // Sort minor groups by version (newest first)
-    const minorKeys = Array.from(minorGroups.keys()).sort((a, b) => {
-        const vA = minorGroups.get(a)![0];
-        const vB = minorGroups.get(b)![0];
-        return semver.rcompare(vA, vB);
-    });
-
-    const comparisons: Comparison[] = [];
-
-    for (let i = 0; i < minorKeys.length - 1; i++) {
-        const currentKey = minorKeys[i];
-        const previousKey = minorKeys[i + 1];
-
-        const currentVersions = minorGroups.get(currentKey)!;
-        const previousVersions = minorGroups.get(previousKey)!;
-
-        // Check if they're in the same major version
-        const currentMajor = semver.major(currentVersions[0]);
-        const previousMajor = semver.major(previousVersions[0]);
-
-        if (currentMajor === previousMajor) {
-            // First of current minor vs last of previous minor
-            const firstOfCurrent = currentVersions[currentVersions.length - 1];
-            const lastOfPrevious = previousVersions[0];
-
-            comparisons.push({
-                from: lastOfPrevious,
-                to: firstOfCurrent,
+        // Check for minor bump (within same major)
+        const prevMinorKey = `${currentMajor}.${currentMinor - 1}`;
+        const prevMinorLast = lastInMinor.get(prevMinorKey);
+        if (prevMinorLast) {
+            minorBumps.push({
+                from: prevMinorLast,
+                to: current,
                 type: "minor",
             });
         }
-    }
 
-    return comparisons;
-}
+        // Check for patch bump (sequential versions in same minor)
+        if (i > 0) {
+            const next = sortedVersions[i - 1];
+            const nextMajor = semver.major(next);
+            const nextMinor = semver.minor(next);
+            const nextPatch = semver.patch(next);
 
-/**
- * Find the most recent patch bumps (sequential)
- * E.g., 2.1.4 vs 2.1.3
- */
-function findPatchBumps(sortedVersions: string[]): Comparison[] {
-    const comparisons: Comparison[] = [];
-
-    // Take consecutive versions (most recent patches)
-    for (
-        let i = 0;
-        i < sortedVersions.length - 1 && comparisons.length < 10;
-        i++
-    ) {
-        const to = sortedVersions[i];
-        const from = sortedVersions[i + 1];
-
-        // Only consider it a patch bump if major and minor are the same
-        // and the versions are actually different (not just different prerelease tags)
-        if (
-            semver.major(to) === semver.major(from) &&
-            semver.minor(to) === semver.minor(from) &&
-            semver.patch(to) !== semver.patch(from)
-        ) {
-            comparisons.push({
-                from,
-                to,
-                type: "patch",
-            });
+            if (
+                currentMajor === nextMajor &&
+                currentMinor === nextMinor &&
+                currentPatch === nextPatch - 1
+            ) {
+                patchBumps.push({
+                    from: current,
+                    to: next,
+                    type: "patch",
+                });
+            }
         }
+
+        // Update tracking
+        lastInMajor.set(currentMajor, current);
+        lastInMinor.set(minorKey, current);
     }
 
-    return comparisons;
+    return {
+        major: majorBumps.reverse(), // Reverse to get newest first
+        minor: minorBumps.reverse(),
+        patch: patchBumps.reverse(),
+    };
 }

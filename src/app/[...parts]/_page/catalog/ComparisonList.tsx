@@ -4,6 +4,7 @@ import BorderBox from "^/components/ui/BorderBox";
 import Heading from "^/components/ui/Heading";
 import Stack from "^/components/ui/Stack";
 import type { Comparison } from "^/lib/utils/generateComparisons";
+import VersionWithHighlight from "./VersionWithHighlight";
 
 export interface ComparisonListProps {
     packageName: string;
@@ -32,41 +33,6 @@ function getChangedPart(from: string, to: string): number {
     }
 
     return -1;
-}
-
-/**
- * Highlights the specific semver digit that changed
- */
-function VersionWithHighlight({
-    version,
-    highlightIndex,
-}: {
-    version: string;
-    highlightIndex: number;
-}) {
-    const parsed = semver.parse(version);
-    if (!parsed) {
-        return <span className="font-mono">{version}</span>;
-    }
-
-    const parts = [parsed.major, parsed.minor, parsed.patch];
-
-    return (
-        <span className="font-mono">
-            {parts.map((part, index) => (
-                <span key={index}>
-                    {index === highlightIndex ? (
-                        <span className="rounded bg-blue-500/20 px-1 font-bold">
-                            {part}
-                        </span>
-                    ) : (
-                        <span>{part}</span>
-                    )}
-                    {index < 2 && "."}
-                </span>
-            ))}
-        </span>
-    );
 }
 
 /**
