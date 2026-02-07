@@ -64,7 +64,7 @@ export default function ComparisonList({
                             prefetch={false}
                             aria-label={`Compare ${fromSpec}...${toSpec} (${comparison.type} version change)`}
                         >
-                            <div className="flex items-center font-mono">
+                            <span className="font-mono">
                                 <PackageNamePrefix packageName={packageName} />
                                 <VersionWithHighlight
                                     version={comparison.from}
@@ -78,7 +78,7 @@ export default function ComparisonList({
                                     version={comparison.to}
                                     highlightIndex={highlightIndex}
                                 />
-                            </div>
+                            </span>
                             <span className="text-xs capitalize text-muted-foreground">
                                 {comparison.type}
                             </span>
