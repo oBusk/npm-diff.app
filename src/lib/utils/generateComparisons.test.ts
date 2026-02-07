@@ -3,14 +3,13 @@ import { generateComparisons } from "./generateComparisons";
 
 describe("generateComparisons", () => {
     it("returns empty array for package with 0 versions", () => {
-        const result = generateComparisons([], {});
+        const result = generateComparisons([]);
         expect(result).toEqual([]);
     });
 
     it("returns empty array for package with 1 version", () => {
         const versions = ["1.0.0"];
-        const versionMap = { "1.0.0": { time: "2020-01-01" } };
-        const result = generateComparisons(versions, versionMap);
+        const result = generateComparisons(versions);
         expect(result).toEqual([]);
     });
 
@@ -33,29 +32,15 @@ describe("generateComparisons", () => {
             "3.1.4",
             "3.1.5",
         ];
-        const versionMap: Record<string, { time: string }> = {};
-        versions.forEach((v, i) => {
-            versionMap[v] = {
-                time: `2020-01-${String(i + 1).padStart(2, "0")}`,
-            };
-        });
 
-        const result = generateComparisons(versions, versionMap);
+        const result = generateComparisons(versions);
         expect(result).toHaveLength(10);
     });
 
     it("identifies major bumps correctly", () => {
         const versions = ["1.0.0", "1.9.4", "2.0.0", "2.5.0", "3.0.0", "3.1.0"];
-        const versionMap: Record<string, { time: string }> = {
-            "1.0.0": { time: "2020-01-01" },
-            "1.9.4": { time: "2020-06-01" },
-            "2.0.0": { time: "2020-07-01" },
-            "2.5.0": { time: "2020-12-01" },
-            "3.0.0": { time: "2021-01-01" },
-            "3.1.0": { time: "2021-02-01" },
-        };
 
-        const result = generateComparisons(versions, versionMap);
+        const result = generateComparisons(versions);
 
         // Should include major bumps: 3.0.0 vs 2.5.0, 2.0.0 vs 1.9.4
         const majorBumps = result.filter((c) => c.type === "major");
@@ -74,15 +59,8 @@ describe("generateComparisons", () => {
 
     it("identifies minor bumps correctly", () => {
         const versions = ["2.0.0", "2.0.12", "2.1.0", "2.1.3", "2.2.0"];
-        const versionMap: Record<string, { time: string }> = {
-            "2.0.0": { time: "2020-01-01" },
-            "2.0.12": { time: "2020-06-01" },
-            "2.1.0": { time: "2020-07-01" },
-            "2.1.3": { time: "2020-12-01" },
-            "2.2.0": { time: "2021-01-01" },
-        };
 
-        const result = generateComparisons(versions, versionMap);
+        const result = generateComparisons(versions);
 
         const minorBumps = result.filter((c) => c.type === "minor");
         expect(minorBumps.length).toBeGreaterThan(0);
@@ -100,14 +78,8 @@ describe("generateComparisons", () => {
 
     it("identifies patch bumps correctly", () => {
         const versions = ["2.1.3", "2.1.4", "2.1.5", "2.1.6"];
-        const versionMap: Record<string, { time: string }> = {
-            "2.1.3": { time: "2020-01-01" },
-            "2.1.4": { time: "2020-02-01" },
-            "2.1.5": { time: "2020-03-01" },
-            "2.1.6": { time: "2020-04-01" },
-        };
 
-        const result = generateComparisons(versions, versionMap);
+        const result = generateComparisons(versions);
 
         const patchBumps = result.filter((c) => c.type === "patch");
         expect(patchBumps.length).toBeGreaterThan(0);
@@ -120,13 +92,8 @@ describe("generateComparisons", () => {
 
     it("returns fewer than 10 comparisons for packages with few versions", () => {
         const versions = ["1.0.0", "1.0.1", "1.0.2"];
-        const versionMap: Record<string, { time: string }> = {
-            "1.0.0": { time: "2020-01-01" },
-            "1.0.1": { time: "2020-02-01" },
-            "1.0.2": { time: "2020-03-01" },
-        };
 
-        const result = generateComparisons(versions, versionMap);
+        const result = generateComparisons(versions);
         expect(result.length).toBeLessThanOrEqual(2);
     });
 
@@ -144,14 +111,8 @@ describe("generateComparisons", () => {
             "10.0.0",
             "11.0.0",
         ];
-        const versionMap: Record<string, { time: string }> = {};
-        versions.forEach((v, i) => {
-            versionMap[v] = {
-                time: `2020-${String(i + 1).padStart(2, "0")}-01`,
-            };
-        });
 
-        const result = generateComparisons(versions, versionMap);
+        const result = generateComparisons(versions);
 
         // Should have 10 major bumps (since there are no minor/patch bumps)
         expect(result).toHaveLength(10);
@@ -161,14 +122,8 @@ describe("generateComparisons", () => {
 
     it("sorts comparisons by semver version (newest first)", () => {
         const versions = ["1.0.0", "1.0.1", "2.0.0", "2.0.1"];
-        const versionMap: Record<string, { time: string }> = {
-            "1.0.0": { time: "2020-01-01" },
-            "1.0.1": { time: "2020-02-01" },
-            "2.0.0": { time: "2020-03-01" },
-            "2.0.1": { time: "2020-04-01" },
-        };
 
-        const result = generateComparisons(versions, versionMap);
+        const result = generateComparisons(versions);
 
         // Should be sorted by semver version (newest first), not by publish date
         for (let i = 0; i < result.length - 1; i++) {
@@ -190,14 +145,8 @@ describe("generateComparisons", () => {
             "2.0.0",
             "2.0.1",
         ];
-        const versionMap: Record<string, { time: string }> = {};
-        versions.forEach((v, i) => {
-            versionMap[v] = {
-                time: `2020-01-${String(i + 1).padStart(2, "0")}`,
-            };
-        });
 
-        const result = generateComparisons(versions, versionMap);
+        const result = generateComparisons(versions);
 
         // Should not include any prerelease versions in comparisons
         expect(result.length).toBeGreaterThan(0);
@@ -215,14 +164,8 @@ describe("generateComparisons", () => {
             "19.2.4",
             "19.2.3",
         ];
-        const versionMap: Record<string, { time: string }> = {};
-        versions.forEach((v, i) => {
-            versionMap[v] = {
-                time: `2025-12-${String(i + 1).padStart(2, "0")}`,
-            };
-        });
 
-        const result = generateComparisons(versions, versionMap);
+        const result = generateComparisons(versions);
 
         // Should not include any patch comparisons between 19.3.0-canary versions
         // since they all have the same major.minor.patch

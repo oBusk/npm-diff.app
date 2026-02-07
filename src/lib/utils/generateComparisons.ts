@@ -14,10 +14,7 @@ export interface Comparison {
  * - If any category has fewer than target, backfill from: Majors > Minors > Patches
  * - Total must be 10 unless package has < 11 versions
  */
-export function generateComparisons(
-    versions: string[],
-    _versionMap: Record<string, { time: string }>,
-): Comparison[] {
+export function generateComparisons(versions: string[]): Comparison[] {
     // Filter out invalid versions and prereleases
     const validVersions = versions.filter(
         (v) => semver.valid(v) && !semver.prerelease(v),

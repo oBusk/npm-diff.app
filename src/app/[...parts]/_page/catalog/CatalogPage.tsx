@@ -33,7 +33,7 @@ async function CatalogPageInner({ specs }: CatalogPageProps) {
     const versions = Object.keys(versionMap);
 
     // Generate comparisons
-    const comparisons = generateComparisons(versions, versionMap);
+    const comparisons = generateComparisons(versions);
 
     return (
         <div className="mx-auto w-full max-w-7xl py-8">

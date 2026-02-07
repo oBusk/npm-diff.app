@@ -4,6 +4,7 @@ import Heading from "^/components/ui/Heading";
 import Stack from "^/components/ui/Stack";
 import type { Comparison } from "^/lib/utils/generateComparisons";
 import specsToDiff from "^/lib/utils/specsToDiff";
+import PackageNamePrefix from "./PackageNamePrefix";
 import VersionWithHighlight from "./VersionWithHighlight";
 
 export interface ComparisonListProps {
@@ -64,9 +65,7 @@ export default function ComparisonList({
                             aria-label={`Compare ${fromSpec}...${toSpec} (${comparison.type} version change)`}
                         >
                             <div className="flex items-center font-mono">
-                                <span className="text-muted-foreground">
-                                    {packageName}@
-                                </span>
+                                <PackageNamePrefix packageName={packageName} />
                                 <VersionWithHighlight
                                     version={comparison.from}
                                     highlightIndex={highlightIndex}
@@ -74,9 +73,7 @@ export default function ComparisonList({
                                 <span className="text-muted-foreground">
                                     ...
                                 </span>
-                                <span className="text-muted-foreground">
-                                    {packageName}@
-                                </span>
+                                <PackageNamePrefix packageName={packageName} />
                                 <VersionWithHighlight
                                     version={comparison.to}
                                     highlightIndex={highlightIndex}
