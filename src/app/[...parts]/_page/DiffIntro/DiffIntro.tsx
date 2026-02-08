@@ -35,6 +35,8 @@ const DiffIntro = forwardRef<ElementRef<typeof Stack>, DiffIntroProps>(
                         left={
                             <SpecBox
                                 pkg={aWithName}
+                                otherPkg={bWithName}
+                                side="a"
                                 pkgClassName="rounded-r-none"
                             />
                         }
@@ -46,6 +48,8 @@ const DiffIntro = forwardRef<ElementRef<typeof Stack>, DiffIntroProps>(
                         right={
                             <SpecBox
                                 pkg={bWithName}
+                                otherPkg={aWithName}
+                                side="b"
                                 pkgClassName="rounded-l-none"
                             />
                         }
