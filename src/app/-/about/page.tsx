@@ -11,6 +11,20 @@ import {
 
 export const metadata: Metadata = {
     title: "About",
+    description:
+        "Learn how npm-diff.app works. Compare npm packages using the official libnpmdiff library, visualize differences, and analyze bundle sizes with bundlephobia and packagephobia integrations.",
+    openGraph: {
+        title: "About npm-diff.app",
+        description:
+            "Learn how npm-diff.app compares npm packages using the official libnpmdiff library and visualizes the differences for safer dependency upgrades.",
+        url: "https://npm-diff.app/-/about",
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "About npm-diff.app",
+        description:
+            "Learn how npm-diff.app compares npm packages using the official libnpmdiff library and visualizes the differences for safer dependency upgrades.",
+    },
 };
 
 export default function AboutPage() {

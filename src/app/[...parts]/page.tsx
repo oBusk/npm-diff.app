@@ -29,6 +29,7 @@ export async function generateMetadata({
     params,
 }: DiffPageProps): Promise<Metadata> {
     const { parts } = await params;
+    const partsStr = Array.isArray(parts) ? parts.join("/") : parts;
     const specs = splitParts(decodeParts(parts));
 
     // Check if this is a catalog page
@@ -38,9 +39,36 @@ export async function generateMetadata({
 
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
 
+    const packageNameA = simplePackageSpecToString(a);
+    const packageNameB = simplePackageSpecToString(b);
+    const title = `Comparing ${packageNameA}...${packageNameB}`;
+    const description = `View the detailed diff between npm packages ${packageNameA} and ${packageNameB}. See file changes, additions, deletions, bundle size comparisons, and trust signals including provenance and trusted publishing information.`;
+
+    // Generate OpenGraph image URL
+    const ogImageUrl = `/api/-/og?parts=${encodeURIComponent(partsStr)}`;
+
     return {
-        title: `Comparing ${simplePackageSpecToString(a)}...${simplePackageSpecToString(b)}`,
-        description: `A diff between the npm packages "${simplePackageSpecToString(a)}" and "${simplePackageSpecToString(b)}"`,
+        title,
+        description,
+        openGraph: {
+            title,
+            description,
+            type: "article",
+            images: [
+                {
+                    url: ogImageUrl,
+                    width: 1200,
+                    height: 630,
+                    alt: `Diff between ${packageNameA} and ${packageNameB}`,
+                },
+            ],
+        },
+        twitter: {
+            card: "summary_large_image",
+            title,
+            description,
+            images: [ogImageUrl],
+        },
     };
 }
 
