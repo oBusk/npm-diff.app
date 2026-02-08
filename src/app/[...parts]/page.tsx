@@ -8,9 +8,12 @@ import destination from "^/lib/destination";
 import { parseQuery, type QueryParams } from "^/lib/query";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import decodeParts from "^/lib/utils/decodeParts";
+import { isCatalogPage } from "^/lib/utils/isCatalogPage";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
 import BundlephobiaDiff from "./_page/BundlephobiaDiff";
+import CatalogPage from "./_page/catalog/CatalogPage";
+import { generateCatalogMetadata } from "./_page/catalog/generateCatalogMetadata";
 import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff";
 import PackagephobiaDiff from "./_page/PackagephobiaDiff";
@@ -28,6 +31,11 @@ export async function generateMetadata({
     const { parts } = await params;
     const specs = splitParts(decodeParts(parts));
 
+    // Check if this is a catalog page
+    if (isCatalogPage(specs)) {
+        return generateCatalogMetadata(specs);
+    }
+
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
 
     return {
@@ -44,6 +52,12 @@ const DiffPageInner = async ({
     const { diffFiles, ...optionsQuery } = await searchParams;
 
     const specsOrVersions = splitParts(decodeParts(parts));
+
+    // Check if this is a catalog page
+    if (isCatalogPage(specsOrVersions)) {
+        return <CatalogPage specs={specsOrVersions} />;
+    }
+
     const { redirect: redirectTarget, canonicalSpecs } =
         await destination(specsOrVersions);
 
