@@ -37,7 +37,7 @@ async function CatalogPageInner({ specs }: CatalogPageProps) {
 
     return (
         <div className="mx-auto w-full max-w-7xl py-8">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[2fr,3fr]">
                 <div className="flex flex-col">
                     <PackageMeta packument={pack} />
                 </div>
@@ -55,7 +55,7 @@ async function CatalogPageInner({ specs }: CatalogPageProps) {
 function CatalogPageFallback() {
     return (
         <div className="mx-auto w-full max-w-7xl py-8">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[2fr,3fr]">
                 <div className="flex flex-col">
                     <Skeleton className="h-96 w-full rounded-md" />
                 </div>

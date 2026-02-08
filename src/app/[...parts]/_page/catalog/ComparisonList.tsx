@@ -27,12 +27,21 @@ function getHighlightIndex(type: "major" | "minor" | "patch"): number {
 }
 
 /**
+ * Threshold for omitting the package name in the "to" spec
+ * When package name is 24+ characters, we show "pkg@1.0.0...2.0.0" instead of "pkg@1.0.0...pkg@2.0.0"
+ */
+const PACKAGE_NAME_LENGTH_THRESHOLD = 24;
+
+/**
  * Right column showing the list of comparisons
  */
 export default function ComparisonList({
     packageName,
     comparisons,
 }: ComparisonListProps) {
+    const showSecondPackageName =
+        packageName.length < PACKAGE_NAME_LENGTH_THRESHOLD;
+
     if (comparisons.length === 0) {
         return (
             <BorderBox>
@@ -73,7 +82,11 @@ export default function ComparisonList({
                                 <span className="text-muted-foreground">
                                     ...
                                 </span>
-                                <PackageNamePrefix packageName={packageName} />
+                                {showSecondPackageName ? (
+                                    <PackageNamePrefix
+                                        packageName={packageName}
+                                    />
+                                ) : null}
                                 <VersionWithHighlight
                                     version={comparison.to}
                                     highlightIndex={highlightIndex}
