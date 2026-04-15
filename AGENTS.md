@@ -1,4 +1,4 @@
-# Copilot Instructions for npm-diff.app
+# Instructions for npm-diff.app
 
 ## Repository Overview
 
