@@ -27,6 +27,9 @@ importers:
       '@vercel/analytics':
         specifier: ^2.0.1
         version: 2.0.1(next@16.2.3)(react@19.2.5)
+      '@wrksz/themes':
+        specifier: ^0.8.3
+        version: 0.8.3(next@16.2.3)(react-dom@19.2.5)(react@19.2.5)(typescript@5.9.3)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -48,9 +51,6 @@ importers:
       next:
         specifier: ~16.2.3
         version: 16.2.3(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.5)(react@19.2.5)
-      next-themes:
-        specifier: ^0.4.6
-        version: 0.4.6(react-dom@19.2.5)(react@19.2.5)
       npm-package-arg:
         specifier: ^11.0.3
         version: 11.0.3
@@ -1494,6 +1494,17 @@ packages:
       vue:
         optional: true
       vue-router:
+        optional: true
+
+  '@wrksz/themes@0.8.3':
+    resolution: {integrity: sha512-SPbd+/vwbPYhGCya89OKKDWaJsArSIvwLtJNWlV+AlUA3rtRmpM/eJNudrhgy+WBzgf5Vo4XbqrN6Dd31FXYYw==}
+    peerDependencies:
+      next: '>=16.0.0'
+      react: ^18.0.0 || ^19.0.0
+      react-dom: ^18.0.0 || ^19.0.0
+      typescript: '>=4.5.0'
+    peerDependenciesMeta:
+      next:
         optional: true
 
   '@xobotyi/scrollbar-width@1.9.5':
@@ -3173,12 +3184,6 @@ packages:
   negotiator@0.6.4:
     resolution: {integrity: sha512-myRT3DiWPHqho5PrJaIRyaMv2kgYf0mUVgBNOYMuCH5Ki1yEiQaf/ZJuQ62nvpc44wL5WDbTX7yGJi1Neevw8w==}
     engines: {node: '>= 0.6'}
-
-  next-themes@0.4.6:
-    resolution: {integrity: sha512-pZvgD5L0IEvX5/9GWyHMf3m8BKiVQwsCMHfoFosXtXBMnaS0ZnIJ9ST4b4NqLVKDEm8QBxoNNGNaBv2JNF6XNA==}
-    peerDependencies:
-      react: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
-      react-dom: ^16.8 || ^17 || ^18 || ^19 || ^19.0.0-rc
 
   next@16.2.3:
     resolution: {integrity: sha512-9V3zV4oZFza3PVev5/poB9g0dEafVcgNyQ8eTRop8GvxZjV2G15FC5ARuG1eFD42QgeYkzJBJzHghNP8Ad9xtA==}
@@ -5786,6 +5791,14 @@ snapshots:
       next: 16.2.3(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.5)(react@19.2.5)
       react: 19.2.5
 
+  '@wrksz/themes@0.8.3(next@16.2.3)(react-dom@19.2.5)(react@19.2.5)(typescript@5.9.3)':
+    dependencies:
+      react: 19.2.5
+      react-dom: 19.2.5(react@19.2.5)
+      typescript: 5.9.3
+    optionalDependencies:
+      next: 16.2.3(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.5)(react@19.2.5)
+
   '@xobotyi/scrollbar-width@1.9.5': {}
 
   abbrev@2.0.0: {}
@@ -7836,11 +7849,6 @@ snapshots:
   natural-compare@1.4.0: {}
 
   negotiator@0.6.4: {}
-
-  next-themes@0.4.6(react-dom@19.2.5)(react@19.2.5):
-    dependencies:
-      react: 19.2.5
-      react-dom: 19.2.5(react@19.2.5)
 
   next@16.2.3(@babel/core@7.29.0)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.5)(react@19.2.5):
     dependencies:

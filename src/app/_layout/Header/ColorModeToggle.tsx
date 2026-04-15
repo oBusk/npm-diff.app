@@ -1,7 +1,7 @@
 "use client";
 
+import { useTheme } from "@wrksz/themes/client";
 import { Moon, SunMedium } from "lucide-react";
-import { useTheme } from "next-themes";
 import { forwardRef } from "react";
 import Button, { type ButtonProps } from "^/components/ui/Button";
 import Tooltip from "^/components/ui/Tooltip";

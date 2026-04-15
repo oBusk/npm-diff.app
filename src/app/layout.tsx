@@ -1,6 +1,6 @@
+import { ThemeProvider } from "@wrksz/themes/next";
 import { type Metadata, type Viewport } from "next";
 import { type ReactNode } from "react";
-import { ThemeProvider } from "^/components/ThemeProvider";
 import Stack from "^/components/ui/Stack";
 import { TooltipProvider } from "^/components/ui/Tooltip";
 import Footer from "./_layout/Footer";
