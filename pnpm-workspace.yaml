@@ -4,7 +4,7 @@ allowBuilds:
     unrs-resolver: true
 
 configDependencies:
-    "@obusk/pnpm-plugin-defaults": 0.3.0+sha512-Vc6B0IfZgB+ydRh0eYpmxV7eCEC5fjDcKX+WrpSd3NiIaFS7yLrXRaWVSoIOLvAYIKbcsYXUa+ZFCf5zVw3nSw==
+    "@obusk/pnpm-plugin-defaults": 0.4.0+sha512-aSq4PaHkxHRExXx1n3Cv1o7iAeUDRC1x3cOldp3q36acVfmOg3hgWKBNAzhCkRiy04xCQOU43Lh5xQJZmPc/hQ==
 
 minimumReleaseAgeExclude:
     - "@next/*"
@@ -15,7 +15,7 @@ minimumReleaseAgeExclude:
     - "@obusk/eslint-config-next"
 
 overrides:
-    "@types/react": 19.2.10
+    "@types/react": 19.2.14
     "@types/react-dom": 19.2.3
 
 trustPolicyExclude:
