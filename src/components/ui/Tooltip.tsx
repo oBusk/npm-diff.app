@@ -56,7 +56,7 @@ const Tooltip = forwardRef<ElementRef<typeof TooltipTrigger>, TooltipProps>(
         label ? (
             <TooltipRoot>
                 <TooltipTrigger asChild {...props} ref={ref}>
-                    {children}
+                    <span>{children}</span>
                 </TooltipTrigger>
                 <TooltipContent>{label}</TooltipContent>
             </TooltipRoot>
