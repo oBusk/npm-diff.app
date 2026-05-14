@@ -19,4 +19,4 @@ jobs:
             - name: Checkout code
               uses: actions/checkout@v6
             - name: Set up using pnpm
-              uses: oBusk/action-pnpm-setup@v1
+              uses: oBusk/action-pnpm-setup@v2

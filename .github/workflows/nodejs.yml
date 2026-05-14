@@ -15,7 +15,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v6
             - name: Set up using pnpm
-              uses: oBusk/action-pnpm-setup@v1
+              uses: oBusk/action-pnpm-setup@v2
             - name: Check Linting
               run: pnpm run lint
 
@@ -29,7 +29,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v6
             - name: Set up using pnpm
-              uses: oBusk/action-pnpm-setup@v1
+              uses: oBusk/action-pnpm-setup@v2
             - name: Run tests
               run: pnpm run test-ci
 
@@ -43,7 +43,7 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v6
             - name: Set up using pnpm
-              uses: oBusk/action-pnpm-setup@v1
+              uses: oBusk/action-pnpm-setup@v2
             - name: Type check
               run: pnpm run typecheck
 
@@ -57,6 +57,6 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v6
             - name: Set up using pnpm
-              uses: oBusk/action-pnpm-setup@v1
+              uses: oBusk/action-pnpm-setup@v2
             - name: Build
               run: pnpm run build
