@@ -30,6 +30,7 @@ export default async function Image() {
                 position: "relative",
             }}
         >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
                 src={logoSrc as unknown as string}
                 width={80}
