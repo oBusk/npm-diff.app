@@ -4,7 +4,7 @@ allowBuilds:
     unrs-resolver: true
 
 configDependencies:
-    "@obusk/pnpm-plugin-defaults": 0.5.6
+    "@obusk/pnpm-plugin-defaults": 0.6.0
 
 minimumReleaseAgeExclude:
     - "@next/*"
