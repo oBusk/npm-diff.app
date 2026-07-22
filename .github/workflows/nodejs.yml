@@ -13,9 +13,13 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
             - name: Set up using pnpm
-              uses: oBusk/action-pnpm-setup@v1
+              uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+              with:
+                  standalone: true
+                  run_install: true
+                  cache: true
             - name: Check Linting
               run: pnpm run lint
 
@@ -27,9 +31,14 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
             - name: Set up using pnpm
-              uses: oBusk/action-pnpm-setup@v1
+              uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+              with:
+                  standalone: true
+                  run_install: true
+                  cache: true
             - name: Run tests
               run: pnpm run test-ci
 
@@ -41,9 +50,13 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
             - name: Set up using pnpm
-              uses: oBusk/action-pnpm-setup@v1
+              uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+              with:
+                  standalone: true
+                  run_install: true
+                  cache: true
             - name: Type check
               run: pnpm run typecheck
 
@@ -55,8 +68,12 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v6
+              uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
             - name: Set up using pnpm
-              uses: oBusk/action-pnpm-setup@v1
+              uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
+              with:
+                  standalone: true
+                  run_install: true
+                  cache: true
             - name: Build
               run: pnpm run build
