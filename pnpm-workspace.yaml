@@ -19,6 +19,16 @@ overrides:
     "@types/react-dom": 19.2.3
     postcss@<8.5.10: ^8.5.10
     sharp@<0.35.0: ^0.35.0
+    # pacote@22 pulls @npmcli/agent@5, whose CJS code require()s the ESM-only
+    # proxy-agent majors (http-proxy-agent@9, agent-base@9, socks-proxy-agent@10).
+    # Node >=22.12 handles require(ESM) natively (works locally + `next start`),
+    # but Vercel's function runtime does not reliably honor it -> ERR_REQUIRE_ESM
+    # (a documented Vercel-specific gap as of late 2025). Pin the whole agent
+    # family to its last CJS releases so no require(ESM) interop is needed at all.
+    http-proxy-agent: ^7.0.2
+    https-proxy-agent: ^7.0.6
+    agent-base: ^7.1.4
+    socks-proxy-agent: ^8.0.5
 
 trustPolicyExclude:
     - semver@6.3.1
