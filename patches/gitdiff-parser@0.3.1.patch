@@ -1,0 +1,14 @@
+diff --git a/index.d.ts b/index.d.ts
+index ba78dd73022c3cb44bb8ceb089589334891c7c45..e0570988785478321d2de77b009fa90b594e2816 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -50,6 +50,8 @@ export interface File {
+     type: FileType;
+ }
+ 
+-export default {
++declare const gitDiffParser: {
+     parse(source: string): File[];
+ };
++
++export default gitDiffParser;

@@ -34,6 +34,9 @@ overrides:
 
 pnpmfileChecksum: sha256-Byc4o2K9Q0jEno1uhV9yV0RWnD8+ccaYjKp3HeAMYOE=
 
+patchedDependencies:
+  gitdiff-parser@0.3.1: 7a9d591e250ef14ff3574aab32ef38a64e2425c63533f8178ea0235ef117e6c5
+
 importers:
 
   .:
@@ -64,7 +67,7 @@ importers:
         version: 9.4.0(react@19.2.8)
       gitdiff-parser:
         specifier: ^0.3.1
-        version: 0.3.1
+        version: 0.3.1(patch_hash=7a9d591e250ef14ff3574aab32ef38a64e2425c63533f8178ea0235ef117e6c5)
       jest:
         specifier: ^30.4.2
         version: 30.4.2(@types/node@24.13.3)(supports-color@8.1.1)
@@ -7117,7 +7120,7 @@ snapshots:
     dependencies:
       resolve-pkg-maps: 1.0.0
 
-  gitdiff-parser@0.3.1: {}
+  gitdiff-parser@0.3.1(patch_hash=7a9d591e250ef14ff3574aab32ef38a64e2425c63533f8178ea0235ef117e6c5): {}
 
   glob-parent@5.1.2:
     dependencies:
@@ -8465,7 +8468,7 @@ snapshots:
     dependencies:
       classnames: 2.5.1
       diff-match-patch: 1.0.5
-      gitdiff-parser: 0.3.1
+      gitdiff-parser: 0.3.1(patch_hash=7a9d591e250ef14ff3574aab32ef38a64e2425c63533f8178ea0235ef117e6c5)
       lodash: 4.18.1
       react: 19.2.8
       shallow-equal: 3.1.0
