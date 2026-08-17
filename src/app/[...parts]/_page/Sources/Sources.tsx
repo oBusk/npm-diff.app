@@ -45,7 +45,7 @@ async function Sources({ a, b }: SourcesProps) {
             className={cx(
                 "mb-4 w-full",
                 findings.length > 0 &&
-                    "rounded-xl bg-gradient-to-b from-red-900/50 via-transparent to-transparent p-0.5",
+                    "rounded-xl bg-linear-to-b from-red-900/50 via-transparent to-transparent p-0.5",
             )}
             left={
                 <div className="flex w-full max-w-md flex-col gap-2">

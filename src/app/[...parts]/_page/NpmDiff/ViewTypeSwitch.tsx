@@ -39,9 +39,9 @@ const ViewTypeButton = forwardRef<
         <Button
             variant="outline"
             className={cx(
-                "[&:not(:last-child)]:rounded-r-none",
-                "[&:not(:last-child)]:border-r-0",
-                "[&:not(:first-child)]:rounded-l-none",
+                "not-last:rounded-r-none",
+                "not-last:border-r-0",
+                "not-first:rounded-l-none",
                 className,
             )}
             isActive={currentViewType === viewType}

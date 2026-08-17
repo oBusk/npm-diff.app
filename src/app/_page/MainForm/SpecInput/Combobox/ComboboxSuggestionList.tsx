@@ -14,7 +14,7 @@ const ComboboxSuggestionList = forwardRef<
             "border border-t-0",
             "overflow-hidden rounded-b-lg",
             "absolute inset-x-0",
-            "z-[1]",
+            "z-1",
             "list-none",
             "empty:invisible",
             className,

@@ -20,8 +20,8 @@ export default function SourceCard({
     return (
         <div
             className={cx(
-                "rounded-xl border border-border",
-                "bg-gradient-to-b from-blue-900/25 via-background to-background",
+                "border-border rounded-xl border",
+                "via-background to-background bg-linear-to-b from-blue-900/25",
                 className,
             )}
             {...props}
@@ -36,7 +36,7 @@ export default function SourceCard({
                 <div className="space-y-3">
                     <ExternalLink
                         href={sourceInformation.repositoryUrl}
-                        className="flex items-center justify-between gap-2 rounded p-2 hover:bg-muted/50"
+                        className="hover:bg-muted/50 flex items-center justify-between gap-2 rounded p-2"
                     >
                         <span className="text-sm">Repo:</span>
                         <div className="flex items-center gap-1.5">
@@ -52,12 +52,12 @@ export default function SourceCard({
                     </ExternalLink>
                     <ExternalLink
                         href={`${sourceInformation.repositoryUrl}/tree/${sourceInformation.commitHash}`}
-                        className="flex items-center justify-between gap-2 rounded p-2 hover:bg-muted/50"
+                        className="hover:bg-muted/50 flex items-center justify-between gap-2 rounded p-2"
                     >
                         <span className="text-sm">Commit:</span>
                         <div className="flex items-center gap-1.5">
                             <GitCommit className="size-3.5 shrink-0" />
-                            <code className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-sm">
+                            <code className="bg-muted rounded-sm px-1.5 py-0.5 font-mono text-sm">
                                 {sourceInformation.commitHash.substring(0, 8)}
                             </code>
                         </div>

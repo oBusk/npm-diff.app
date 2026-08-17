@@ -11,8 +11,8 @@ export function NewFeatureSourceTrust() {
                 "mx-auto w-full max-w-sm lg:max-w-md",
                 "rounded-xl border",
                 "p-2",
-                "bg-gradient-to-b from-blue-900/25 to-transparent",
-                "hover:bg-gradient-to-b hover:from-blue-900/50 ",
+                "bg-linear-to-b from-blue-900/25 to-transparent",
+                "hover:bg-linear-to-b hover:from-blue-900/50 ",
             )}
         >
             <Heading h={4} className="text-center text-base lg:text-xl">
@@ -22,7 +22,7 @@ export function NewFeatureSourceTrust() {
                 <ShieldCheck
                     className={cx("mr-2 size-16 text-blue-400", "lg:size-28")}
                 />
-                <div className="flex flex-col justify-center gap-2 text-xs text-muted-foreground lg:text-sm">
+                <div className="text-muted-foreground flex flex-col justify-center gap-2 text-xs lg:text-sm">
                     <p>
                         Diff view now shows source information and trust
                         warnings

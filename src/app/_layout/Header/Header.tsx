@@ -25,7 +25,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
             </div>
             <Link
                 href="/"
-                className="block rounded-md transition-all duration-200 hover:no-underline focus:outline-none"
+                className="block rounded-md transition-all duration-200 hover:no-underline focus:outline-hidden"
             >
                 <Heading
                     h={1}
