@@ -1,3 +1,4 @@
+import { Analytics } from "@vercel/analytics/next";
 import { ThemeProvider } from "@wrksz/themes/next";
 import { type Metadata, type Viewport } from "next";
 import { type ReactNode } from "react";
@@ -43,6 +44,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                         </Stack>
                     </TooltipProvider>
                 </ThemeProvider>
+                <Analytics />
             </body>
         </html>
     );
