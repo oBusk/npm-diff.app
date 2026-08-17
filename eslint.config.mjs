@@ -8,6 +8,9 @@ const eslintConfig = defineConfig([
             react: {
                 version: "19",
             },
+            tailwindcss: {
+                cssConfigPath: "./src/app/globals.css",
+            },
         },
     },
 ]);
