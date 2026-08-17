@@ -63,7 +63,7 @@
         "@radix-ui/react-tooltip": "^1.2.16",
         "@tailwindcss/postcss": "^4.3.3",
         "@vercel/analytics": "^2.0.1",
-        "@wrksz/themes": "^0.9.7",
+        "@wrksz/themes": "2.0.0-beta.1",
         "class-variance-authority": "^0.7.1",
         "downshift": "^9.4.0",
         "gitdiff-parser": "^0.3.1",

@@ -54,8 +54,8 @@ importers:
         specifier: ^2.0.1
         version: 2.0.1(next@16.2.11)(react@19.2.8)
       '@wrksz/themes':
-        specifier: ^0.9.7
-        version: 0.9.7(next@16.2.11)(react-dom@19.2.8)(react@19.2.8)(typescript@5.9.3)
+        specifier: 2.0.0-beta.1
+        version: 2.0.0-beta.1(next@16.2.11)(react-dom@19.2.8)(react@19.2.8)(typescript@5.9.3)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1622,13 +1622,13 @@ packages:
       vue-router:
         optional: true
 
-  '@wrksz/themes@0.9.7':
-    resolution: {integrity: sha512-obtcxyEEuYxGLNMf9wkBXozip5MEMwGsZJq1MkgYncilSWjWu2F6jKdcPd27myiY5cTPQELw6gEDNJaeiVLOpw==}
+  '@wrksz/themes@2.0.0-beta.1':
+    resolution: {integrity: sha512-gOrd3B0O7QaRVhZb6jon/GfI6sj0yb+AVLzWJngcYqbkwq1eUvQQH6YIjKBjsxx6GLYVBR3hTQEbNieUvH/1aw==}
     peerDependencies:
       next: '>=16.0.0'
       react: ^18.0.0 || ^19.0.0
       react-dom: ^18.0.0 || ^19.0.0
-      typescript: '>=4.5.0'
+      typescript: '>=5.9'
     peerDependenciesMeta:
       next:
         optional: true
@@ -5961,7 +5961,7 @@ snapshots:
       next: 16.2.11(@babel/core@7.29.7)(@types/node@24.13.3)(babel-plugin-react-compiler@1.0.0)(react-dom@19.2.8)(react@19.2.8)
       react: 19.2.8
 
-  '@wrksz/themes@0.9.7(next@16.2.11)(react-dom@19.2.8)(react@19.2.8)(typescript@5.9.3)':
+  '@wrksz/themes@2.0.0-beta.1(next@16.2.11)(react-dom@19.2.8)(react@19.2.8)(typescript@5.9.3)':
     dependencies:
       react: 19.2.8
       react-dom: 19.2.8(react@19.2.8)
