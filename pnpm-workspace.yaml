@@ -4,7 +4,7 @@ allowBuilds:
     unrs-resolver: true
 
 configDependencies:
-    "@obusk/pnpm-plugin-defaults": 0.6.0
+    "@obusk/pnpm-plugin-defaults": 0.6.2
 
 minimumReleaseAgeExclude:
     - "@next/*"
@@ -15,8 +15,8 @@ minimumReleaseAgeExclude:
     - "@obusk/eslint-config-next"
 
 overrides:
-    "@types/react": 19.2.14
-    "@types/react-dom": 19.2.3
+    "@types/react": 19.2.18
+    "@types/react-dom": 19.2.4
     postcss@<8.5.10: ^8.5.10
     sharp@<0.35.0: ^0.35.0
 
