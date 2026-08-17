@@ -73,15 +73,12 @@ const SpecInput = forwardRef<SpecInputRef, SpecInputProps>(
             fallback: fallbackSuggestions,
         });
 
-        useImperativeHandle(
-            ref,
-            (): SpecInputRef => ({
-                focus: () => {
-                    inputRef.current?.focus();
-                    openMenu();
-                },
-            }),
-        );
+        useImperativeHandle(ref, (): SpecInputRef => ({
+            focus: () => {
+                inputRef.current?.focus();
+                openMenu();
+            },
+        }));
 
         return (
             <ComboboxWrapper
@@ -119,7 +116,7 @@ const SpecInput = forwardRef<SpecInputRef, SpecInputProps>(
                                 ))
                             )}
                             {loading ? (
-                                <Loader2 className="absolute bottom-1 right-1 animate-spin" />
+                                <Loader2 className="absolute right-1 bottom-1 animate-spin" />
                             ) : null}
                         </>
                     ) : null}

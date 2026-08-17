@@ -19,9 +19,7 @@ import type {
 import { type SourceInformation } from ".";
 
 type SigStoreBundleWithTlogEntries =
-    | SigStoreBundleV0_1
-    | SigStoreBundleV0_2
-    | SigStoreBundleV0_3;
+    SigStoreBundleV0_1 | SigStoreBundleV0_2 | SigStoreBundleV0_3;
 
 export function extractPublicLedgerUrl(
     bundle: SigStoreBundleWithTlogEntries,

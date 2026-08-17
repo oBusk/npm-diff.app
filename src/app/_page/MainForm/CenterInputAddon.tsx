@@ -7,7 +7,7 @@ const CenterInputAddon = forwardRef<HTMLDivElement, InputAddonProps>(
     ({ className, ...props }, ref) => (
         <div
             className={cx(
-                "h-10 select-none items-center border bg-accent px-3",
+                "h-10 items-center border bg-accent px-3 select-none",
                 className,
             )}
             {...props}

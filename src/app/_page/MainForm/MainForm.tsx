@@ -132,7 +132,7 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                     }}
                     fallbackSuggestions={fallbackSuggestions}
                 ></SpecInput>
-                <div className="mt-2 lg:ml-8 lg:mt-0">
+                <div className="mt-2 lg:mt-0 lg:ml-8">
                     {isLoading ? (
                         <DiffButton isLoading={true} a={a} />
                     ) : (

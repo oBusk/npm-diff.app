@@ -18,7 +18,7 @@ const DiffFileSkeleton = forwardRef<
         header={<DiffFileHeaderSkeleton />}
     >
         <div className="border-y bg-muted">
-            <Skeleton className="mb-2 ml-2 mt-4 inline-block  h-2 w-16 bg-muted-foreground" />
+            <Skeleton className="mt-4 mb-2 ml-2 inline-block  h-2 w-16 bg-muted-foreground" />
         </div>
         <div className="mx-4 flex flex-col">
             <div className="flex">

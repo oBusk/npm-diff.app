@@ -92,7 +92,7 @@ export default function ComparisonList({
                                     highlightIndex={highlightIndex}
                                 />
                             </span>
-                            <span className="text-xs capitalize text-muted-foreground">
+                            <span className="text-xs text-muted-foreground capitalize">
                                 {comparison.type}
                             </span>
                         </Link>

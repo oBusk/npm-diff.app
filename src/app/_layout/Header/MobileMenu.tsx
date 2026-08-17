@@ -40,7 +40,7 @@ const MobileMenu = forwardRef<HTMLDivElement, MobileMenuProps>((props, ref) => {
                     />
                     <div
                         className={cx(
-                            "absolute right-0 top-full z-50 mt-2 w-48",
+                            "absolute top-full right-0 z-50 mt-2 w-48",
                             "rounded-md border border-input bg-background shadow-lg",
                         )}
                     >

@@ -36,7 +36,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                     <TooltipProvider>
                         <Stack
                             justify="between"
-                            className="min-h-screen-s relative overflow-auto px-4"
+                            className="relative min-h-screen-s overflow-auto px-4"
                         >
                             <Header className="bg-background" />
                             {children}

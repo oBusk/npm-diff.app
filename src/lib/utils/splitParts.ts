@@ -11,15 +11,13 @@
 function splitParts(parts?: string | string[]): [string] | [string, string] {
     const invalidQueryError = () => new Error("Invalid query");
 
-    if (
-        !(
-            typeof parts === "string" ||
-            (Array.isArray(parts) &&
-                parts.every((p) => typeof p === "string") &&
-                // two scoped specs "@a/p@1...@a/p@2".split('/') -> ["@a", "p@1...@a", "p@2"]
-                parts.length <= 3)
-        )
-    ) {
+    if (!(
+        typeof parts === "string" ||
+        (Array.isArray(parts) &&
+            parts.every((p) => typeof p === "string") &&
+            // two scoped specs "@a/p@1...@a/p@2".split('/') -> ["@a", "p@1...@a", "p@2"]
+            parts.length <= 3)
+    )) {
         throw invalidQueryError();
     }
 

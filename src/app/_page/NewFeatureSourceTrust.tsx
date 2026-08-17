@@ -22,7 +22,7 @@ export function NewFeatureSourceTrust() {
                 <ShieldCheck
                     className={cx("mr-2 size-16 text-blue-400", "lg:size-28")}
                 />
-                <div className="text-muted-foreground flex flex-col justify-center gap-2 text-xs lg:text-sm">
+                <div className="flex flex-col justify-center gap-2 text-xs text-muted-foreground lg:text-sm">
                     <p>
                         Diff view now shows source information and trust
                         warnings
