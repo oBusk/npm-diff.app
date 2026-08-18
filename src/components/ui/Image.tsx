@@ -11,12 +11,12 @@ const Image = ({ darkSrc, lightSrc, className, ...props }: ImageProps) => {
         <>
             <NextImage
                 src={lightSrc}
-                className={cx("block dark:hidden", className)}
+                className={cx("block dark:hidden", className!)}
                 {...props}
             />
             <NextImage
                 src={darkSrc}
-                className={cx("hidden dark:block", className)}
+                className={cx("hidden dark:block", className!)}
                 {...props}
             />
         </>

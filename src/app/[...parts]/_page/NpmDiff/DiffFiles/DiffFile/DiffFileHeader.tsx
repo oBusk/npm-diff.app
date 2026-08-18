@@ -33,7 +33,7 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
         direction="h"
         align="center"
         justify="between"
-        className={cx("w-full", className)}
+        className={cx("w-full", className!)}
         {...props}
     >
         <Heading h={4} className="text-base">

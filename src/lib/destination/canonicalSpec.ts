@@ -1,6 +1,6 @@
 import { cacheLife } from "next/cache";
 import npa, { type AliasResult } from "npm-package-arg";
-import pacote from "pacote";
+import { manifest, resolve } from "pacote";
 
 const hashFinder = /(?:\#.*)?$/;
 
@@ -11,7 +11,7 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
             return result.toString();
         case "tag":
         case "range":
-            const { name, version } = await pacote.manifest(result.toString());
+            const { name, version } = await manifest(result.toString());
 
             return `${name}@${version}`;
         case "alias":
@@ -19,7 +19,7 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
         case "git":
             // TODO: Would be nice if we could figure out a tag and use that when possible.
 
-            const resolved = await pacote.resolve(result.toString());
+            const resolved = await resolve(result.toString());
             const resolvedHash = resolved.match(hashFinder)?.[0];
 
             if (!resolvedHash) {
@@ -30,7 +30,7 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
         case "remote":
             // TODO: Would be nice if we could figure out a tag and use that when possible.
 
-            return pacote.resolve(result.toString());
+            return resolve(result.toString());
         case "directory":
         case "file":
         default:

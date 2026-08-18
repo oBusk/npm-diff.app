@@ -19,7 +19,7 @@ const CollapsableBorderBox = forwardRef<
     const [isExpanded, setIsExpanded] = useBoolean(true);
 
     return (
-        <BorderBox className={cx("p-0", className)} {...props} ref={ref}>
+        <BorderBox className={cx("p-0", className!)} {...props} ref={ref}>
             <CollapsableBorderBoxHeader
                 isExpanded={isExpanded}
                 toggleIsExpanded={() => setIsExpanded()}

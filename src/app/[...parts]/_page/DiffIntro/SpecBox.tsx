@@ -14,7 +14,7 @@ interface SpecBoxProps extends HTMLAttributes<HTMLElement> {
 const SpecBox = forwardRef<HTMLElement, SpecBoxProps>(
     ({ pkg, pkgClassName, ...props }, ref) => (
         <section {...props} ref={ref}>
-            <Pkg pkg={pkg} className={cx("px-1", pkgClassName)} />
+            <Pkg pkg={pkg} className={cx("px-1", pkgClassName!)} />
             <PublishDate
                 suspenseKey={"publishdate-" + simplePackageSpecToString(pkg)}
                 pkg={pkg}

@@ -1,4 +1,5 @@
-import pacote from "pacote";
+import { manifest, resolve } from "pacote";
+import type pacote from "pacote";
 import canonicalSpec from "./canonicalSpec";
 
 // Increase the timeout for long running tests
@@ -26,11 +27,11 @@ describe("canonicalSpec", () => {
         // We need to use a package that is on the registry for this.
         // Using `chalk` as arbitrary popular package.
         const [latest, next, major, minor, pre] = await Promise.all([
-            pacote.manifest("chalk"),
-            pacote.manifest("chalk@next"),
-            pacote.manifest(`chalk@^2.1`),
-            pacote.manifest(`chalk@~2.1`),
-            pacote.manifest("chalk@^3.0.0-beta"),
+            manifest("chalk"),
+            manifest("chalk@next"),
+            manifest(`chalk@^2.1`),
+            manifest(`chalk@~2.1`),
+            manifest("chalk@^3.0.0-beta"),
         ]);
 
         const manifests: ExpectedResults<
@@ -86,9 +87,9 @@ describe("canonicalSpec", () => {
 
     it("Takes registry specifier of type `git` and returns with commit", async () => {
         const resolved = Object.freeze({
-            latest: await pacote.resolve("github:chalk/chalk"),
-            "v2.4.1": await pacote.resolve("github:chalk/chalk#v2.4.1"),
-            "semver:^2": await pacote.resolve("github:chalk/chalk#semver:^2"),
+            latest: await resolve("github:chalk/chalk"),
+            "v2.4.1": await resolve("github:chalk/chalk#v2.4.1"),
+            "semver:^2": await resolve("github:chalk/chalk#semver:^2"),
         });
 
         const hashes = Object.freeze({
@@ -113,13 +114,11 @@ describe("canonicalSpec", () => {
 
     it("Takes registry specifier of type `remote` and returns with commit", async () => {
         const expected = Object.freeze({
-            latest: await pacote.resolve(
-                "git+ssh://git@github.com/chalk/chalk.git",
-            ),
-            "v2.4.1": await pacote.resolve(
+            latest: await resolve("git+ssh://git@github.com/chalk/chalk.git"),
+            "v2.4.1": await resolve(
                 "git+ssh://git@github.com/chalk/chalk.git#v2.4.1",
             ),
-            "semver:^2": await pacote.resolve(
+            "semver:^2": await resolve(
                 "git+ssh://git@github.com/chalk/chalk.git#semver:^2",
             ),
         });

@@ -16,3 +16,7 @@ export const cva: typeof originalCva = (base, config) => {
 };
 
 export const cx: typeof originalCx = (...inputs) => twMerge(originalCx(inputs));
+
+/** Noop function just to help linting know it's class-related */
+export const tw = (...classes: (string | TemplateStringsArray)[]): string =>
+    classes.join(" ");

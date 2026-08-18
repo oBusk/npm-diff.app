@@ -6,7 +6,7 @@ interface FooterProps extends HTMLAttributes<HTMLDivElement> {}
 const Footer = forwardRef<HTMLDivElement, FooterProps>(
     ({ className, ...props }, ref) => (
         <footer
-            className={cx("flex contain-content", className)}
+            className={cx("flex contain-content", className!)}
             {...props}
             ref={ref}
         />

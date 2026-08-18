@@ -1,3 +1,5 @@
+import { tw } from "../cva";
+
 /**
  * Returns css styles to help optimize rendering using
  * {@link https://developer.mozilla.org/en-US/docs/Web/CSS/content-visibility content-visibility},
@@ -18,5 +20,5 @@
  * ```
  */
 export default function contentVisibility(this: void, height = "", width = "") {
-    return `contain-content [content-visibility:auto] [contain-intrinsic-width:auto_${width}] [contain-intrinsic-height:auto_${height}]`;
+    return tw`contain-content [content-visibility:auto] [contain-intrinsic-width:auto_${width}] [contain-intrinsic-height:auto_${height}]`;
 }

@@ -14,7 +14,7 @@ const Label = forwardRef<
         ref={ref}
         className={cx(
             "cursor-pointer text-sm leading-none font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70",
-            className,
+            className!,
         )}
         {...props}
     />

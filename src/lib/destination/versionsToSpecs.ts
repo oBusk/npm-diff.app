@@ -1,5 +1,5 @@
 import npa from "npm-package-arg";
-import semver from "semver";
+import { validRange } from "semver";
 
 /**
  * `npm diff` supports taking both `--diff` inputs as versions and/or semver
@@ -17,7 +17,7 @@ import semver from "semver";
  */
 function versionsToSpecs([a, b]:
     readonly [string, string] | readonly [string]): [string, string] {
-    const semverA = semver.validRange(a);
+    const semverA = validRange(a);
 
     if (!b) {
         if (semverA) {
@@ -27,7 +27,7 @@ function versionsToSpecs([a, b]:
         return [a, `${npa(a).name}@latest`];
     }
 
-    const semverB = semver.validRange(b);
+    const semverB = validRange(b);
 
     // We cannot support both args being only versions, we need a package name
     if (semverA && semverB) {

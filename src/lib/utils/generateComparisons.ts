@@ -1,4 +1,4 @@
-import semver from "semver";
+import { major, minor, patch, prerelease, rcompare, valid } from "semver";
 
 export interface Comparison {
     from: string;
@@ -16,12 +16,10 @@ export interface Comparison {
  */
 export function generateComparisons(versions: string[]): Comparison[] {
     // Filter out invalid versions and prereleases
-    const validVersions = versions.filter(
-        (v) => semver.valid(v) && !semver.prerelease(v),
-    );
+    const validVersions = versions.filter((v) => valid(v) && !prerelease(v));
 
     // Sort versions by semver in descending order (newest first)
-    const sortedVersions = validVersions.sort((a, b) => semver.rcompare(a, b));
+    const sortedVersions = validVersions.sort((a, b) => rcompare(a, b));
 
     if (sortedVersions.length < 2) {
         return [];
@@ -68,7 +66,7 @@ export function generateComparisons(versions: string[]): Comparison[] {
     ];
 
     // Sort by from version (newest first)
-    return allComparisons.sort((a, b) => semver.rcompare(a.from, b.from));
+    return allComparisons.sort((a, b) => rcompare(a.from, b.from));
 }
 
 /**
@@ -88,14 +86,14 @@ function findAllBumps(sortedVersions: string[]): {
     const minorGroups = new Map<string, string[]>();
 
     for (const version of sortedVersions) {
-        const major = semver.major(version);
-        const minor = semver.minor(version);
-        const minorKey = `${major}.${minor}`;
+        const versionMajor = major(version);
+        const versionMinor = minor(version);
+        const minorKey = `${versionMajor}.${versionMinor}`;
 
-        if (!majorGroups.has(major)) {
-            majorGroups.set(major, []);
+        if (!majorGroups.has(versionMajor)) {
+            majorGroups.set(versionMajor, []);
         }
-        majorGroups.get(major)!.push(version);
+        majorGroups.get(versionMajor)!.push(version);
 
         if (!minorGroups.has(minorKey)) {
             minorGroups.set(minorKey, []);
@@ -160,13 +158,13 @@ function findAllBumps(sortedVersions: string[]): {
         const to = sortedVersions[i];
         const from = sortedVersions[i + 1];
 
-        const toMajor = semver.major(to);
-        const toMinor = semver.minor(to);
-        const toPatch = semver.patch(to);
+        const toMajor = major(to);
+        const toMinor = minor(to);
+        const toPatch = patch(to);
 
-        const fromMajor = semver.major(from);
-        const fromMinor = semver.minor(from);
-        const fromPatch = semver.patch(from);
+        const fromMajor = major(from);
+        const fromMinor = minor(from);
+        const fromPatch = patch(from);
 
         // Check if it's a sequential patch bump
         if (

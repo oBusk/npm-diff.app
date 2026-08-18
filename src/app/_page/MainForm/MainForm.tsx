@@ -80,7 +80,7 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
                 className={cx(
                     "flex flex-col lg:flex-row",
                     "items-center justify-center",
-                    className,
+                    className!,
                 )}
                 onSubmit={internalHandleSubmit}
                 ref={ref}

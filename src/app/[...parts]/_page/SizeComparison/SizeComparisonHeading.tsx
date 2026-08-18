@@ -8,7 +8,7 @@ const SizeComparisonHeading = forwardRef<
     ElementRef<typeof Heading>,
     SizeComparisonHeadingProps
 >(({ className, ...props }, ref) => (
-    <Heading h={3} className={cx("text-xs", className)} {...props} ref={ref} />
+    <Heading h={3} className={cx("text-xs", className!)} {...props} ref={ref} />
 ));
 SizeComparisonHeading.displayName = "SizeComparisonHeading";
 

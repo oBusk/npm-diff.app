@@ -42,7 +42,7 @@ const ViewTypeButton = forwardRef<
                 "not-last:rounded-r-none",
                 "not-last:border-r-0",
                 "not-first:rounded-l-none",
-                className,
+                className!,
             )}
             isActive={currentViewType === viewType}
             asChild

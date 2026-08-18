@@ -1,4 +1,4 @@
-import semver from "semver";
+import { parse } from "semver";
 
 export interface VersionWithHighlightProps {
     version: string;
@@ -12,7 +12,7 @@ export default function VersionWithHighlight({
     version,
     highlightIndex,
 }: VersionWithHighlightProps) {
-    const parsed = semver.parse(version);
+    const parsed = parse(version);
     if (!parsed) {
         return <span className="font-mono">{version}</span>;
     }

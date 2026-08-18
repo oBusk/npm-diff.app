@@ -98,6 +98,7 @@
         "@types/validate-npm-package-name": "^4.0.2",
         "babel-plugin-react-compiler": "^1.0.0",
         "eslint": "^10.8.1",
+        "eslint-plugin-tailwindcss": "4.2.0",
         "jest-environment-jsdom": "^30.4.1",
         "lint-staged": "^17.3.0",
         "postcss": "^8.5.26",

@@ -31,7 +31,7 @@ const ButtonExpandBox = forwardRef<
     return (
         <Stack
             align="center"
-            className={cx("m-4", className)}
+            className={cx("m-4", className!)}
             {...props}
             ref={ref}
         >

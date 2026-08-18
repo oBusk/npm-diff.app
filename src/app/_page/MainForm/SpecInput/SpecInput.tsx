@@ -82,7 +82,7 @@ const SpecInput = forwardRef<SpecInputRef, SpecInputProps>(
 
         return (
             <ComboboxWrapper
-                className={cx("w-full max-w-xs", wrapperClassName)}
+                className={cx("w-full max-w-xs", wrapperClassName!)}
                 {...wrapperProps}
             >
                 <ComboboxInput

@@ -22,7 +22,7 @@ export default function SourceCard({
             className={cx(
                 "rounded-xl border border-border",
                 "bg-linear-to-b from-blue-900/25 via-background to-background",
-                className,
+                className!,
             )}
             {...props}
         >

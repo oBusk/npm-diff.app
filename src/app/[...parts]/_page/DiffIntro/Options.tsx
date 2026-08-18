@@ -19,7 +19,7 @@ const Options = forwardRef<ElementRef<typeof BorderBox>, OptionsProps>(
         );
 
         return (
-            <BorderBox className={cx("my-2", className)} {...props} ref={ref}>
+            <BorderBox className={cx("my-2", className!)} {...props} ref={ref}>
                 <Heading h={4} className="mb-4 text-sm">
                     Options
                 </Heading>

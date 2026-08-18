@@ -12,7 +12,7 @@ export interface NoDiffProps extends ComponentProps<"section"> {
 const NoDiff = forwardRef<HTMLElement, NoDiffProps>(
     ({ a, b, className, ...props }, ref) => (
         <section
-            className={cx("p-12 text-center", className)}
+            className={cx("p-12 text-center", className!)}
             ref={ref}
             {...props}
         >

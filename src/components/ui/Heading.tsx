@@ -21,7 +21,7 @@ const Heading = forwardRef<HTMLHeadingElement, HeadingProps>(
         const Comp = `h${h}` as const;
         return (
             <Comp
-                className={cx("font-bold", defaultSize, className)}
+                className={cx("font-bold", defaultSize!, className!)}
                 ref={ref}
                 {...props}
             />

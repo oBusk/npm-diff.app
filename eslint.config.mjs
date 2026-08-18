@@ -8,9 +8,12 @@ const eslintConfig = defineConfig([
             react: {
                 version: "19",
             },
-            tailwindcss: {
-                cssConfigPath: "./src/app/globals.css",
-            },
+            tailwindcss:
+                /** @type {import('eslint-plugin-tailwindcss').PluginSettings} */
+                ({
+                    cssConfigPath: "./src/app/globals.css",
+                    functions: ["clsx", "cx", "cva", "twMerge", "tw"],
+                }),
         },
     },
 ]);

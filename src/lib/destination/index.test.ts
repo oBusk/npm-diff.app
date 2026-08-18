@@ -1,4 +1,5 @@
-import pacote from "pacote";
+import { manifest } from "pacote";
+import type pacote from "pacote";
 import d, { type Redirect } from ".";
 
 interface ExpectedResults<T = string> {
@@ -28,11 +29,11 @@ describe("destination()", () => {
         const manifests: ExpectedResults<
             pacote.AbbreviatedManifest & pacote.ManifestResult
         > = Object.freeze({
-            "^2.1": await pacote.manifest(`chalk@^2.1`),
-            "~2.1": await pacote.manifest(`chalk@~2.1`),
-            latest: await pacote.manifest("chalk"),
-            "^3.0.0-beta": await pacote.manifest("chalk@^3.0.0-beta"),
-            next: await pacote.manifest("chalk@next"),
+            "^2.1": await manifest(`chalk@^2.1`),
+            "~2.1": await manifest(`chalk@~2.1`),
+            latest: await manifest("chalk"),
+            "^3.0.0-beta": await manifest("chalk@^3.0.0-beta"),
+            next: await manifest("chalk@next"),
         });
 
         const versions: ExpectedResults = Object.freeze({

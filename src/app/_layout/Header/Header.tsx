@@ -14,7 +14,7 @@ const Header = forwardRef<HTMLElement, HeaderProps>(
         <nav
             className={cx(
                 "sticky inset-x-0 top-0 z-10 flex items-center justify-between px-4 py-6",
-                className,
+                className!,
             )}
             {...props}
             ref={ref}

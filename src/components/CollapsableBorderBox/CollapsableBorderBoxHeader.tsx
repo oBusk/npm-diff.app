@@ -24,7 +24,7 @@ const CollapsableBorderBoxHeader = forwardRef<
                 className={cx(
                     "flex items-center p-2",
                     isExpanded && "border-b",
-                    className,
+                    className!,
                 )}
                 {...props}
                 ref={ref}

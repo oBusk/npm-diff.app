@@ -33,7 +33,7 @@ const ColorModeToggle = forwardRef<HTMLButtonElement, ColorModeToggleProps>(
                     className={cx(
                         "transition-opacity duration-500",
                         !mounted && "opacity-0",
-                        className,
+                        className!,
                     )}
                     {...props}
                     ref={ref}

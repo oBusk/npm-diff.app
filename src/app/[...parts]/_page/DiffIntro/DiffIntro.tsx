@@ -25,7 +25,7 @@ const DiffIntro = forwardRef<ElementRef<typeof Stack>, DiffIntroProps>(
         return (
             <Stack
                 align="center"
-                className={cx(contentVisibility("700px"), className)}
+                className={cx(contentVisibility("700px"), className!)}
                 {...props}
                 ref={ref}
             >

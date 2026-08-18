@@ -19,7 +19,7 @@ const DiffFiles = forwardRef<HTMLElement, DiffFilesProps>(
 
         return (
             <section
-                className={cx("min-w-full contain-content", className)}
+                className={cx("min-w-full contain-content", className!)}
                 {...props}
                 ref={ref}
             >

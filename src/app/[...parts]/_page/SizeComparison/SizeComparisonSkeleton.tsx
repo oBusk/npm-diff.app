@@ -1,6 +1,6 @@
 import { type ComponentProps, type ReactNode } from "react";
 import Skeleton from "^/components/ui/Skeleton";
-import { cx } from "^/lib/cva";
+import { cx, tw } from "^/lib/cva";
 import { type ServiceName, Services } from "^/lib/Services";
 import Halfs from "../DiffIntro/Halfs";
 import SizeComparisonHeading from "./SizeComparisonHeading";
@@ -21,15 +21,15 @@ const Side = ({ className, ...props }: ComponentProps<"div">) => (
     <div
         className={cx(
             "flex flex-col items-center justify-evenly",
-            COMMON_PADDING,
-            className,
+            COMMON_PADDING!,
+            className!,
         )}
         {...props}
     />
 );
 
 /** The padding of the center column and the right/left half has to be the same to line up */
-const COMMON_PADDING = "p-2";
+const COMMON_PADDING = tw`p-2`;
 
 const SizeComparisonSkeleton = ({
     serviceName,
@@ -56,7 +56,7 @@ const SizeComparisonSkeleton = ({
                     </Side>
                 }
                 center={
-                    <div className={cx(COMMON_PADDING, "text-center")}>
+                    <div className={cx(COMMON_PADDING!, "text-center")}>
                         {sizeRows.map(({ name }) => (
                             <p key={name}>{name}</p>
                         ))}

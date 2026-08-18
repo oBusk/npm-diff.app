@@ -17,7 +17,7 @@ const ComboboxSuggestionList = forwardRef<
             "z-1",
             "list-none",
             "empty:invisible",
-            className,
+            className!,
         )}
         ref={ref}
         {...props}

@@ -39,7 +39,7 @@ const NavLink = forwardRef<HTMLAnchorElement, NavLinkProps>(function NavLink(
             href={href}
             className={cx(
                 buttonVariants({ variant: "outline", size: "sm", isActive }),
-                className,
+                className!,
             )}
             aria-current={isActive ? "page" : undefined}
             {...props}
@@ -54,7 +54,7 @@ export const NavLinkFallback = forwardRef<HTMLAnchorElement, NavLinkProps>(
                 href={href}
                 className={cx(
                     buttonVariants({ variant: "outline", size: "sm" }),
-                    className,
+                    className!,
                 )}
                 {...props}
                 ref={ref}

@@ -12,7 +12,7 @@
         "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     },
     "tailwindCSS.experimental.classRegex": [
-        ["(?:cva|cx)\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+        ["(?:cva|cx|tw)\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
     ],
     "typescript.preferences.autoImportFileExcludePatterns": [
         // Never suggest imports from .next types folder

@@ -9,7 +9,7 @@ export interface HalfsProps extends HTMLAttributes<HTMLElement> {
 
 const Halfs = forwardRef<HTMLElement, HalfsProps>(
     ({ left, center, right, className, ...props }, ref) => (
-        <section className={cx("flex", className)} {...props} ref={ref}>
+        <section className={cx("flex", className!)} {...props} ref={ref}>
             <div className="flex flex-1 justify-end">
                 {/* Left half */}
                 {left}

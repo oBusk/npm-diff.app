@@ -20,14 +20,14 @@ async function PublishDate({ pkg, className }: PublishDateProps) {
     return (
         <ClientDate
             time={time}
-            className={cx(shared, "cursor-help", className)}
+            className={cx(shared!, "cursor-help", className!)}
         />
     );
 }
 
 function PublishDateFallback({ className }: PublishDateProps) {
     return (
-        <div className={cx(shared, className)}>
+        <div className={cx(shared!, className!)}>
             <Skeleton className="h-2 w-16" />
         </div>
     );

@@ -11,7 +11,7 @@ export function NeitherHasProvenance({
 }: NeitherHasProvenanceProps) {
     return (
         <div
-            className={cx("rounded-xl border border-border", className)}
+            className={cx("rounded-xl border border-border", className!)}
             {...props}
         >
             <div className="flex w-full items-center justify-between border-b p-2">

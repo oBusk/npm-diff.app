@@ -8,7 +8,7 @@ const ErrorBox = forwardRef<ElementRef<typeof BorderBox>, ErrorBoxProps>(
     ({ className, ...props }, ref) => {
         return (
             <BorderBox
-                className={cx("bg-red-200 dark:bg-red-700", className)}
+                className={cx("bg-red-200 dark:bg-red-700", className!)}
                 {...props}
                 ref={ref}
             />

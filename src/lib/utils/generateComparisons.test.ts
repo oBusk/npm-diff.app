@@ -1,4 +1,4 @@
-import semver from "semver";
+import { gte } from "semver";
 import { generateComparisons } from "./generateComparisons";
 
 describe("generateComparisons", () => {
@@ -130,9 +130,7 @@ describe("generateComparisons", () => {
             const versionA = result[i].to;
             const versionB = result[i + 1].to;
             // versionA should be greater than or equal to versionB (semver compare)
-            expect(
-                semver.gte(versionA, versionB) || versionA === versionB,
-            ).toBe(true);
+            expect(gte(versionA, versionB) || versionA === versionB).toBe(true);
         }
     });
 

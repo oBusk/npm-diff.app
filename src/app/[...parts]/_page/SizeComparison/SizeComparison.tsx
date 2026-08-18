@@ -2,7 +2,7 @@ import { type FunctionComponent, type ReactNode } from "react";
 import ExternalLink, {
     type ExternalLinkProps,
 } from "^/components/ExternalLink";
-import { cx } from "^/lib/cva";
+import { cx, tw } from "^/lib/cva";
 import { type Service, type ServiceName, Services } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { prettyByte } from "^/lib/utils/prettyByte";
@@ -44,9 +44,9 @@ const LinkButton: FunctionComponent<
         <ServiceTooltip serviceName={service.name} pkg={pkg}>
             <ExternalLink
                 className={cx(
-                    COMMON_PADDING,
+                    COMMON_PADDING!,
                     "rounded-lg text-center hover:bg-muted",
-                    className,
+                    className!,
                 )}
                 href={service.url(pkg)}
                 {...props}
@@ -103,7 +103,7 @@ export interface SizeComparisonProps {
 }
 
 /** The padding of the center column and the right/left half has to be the same to line up */
-const COMMON_PADDING = "p-2";
+const COMMON_PADDING = tw`p-2`;
 
 const SizeComparison = ({
     serviceName,
@@ -139,7 +139,7 @@ const SizeComparison = ({
                     </LinkButton>
                 }
                 center={
-                    <section className={cx(COMMON_PADDING, "text-center")}>
+                    <section className={cx(COMMON_PADDING!, "text-center")}>
                         {sizeRows.map((sizeRow) => (
                             <p key={sizeRow.name}>{sizeRow.name}</p>
                         ))}
