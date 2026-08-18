@@ -1,7 +1,7 @@
 {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "typescript.tsdk": "node_modules/typescript/lib",
-    "typescript.enablePromptUseWorkspaceTsdk": true,
+    "js/ts.tsdk.path": "./node_modules/typescript/lib",
+    "js/ts.tsdk.promptToUseWorkspaceTsdk": true,
     "prettier.prettierPath": "node_modules/prettier",
     "eslint.nodePath": "node_modules",
     "eslint.format.enable": true,
@@ -14,7 +14,7 @@
     "tailwindCSS.experimental.classRegex": [
         ["(?:cva|cx|tw)\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
     ],
-    "typescript.preferences.autoImportFileExcludePatterns": [
+    "js/ts.preferences.autoImportFileExcludePatterns": [
         // Never suggest imports from .next types folder
         "\\.next/"
     ],
