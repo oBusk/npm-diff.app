@@ -12,6 +12,7 @@ import { unpkg } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import type { CountedChanges } from "^/lib/utils/countChanges";
 import ServiceIcon from "../../../ServiceIcon";
+import Sparkline from "../Sparkline";
 
 export interface DiffFileHeaderProps extends StackProps {
     a: SimplePackageSpec;
@@ -33,22 +34,26 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
         direction="h"
         align="center"
         justify="between"
-        className={cx("w-full", className!)}
+        className={cx("w-full gap-3", className!)}
         {...props}
     >
-        <Heading h={4} className="text-base">
+        <Heading
+            h={4}
+            className="min-w-0 truncate font-mono text-[13.5px] font-normal"
+        >
             {type === "delete" ? oldPath : newPath}{" "}
             <Tooltip
                 label={`${
                     additions + deletions
                 } changes: ${additions} additions & ${deletions} deletions`}
             >
-                <span>
-                    <span className="px-1 text-green-500">+++{additions}</span>
-                    <span className="px-1 text-red-500">---{deletions}</span>
+                <span className="text-xs">
+                    <span className="px-1 text-add">+{additions}</span>
+                    <span className="px-1 text-remove">−{deletions}</span>
                 </span>
             </Tooltip>
         </Heading>
+        <Sparkline additions={additions} deletions={deletions} />
         <Tooltip
             label={
                 <>
@@ -57,7 +62,12 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
                 </>
             }
         >
-            <Button size="sm" variant="ghost" asChild>
+            <Button
+                size="sm"
+                variant="ghost"
+                asChild
+                className="h-7 shrink-0 gap-1.5 rounded-[7px] border border-accent px-2.5 text-[12.5px] text-secondary-foreground"
+            >
                 <ExternalLink
                     href={
                         type === "delete"
@@ -67,7 +77,7 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
                 >
                     <ServiceIcon
                         service={unpkg}
-                        className="mr-1.5 inline-block"
+                        className="inline-block size-3"
                     />
                     View file
                 </ExternalLink>

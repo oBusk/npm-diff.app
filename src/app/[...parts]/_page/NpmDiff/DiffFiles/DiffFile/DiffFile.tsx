@@ -43,7 +43,7 @@ const DiffFile = forwardRef<
         type === "delete"
             ? "This file was deleted."
             : countedChanges.changes > CHANGES_TO_RENDER
-              ? "Large diffs are not rendered by default."
+              ? `${countedChanges.changes} changes — large diffs are not rendered by default.`
               : index > FILES_TO_RENDER
                 ? true
                 : null,
@@ -62,7 +62,11 @@ const DiffFile = forwardRef<
 
     return (
         <CollapsableBorderBox
-            className={cx("my-4", contentVisibility("700px", className))}
+            id={`file-${type === "delete" ? oldPath : newPath}`}
+            className={cx(
+                "my-4 scroll-mt-20 overflow-hidden rounded-xl border-line",
+                contentVisibility("700px", className),
+            )}
             header={
                 <DiffFileHeader
                     a={a}
@@ -85,7 +89,6 @@ const DiffFile = forwardRef<
                 />
             ) : (
                 <Diff
-                    className="min-w-[50em]"
                     viewType={viewType}
                     diffType={type}
                     hunks={hunks}

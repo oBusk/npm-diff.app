@@ -1,15 +1,15 @@
-import { type ElementRef, forwardRef } from "react";
-import BorderBox, { type BorderBoxProps } from "^/components/ui/BorderBox";
+import { forwardRef, type HTMLAttributes } from "react";
 import Code from "^/components/ui/Code";
-import Heading from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import { type NpmDiffOptions } from "^/lib/npmDiff";
 
-interface OptionsProps extends BorderBoxProps {
+interface OptionsProps extends HTMLAttributes<HTMLParagraphElement> {
     options: NpmDiffOptions;
 }
 
-const Options = forwardRef<ElementRef<typeof BorderBox>, OptionsProps>(
+const CODE_CLASS = "bg-transparent p-0 text-[12.5px] text-inherit";
+
+const Options = forwardRef<HTMLParagraphElement, OptionsProps>(
     (
         { options: { diffFiles = [], ...options } = {}, className, ...props },
         ref,
@@ -19,22 +19,30 @@ const Options = forwardRef<ElementRef<typeof BorderBox>, OptionsProps>(
         );
 
         return (
-            <BorderBox className={cx("my-2", className!)} {...props} ref={ref}>
-                <Heading h={4} className="mb-4 text-sm">
-                    Options
-                </Heading>
-                {diffFiles ? (
-                    <span>
-                        <b>files:</b>{" "}
-                        <Code>{diffFiles.join(" ") || "\u00A0"}</Code>
-                    </span>
-                ) : null}
+            <p
+                className={cx("text-[13px] text-muted-foreground", className!)}
+                {...props}
+                ref={ref}
+            >
+                Diff of the published tarballs
+                {diffFiles.length > 0 && (
+                    <>
+                        , ignoring{" "}
+                        <Code className={CODE_CLASS}>
+                            {diffFiles.join(" ")}
+                        </Code>
+                    </>
+                )}
                 {specifiedOptions.map(([key, value]) => (
                     <span key={key}>
-                        <b>{key}:</b> <Code>{JSON.stringify(value)}</Code>
+                        {" "}
+                        \u00B7 <b>{key}:</b>{" "}
+                        <Code className={CODE_CLASS}>
+                            {JSON.stringify(value)}
+                        </Code>
                     </span>
                 ))}
-            </BorderBox>
+            </p>
         );
     },
 );

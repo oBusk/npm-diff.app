@@ -1,24 +1,17 @@
 import { cacheLife } from "next/cache";
 import packagephobia from "^/lib/api/packagephobia";
 import { Packagephobia } from "^/lib/Services";
-import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
 import measuredPromise from "^/lib/utils/measuredPromise";
-import SizeComparison, { SizeComparisonSkeleton } from "./SizeComparison";
+import { SizeChips, SizeChipsSkeleton } from "./PackageMetrics";
 
 export interface PackagephobiaDiffProps {
-    a: SimplePackageSpec;
-    b: SimplePackageSpec;
     specs: [string, string];
 }
 
 const { name } = Packagephobia;
 
-const PackagephobiaDiffInner = async ({
-    specs,
-    a,
-    b,
-}: PackagephobiaDiffProps) => {
+const PackagephobiaDiffInner = async ({ specs }: PackagephobiaDiffProps) => {
     "use cache";
 
     // Cache for the shortest window that packagephobia is cached
@@ -34,13 +27,10 @@ const PackagephobiaDiffInner = async ({
     console.log(name, { specs, time });
 
     return (
-        <SizeComparison
-            serviceName={name}
-            a={a}
-            b={b}
+        <SizeChips
             sizeRows={[
                 {
-                    name: "Publish",
+                    name: "Publish size",
                     a: {
                         bytes: result.a.publish.bytes,
                         color: result.a.publish.color,
@@ -51,7 +41,7 @@ const PackagephobiaDiffInner = async ({
                     },
                 },
                 {
-                    name: "Install",
+                    name: "Install size",
                     a: {
                         bytes: result.a.install.bytes,
                         color: result.a.install.color,
@@ -67,20 +57,8 @@ const PackagephobiaDiffInner = async ({
 };
 
 const PackagephobiaDiffSkeleton = () => (
-    <SizeComparisonSkeleton
-        serviceName={name}
-        sizeRows={[
-            {
-                name: "Publish",
-                a: 59,
-                b: 112,
-            },
-            {
-                name: "Install",
-                a: 59,
-                b: 112,
-            },
-        ]}
+    <SizeChipsSkeleton
+        sizeRows={[{ name: "Publish size" }, { name: "Install size" }]}
     />
 );
 

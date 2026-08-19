@@ -22,8 +22,8 @@ const CollapsableBorderBoxHeader = forwardRef<
         return (
             <div
                 className={cx(
-                    "flex items-center p-2",
-                    isExpanded && "border-b",
+                    "flex items-center rounded-t-xl bg-muted px-3 py-2.5",
+                    isExpanded && "border-b border-line",
                     className!,
                 )}
                 {...props}
@@ -35,7 +35,7 @@ const CollapsableBorderBoxHeader = forwardRef<
                         variant="secondary"
                         onClick={toggleIsExpanded}
                         aria-label={label}
-                        className="mr-2"
+                        className="mr-2.5 rounded-md border border-accent bg-transparent p-[3px] hover:bg-accent"
                     >
                         {isExpanded ? (
                             <ChevronDownIcon className="stroke-current" />

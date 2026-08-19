@@ -40,19 +40,20 @@ export function extractPublicLedgerUrl(
 
 export async function getSourceFromManifest(
     manifest: Manifest,
-): Promise<SourceInformation | undefined> {
+): Promise<SourceInformation> {
     const hasTrustedPublisher = manifest._npmUser?.trustedPublisher != null;
+    const publishedBy = manifest._npmUser?.name ?? null;
 
     const dist = manifest.dist;
     const attestations = dist?.attestations;
     if (!attestations) {
-        return undefined;
+        return { publishedBy, hasTrustedPublisher, provenance: null };
     }
 
     // Fetch the attestation bundle from npm registry
     const bundles = await fetchAttestationBundles(attestations);
     if (!bundles) {
-        return undefined;
+        return { publishedBy, hasTrustedPublisher, provenance: null };
     }
 
     const slsaProvenanceV1Bundle = bundles.find(
@@ -68,9 +69,12 @@ export async function getSourceFromManifest(
         );
 
         return {
+            publishedBy,
             hasTrustedPublisher,
-            ...parseSlsaProvenancePredicate(provenanceStatement.predicate),
-            publicLedger,
+            provenance: {
+                ...parseSlsaProvenancePredicate(provenanceStatement.predicate),
+                publicLedger,
+            },
         };
     }
     const slsaProvenanceV0_2Bundle = bundles.find(
@@ -87,9 +91,14 @@ export async function getSourceFromManifest(
             );
 
         return {
+            publishedBy,
             hasTrustedPublisher,
-            ...parseSlsaProvenanceV0_2Predicate(provenanceStatement.predicate),
-            publicLedger,
+            provenance: {
+                ...parseSlsaProvenanceV0_2Predicate(
+                    provenanceStatement.predicate,
+                ),
+                publicLedger,
+            },
         };
     }
 

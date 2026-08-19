@@ -33,18 +33,18 @@ export function TrustAuditFindings({
                         subtitle = `This release used a legacy token, bypassing the Trusted Publishing policy used by ${aLabel}. This downgrade could indicate a compromised maintainer account or an intentional attempt to evade security controls.`;
                         break;
                     case "repository-change":
-                        if (!sourceA || !sourceB) {
+                        if (!sourceA?.provenance || !sourceB?.provenance) {
                             return null;
                         }
                         title = "Source Repository Mismatch";
-                        subtitle = `While both versions have provenance, they originate from different repositories (${sourceA.repositoryPath} vs ${sourceB.repositoryPath}). This is a high-risk signal of a fork-based attack or an unannounced migration.`;
+                        subtitle = `While both versions have provenance, they originate from different repositories (${sourceA.provenance.repositoryPath} vs ${sourceB.provenance.repositoryPath}). This is a high-risk signal of a fork-based attack or an unannounced migration.`;
                         break;
                     case "workflow-change":
-                        if (!sourceA || !sourceB) {
+                        if (!sourceA?.provenance || !sourceB?.provenance) {
                             return null;
                         }
                         title = "Build Workflow Modified";
-                        subtitle = `The publish was triggered via ${sourceB.buildFileName}, changing from ${sourceA.buildFileName}. While potentially a refactor, an unexpected change in the build "recipe" warrants an audit.`;
+                        subtitle = `The publish was triggered via ${sourceB.provenance.buildFileName}, changing from ${sourceA.provenance.buildFileName}. While potentially a refactor, an unexpected change in the build "recipe" warrants an audit.`;
                         break;
                     default:
                         throw new Error(

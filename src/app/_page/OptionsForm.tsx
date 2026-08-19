@@ -1,3 +1,4 @@
+import { SlidersHorizontal } from "lucide-react";
 import { type FunctionComponent } from "react";
 import ButtonExpandBox, {
     type ButtonExpandBoxProps,
@@ -19,7 +20,13 @@ const OptionsForm: FunctionComponent<OptionsFormProps> = ({
     ...props
 }) => (
     <ButtonExpandBox
-        buttonContent="Options"
+        buttonContent={
+            <>
+                <SlidersHorizontal className="size-3.5" />
+                Options
+                <span className="font-mono text-xs text-faint">{files}</span>
+            </>
+        }
         buttonLabel="Toggle options"
         {...props}
     >

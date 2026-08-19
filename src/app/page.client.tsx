@@ -56,15 +56,16 @@ const IndexPageClient: FunctionComponent<LandingProps> = ({
 
     return (
         <>
-            <Stack>
+            <Stack align="center">
                 <MainForm
                     overrideA={overrides.a}
                     overrideB={overrides.b}
                     isLoading={isLoading}
                     handleSubmit={goToDiff}
                     fallbackSuggestions={fallbackSuggestions}
-                />
-                <OptionsForm files={diffFiles} filesChange={setDiffFiles} />
+                >
+                    <OptionsForm files={diffFiles} filesChange={setDiffFiles} />
+                </MainForm>
             </Stack>
             <ExamplesList
                 exampleMouseOver={(a, b) => !isLoading && setInput(a, b)}

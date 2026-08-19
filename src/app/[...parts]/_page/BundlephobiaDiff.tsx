@@ -1,27 +1,20 @@
 import { cacheLife } from "next/cache";
 import bundlephobia from "^/lib/api/bundlephobia";
 import { Bundlephobia } from "^/lib/Services";
-import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
 import measuredPromise from "^/lib/utils/measuredPromise";
 import BundlephobiaFlags, {
     BundlephobiaFlagsSkeleton,
 } from "./DiffIntro/BundlePhobiaFlags";
-import SizeComparison, { SizeComparisonSkeleton } from "./SizeComparison";
+import { SizeChips, SizeChipsSkeleton } from "./PackageMetrics";
 
 export interface BundlephobiaDiffProps {
-    a: SimplePackageSpec;
-    b: SimplePackageSpec;
     specs: [string, string];
 }
 
 const { name } = Bundlephobia;
 
-const BundlephobiaDiffInner = async ({
-    specs,
-    a,
-    b,
-}: BundlephobiaDiffProps) => {
+const BundlephobiaDiffInner = async ({ specs }: BundlephobiaDiffProps) => {
     "use cache";
 
     // The shortest cacheLife that `bundlephobia` uses is hours, so we can use that here too.
@@ -37,14 +30,11 @@ const BundlephobiaDiffInner = async ({
     console.log(name, { specs, time });
 
     return (
-        <SizeComparison
-            serviceName={name}
+        <SizeChips
             flags={<BundlephobiaFlags data={result} />}
-            a={a}
-            b={b}
             sizeRows={[
                 {
-                    name: "Size",
+                    name: "Minified",
                     a: {
                         bytes: result.a.size,
                     },
@@ -53,7 +43,7 @@ const BundlephobiaDiffInner = async ({
                     },
                 },
                 {
-                    name: "Gzip",
+                    name: "Gzipped",
                     a: {
                         bytes: result.a.gzip,
                     },
@@ -76,25 +66,12 @@ const BundlephobiaDiffInner = async ({
 };
 
 const BundlephobiaDiffSkeleton = () => (
-    <SizeComparisonSkeleton
-        serviceName={name}
+    <SizeChipsSkeleton
         flags={<BundlephobiaFlagsSkeleton />}
         sizeRows={[
-            {
-                name: "Size",
-                a: 42,
-                b: 84,
-            },
-            {
-                name: "Gzip",
-                a: 42,
-                b: 84,
-            },
-            {
-                name: "Dependencies",
-                a: 16,
-                b: 32,
-            },
+            { name: "Minified" },
+            { name: "Gzipped" },
+            { name: "Dependencies" },
         ]}
     />
 );

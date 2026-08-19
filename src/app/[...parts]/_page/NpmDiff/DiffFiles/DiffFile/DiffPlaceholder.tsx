@@ -12,13 +12,23 @@ const DiffPlaceholder = forwardRef<
     DiffPlaceholderProps
 >(({ reason, className, ...props }, ref) => (
     <Stack
+        direction="h"
         align="center"
-        className={cx("cursor-pointer p-8", className!)}
+        justify="center"
+        gap={3}
+        className={cx("cursor-pointer bg-background p-[26px]", className!)}
         {...props}
         ref={ref}
     >
-        <Button variant="secondary">Load Diff</Button>
-        {reason ? <span>{reason}</span> : null}
+        {reason ? (
+            <span className="text-[13px] text-muted-foreground">{reason}</span>
+        ) : null}
+        <Button
+            variant="secondary"
+            className="h-[30px] rounded-lg border border-line-strong bg-secondary text-[13px]"
+        >
+            Load diff
+        </Button>
     </Stack>
 ));
 DiffPlaceholder.displayName = "DiffPlaceholder";

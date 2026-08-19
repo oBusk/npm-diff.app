@@ -1,20 +1,28 @@
 import { auditSourceTrust, type TrustAuditFinding } from "./auditSourceTrust";
-import type { SourceInformation } from "./sourceInformation";
+import type {
+    ProvenanceInformation,
+    SourceInformation,
+} from "./sourceInformation";
 
 function makeSourceInformation(
     overrides: Partial<SourceInformation> = {},
+    provenanceOverrides: Partial<ProvenanceInformation> = {},
 ): SourceInformation {
     return {
-        commitHash: "abc123def456",
-        repositoryPath: "owner/repo",
-        repositoryUrl: "https://github.com/owner/repo",
-        buildPlatform: "Github Actions",
-        buildFileName: ".github/workflows/publish.yml",
-        buildFileHref:
-            "https://github.com/owner/repo/actions/workflows/publish.yml",
-        buildSummaryUrl: "https://github.com/owner/repo/actions/runs/1",
-        publicLedger: "rekor-entry-id",
+        publishedBy: "owner",
         hasTrustedPublisher: false,
+        provenance: {
+            commitHash: "abc123def456",
+            repositoryPath: "owner/repo",
+            repositoryUrl: "https://github.com/owner/repo",
+            buildPlatform: "Github Actions",
+            buildFileName: ".github/workflows/publish.yml",
+            buildFileHref:
+                "https://github.com/owner/repo/actions/workflows/publish.yml",
+            buildSummaryUrl: "https://github.com/owner/repo/actions/runs/1",
+            publicLedger: "rekor-entry-id",
+            ...provenanceOverrides,
+        },
         ...overrides,
     };
 }
@@ -90,13 +98,17 @@ describe("auditSourceTrust", () => {
     });
 
     it("flags a red repository change when repository URL differs", () => {
-        const sourceA = makeSourceInformation({
-            repositoryUrl: "https://github.com/owner/repo",
-        });
-        const sourceB = makeSourceInformation({
-            repositoryUrl: "https://gitlab.com/other/repo",
-            repositoryPath: "other/repo",
-        });
+        const sourceA = makeSourceInformation(
+            {},
+            { repositoryUrl: "https://github.com/owner/repo" },
+        );
+        const sourceB = makeSourceInformation(
+            {},
+            {
+                repositoryUrl: "https://gitlab.com/other/repo",
+                repositoryPath: "other/repo",
+            },
+        );
 
         const findings = auditSourceTrust(sourceA, sourceB);
 
@@ -106,12 +118,14 @@ describe("auditSourceTrust", () => {
     });
 
     it("flags a yellow workflow change when build file changes", () => {
-        const sourceA = makeSourceInformation({
-            buildFileName: ".github/workflows/publish.yml",
-        });
-        const sourceB = makeSourceInformation({
-            buildFileName: ".github/workflows/release.yml",
-        });
+        const sourceA = makeSourceInformation(
+            {},
+            { buildFileName: ".github/workflows/publish.yml" },
+        );
+        const sourceB = makeSourceInformation(
+            {},
+            { buildFileName: ".github/workflows/release.yml" },
+        );
 
         const findings = auditSourceTrust(sourceA, sourceB);
 
@@ -121,17 +135,21 @@ describe("auditSourceTrust", () => {
     });
 
     it("returns multiple findings when several conditions are met", () => {
-        const sourceA = makeSourceInformation({
-            hasTrustedPublisher: true,
-            repositoryUrl: "https://github.com/owner/repo",
-            buildFileName: ".github/workflows/publish.yml",
-        });
-        const sourceB = makeSourceInformation({
-            hasTrustedPublisher: false,
-            repositoryUrl: "https://gitlab.com/other/repo",
-            repositoryPath: "other/repo",
-            buildFileName: ".github/workflows/release.yml",
-        });
+        const sourceA = makeSourceInformation(
+            { hasTrustedPublisher: true },
+            {
+                repositoryUrl: "https://github.com/owner/repo",
+                buildFileName: ".github/workflows/publish.yml",
+            },
+        );
+        const sourceB = makeSourceInformation(
+            { hasTrustedPublisher: false },
+            {
+                repositoryUrl: "https://gitlab.com/other/repo",
+                repositoryPath: "other/repo",
+                buildFileName: ".github/workflows/release.yml",
+            },
+        );
 
         const findings = auditSourceTrust(sourceA, sourceB);
 

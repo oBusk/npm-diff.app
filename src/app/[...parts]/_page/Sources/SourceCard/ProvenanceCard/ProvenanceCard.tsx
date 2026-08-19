@@ -4,16 +4,14 @@ import {
     FileCode,
     ScrollText,
 } from "lucide-react";
-import { type SourceInformation } from "^/lib/api/npm/sourceInformation";
+import { type ProvenanceInformation } from "^/lib/api/npm/sourceInformation";
 import ProvenanceCardButton from "./ProvenanceCardButton";
 
 export interface ProvenanceCardProps {
-    sourceInformation: SourceInformation;
+    provenance: ProvenanceInformation;
 }
 
-export default function ProvenanceCard({
-    sourceInformation,
-}: ProvenanceCardProps) {
+export default function ProvenanceCard({ provenance }: ProvenanceCardProps) {
     return (
         <div className="space-y-2 rounded-lg border border-border bg-muted p-3">
             <div className="flex items-start gap-3">
@@ -24,7 +22,7 @@ export default function ProvenanceCard({
                             Built and signed on
                         </div>
                         <div className="text-sm font-medium">
-                            {sourceInformation.buildPlatform}
+                            {provenance.buildPlatform}
                         </div>
                     </div>
                     <div className="flex gap-2">
@@ -35,21 +33,21 @@ export default function ProvenanceCard({
                                         Build File
                                     </div>
                                     <code className="rounded-sm bg-muted px-1.5 py-0.5 text-xs">
-                                        {sourceInformation.buildFileName}
+                                        {provenance.buildFileName}
                                     </code>
                                 </div>
                             }
-                            href={sourceInformation.buildFileHref}
+                            href={provenance.buildFileHref}
                             Icon={FileCode}
                         />
                         <ProvenanceCardButton
                             tooltip="View transparency log entry"
-                            href={sourceInformation.publicLedger}
+                            href={provenance.publicLedger}
                             Icon={ScrollText}
                         />
                         <ProvenanceCardButton
                             tooltip="View build summary"
-                            href={sourceInformation.buildSummaryUrl}
+                            href={provenance.buildSummaryUrl}
                             Icon={ExternalLinkIcon}
                         />
                     </div>

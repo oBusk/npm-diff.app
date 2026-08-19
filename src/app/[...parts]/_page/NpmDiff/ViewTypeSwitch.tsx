@@ -37,14 +37,14 @@ const ViewTypeButton = forwardRef<
         ref,
     ) => (
         <Button
-            variant="outline"
+            variant="ghost"
             className={cx(
-                "not-last:rounded-r-none",
-                "not-last:border-r-0",
-                "not-first:rounded-l-none",
+                "h-[26px] rounded-[7px] px-3.5 text-[13px] font-medium",
+                currentViewType === viewType
+                    ? "bg-accent text-foreground hover:bg-accent"
+                    : "text-muted-foreground",
                 className!,
             )}
-            isActive={currentViewType === viewType}
             asChild
             {...props}
             ref={ref}
@@ -80,7 +80,14 @@ const ViewTypeSwitch = forwardRef<HTMLDivElement, ViewTypeSwitchProps>(
         } satisfies Partial<ViewTypeButtonProps>;
 
         return (
-            <div {...props} ref={ref}>
+            <div
+                {...props}
+                className={cx(
+                    "inline-flex shrink-0 gap-0.5 rounded-[10px] border border-line bg-muted p-[3px]",
+                    props.className!,
+                )}
+                ref={ref}
+            >
                 <ViewTypeButton viewType="split" {...buttonProps}>
                     Split
                 </ViewTypeButton>

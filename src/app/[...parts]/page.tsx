@@ -16,6 +16,7 @@ import CatalogPage from "./_page/catalog/CatalogPage";
 import { generateCatalogMetadata } from "./_page/catalog/generateCatalogMetadata";
 import DiffIntro from "./_page/DiffIntro";
 import NpmDiff from "./_page/NpmDiff";
+import PackageMetrics from "./_page/PackageMetrics";
 import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 import Sources from "./_page/Sources/Sources";
@@ -88,36 +89,28 @@ const DiffPageInner = async ({
                     className="self-stretch"
                     a={a}
                     b={b}
-                    services={
-                        <>
-                            <Sources
-                                a={a}
-                                b={b}
-                                suspenseKey={
-                                    "sources-" + canonicalSpecs.join("...")
-                                }
-                            />
-                            <BundlephobiaDiff
-                                a={a}
-                                b={b}
-                                specs={canonicalSpecs}
-                                suspenseKey={
-                                    "bundlephobia-" + canonicalSpecs.join("...")
-                                }
-                            />
-                            <PackagephobiaDiff
-                                a={a}
-                                b={b}
-                                specs={canonicalSpecs}
-                                suspenseKey={
-                                    "packagephobia-" +
-                                    canonicalSpecs.join("...")
-                                }
-                            />
-                        </>
-                    }
+                    specs={canonicalSpecs}
                     options={options}
                 />
+                <Sources
+                    a={a}
+                    b={b}
+                    suspenseKey={"sources-" + canonicalSpecs.join("...")}
+                />
+                <PackageMetrics a={a} b={b}>
+                    <BundlephobiaDiff
+                        specs={canonicalSpecs}
+                        suspenseKey={
+                            "bundlephobia-" + canonicalSpecs.join("...")
+                        }
+                    />
+                    <PackagephobiaDiff
+                        specs={canonicalSpecs}
+                        suspenseKey={
+                            "packagephobia-" + canonicalSpecs.join("...")
+                        }
+                    />
+                </PackageMetrics>
                 <NpmDiff
                     a={a}
                     b={b}
