@@ -4,6 +4,8 @@ import { Menu, X } from "lucide-react";
 import { forwardRef, Suspense, useState } from "react";
 import Button from "^/components/ui/Button";
 import { cx } from "^/lib/cva";
+import ColorModeToggle from "./ColorModeToggle";
+import GithubLink from "./GithubLink";
 import NavLink, { NavLinkFallback } from "./NavLink";
 
 export interface MobileMenuProps {}
@@ -41,7 +43,7 @@ const MobileMenu = forwardRef<HTMLDivElement, MobileMenuProps>((props, ref) => {
                     <div
                         className={cx(
                             "absolute top-full right-0 z-50 mt-2 w-48",
-                            "rounded-md border border-input bg-background shadow-lg",
+                            "rounded-md border border-line bg-card shadow-lg",
                         )}
                     >
                         <div className="flex flex-col gap-2 p-2">
@@ -94,6 +96,10 @@ const MobileMenu = forwardRef<HTMLDivElement, MobileMenuProps>((props, ref) => {
                                     Trust
                                 </NavLink>
                             </Suspense>
+                            <div className="mt-1 flex items-center gap-1 border-t border-line pt-2">
+                                <GithubLink />
+                                <ColorModeToggle />
+                            </div>
                         </div>
                     </div>
                 </>

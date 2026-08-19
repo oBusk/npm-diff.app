@@ -2,12 +2,19 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { ThemeProvider } from "@wrksz/themes/next";
 import { type Metadata, type Viewport } from "next";
+import { IBM_Plex_Mono } from "next/font/google";
 import { type ReactNode } from "react";
 import Stack from "^/components/ui/Stack";
 import { TooltipProvider } from "^/components/ui/Tooltip";
 import Footer from "./_layout/Footer";
 import Header from "./_layout/Header";
 import "./globals.css";
+
+const ibmPlexMono = IBM_Plex_Mono({
+    subsets: ["latin"],
+    weight: ["400", "500", "600"],
+    variable: "--font-ibm-plex-mono",
+});
 
 export const metadata: Metadata = {
     applicationName: "npm-diff.app",
@@ -30,7 +37,11 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
     return (
-        <html lang="en" suppressHydrationWarning>
+        <html
+            lang="en"
+            suppressHydrationWarning
+            className={ibmPlexMono.variable}
+        >
             <head />
             <body className="min-h-screen-s bg-background">
                 <ThemeProvider>

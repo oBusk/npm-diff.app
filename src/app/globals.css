@@ -46,6 +46,21 @@
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
 
+  --color-rule: var(--rule);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-code: var(--code);
+  --color-label: var(--label);
+  --color-faint: var(--faint);
+  --color-glyph: var(--glyph);
+
+  --color-info: var(--info);
+  --color-add: var(--add);
+  --color-remove: var(--remove);
+  --color-caution: var(--caution);
+
+  --font-mono: var(--font-ibm-plex-mono), ui-monospace, monospace;
+
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
@@ -136,36 +151,62 @@
         --ring: 240 10% 3.9%;
 
         --radius: 0.5rem;
+
+        --rule: #e4e4e7;
+        --line: #e2e2e6;
+        --line-strong: #d4d4d8;
+        --code: #3f3f46;
+        --label: #6b6b76;
+        --faint: #8a8a94;
+        --glyph: #71717a;
+
+        --info: #0284c7;
+        --add: #16a34a;
+        --remove: #dc2626;
+        --caution: #ca8a04;
     }
 
     .dark {
-        --background: 240 10% 3.9%;
-        --foreground: 0 0% 98%;
+        --background: 240 11.1% 3.5%;
+        --foreground: 240 4.8% 95.9%;
 
-        --card: 240 10% 3.9%;
-        --card-foreground: 0 0% 98%;
+        --card: 240 10.3% 5.7%;
+        --card-foreground: 240 4.8% 95.9%;
 
-        --popover: 240 10% 3.9%;
-        --popover-foreground: 0 0% 98%;
+        --popover: 240 10.3% 5.7%;
+        --popover-foreground: 240 4.8% 95.9%;
 
         --primary: 0 0% 98%;
         --primary-foreground: 240 5.9% 10%;
 
-        --secondary: 240 3.7% 15.9%;
-        --secondary-foreground: 0 0% 98%;
+        --secondary: 240 15.8% 7.5%;
+        --secondary-foreground: 240 6.7% 73.5%;
 
-        --muted: 240 3.7% 15.9%;
-        --muted-foreground: 240 5% 64.9%;
+        --muted: 240 12.5% 6.3%;
+        --muted-foreground: 240 4.7% 58%;
 
-        --accent: 240 3.7% 15.9%;
-        --accent-foreground: 0 0% 98%;
+        --accent: 240 11.7% 15.1%;
+        --accent-foreground: 240 4.8% 95.9%;
 
         --destructive: 0 62.8% 30.6%;
         --destructive-foreground: 0 0% 98%;
 
-        --border: 240 3.7% 15.9%;
-        --input: 240 3.7% 15.9%;
+        --border: 240 10.3% 11.4%;
+        --input: 240 12% 14.7%;
         --ring: 240 4.9% 83.9%;
+
+        --rule: #16161b;
+        --line: #1e1e24;
+        --line-strong: #2a2a34;
+        --code: #c9c9d1;
+        --label: #7c7c88;
+        --faint: #6d6d78;
+        --glyph: #5c5c66;
+
+        --info: #7dd3fc;
+        --add: #4ade80;
+        --remove: #f87171;
+        --caution: #facc15;
     }
 }
 
