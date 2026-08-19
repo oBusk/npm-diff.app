@@ -24,8 +24,8 @@ export function auditSourceTrust(
 ): TrustAuditFinding[] {
     const findings: TrustAuditFinding[] = [];
 
-    const hasA = Boolean(sourceA);
-    const hasB = Boolean(sourceB);
+    const hasA = Boolean(sourceA?.provenance);
+    const hasB = Boolean(sourceB?.provenance);
 
     // 1. Trust downgrade (red):
     //    - A has provenance but B does not (lost provenance)
@@ -52,12 +52,14 @@ export function auditSourceTrust(
     }
 
     // Remaining checks only apply when both versions have provenance.
-    if (!sourceA || !sourceB) {
+    const provenanceA = sourceA?.provenance;
+    const provenanceB = sourceB?.provenance;
+    if (!provenanceA || !provenanceB) {
         return findings;
     }
 
     // 2. Repository change (red): repository URL differs between A and B.
-    if (sourceA.repositoryUrl !== sourceB.repositoryUrl) {
+    if (provenanceA.repositoryUrl !== provenanceB.repositoryUrl) {
         findings.push({
             type: "repository-change",
             severity: "red",
@@ -65,7 +67,7 @@ export function auditSourceTrust(
     }
 
     // 3. Workflow change (yellow): build workflow file has changed.
-    if (sourceA.buildFileName !== sourceB.buildFileName) {
+    if (provenanceA.buildFileName !== provenanceB.buildFileName) {
         findings.push({
             type: "workflow-change",
             severity: "yellow",

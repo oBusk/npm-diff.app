@@ -14,7 +14,5 @@ export async function getSourceInformation(
         return null;
     }
 
-    const sourceInformation = await getSourceFromManifest(manifest);
-
-    return sourceInformation || null;
+    return getSourceFromManifest(manifest);
 }

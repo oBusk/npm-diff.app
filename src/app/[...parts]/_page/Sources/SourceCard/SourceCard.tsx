@@ -9,7 +9,9 @@ import { ProvenanceInfoIcon } from "./ProvenanceInfoIcon";
 import { TrustedPublisherCard } from "./TrustedPublisherCard";
 
 export interface SourceCardProps extends React.ComponentProps<"div"> {
-    sourceInformation: SourceInformation;
+    sourceInformation: SourceInformation & {
+        provenance: NonNullable<SourceInformation["provenance"]>;
+    };
 }
 
 export default function SourceCard({
@@ -17,6 +19,8 @@ export default function SourceCard({
     className,
     ...props
 }: SourceCardProps) {
+    const { provenance } = sourceInformation;
+
     return (
         <div
             className={cx(
@@ -35,34 +39,34 @@ export default function SourceCard({
             <div className="p-3">
                 <div className="space-y-3">
                     <ExternalLink
-                        href={sourceInformation.repositoryUrl}
+                        href={provenance.repositoryUrl}
                         className="flex items-center justify-between gap-2 rounded p-2 hover:bg-muted/50"
                     >
                         <span className="text-sm">Repo:</span>
                         <div className="flex items-center gap-1.5">
-                            {isGitHubUrl(sourceInformation.repositoryUrl) ? (
+                            {isGitHubUrl(provenance.repositoryUrl) ? (
                                 <Github className="size-3.5 shrink-0" />
-                            ) : isGitLabUrl(sourceInformation.repositoryUrl) ? (
+                            ) : isGitLabUrl(provenance.repositoryUrl) ? (
                                 <Gitlab className="size-3.5 shrink-0" />
                             ) : null}
                             <span className="text-sm font-medium">
-                                {sourceInformation.repositoryPath}
+                                {provenance.repositoryPath}
                             </span>
                         </div>
                     </ExternalLink>
                     <ExternalLink
-                        href={`${sourceInformation.repositoryUrl}/tree/${sourceInformation.commitHash}`}
+                        href={`${provenance.repositoryUrl}/tree/${provenance.commitHash}`}
                         className="flex items-center justify-between gap-2 rounded p-2 hover:bg-muted/50"
                     >
                         <span className="text-sm">Commit:</span>
                         <div className="flex items-center gap-1.5">
                             <GitCommit className="size-3.5 shrink-0" />
                             <code className="rounded-sm bg-muted px-1.5 py-0.5 font-mono text-sm">
-                                {sourceInformation.commitHash.substring(0, 8)}
+                                {provenance.commitHash.substring(0, 8)}
                             </code>
                         </div>
                     </ExternalLink>
-                    <ProvenanceCard sourceInformation={sourceInformation} />
+                    <ProvenanceCard provenance={provenance} />
                     <TrustedPublisherCard
                         sourceInformation={sourceInformation}
                     />

@@ -8,6 +8,8 @@ export interface CompareButtonProps {
     commitB: string;
     compareUrl: string;
     serviceName: string;
+    /** Renders a larger button with a visible label, for use as a primary action. */
+    prominent?: boolean;
 }
 
 function HashBlock({ hash }: { hash: string }) {
@@ -23,7 +25,22 @@ export function CompareButton({
     commitB,
     compareUrl,
     serviceName,
+    prominent,
 }: CompareButtonProps) {
+    if (prominent) {
+        return (
+            <Button
+                asChild
+                className="h-8 gap-1.5 rounded-lg border border-add/40 bg-add/12 text-[13px] font-medium text-add hover:bg-add/20"
+            >
+                <ExternalLink href={compareUrl}>
+                    <GitCompare className="size-3.5" />
+                    Compare on {serviceName}
+                </ExternalLink>
+            </Button>
+        );
+    }
+
     return (
         <Tooltip
             label={

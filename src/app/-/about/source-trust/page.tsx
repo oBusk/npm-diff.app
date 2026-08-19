@@ -247,11 +247,14 @@ export default async function SourceTrustPage() {
                             information panel.
                         </p>
 
-                        {iniSourceInfo ? (
+                        {iniSourceInfo?.provenance ? (
                             <>
                                 <Heading h={5}>Example: ini@6.0.0</Heading>
                                 <SourceCard
-                                    sourceInformation={iniSourceInfo}
+                                    sourceInformation={{
+                                        ...iniSourceInfo,
+                                        provenance: iniSourceInfo.provenance,
+                                    }}
                                     className="w-full max-w-sm"
                                 />
                             </>
