@@ -1,69 +1,64 @@
-import { type ElementRef, forwardRef, type ReactNode } from "react";
-import Code from "^/components/ui/Code";
-import Heading from "^/components/ui/Heading";
-import Stack, { type StackProps } from "^/components/ui/Stack";
+import { ArrowRight } from "lucide-react";
+import { type ElementRef, forwardRef, type HTMLAttributes } from "react";
 import { cx } from "^/lib/cva";
 import { type NpmDiffOptions } from "^/lib/npmDiff";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
-import Halfs from "./Halfs";
-import Options from "./Options";
-import SpecBox from "./SpecBox";
+import DiffSummaryLine from "./DiffSummaryLine";
+import TitleActions from "./TitleActions";
 
-export interface DiffIntroProps extends StackProps {
+export interface DiffIntroProps extends HTMLAttributes<HTMLElement> {
     a: SimplePackageSpec;
     b: SimplePackageSpec;
-    services: ReactNode;
+    specs: [string, string];
     options: NpmDiffOptions;
 }
 
-const DiffIntro = forwardRef<ElementRef<typeof Stack>, DiffIntroProps>(
-    ({ a, b, services, options, className, ...props }, ref) => {
-        const aWithName = { ...a, name: a.name ?? "ERROR" };
-        const bWithName = { ...b, name: b.name ?? "ERROR" };
+const LONG_SPEC_THRESHOLD = 20;
+
+const DiffIntro = forwardRef<ElementRef<"section">, DiffIntroProps>(
+    ({ a, b, specs, options, className, ...props }, ref) => {
+        const aStr = simplePackageSpecToString(a);
+        const bStr = simplePackageSpecToString(b);
+        const isLong =
+            aStr.length > LONG_SPEC_THRESHOLD ||
+            bStr.length > LONG_SPEC_THRESHOLD;
 
         return (
-            <Stack
-                align="center"
-                className={cx(contentVisibility("700px"), className!)}
-                {...props}
+            <section
+                className={cx(
+                    "flex w-full flex-wrap items-end justify-between gap-4",
+                    contentVisibility("200px"),
+                    className!,
+                )}
                 ref={ref}
+                {...props}
             >
-                <Heading className="mb-6 w-full text-center text-sm">
-                    <span>Comparing</span>
-                    <Halfs
-                        left={
-                            <SpecBox
-                                pkg={aWithName}
-                                pkgClassName="rounded-r-none"
-                            />
-                        }
-                        center={
-                            <span>
-                                <Code className="rounded-none">...</Code>
-                            </span>
-                        }
-                        right={
-                            <SpecBox
-                                pkg={bWithName}
-                                pkgClassName="rounded-l-none"
-                            />
-                        }
+                <div className="flex min-w-0 flex-col gap-1.5">
+                    <span className="font-mono text-[11px] tracking-[0.14em] text-faint uppercase">
+                        Comparing
+                    </span>
+                    <h1
+                        className={cx(
+                            "flex flex-wrap items-center gap-3.5 font-mono font-medium tracking-[-0.02em] text-foreground",
+                            isLong ? "text-xl" : "text-[28px]",
+                        )}
+                    >
+                        <span>{aStr}</span>
+                        <ArrowRight className="size-5 shrink-0 text-glyph" />
+                        <span>{bStr}</span>
+                    </h1>
+                    <DiffSummaryLine
+                        suspenseKey={`diff-summary-${specs.join("...")}`}
+                        a={a}
+                        b={b}
+                        specs={specs}
+                        options={options}
                     />
-                </Heading>
-                {services}
-                <Heading h={3} className="mt-4 text-sm">
-                    npm diff
-                </Heading>
-                <Options options={options} />
-                {/* <Command
-                    aName={a.name}
-                    aVersion={a.version}
-                    bName={b.name}
-                    bVersion={b.version}
-                    options={options}
-                /> */}
-            </Stack>
+                </div>
+                <TitleActions specs={specs} />
+            </section>
         );
     },
 );

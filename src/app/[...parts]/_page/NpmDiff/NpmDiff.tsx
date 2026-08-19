@@ -1,4 +1,4 @@
-import type { Options } from "libnpmdiff";
+import type { Options as NpmDiffLibOptions } from "libnpmdiff";
 import { cacheLife } from "next/cache";
 import { Suspense } from "react";
 import type { FileData } from "react-diff-view";
@@ -7,6 +7,7 @@ import { gitDiffParse } from "^/lib/gitDiff";
 import npmDiff from "^/lib/npmDiff";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import countChanges from "^/lib/utils/countChanges";
+import Options from "../DiffIntro/Options";
 import DiffFiles from "./DiffFiles";
 import NoDiff from "./NoDiff";
 import ViewTypeSwitch from "./ViewTypeSwitch";
@@ -15,7 +16,7 @@ export interface NpmDiffProps {
     a: SimplePackageSpec;
     b: SimplePackageSpec;
     specs: [string, string];
-    options: Options;
+    options: NpmDiffLibOptions;
 }
 
 const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
@@ -41,6 +42,7 @@ const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
 
     return (
         <>
+            <Options options={options} />
             <Stack direction="h" className="w-full justify-between">
                 <span>
                     Showing <b>{files.length} changed files</b> with{" "}
