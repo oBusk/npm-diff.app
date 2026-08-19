@@ -12,6 +12,7 @@ import { unpkg } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import type { CountedChanges } from "^/lib/utils/countChanges";
 import ServiceIcon from "../../../ServiceIcon";
+import Sparkline from "../Sparkline";
 
 export interface DiffFileHeaderProps extends StackProps {
     a: SimplePackageSpec;
@@ -52,6 +53,7 @@ const DiffFileHeader: FunctionComponent<DiffFileHeaderProps> = ({
                 </span>
             </Tooltip>
         </Heading>
+        <Sparkline additions={additions} deletions={deletions} />
         <Tooltip
             label={
                 <>

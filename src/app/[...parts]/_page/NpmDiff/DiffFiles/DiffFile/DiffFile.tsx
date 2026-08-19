@@ -62,8 +62,9 @@ const DiffFile = forwardRef<
 
     return (
         <CollapsableBorderBox
+            id={`file-${type === "delete" ? oldPath : newPath}`}
             className={cx(
-                "my-4 overflow-hidden rounded-xl border-line",
+                "my-4 scroll-mt-20 overflow-hidden rounded-xl border-line",
                 contentVisibility("700px", className),
             )}
             header={
