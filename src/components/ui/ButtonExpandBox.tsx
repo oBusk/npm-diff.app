@@ -1,6 +1,5 @@
 "use client";
 
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { type ElementRef, forwardRef, type ReactNode } from "react";
 import { useBoolean } from "react-use";
 import { cx } from "^/lib/cva";
@@ -26,28 +25,23 @@ const ButtonExpandBox = forwardRef<
     ButtonExpandBoxProps
 >(({ buttonContent, buttonLabel, children, className, ...props }, ref) => {
     const [isExpanded, toggleExpanded] = useBoolean(false);
-    const Icon = isExpanded ? ChevronUp : ChevronDown;
 
     return (
-        <Stack
-            align="center"
-            className={cx("m-4", className!)}
-            {...props}
-            ref={ref}
-        >
-            {isExpanded ? (
-                <BorderBox className="overflow-auto">{children}</BorderBox>
-            ) : null}
-
+        <Stack className={cx("relative", className!)} {...props} ref={ref}>
             <Tooltip label={buttonLabel}>
                 <Button
                     variant="outline"
                     onClick={toggleExpanded}
-                    className={cx(isExpanded && "rounded-t-none border-t-0")}
+                    className="h-8 gap-1.5 rounded-lg border-line px-2.5 text-[13px] font-normal text-muted-foreground"
                 >
-                    <Icon className="mr-0.5 size-4" /> {buttonContent}
+                    {buttonContent}
                 </Button>
             </Tooltip>
+            {isExpanded ? (
+                <BorderBox className="absolute bottom-full left-0 z-10 mb-2 w-72 overflow-auto rounded-lg border-line bg-card shadow-xl">
+                    {children}
+                </BorderBox>
+            ) : null}
         </Stack>
     );
 });

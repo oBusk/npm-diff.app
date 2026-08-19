@@ -1,6 +1,7 @@
-import { Loader2 } from "lucide-react";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { forwardRef } from "react";
 import Button from "^/components/ui/Button";
+import { cx } from "^/lib/cva";
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     isLoading: boolean;
@@ -12,10 +13,9 @@ const DiffButton = forwardRef<HTMLButtonElement, ButtonProps>(
         return (
             <Button
                 type="submit"
-                variant="secondary"
                 size="default"
                 disabled={!a || isLoading}
-                className="relative overflow-hidden"
+                className="relative h-11 shrink-0 gap-2 overflow-hidden rounded-[10px] px-[22px] text-[15px] font-semibold"
                 ref={ref}
                 {...props}
             >
@@ -24,8 +24,14 @@ const DiffButton = forwardRef<HTMLButtonElement, ButtonProps>(
                         <Loader2 className="animate-spin" />
                     </div>
                 ) : null}
-                <span className={isLoading ? "invisible" : undefined}>
-                    npm diff! 📦🔃
+                <span
+                    className={cx(
+                        "flex items-center gap-2",
+                        isLoading && "invisible",
+                    )}
+                >
+                    Run diff
+                    <ArrowRight className="size-4" />
                 </span>
             </Button>
         );

@@ -10,12 +10,19 @@ import {
     useState,
 } from "react";
 import Code from "^/components/ui/Code";
+import Label from "^/components/ui/Label";
 import Tooltip from "^/components/ui/Tooltip";
 import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import { cx } from "^/lib/cva";
 import CenterInputAddon from "./CenterInputAddon";
 import DiffButton from "./DiffButton";
 import SpecInput, { type SpecInputRef } from "./SpecInput";
+
+const INPUT_CLASS =
+    "h-11 rounded-[10px] border-line-strong bg-background px-3.5 font-mono text-sm text-foreground";
+
+const LABEL_CLASS =
+    "text-faint font-mono text-[11px] tracking-[0.1em] uppercase";
 
 export interface MainFormProps extends HTMLAttributes<HTMLFormElement> {
     overrideA: string | null;
@@ -78,61 +85,74 @@ const MainForm = forwardRef<HTMLFormElement, MainFormProps>(
         return (
             <form
                 className={cx(
-                    "flex flex-col lg:flex-row",
-                    "items-center justify-center",
+                    "mx-auto flex w-full max-w-205 flex-col gap-3.5 rounded-[14px] border-line-strong bg-muted p-5",
                     className!,
                 )}
                 onSubmit={internalHandleSubmit}
                 ref={ref}
                 {...props}
             >
-                <SpecInput
-                    id="a"
-                    inputValue={a}
-                    onInputValueChange={setA}
-                    initialIsOpen={true}
-                    versionSelected={(item) => {
-                        const bCombobox = bRef.current;
-                        if (bCombobox) {
-                            setB(`${item.name}@`);
-                            setTimeout(() => bCombobox.focus());
-                        }
-                    }}
-                    inputProps={{
-                        className: "lg:rounded-r-none lg:border-r-0",
-                        ...(overrideA
-                            ? {
-                                  value: overrideA,
-                                  disabled: true,
-                              }
-                            : undefined),
-                    }}
-                    fallbackSuggestions={fallbackSuggestions}
-                ></SpecInput>
-                <CenterInputAddon className="hidden lg:flex">
-                    <span>...</span>
-                </CenterInputAddon>
-                <SpecInput
-                    id="b"
-                    ref={bRef}
-                    inputValue={b}
-                    onInputValueChange={setB}
-                    optionalPackageFilter={bPackageFilter}
-                    wrapperProps={{
-                        className: "mt-2 lg:mt-0",
-                    }}
-                    inputProps={{
-                        className: "lg:rounded-l-none lg:border-l-0",
-                        ...(overrideB
-                            ? {
-                                  value: overrideB,
-                                  disabled: true,
-                              }
-                            : undefined),
-                    }}
-                    fallbackSuggestions={fallbackSuggestions}
-                ></SpecInput>
-                <div className="mt-2 lg:mt-0 lg:ml-8">
+                <div className="grid grid-cols-1 items-end gap-2.5 lg:grid-cols-[1fr_40px_1fr]">
+                    <div className="flex min-w-0 flex-col gap-1.5">
+                        <Label htmlFor="a-input" className={LABEL_CLASS}>
+                            From
+                        </Label>
+                        <SpecInput
+                            id="a"
+                            inputValue={a}
+                            onInputValueChange={setA}
+                            initialIsOpen={true}
+                            versionSelected={(item) => {
+                                const bCombobox = bRef.current;
+                                if (bCombobox) {
+                                    setB(`${item.name}@`);
+                                    setTimeout(() => bCombobox.focus());
+                                }
+                            }}
+                            wrapperProps={{ className: "w-full max-w-none" }}
+                            inputProps={{
+                                className: INPUT_CLASS,
+                                ...(overrideA
+                                    ? {
+                                          value: overrideA,
+                                          disabled: true,
+                                      }
+                                    : undefined),
+                            }}
+                            fallbackSuggestions={fallbackSuggestions}
+                        ></SpecInput>
+                    </div>
+                    <CenterInputAddon className="hidden h-11 items-center justify-center rounded-[10px] border-none bg-transparent lg:flex">
+                        <span className="font-mono text-sm text-glyph">
+                            ···
+                        </span>
+                    </CenterInputAddon>
+                    <div className="flex min-w-0 flex-col gap-1.5">
+                        <Label htmlFor="b-input" className={LABEL_CLASS}>
+                            To
+                        </Label>
+                        <SpecInput
+                            id="b"
+                            ref={bRef}
+                            inputValue={b}
+                            onInputValueChange={setB}
+                            optionalPackageFilter={bPackageFilter}
+                            wrapperProps={{ className: "w-full max-w-none" }}
+                            inputProps={{
+                                className: INPUT_CLASS,
+                                ...(overrideB
+                                    ? {
+                                          value: overrideB,
+                                          disabled: true,
+                                      }
+                                    : undefined),
+                            }}
+                            fallbackSuggestions={fallbackSuggestions}
+                        ></SpecInput>
+                    </div>
+                </div>
+                <div className="flex flex-wrap items-center justify-between gap-3">
+                    {children}
                     {isLoading ? (
                         <DiffButton isLoading={true} a={a} />
                     ) : (
