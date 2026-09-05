@@ -4,7 +4,7 @@ import type PackagephobiaResponse from "./PackagephobiaResponse";
 import type PackagephobiaResults from "./PackagephobiaResult";
 
 async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
-    "use cache";
+    "use cache: remote";
 
     try {
         const response = await fetch(

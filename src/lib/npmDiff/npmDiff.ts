@@ -1,5 +1,9 @@
 import libnpmdiff, { type Options } from "libnpmdiff";
 import { cacheLife } from "next/cache";
+import type { NpmDiffError } from "./NpmDiffError";
+
+export type NpmDiffResult =
+    { ok: true; diff: string } | ({ ok: false } & NpmDiffError);
 
 interface ErrorETARGET {
     code: "ETARGET";
@@ -18,15 +22,15 @@ interface Error404 {
 async function npmDiff(
     specs: [string, string],
     options: Options,
-): Promise<string> {
-    "use cache";
-
-    cacheLife("max");
+): Promise<NpmDiffResult> {
+    "use cache: remote";
 
     let startTime = 0;
     try {
         startTime = Date.now();
         const result = await libnpmdiff(specs, options);
+
+        cacheLife("max");
 
         console.log("_doDiff", {
             specs,
@@ -34,7 +38,7 @@ async function npmDiff(
             duration: Date.now() - startTime,
         });
 
-        return result;
+        return { ok: true, diff: result };
     } catch (e: unknown) {
         console.error("_doDiff", {
             error: e,
@@ -49,34 +53,32 @@ async function npmDiff(
         const isE404 = (e: any): e is Error404 => e.code === "E404";
 
         if (isEtarget(e)) {
-            const code = 404;
+            cacheLife("days");
 
             if (e.type === "version") {
-                throw {
-                    code,
-                    error: `Could not find version ${e.wanted}.`,
+                return {
+                    ok: false,
+                    kind: "not-found",
+                    message: `Could not find version ${e.wanted}.`,
                 };
             }
 
-            throw {
-                code,
-                error: `Could not find`,
-            };
+            return { ok: false, kind: "not-found", message: "Could not find" };
         }
 
         if (isE404(e)) {
-            const code = 404;
+            cacheLife("days");
 
-            throw {
-                code,
-                error: `Could not find package that matches "${e.pkgid}"`,
+            return {
+                ok: false,
+                kind: "not-found",
+                message: `Could not find package that matches "${e.pkgid}"`,
             };
         }
 
-        throw {
-            code: 500,
-            error: "Unknown error",
-        };
+        cacheLife("hours");
+
+        return { ok: false, kind: "unknown", message: "Unknown error" };
     }
 }
 

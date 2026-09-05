@@ -1,5 +1,5 @@
 import { type Metadata } from "next";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { type JSX, Suspense } from "react";
 import { type ViewType } from "react-diff-view";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
@@ -11,6 +11,7 @@ import decodeParts from "^/lib/utils/decodeParts";
 import { isCatalogPage } from "^/lib/utils/isCatalogPage";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
+import validateSpecs from "^/lib/utils/validateSpecs";
 import BundlephobiaDiff from "./_page/BundlephobiaDiff";
 import CatalogPage from "./_page/catalog/CatalogPage";
 import { generateCatalogMetadata } from "./_page/catalog/generateCatalogMetadata";
@@ -19,6 +20,8 @@ import NpmDiff from "./_page/NpmDiff";
 import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 import Sources from "./_page/Sources/Sources";
+
+export const maxDuration = 60;
 
 export interface DiffPageProps {
     params: Promise<{ parts: string | string[] }>;
@@ -31,9 +34,12 @@ export async function generateMetadata({
     const { parts } = await params;
     const specs = splitParts(decodeParts(parts));
 
-    // Check if this is a catalog page
     if (isCatalogPage(specs)) {
         return generateCatalogMetadata(specs);
+    }
+
+    if (!validateSpecs(specs)) {
+        notFound();
     }
 
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
@@ -53,9 +59,12 @@ const DiffPageInner = async ({
 
     const specsOrVersions = splitParts(decodeParts(parts));
 
-    // Check if this is a catalog page
     if (isCatalogPage(specsOrVersions)) {
         return <CatalogPage specs={specsOrVersions} />;
+    }
+
+    if (!validateSpecs(specsOrVersions)) {
+        notFound();
     }
 
     const { redirect: redirectTarget, canonicalSpecs } =

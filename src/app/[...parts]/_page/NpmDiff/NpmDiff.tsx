@@ -23,9 +23,13 @@ const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
 
     cacheLife("max");
 
-    const diff = await npmDiff(specs, options);
+    const result = await npmDiff(specs, options);
 
-    const files: FileData[] = gitDiffParse(diff);
+    if (!result.ok) {
+        throw new Error(result.message);
+    }
+
+    const files: FileData[] = gitDiffParse(result.diff);
 
     if (files.length === 0) {
         return <NoDiff a={a} b={b} />;

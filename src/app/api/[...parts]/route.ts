@@ -1,10 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server";
 import destination from "^/lib/destination";
-import npmDiff, { type NpmDiffError } from "^/lib/npmDiff";
+import npmDiff from "^/lib/npmDiff";
 import { parseQuery } from "^/lib/query";
 import { defaultPageCachingHeaders } from "^/lib/utils/headers";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
+import validateSpecs from "^/lib/utils/validateSpecs";
+
+export const maxDuration = 60;
 
 enum STATUS_CODES {
     TEMPORARY_REDIRECT = 307,
@@ -22,21 +25,24 @@ export async function GET(req: NextRequest, { params }: DiffApiContext) {
 
     const specsOrVersions = splitParts(parts);
 
+    if (!validateSpecs(specsOrVersions)) {
+        return NextResponse.json("Invalid package spec", { status: 400 });
+    }
+
     const { redirect: red, canonicalSpecs } =
         await destination(specsOrVersions);
 
     if (red === false) {
-        try {
-            const diff = await npmDiff(canonicalSpecs, parseQuery(options));
+        const result = await npmDiff(canonicalSpecs, parseQuery(options));
 
-            return new NextResponse(diff, {
+        if (result.ok) {
+            return new NextResponse(result.diff, {
                 status: 200,
                 headers: defaultPageCachingHeaders,
             });
-        } catch (e) {
-            const { code, error } = e as NpmDiffError;
-
-            return NextResponse.json(error, { status: code });
+        } else {
+            const status = result.kind === "not-found" ? 404 : 500;
+            return NextResponse.json(result.message, { status });
         }
     } else {
         const newUrl = new URL(`/api/${specsToDiff(canonicalSpecs)}`, req.url);

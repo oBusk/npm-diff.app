@@ -5,7 +5,7 @@ import type BundlephobiaResponse from "./BundlephobiaResponse";
 import type BundlephobiaResults from "./BundlephobiaResults";
 
 async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
-    "use cache";
+    "use cache: remote";
 
     const { scope } = npa(spec);
 
