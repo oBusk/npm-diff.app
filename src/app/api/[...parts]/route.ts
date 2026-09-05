@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import destination from "^/lib/destination";
-import npmDiff, { type NpmDiffError } from "^/lib/npmDiff";
+import npmDiff from "^/lib/npmDiff";
 import { parseQuery } from "^/lib/query";
 import { defaultPageCachingHeaders } from "^/lib/utils/headers";
 import specsToDiff from "^/lib/utils/specsToDiff";
@@ -28,17 +28,16 @@ export async function GET(req: NextRequest, { params }: DiffApiContext) {
         await destination(specsOrVersions);
 
     if (red === false) {
-        try {
-            const diff = await npmDiff(canonicalSpecs, parseQuery(options));
+        const result = await npmDiff(canonicalSpecs, parseQuery(options));
 
-            return new NextResponse(diff, {
+        if (result.ok) {
+            return new NextResponse(result.diff, {
                 status: 200,
                 headers: defaultPageCachingHeaders,
             });
-        } catch (e) {
-            const { code, error } = e as NpmDiffError;
-
-            return NextResponse.json(error, { status: code });
+        } else {
+            const status = result.kind === "not-found" ? 404 : 500;
+            return NextResponse.json(result.message, { status });
         }
     } else {
         const newUrl = new URL(`/api/${specsToDiff(canonicalSpecs)}`, req.url);

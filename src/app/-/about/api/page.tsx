@@ -32,7 +32,7 @@ const AboutApiPage = async () => {
     const specsOrVersions = splitParts(EXAMPLE_QUERY);
     const { canonicalSpecs: specs } = await destination(specsOrVersions);
 
-    const diff = await npmDiff(specs, {});
+    const result = await npmDiff(specs, {});
 
     return (
         <Stack align="center" gap={8} className="border p-5">
@@ -66,7 +66,9 @@ const AboutApiPage = async () => {
             <p>
                 a <i>diff</i> of the two provided packages
             </p>
-            <Code variant="block">{diff}</Code>
+            <Code variant="block">
+                {result.ok ? result.diff : result.message}
+            </Code>
         </Stack>
     );
 };
