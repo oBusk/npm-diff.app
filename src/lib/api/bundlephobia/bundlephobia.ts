@@ -85,9 +85,8 @@ async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
             return null;
         }
     }
-
-    return null;
 }
+
 async function getPackages(
     aSpec: string,
     bSpec: string,
