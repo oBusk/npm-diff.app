@@ -1,6 +1,7 @@
 allowBuilds:
+    "@parcel/watcher": true
     sharp: true
-    simple-git-hooks@2.13.1: true
+    simple-git-hooks@2.14.0: true
     unrs-resolver: true
 
 configDependencies:
@@ -16,14 +17,12 @@ minimumReleaseAgeExclude:
 
 overrides:
     "@types/react": 19.2.18
-    "@types/react-dom": 19.2.4
+    "@types/react-dom": 19.2.5
     postcss@<8.5.10: ^8.5.10
-    sharp@<0.35.0: ^0.35.0
 
 patchedDependencies:
     gitdiff-parser@0.3.1: patches/gitdiff-parser@0.3.1.patch
 
 trustPolicyExclude:
     - semver@6.3.1
-    - tailwind-merge@2.6.1
     - eslint-import-resolver-typescript@3.10.1
