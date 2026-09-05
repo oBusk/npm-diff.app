@@ -261,3 +261,27 @@ This project uses **Next.js App Router** (not Pages Router). Refer to the Next.j
 ### Trust These Instructions
 
 These instructions have been validated by running all commands and testing the build process. If something doesn't work as documented, it may be a legitimate issue with the repository state. Only search for additional information if these instructions are incomplete or incorrect for your specific task.
+
+## pnpm
+
+> pnpm may have changed since your training data. The core CLI is unchanged; where syntax looks unfamiliar, check `pnpm help`.
+
+- Avoid using `-i` or `--interactive` flags since they will hang.
+- To execute locally installed packages, use `pnpm exec <package>`, this will ensure you run the locally installed package and don't accidentally download it anew.
+- `pnpm update` and `pnpm outdated` cover more than `dependencies` and `devDependencies` — they also check `engines.node`, `devEngines.runtime` and the GitHub Actions pins in `.github/workflows/*.yml`.
+- To find out whether a package is installed and at what version, use `pnpm why <package> --depth 0 --json`. It reports every resolved version and what depends on it. Do not parse `pnpm-lock.yaml` or read `node_modules/`.
+- `pnpm clean` will delete all `node_modules` folders in the workspace, which can be useful if in a bad state.
+
+## Code comments
+
+Unless explicitly instructed, do not write code comments. Use names, types and structure to convey purpose. Do not use comments to justify decisions or respond to feedback.
+
+<!-- BEGIN:nextjs-agent-rules -->
+
+# This is NOT the Next.js you know
+
+This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
+
+This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
+
+<!-- END:nextjs-agent-rules -->
