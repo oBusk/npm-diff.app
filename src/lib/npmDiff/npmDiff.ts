@@ -53,7 +53,7 @@ async function npmDiff(
         const isE404 = (e: any): e is Error404 => e.code === "E404";
 
         if (isEtarget(e)) {
-            cacheLife("max");
+            cacheLife("days");
 
             if (e.type === "version") {
                 return {
@@ -67,7 +67,7 @@ async function npmDiff(
         }
 
         if (isE404(e)) {
-            cacheLife("max");
+            cacheLife("days");
 
             return {
                 ok: false,

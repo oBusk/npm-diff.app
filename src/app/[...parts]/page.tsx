@@ -1,9 +1,7 @@
 import { type Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
-import npa from "npm-package-arg";
 import { type JSX, Suspense } from "react";
 import { type ViewType } from "react-diff-view";
-import validatePackageName from "validate-npm-package-name";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
@@ -13,6 +11,7 @@ import decodeParts from "^/lib/utils/decodeParts";
 import { isCatalogPage } from "^/lib/utils/isCatalogPage";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
+import validateSpecs from "^/lib/utils/validateSpecs";
 import BundlephobiaDiff from "./_page/BundlephobiaDiff";
 import CatalogPage from "./_page/catalog/CatalogPage";
 import { generateCatalogMetadata } from "./_page/catalog/generateCatalogMetadata";
@@ -23,29 +22,6 @@ import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 import Sources from "./_page/Sources/Sources";
 
 export const maxDuration = 60;
-
-function validateSpecs(specs: string[]): boolean {
-    for (const spec of specs) {
-        try {
-            const parsed = npa(spec);
-            if (parsed.type === "directory" || parsed.type === "file") {
-                return false;
-            }
-            if (parsed.name) {
-                const validation = validatePackageName(parsed.name);
-                if (
-                    !validation.validForNewPackages &&
-                    !validation.validForOldPackages
-                ) {
-                    return false;
-                }
-            }
-        } catch {
-            return false;
-        }
-    }
-    return true;
-}
 
 export interface DiffPageProps {
     params: Promise<{ parts: string | string[] }>;

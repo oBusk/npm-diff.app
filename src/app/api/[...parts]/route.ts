@@ -5,6 +5,7 @@ import { parseQuery } from "^/lib/query";
 import { defaultPageCachingHeaders } from "^/lib/utils/headers";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
+import validateSpecs from "^/lib/utils/validateSpecs";
 
 export const maxDuration = 60;
 
@@ -23,6 +24,10 @@ export async function GET(req: NextRequest, { params }: DiffApiContext) {
     const options = Object.fromEntries(searchParams);
 
     const specsOrVersions = splitParts(parts);
+
+    if (!validateSpecs(specsOrVersions)) {
+        return NextResponse.json("Invalid package spec", { status: 400 });
+    }
 
     const { redirect: red, canonicalSpecs } =
         await destination(specsOrVersions);
