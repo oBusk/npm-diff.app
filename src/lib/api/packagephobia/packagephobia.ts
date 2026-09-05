@@ -4,7 +4,7 @@ import type PackagephobiaResponse from "./PackagephobiaResponse";
 import type PackagephobiaResults from "./PackagephobiaResult";
 
 async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
-    "use cache";
+    "use cache: remote";
 
     try {
         const response = await fetch(
@@ -14,27 +14,23 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
                 headers: {
                     "User-Agent": USER_AGENT,
                 },
-                cache: "force-cache",
-                next: { revalidate: 3600 },
+                cache: "no-store",
             },
         );
 
         if (response.status === 200) {
             const json: PackagephobiaResponse = await response.json();
 
-            // If we succeed, cache as long as we're allowed
             cacheLife("max");
 
             return json;
         } else if (response.status === 404) {
-            // Package not found, cache for a while
             cacheLife("hours");
 
             console.warn(`[${spec}] Packagephobia returned 404 Not Found`);
 
             return null;
         } else if (response.status === 429) {
-            // Rate limited, cache briefly
             cacheLife("hours");
 
             console.warn(
@@ -43,7 +39,6 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
 
             return null;
         } else {
-            // For other, unexpected status codes, we cache briefly and log the error.
             cacheLife("hours");
 
             console.warn(
@@ -54,15 +49,12 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
         }
     } catch (e) {
         if (e instanceof Error && e.name === "TimeoutError") {
-            // Timing out is typical for large or complex packages.
-            // We don't want to retry too often, but we also don't want to cache forever in case the issue is resolved.
             cacheLife("days");
 
             console.warn(`[${spec}] Packagephobia request timed out`);
 
             return null;
         } else {
-            // For other errors, we cache briefly and log the error.
             cacheLife("hours");
 
             console.error(`[${spec}] Packagephobia request error:`, e);
