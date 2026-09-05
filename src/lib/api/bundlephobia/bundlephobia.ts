@@ -22,8 +22,8 @@ async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
                 headers: {
                     "User-Agent": USER_AGENT,
                 },
-                // Opt out of fetch-level caching, we have caching in function
-                cache: "no-store",
+                cache: "force-cache",
+                next: { revalidate: 3600 },
             },
         );
 
