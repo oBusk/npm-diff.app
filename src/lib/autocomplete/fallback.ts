@@ -7,7 +7,7 @@ export type AutocompleteFallback = AutocompleteSuggestion[];
 
 async function fallback() {
     const { results } = await getPopularPackages(AUTOCOMPLETE_SIZE);
-    const fallback = results.map(packageSuggestion);
+    const fallback = results.filter((r) => r?.package).map(packageSuggestion);
     return fallback;
 }
 

@@ -8,7 +8,7 @@ async function getAutocompleteSuggestions(
 ): Promise<AutocompleteSuggestion[]> {
     const results = await getSuggestions(query, AUTOCOMPLETE_SIZE);
 
-    return results.map(packageSuggestion);
+    return results.filter((r) => r?.package).map(packageSuggestion);
 }
 
 export default getAutocompleteSuggestions;
