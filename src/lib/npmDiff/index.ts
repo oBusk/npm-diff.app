@@ -1,6 +1,6 @@
-import type { NpmDiffError } from "./Error";
 import npmDiff from "./npmDiff";
 import type { NpmDiffResult } from "./npmDiff";
+import type { NpmDiffError } from "./NpmDiffError";
 import type Options from "./Options";
 
 export default npmDiff;

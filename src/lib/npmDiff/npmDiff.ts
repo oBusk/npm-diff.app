@@ -1,6 +1,6 @@
 import libnpmdiff, { type Options } from "libnpmdiff";
 import { cacheLife } from "next/cache";
-import type { NpmDiffError } from "./Error";
+import type { NpmDiffError } from "./NpmDiffError";
 
 export type NpmDiffResult =
     { ok: true; diff: string } | ({ ok: false } & NpmDiffError);
