@@ -1,7 +1,9 @@
 import { type Metadata } from "next";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
+import npa from "npm-package-arg";
 import { type JSX, Suspense } from "react";
 import { type ViewType } from "react-diff-view";
+import validatePackageName from "validate-npm-package-name";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination from "^/lib/destination";
@@ -20,6 +22,31 @@ import PackagephobiaDiff from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 import Sources from "./_page/Sources/Sources";
 
+export const maxDuration = 60;
+
+function validateSpecs(specs: string[]): boolean {
+    for (const spec of specs) {
+        try {
+            const parsed = npa(spec);
+            if (parsed.type === "directory" || parsed.type === "file") {
+                return false;
+            }
+            if (parsed.name) {
+                const validation = validatePackageName(parsed.name);
+                if (
+                    !validation.validForNewPackages &&
+                    !validation.validForOldPackages
+                ) {
+                    return false;
+                }
+            }
+        } catch {
+            return false;
+        }
+    }
+    return true;
+}
+
 export interface DiffPageProps {
     params: Promise<{ parts: string | string[] }>;
     searchParams: Promise<QueryParams & { [DIFF_TYPE_PARAM_NAME]: ViewType }>;
@@ -31,9 +58,12 @@ export async function generateMetadata({
     const { parts } = await params;
     const specs = splitParts(decodeParts(parts));
 
-    // Check if this is a catalog page
     if (isCatalogPage(specs)) {
         return generateCatalogMetadata(specs);
+    }
+
+    if (!validateSpecs(specs)) {
+        notFound();
     }
 
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
@@ -53,9 +83,12 @@ const DiffPageInner = async ({
 
     const specsOrVersions = splitParts(decodeParts(parts));
 
-    // Check if this is a catalog page
     if (isCatalogPage(specsOrVersions)) {
         return <CatalogPage specs={specsOrVersions} />;
+    }
+
+    if (!validateSpecs(specsOrVersions)) {
+        notFound();
     }
 
     const { redirect: redirectTarget, canonicalSpecs } =

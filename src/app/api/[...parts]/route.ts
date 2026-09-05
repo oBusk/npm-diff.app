@@ -6,6 +6,8 @@ import { defaultPageCachingHeaders } from "^/lib/utils/headers";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import splitParts from "^/lib/utils/splitParts";
 
+export const maxDuration = 60;
+
 enum STATUS_CODES {
     TEMPORARY_REDIRECT = 307,
     PERMANENT_REDIRECT = 308,
