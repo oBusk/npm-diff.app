@@ -45,7 +45,7 @@ const LinkButton: FunctionComponent<
             <ExternalLink
                 className={cx(
                     COMMON_PADDING!,
-                    "rounded-lg text-center hover:bg-muted",
+                    "block rounded-lg text-center hover:bg-muted",
                     className!,
                 )}
                 href={service.url(pkg)}
