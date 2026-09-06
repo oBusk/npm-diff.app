@@ -117,7 +117,6 @@ settings:
 overrides:
   '@types/react': 19.2.18
   '@types/react-dom': 19.2.7
-  postcss@<8.5.10: ^8.5.10
   '@npmcli/agent@^5': ^4.0.2
 
 patchedDependencies:
@@ -3857,7 +3856,7 @@ packages:
     resolution: {integrity: sha512-5osppouFc0VR9/VYzYxO03VaDa3e8F23Kfd6/9qcZTUI8P58GIYlArOET2Wq0ywSl2o2PjELhYOFI4W7l5QHKw==}
     engines: {node: '>=18.0'}
     peerDependencies:
-      postcss: ^8.5.10
+      postcss: ^8.2.14
 
   postcss-selector-parser@7.1.6:
     resolution: {integrity: sha512-7qASPzhKF2l2KLboRZux8CCTRMdGiV08vWmyKzPz22qZ7ZjQBOeY7rNzNoCLSUiftJ7HUq0GERHmxw/t0dCdMw==}
