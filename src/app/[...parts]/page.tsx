@@ -34,12 +34,12 @@ export async function generateMetadata({
     const { parts } = await params;
     const specs = splitParts(decodeParts(parts));
 
-    if (isCatalogPage(specs)) {
-        return generateCatalogMetadata(specs);
-    }
-
     if (!validateSpecs(specs)) {
         notFound();
+    }
+
+    if (isCatalogPage(specs)) {
+        return generateCatalogMetadata(specs);
     }
 
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
@@ -59,12 +59,12 @@ const DiffPageInner = async ({
 
     const specsOrVersions = splitParts(decodeParts(parts));
 
-    if (isCatalogPage(specsOrVersions)) {
-        return <CatalogPage specs={specsOrVersions} />;
-    }
-
     if (!validateSpecs(specsOrVersions)) {
         notFound();
+    }
+
+    if (isCatalogPage(specsOrVersions)) {
+        return <CatalogPage specs={specsOrVersions} />;
     }
 
     const { redirect: redirectTarget, canonicalSpecs } =
