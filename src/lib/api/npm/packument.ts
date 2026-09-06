@@ -51,6 +51,8 @@ async function packumentForPackage(packageName: string): Promise<Packument> {
 
     return pacotePackument(packageName, {
         fullMetadata: true,
+        // Make sure we don't cache on disk
+        cache: undefined,
     }) as Promise<Packument>;
 }
 
