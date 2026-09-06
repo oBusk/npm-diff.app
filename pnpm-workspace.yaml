@@ -19,6 +19,8 @@ overrides:
     "@types/react": 19.2.18
     "@types/react-dom": 19.2.5
     postcss@<8.5.10: ^8.5.10
+    # https://github.com/oBusk/npm-diff.app/pull/1046
+    "@npmcli/agent@^5": ^4.0.2
 
 patchedDependencies:
     gitdiff-parser@0.3.1: patches/gitdiff-parser@0.3.1.patch
