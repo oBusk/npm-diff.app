@@ -1,12 +1,12 @@
-import type Result from "^/lib/api/npms/Result";
-import { type Suggestion } from "^/lib/api/npms/suggestions";
+import type { Suggestion } from "^/lib/api/npmSearch/suggestions";
 import type AutocompleteSuggestion from "./AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "./AutocompleteSuggestionTypes";
 
 const packageSuggestion = ({
-    package: { name, description },
+    name,
+    description,
     highlight,
-}: Result & Suggestion): AutocompleteSuggestion => ({
+}: Suggestion): AutocompleteSuggestion => ({
     type: AutocompleteSuggestionTypes.Package,
     // @ suffix to start selecting version right away
     value: `${name}@`,
