@@ -1,4 +1,4 @@
-import { type Version } from "^/app/api/-/versions/types";
+import { type Version } from "^/lib/api/npm/VersionData";
 import { type Matched, matchVersions } from "./matchVersions";
 
 describe("matchVersions", () => {

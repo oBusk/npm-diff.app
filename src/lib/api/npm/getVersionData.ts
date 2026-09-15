@@ -1,20 +1,11 @@
 import { cacheLife } from "next/cache";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
+import buildVersionMap from "./buildVersionMap";
 import packument from "./packument";
+import type { VersionMap } from "./VersionData";
 
-// Packuments include a lot of data, often enough to make them too large for the cache.
-// For our diff page, and autocomplete, we want to find versions and which date and tag they have.
-// So we build this data here, and run it throug the cache to cache this value.
-
-export type VersionData = {
-    time: string;
-    tags?: string[];
-};
-
-export type VersionMap = {
-    [version: string]: VersionData;
-};
+export type { VersionData, VersionMap, Version } from "./VersionData";
 
 /**
  * Separate function that takes only packagename for better caching.
@@ -28,24 +19,12 @@ async function getVersionMap(packageName: string): Promise<VersionMap> {
 
     const { time, "dist-tags": tags, versions } = await packument(packageName);
 
-    const versionData: VersionMap = {};
-
-    for (const [version] of Object.entries(versions)) {
-        versionData[version] = { time: time[version] };
+    const versionTimes: Record<string, string> = {};
+    for (const version of Object.keys(versions)) {
+        versionTimes[version] = time[version];
     }
 
-    for (const [tag, version] of Object.entries(tags)) {
-        const entry = versionData[version];
-        if (entry) {
-            if (entry.tags != null) {
-                entry.tags.push(tag);
-            } else {
-                entry.tags = [tag];
-            }
-        }
-    }
-
-    return versionData;
+    return buildVersionMap(versionTimes, tags);
 }
 
 async function getVersionData(
