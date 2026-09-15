@@ -1,11 +1,11 @@
 import { liteClient, type SearchParamsObject } from "algoliasearch/lite";
-import getAlgoliaConfig from "./algoliaConfig";
+import AlgoliaConfig from "./AlgoliaConfig";
 
 let client: ReturnType<typeof liteClient> | undefined;
 
 function getClient() {
     if (!client) {
-        const { appId, apiKey } = getAlgoliaConfig();
+        const { appId, apiKey } = AlgoliaConfig;
         client = liteClient(appId, apiKey);
     }
 
@@ -15,7 +15,7 @@ function getClient() {
 export default async function searchNpmSearch<T>(
     params: SearchParamsObject,
 ): Promise<T[]> {
-    const { indexName } = getAlgoliaConfig();
+    const { indexName } = AlgoliaConfig;
 
     const { results } = await getClient().searchForHits<T>({
         requests: [{ indexName, ...params }],
