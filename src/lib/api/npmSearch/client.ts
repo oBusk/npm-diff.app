@@ -1,27 +1,31 @@
 import { liteClient, type SearchParamsObject } from "algoliasearch/lite";
-import AlgoliaConfig from "./AlgoliaConfig";
+
+const algoliaConfig = {
+    appId: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID!,
+    apiKey: process.env.NEXT_PUBLIC_ALGOLIA_API_KEY!,
+    indexName: process.env.NEXT_PUBLIC_ALGOLIA_INDEX_NAME!,
+};
+
+if (!algoliaConfig.appId || !algoliaConfig.apiKey || !algoliaConfig.indexName) {
+    throw new Error(
+        "Algolia configuration is missing. Please set NEXT_PUBLIC_ALGOLIA_APP_ID, NEXT_PUBLIC_ALGOLIA_API_KEY, and NEXT_PUBLIC_ALGOLIA_INDEX_NAME in your environment variables.",
+    );
+}
 
 let client: ReturnType<typeof liteClient> | undefined;
-
-function getClient() {
-    if (!client) {
-        const { appId, apiKey } = AlgoliaConfig;
-        client = liteClient(appId, apiKey);
-    }
-
-    return client;
-}
 
 export default async function searchNpmSearch<T>(
     params: SearchParamsObject,
 ): Promise<T[]> {
-    const { indexName } = AlgoliaConfig;
+    const { appId, apiKey, indexName } = algoliaConfig;
 
-    const { results } = await getClient().searchForHits<T>({
+    if (!client) {
+        client = liteClient(appId, apiKey);
+    }
+
+    const { results } = await client.searchForHits<T>({
         requests: [{ indexName, ...params }],
     });
 
-    const [{ hits }] = results;
-
-    return hits;
+    return results[0]?.hits ?? [];
 }
