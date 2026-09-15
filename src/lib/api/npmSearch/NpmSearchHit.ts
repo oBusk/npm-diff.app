@@ -1,8 +1,6 @@
-/**
- * How the entries in the open algolia index called `npm-search`
- */
-export default interface NpmSearchHit {
-    objectID: string;
+import type { Hit } from "algoliasearch";
+
+interface NpmSearchRecord {
     name: string;
     description?: string;
     popular?: boolean;
@@ -11,9 +9,8 @@ export default interface NpmSearchHit {
     versions?: Record<string, string>;
     /** Map of dist-tag to version */
     tags?: Record<string, string>;
-    _highlightResult?: {
-        name?: {
-            value: string;
-        };
-    };
 }
+
+type NpmSearchHit = Hit<NpmSearchRecord>;
+
+export default NpmSearchHit;
