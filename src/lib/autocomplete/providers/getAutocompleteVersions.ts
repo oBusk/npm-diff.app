@@ -1,11 +1,11 @@
 import npa from "npm-package-arg";
-import buildVersionMap from "^/lib/api/npm/buildVersionMap";
-import type { Version } from "^/lib/api/npm/VersionData";
 import getNpmSearchVersions from "^/lib/api/npmSearch/versions";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import type AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
+import buildVersions from "./versions/buildVersions";
 import { matchVersions } from "./versions/matchVersions";
+import type { Version } from "./versions/Version";
 
 /**
  * Caches in-flight/resolved lookups by package name, so retyping or
@@ -21,11 +21,7 @@ function getVersions(packageName: string): Promise<Version[]> {
     if (!promise) {
         promise = getNpmSearchVersions(packageName)
             .then((result) =>
-                result
-                    ? Object.entries(
-                          buildVersionMap(result.versions, result.tags),
-                      ).map(([version, data]) => ({ version, ...data }))
-                    : [],
+                result ? buildVersions(result.versions, result.tags) : [],
             )
             .catch((): Version[] => {
                 versionsCache.delete(packageName);

@@ -1,5 +1,5 @@
-import { type Version } from "^/lib/api/npm/VersionData";
 import { type Matched, matchVersions } from "./matchVersions";
+import { type Version } from "./Version";
 
 describe("matchVersions", () => {
     let size: number;
