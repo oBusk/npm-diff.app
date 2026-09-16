@@ -1,4 +1,4 @@
-import getSuggestions from "^/lib/api/npms/suggestions";
+import getSuggestions from "^/lib/api/npmSearch/suggestions";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import type AutocompleteSuggestion from "../AutocompleteSuggestion";
 import packageSuggestion from "../packageSuggestion";
@@ -8,7 +8,7 @@ async function getAutocompleteSuggestions(
 ): Promise<AutocompleteSuggestion[]> {
     const results = await getSuggestions(query, AUTOCOMPLETE_SIZE);
 
-    return results.filter((r) => r?.package).map(packageSuggestion);
+    return results.map(packageSuggestion);
 }
 
 export default getAutocompleteSuggestions;

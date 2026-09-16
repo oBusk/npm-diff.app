@@ -1,12 +1,17 @@
 import npa from "npm-package-arg";
-import {
-    type SpecsEndpointResponse,
-    VERSIONS_PARAMETER_PACKAGE,
-} from "^/app/api/-/versions/types";
+import getNpmSearchVersions from "^/lib/api/npmSearch/versions";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import type AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
+import buildVersions from "./versions/buildVersions";
 import { matchVersions } from "./versions/matchVersions";
+import type { Version } from "./versions/Version";
+
+async function getVersions(packageName: string): Promise<Version[]> {
+    const result = await getNpmSearchVersions(packageName);
+
+    return result ? buildVersions(result.versions, result.tags) : [];
+}
 
 const npaSafe = (input: string): npa.Result => {
     try {
@@ -41,11 +46,7 @@ async function getAutocompleteVersions(
         throw new Error("No package name provided");
     }
 
-    const url = `/api/-/versions?${new URLSearchParams({
-        [VERSIONS_PARAMETER_PACKAGE]: name,
-    }).toString()}`;
-    const response = await fetch(url);
-    const versions: SpecsEndpointResponse = await response.json();
+    const versions = await getVersions(name);
 
     return matchVersions({
         rawSpec,

@@ -1,6 +1,6 @@
 import ClientDate from "^/components/ClientDate";
 import Skeleton from "^/components/ui/Skeleton";
-import getVersionData from "^/lib/api/npm/getVersionData";
+import getNpmSearchVersions from "^/lib/api/npmSearch/versions";
 import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
@@ -13,9 +13,16 @@ export interface PublishDateProps {
 const shared = cx("my-1 flex h-5 items-center justify-center");
 
 async function PublishDate({ pkg, className }: PublishDateProps) {
-    const versionData = await getVersionData(pkg);
+    // Uses algolia to fetch timestamps for each version
+    // Could also use packument, but is heavier
+    // Packument could be good backup
+    const result = await getNpmSearchVersions(pkg.name);
 
-    const time = versionData[pkg.version]?.time ?? null;
+    const time = result?.versions[pkg.version];
+
+    if (!time) {
+        return null;
+    }
 
     return (
         <ClientDate
