@@ -7,30 +7,10 @@ import buildVersions from "./versions/buildVersions";
 import { matchVersions } from "./versions/matchVersions";
 import type { Version } from "./versions/Version";
 
-/**
- * Caches in-flight/resolved lookups by package name, so retyping or
- * refining a spec for the same package (the common case) does not
- * re-query Algolia. Failed lookups are evicted so a transient error
- * doesn't stick for the rest of the session.
- */
-const versionsCache = new Map<string, Promise<Version[]>>();
+async function getVersions(packageName: string): Promise<Version[]> {
+    const result = await getNpmSearchVersions(packageName);
 
-function getVersions(packageName: string): Promise<Version[]> {
-    let promise = versionsCache.get(packageName);
-
-    if (!promise) {
-        promise = getNpmSearchVersions(packageName)
-            .then((result) =>
-                result ? buildVersions(result.versions, result.tags) : [],
-            )
-            .catch((): Version[] => {
-                versionsCache.delete(packageName);
-                return [];
-            });
-        versionsCache.set(packageName, promise);
-    }
-
-    return promise;
+    return result ? buildVersions(result.versions, result.tags) : [];
 }
 
 const npaSafe = (input: string): npa.Result => {
