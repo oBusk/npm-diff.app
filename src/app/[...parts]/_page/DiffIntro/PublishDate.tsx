@@ -13,9 +13,6 @@ export interface PublishDateProps {
 const shared = cx("my-1 flex h-5 items-center justify-center");
 
 async function PublishDate({ pkg, className }: PublishDateProps) {
-    // Uses algolia to fetch timestamps for each version
-    // Could also use packument, but is heavier
-    // Packument could be good backup
     const result = await getVersionsFromNpmSearch(pkg.name);
 
     const time = result?.versions[pkg.version];
