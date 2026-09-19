@@ -15,6 +15,17 @@ pnpm install
 
 ## Development
 
+Package search/autocomplete uses Algolia's `npm-search` index and needs
+credentials in `.env.local`:
+
+```
+NEXT_PUBLIC_ALGOLIA_APP_ID=
+NEXT_PUBLIC_ALGOLIA_API_KEY=
+NEXT_PUBLIC_ALGOLIA_INDEX_NAME=
+```
+
+If the project is linked to Vercel, `vercel env pull` will fetch these for you.
+
 ```
 pnpm run dev
 ```

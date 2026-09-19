@@ -8,4 +8,4 @@ endpoints, we nest our other endpoints under a `-` prefix.
 
 So instead
 
-- `/api/-/versions` is a valid request
+- `/api/-/example` is a valid request

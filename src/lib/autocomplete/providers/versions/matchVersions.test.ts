@@ -1,9 +1,12 @@
-import { type Version } from "^/app/api/-/versions/types";
 import { type Matched, matchVersions } from "./matchVersions";
+import { type Version } from "./Version";
+
+const TIME = "2020-01-01T00:00:00.000Z";
 
 describe("matchVersions", () => {
     let size: number;
     let versions: Version[];
+    let all: (rawSpec: string, optionalFilter?: string) => Matched[];
     let fn: (rawSpec: string, optionalFilter?: string) => Matched[];
 
     beforeEach(() => {
@@ -31,17 +34,30 @@ describe("matchVersions", () => {
                 "11.1.2",
                 "11.1.3-beta.1",
                 "11.1.3-beta.2",
-            ].map((version) => ({ version, time: `${Date.now()}` })),
-            { version: "11.2.0", time: `${Date.now()}`, tags: ["latest"] },
+            ].map((version) => ({ version, time: TIME })),
+            { version: "11.2.0", time: TIME, tags: ["latest"] },
         ];
-        fn = (rawSpec, optionalFilter) =>
+        all = (rawSpec, optionalFilter) =>
             matchVersions({
                 rawSpec,
                 versions,
                 size,
                 optionalFilter,
             });
+        // `time` is asserted on its own below, so the matching assertions can
+        // stay focused on which versions get picked.
+        fn = (rawSpec, optionalFilter) =>
+            all(rawSpec, optionalFilter).map(({ time, ...rest }) => rest);
     });
+
+    it("Passes through the publish time", () =>
+        expect(all("11.1.1")).toEqual<Matched[]>([
+            {
+                version: "11.1.1",
+                versionEmphasized: "<em>11.1.1</em>",
+                time: TIME,
+            },
+        ]));
 
     it("Does not mutate versions array parameter", () => {
         const original = [...versions];
