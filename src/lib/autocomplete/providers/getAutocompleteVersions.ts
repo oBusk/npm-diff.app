@@ -1,5 +1,5 @@
 import npa from "npm-package-arg";
-import getNpmSearchVersions from "^/lib/api/npmSearch/versions";
+import getVersionsFromNpmSearch from "^/lib/api/npmSearch/versions";
 import AUTOCOMPLETE_SIZE from "../autcompleteSize";
 import type AutocompleteSuggestion from "../AutocompleteSuggestion";
 import AutocompleteSuggestionTypes from "../AutocompleteSuggestionTypes";
@@ -8,7 +8,7 @@ import { matchVersions } from "./versions/matchVersions";
 import type { Version } from "./versions/Version";
 
 async function getVersions(packageName: string): Promise<Version[]> {
-    const result = await getNpmSearchVersions(packageName);
+    const result = await getVersionsFromNpmSearch(packageName);
 
     return result ? buildVersions(result.versions, result.tags) : [];
 }

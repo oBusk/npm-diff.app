@@ -1,5 +1,5 @@
 import searchNpmSearch from "./client";
-import getNpmSearchVersions from "./versions";
+import getVersionsFromNpmSearch from "./versions";
 
 jest.mock("./client", () => ({
     __esModule: true,
@@ -8,7 +8,7 @@ jest.mock("./client", () => ({
 
 const searchNpmSearchMock = jest.mocked(searchNpmSearch);
 
-describe("getNpmSearchVersions", () => {
+describe("getVersionsFromNpmSearch", () => {
     afterEach(() => {
         jest.resetAllMocks();
     });
@@ -18,7 +18,7 @@ describe("getNpmSearchVersions", () => {
             { objectID: "react", name: "react", versions: { "1.0.0": "" } },
         ]);
 
-        await getNpmSearchVersions("react");
+        await getVersionsFromNpmSearch("react");
 
         expect(searchNpmSearchMock).toHaveBeenCalledWith({
             query: "",
@@ -37,7 +37,7 @@ describe("getNpmSearchVersions", () => {
             },
         ]);
 
-        await getNpmSearchVersions("@types/node");
+        await getVersionsFromNpmSearch("@types/node");
 
         expect(searchNpmSearchMock).toHaveBeenCalledWith(
             expect.objectContaining({ filters: 'objectID:"@types/node"' }),
@@ -54,7 +54,7 @@ describe("getNpmSearchVersions", () => {
             },
         ]);
 
-        await expect(getNpmSearchVersions("react")).resolves.toEqual({
+        await expect(getVersionsFromNpmSearch("react")).resolves.toEqual({
             versions: { "1.0.0": "2020-01-01T00:00:00.000Z" },
             tags: { latest: "1.0.0" },
         });
@@ -69,7 +69,7 @@ describe("getNpmSearchVersions", () => {
             },
         ]);
 
-        await expect(getNpmSearchVersions("react")).resolves.toEqual({
+        await expect(getVersionsFromNpmSearch("react")).resolves.toEqual({
             versions: { "1.0.0": "2020-01-01T00:00:00.000Z" },
             tags: {},
         });
@@ -79,7 +79,7 @@ describe("getNpmSearchVersions", () => {
         searchNpmSearchMock.mockResolvedValue([]);
 
         await expect(
-            getNpmSearchVersions("does-not-exist"),
+            getVersionsFromNpmSearch("does-not-exist"),
         ).resolves.toBeNull();
     });
 
@@ -88,7 +88,7 @@ describe("getNpmSearchVersions", () => {
             { objectID: "react", name: "react" },
         ]);
 
-        await expect(getNpmSearchVersions("react")).resolves.toBeNull();
+        await expect(getVersionsFromNpmSearch("react")).resolves.toBeNull();
     });
 
     it("returns null when the hit's versions map is empty", async () => {
@@ -96,6 +96,6 @@ describe("getNpmSearchVersions", () => {
             { objectID: "react", name: "react", versions: {} },
         ]);
 
-        await expect(getNpmSearchVersions("react")).resolves.toBeNull();
+        await expect(getVersionsFromNpmSearch("react")).resolves.toBeNull();
     });
 });

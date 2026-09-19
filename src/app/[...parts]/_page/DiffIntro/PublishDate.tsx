@@ -1,6 +1,6 @@
 import ClientDate from "^/components/ClientDate";
 import Skeleton from "^/components/ui/Skeleton";
-import getNpmSearchVersions from "^/lib/api/npmSearch/versions";
+import getVersionsFromNpmSearch from "^/lib/api/npmSearch/versions";
 import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
@@ -16,7 +16,7 @@ async function PublishDate({ pkg, className }: PublishDateProps) {
     // Uses algolia to fetch timestamps for each version
     // Could also use packument, but is heavier
     // Packument could be good backup
-    const result = await getNpmSearchVersions(pkg.name);
+    const result = await getVersionsFromNpmSearch(pkg.name);
 
     const time = result?.versions[pkg.version];
 

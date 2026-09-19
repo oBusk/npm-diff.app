@@ -6,7 +6,7 @@ export interface NpmSearchVersions {
     tags: Record<string, string>;
 }
 
-export default async function getNpmSearchVersions(
+export default async function getVersionsFromNpmSearch(
     packageName: string,
 ): Promise<NpmSearchVersions | null> {
     const [hit] = await searchNpmSearch<NpmSearchHit>({
