@@ -8,6 +8,7 @@ import {
     useNpmCombobox,
     type UseNpmComboboxProps,
 } from "^/lib/npm-combobox/useNpmCombobox";
+import AlgoliaAttribution from "./AlgoliaAttribution";
 import {
     ComboboxInput,
     type ComboboxInputProps,
@@ -116,8 +117,9 @@ const SpecInput = forwardRef<SpecInputRef, SpecInputProps>(
                                 ))
                             )}
                             {loading ? (
-                                <Loader2 className="absolute right-1 bottom-1 animate-spin" />
+                                <Loader2 className="absolute bottom-1 left-1 animate-spin" />
                             ) : null}
+                            <AlgoliaAttribution />
                         </>
                     ) : null}
                 </ComboboxSuggestionList>
