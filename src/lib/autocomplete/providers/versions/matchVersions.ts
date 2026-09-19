@@ -168,9 +168,10 @@ export function matchVersions({
 
     return matches
         .sort((a, b) => rcompare(a.version, b.version))
-        .map(({ version, tags }) => ({
+        .map(({ version, tags, time }) => ({
             version,
             versionEmphasized: emphasize(version, rawSpec),
+            time,
             ...(tags
                 ? { tags: tags.map((tag) => emphasize(tag, rawSpec)) }
                 : undefined),
