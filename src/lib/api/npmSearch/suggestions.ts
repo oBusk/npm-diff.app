@@ -1,3 +1,4 @@
+import type { HighlightResultOption } from "algoliasearch/lite";
 import searchNpmSearch from "./client";
 import type NpmSearchHit from "./NpmSearchHit";
 
@@ -16,8 +17,14 @@ export default async function getSuggestions(
         attributesToRetrieve: ["name", "description"],
     });
 
-    return hits.map((hit) => ({
-        ...hit,
-        highlight: hit._highlightResult?.name?.value,
-    }));
+    return hits.map((hit) => {
+        // name is string, therefore is a single HighlightResultOption (or undefiend)
+        const nameResult = hit._highlightResult?.name as
+            HighlightResultOption | undefined;
+
+        return {
+            ...hit,
+            highlight: nameResult?.value,
+        };
+    });
 }
