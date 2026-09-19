@@ -1,4 +1,4 @@
-import { liteClient, type SearchParamsObject } from "algoliasearch/lite";
+import { liteClient, type Hit, type SearchParamsObject } from "algoliasearch/lite";
 
 const algoliaConfig = {
     appId: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,
@@ -10,7 +10,7 @@ let client: ReturnType<typeof liteClient> | undefined;
 
 export default async function searchNpmSearch<T>(
     params: SearchParamsObject,
-): Promise<T[]> {
+): Promise<Hit<T>[]> {
     const { appId, apiKey, indexName } = algoliaConfig;
 
     if (!appId || !apiKey || !indexName) {

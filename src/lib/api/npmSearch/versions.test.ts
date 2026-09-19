@@ -6,7 +6,7 @@ jest.mock("./client", () => ({
     default: jest.fn(),
 }));
 
-const searchNpmSearchMock = jest.mocked(searchNpmSearch);
+const searchNpmSearchMock = searchNpmSearch as unknown as jest.Mock;
 
 describe("getVersionsFromNpmSearch", () => {
     afterEach(() => {
@@ -15,7 +15,7 @@ describe("getVersionsFromNpmSearch", () => {
 
     it("queries by objectID and requests only versions/tags", async () => {
         searchNpmSearchMock.mockResolvedValue([
-            { objectID: "react", name: "react", versions: { "1.0.0": "" } },
+            { objectID: "react", versions: { "1.0.0": "" } },
         ]);
 
         await getVersionsFromNpmSearch("react");
@@ -32,7 +32,6 @@ describe("getVersionsFromNpmSearch", () => {
         searchNpmSearchMock.mockResolvedValue([
             {
                 objectID: "@types/node",
-                name: "@types/node",
                 versions: { "1.0.0": "" },
             },
         ]);
@@ -48,7 +47,6 @@ describe("getVersionsFromNpmSearch", () => {
         searchNpmSearchMock.mockResolvedValue([
             {
                 objectID: "react",
-                name: "react",
                 versions: { "1.0.0": "2020-01-01T00:00:00.000Z" },
                 tags: { latest: "1.0.0" },
             },
@@ -64,7 +62,6 @@ describe("getVersionsFromNpmSearch", () => {
         searchNpmSearchMock.mockResolvedValue([
             {
                 objectID: "react",
-                name: "react",
                 versions: { "1.0.0": "2020-01-01T00:00:00.000Z" },
             },
         ]);
@@ -85,7 +82,7 @@ describe("getVersionsFromNpmSearch", () => {
 
     it("returns null when the hit has no versions", async () => {
         searchNpmSearchMock.mockResolvedValue([
-            { objectID: "react", name: "react" },
+            { objectID: "react" },
         ]);
 
         await expect(getVersionsFromNpmSearch("react")).resolves.toBeNull();
@@ -93,7 +90,7 @@ describe("getVersionsFromNpmSearch", () => {
 
     it("returns null when the hit's versions map is empty", async () => {
         searchNpmSearchMock.mockResolvedValue([
-            { objectID: "react", name: "react", versions: {} },
+            { objectID: "react", versions: {} },
         ]);
 
         await expect(getVersionsFromNpmSearch("react")).resolves.toBeNull();

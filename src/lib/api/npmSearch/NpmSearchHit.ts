@@ -1,6 +1,6 @@
 import type { Hit } from "algoliasearch";
 
-interface NpmSearchRecord {
+export interface NpmSearchRecord {
     name: string;
     description?: string;
     popular?: boolean;
