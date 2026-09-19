@@ -81,9 +81,7 @@ describe("getVersionsFromNpmSearch", () => {
     });
 
     it("returns null when the hit has no versions", async () => {
-        searchNpmSearchMock.mockResolvedValue([
-            { objectID: "react" },
-        ]);
+        searchNpmSearchMock.mockResolvedValue([{ objectID: "react" }]);
 
         await expect(getVersionsFromNpmSearch("react")).resolves.toBeNull();
     });

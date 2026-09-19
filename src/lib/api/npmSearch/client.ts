@@ -1,4 +1,8 @@
-import { liteClient, type Hit, type SearchParamsObject } from "algoliasearch/lite";
+import {
+    type Hit,
+    liteClient,
+    type SearchParamsObject,
+} from "algoliasearch/lite";
 
 const algoliaConfig = {
     appId: process.env.NEXT_PUBLIC_ALGOLIA_APP_ID,

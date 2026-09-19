@@ -1,4 +1,3 @@
-import { cacheLife } from "next/cache";
 import searchNpmSearch from "./client";
 import type { NpmSearchRecord } from "./NpmSearchHit";
 
@@ -10,9 +9,6 @@ export interface NpmSearchVersions {
 export default async function getVersionsFromNpmSearch(
     packageName: string,
 ): Promise<NpmSearchVersions | null> {
-    "use cache";
-    cacheLife("hours");
-
     const [hit] = await searchNpmSearch<NpmSearchRecord>({
         query: "",
         filters: `objectID:"${packageName}"`,

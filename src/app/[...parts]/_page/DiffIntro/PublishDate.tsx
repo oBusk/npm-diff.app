@@ -1,6 +1,6 @@
 import ClientDate from "^/components/ClientDate";
 import Skeleton from "^/components/ui/Skeleton";
-import getVersionsFromNpmSearch from "^/lib/api/npmSearch/versions";
+import getVersionsFromNpmSearch from "^/lib/api/npmSearch/versions.cached";
 import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
