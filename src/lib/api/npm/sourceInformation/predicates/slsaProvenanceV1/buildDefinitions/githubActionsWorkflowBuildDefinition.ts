@@ -1,4 +1,5 @@
 import { type BuildDefinition } from "..";
+import { hrefOnRepositoryHost } from "../../../hrefOnRepositoryHost";
 
 export const GithubActionsWorkflowBuildType =
     "https://slsa-framework.github.io/github-actions-buildtypes/workflow/v1";
@@ -103,6 +104,9 @@ export function parseGithubActionsWorkflowBuildDefinition(
         repositoryPath,
         repositoryUrl,
         buildFileName: workflowPath,
-        buildFileHref: `${repositoryUrl}/blob/${commitHash}/${workflowPath}`,
+        buildFileHref: hrefOnRepositoryHost(
+            `${repositoryUrl}/blob/${commitHash}/${workflowPath}`,
+            repositoryUrl,
+        ),
     };
 }

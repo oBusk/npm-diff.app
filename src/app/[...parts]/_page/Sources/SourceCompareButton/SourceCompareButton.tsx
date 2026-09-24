@@ -32,8 +32,6 @@ export default function SourceCompareButton({
             />
         );
     } else {
-        throw new Error(
-            `Unsupported repository host for comparison: ${sourceA.repositoryUrl}`,
-        );
+        return null;
     }
 }
