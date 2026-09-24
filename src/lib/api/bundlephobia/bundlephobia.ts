@@ -1,6 +1,7 @@
 import { cacheLife } from "next/cache";
 import npa from "npm-package-arg";
 import { USER_AGENT } from "../user-agent";
+import bundlephobiaApiUrl from "./bundlephobiaApiUrl";
 import type BundlephobiaResponse from "./BundlephobiaResponse";
 import type BundlephobiaResults from "./BundlephobiaResults";
 
@@ -15,17 +16,14 @@ async function getPackage(spec: string): Promise<BundlephobiaResponse | null> {
     }
 
     try {
-        const response = await fetch(
-            `https://bundlephobia.com/api/size?package=${spec}`,
-            {
-                signal: AbortSignal.timeout(7_500),
-                headers: {
-                    "User-Agent": USER_AGENT,
-                },
-                // Opt out of fetch-level caching, we have caching in function
-                cache: "no-store",
+        const response = await fetch(bundlephobiaApiUrl(spec), {
+            signal: AbortSignal.timeout(7_500),
+            headers: {
+                "User-Agent": USER_AGENT,
             },
-        );
+            // Opt out of fetch-level caching, we have caching in function
+            cache: "no-store",
+        });
 
         if (response.status === 200) {
             const json: BundlephobiaResponse = await response.json();

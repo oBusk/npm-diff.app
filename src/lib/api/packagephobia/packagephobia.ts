@@ -1,5 +1,6 @@
 import { cacheLife } from "next/cache";
 import { USER_AGENT } from "../user-agent";
+import packagephobiaApiUrl from "./packagephobiaApiUrl";
 import type PackagephobiaResponse from "./PackagephobiaResponse";
 import type PackagephobiaResults from "./PackagephobiaResult";
 
@@ -7,17 +8,14 @@ async function getPackage(spec: string): Promise<PackagephobiaResponse | null> {
     "use cache: remote";
 
     try {
-        const response = await fetch(
-            `https://packagephobia.com/v2/api.json?p=${spec}`,
-            {
-                signal: AbortSignal.timeout(7_500),
-                headers: {
-                    "User-Agent": USER_AGENT,
-                },
-                // Ensure no fetch-level caching, we have caching in function
-                cache: "no-store",
+        const response = await fetch(packagephobiaApiUrl(spec), {
+            signal: AbortSignal.timeout(7_500),
+            headers: {
+                "User-Agent": USER_AGENT,
             },
-        );
+            // Ensure no fetch-level caching, we have caching in function
+            cache: "no-store",
+        });
 
         if (response.status === 200) {
             const json: PackagephobiaResponse = await response.json();
