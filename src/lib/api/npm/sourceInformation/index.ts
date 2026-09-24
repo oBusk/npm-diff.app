@@ -5,4 +5,4 @@ export {
     type TrustAuditFindingType,
     type TrustAuditSeverity,
 } from "./auditSourceTrust";
-export type { SourceInformation } from "./sourceInformation";
+export type { SourceInformation, SourceLookup } from "./sourceInformation";

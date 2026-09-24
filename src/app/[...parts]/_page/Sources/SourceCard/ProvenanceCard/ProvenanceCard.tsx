@@ -28,30 +28,34 @@ export default function ProvenanceCard({
                         </div>
                     </div>
                     <div className="flex gap-2">
-                        <ProvenanceCardButton
-                            tooltip={
-                                <div className="space-y-1">
-                                    <div className="text-xs font-medium">
-                                        Build File
+                        {sourceInformation.buildFileHref ? (
+                            <ProvenanceCardButton
+                                tooltip={
+                                    <div className="space-y-1">
+                                        <div className="text-xs font-medium">
+                                            Build File
+                                        </div>
+                                        <code className="rounded-sm bg-muted px-1.5 py-0.5 text-xs">
+                                            {sourceInformation.buildFileName}
+                                        </code>
                                     </div>
-                                    <code className="rounded-sm bg-muted px-1.5 py-0.5 text-xs">
-                                        {sourceInformation.buildFileName}
-                                    </code>
-                                </div>
-                            }
-                            href={sourceInformation.buildFileHref}
-                            Icon={FileCode}
-                        />
+                                }
+                                href={sourceInformation.buildFileHref}
+                                Icon={FileCode}
+                            />
+                        ) : null}
                         <ProvenanceCardButton
                             tooltip="View transparency log entry"
                             href={sourceInformation.publicLedger}
                             Icon={ScrollText}
                         />
-                        <ProvenanceCardButton
-                            tooltip="View build summary"
-                            href={sourceInformation.buildSummaryUrl}
-                            Icon={ExternalLinkIcon}
-                        />
+                        {sourceInformation.buildSummaryUrl ? (
+                            <ProvenanceCardButton
+                                tooltip="View build summary"
+                                href={sourceInformation.buildSummaryUrl}
+                                Icon={ExternalLinkIcon}
+                            />
+                        ) : null}
                     </div>
                 </div>
             </div>

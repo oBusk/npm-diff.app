@@ -52,13 +52,20 @@ export const metadata: Metadata = {
 export default async function SourceTrustPage() {
     "use cache";
 
-    cacheLife("max");
-
     // Fetch source information for ini@6.0.0 as an example
-    const iniSourceInfo = await getSourceInformation({
+    const iniLookup = await getSourceInformation({
         name: "ini",
         version: "6.0.0",
     });
+
+    if (iniLookup.status === "undetermined") {
+        cacheLife("minutes");
+    } else {
+        cacheLife("max");
+    }
+
+    const iniSourceInfo =
+        iniLookup.status === "found" ? iniLookup.sourceInformation : null;
 
     return (
         <Stack gap={8} align="start" className="mx-auto max-w-3xl p-5">

@@ -1,3 +1,4 @@
+import { USER_AGENT } from "../../user-agent";
 import { type PackageDistAttestations } from "../packument";
 import { type AttestationBundle } from "./protocols/attestationBundle";
 import { SupportedAttestationPredicates } from "./supportedPredicates";
@@ -44,8 +45,10 @@ export async function fetchAttestationBundles(
     }
 
     const response = await fetch(attestations.url, {
+        signal: AbortSignal.timeout(7_500),
         headers: {
             Accept: "application/json",
+            "User-Agent": USER_AGENT,
         },
     });
     if (!response.ok) {
