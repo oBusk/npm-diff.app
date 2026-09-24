@@ -3,78 +3,63 @@ import ExternalLink from "^/components/ExternalLink";
 import BorderBox from "^/components/ui/BorderBox";
 import Heading from "^/components/ui/Heading";
 import Stack from "^/components/ui/Stack";
-import type { Packument } from "^/lib/api/npm/packument";
+import type { CatalogSummary } from "^/lib/api/npm/catalogSummary";
 
 export interface PackageMetaProps {
-    packument: Packument;
+    summary: CatalogSummary;
 }
 
 /**
  * Left column showing package metadata
  */
-export default function PackageMeta({ packument }: PackageMetaProps) {
-    const latestVersion = packument["dist-tags"].latest;
-    const latestManifest = packument.versions[latestVersion];
+export default function PackageMeta({ summary }: PackageMetaProps) {
+    const { latest } = summary;
 
-    if (!latestManifest) {
+    if (!latest) {
         return null;
     }
 
-    const latestTime = packument.time[latestVersion];
-    const npmUrl = `https://www.npmjs.com/package/${packument.name}`;
-    const repositoryUrl =
-        typeof latestManifest.repository === "string"
-            ? latestManifest.repository
-            : latestManifest.repository?.url
-                  ?.replace(/^git\+/, "")
-                  .replace(/\.git$/, "");
-    const homepageUrl = latestManifest.homepage;
+    const npmUrl = `https://www.npmjs.com/package/${summary.name}`;
+    const { repositoryUrl, homepageUrl, keywords } = latest;
 
     // Calculate total versions
-    const totalVersions = Object.keys(packument.versions).length;
-
-    // Get keywords
-    const keywords = latestManifest.keywords;
+    const totalVersions = summary.versions.length;
 
     return (
         <BorderBox className="flex h-fit flex-col gap-4">
             <Stack direction="v" gap={2}>
                 <Heading h={2} className="text-2xl">
-                    {packument.name}
+                    {summary.name}
                 </Heading>
                 <div className="text-sm text-muted-foreground">
-                    <span className="font-mono">{latestVersion}</span>
-                    {latestTime ? (
+                    <span className="font-mono">{latest.version}</span>
+                    {latest.time ? (
                         <>
                             <span className="mx-2">•</span>
-                            <ClientDate time={latestTime} />
+                            <ClientDate time={latest.time} />
                         </>
                     ) : null}
                 </div>
             </Stack>
 
-            {latestManifest.description ? (
+            {latest.description ? (
                 <p className="text-sm text-muted-foreground">
-                    {latestManifest.description}
+                    {latest.description}
                 </p>
             ) : null}
 
             <Stack direction="v" gap={2}>
-                {latestManifest.license ? (
+                {latest.license ? (
                     <div className="text-sm">
                         <span className="text-muted-foreground">License: </span>
-                        <span>{latestManifest.license}</span>
+                        <span>{latest.license}</span>
                     </div>
                 ) : null}
 
-                {latestManifest.author ? (
+                {latest.author ? (
                     <div className="text-sm">
                         <span className="text-muted-foreground">Author: </span>
-                        <span>
-                            {typeof latestManifest.author === "string"
-                                ? latestManifest.author
-                                : latestManifest.author.name}
-                        </span>
+                        <span>{latest.author}</span>
                     </div>
                 ) : null}
 
@@ -87,20 +72,19 @@ export default function PackageMeta({ packument }: PackageMetaProps) {
                     </div>
                 )}
 
-                {latestManifest.maintainers &&
-                latestManifest.maintainers.length > 0 ? (
+                {latest.maintainersCount > 0 ? (
                     <div className="text-sm">
                         <span className="text-muted-foreground">
                             Maintainers:{" "}
                         </span>
-                        <span>{latestManifest.maintainers.length}</span>
+                        <span>{latest.maintainersCount}</span>
                     </div>
                 ) : null}
             </Stack>
 
-            {keywords && keywords.length > 0 ? (
+            {keywords.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
-                    {keywords.slice(0, 10).map((keyword) => (
+                    {keywords.map((keyword) => (
                         <span
                             key={keyword}
                             className="rounded-md bg-muted px-2 py-1 text-xs text-muted-foreground"
