@@ -1,5 +1,6 @@
 import arrayEquals from "^/lib/utils/arrayEquals";
 import canonicalSpec from "./canonicalSpec";
+import SpecNotFoundError from "./SpecNotFoundError";
 import versionsToSpecs from "./versionsToSpecs";
 
 export type Redirect = false | "temporary" | "permanent";
@@ -52,3 +53,4 @@ async function destination(
 }
 
 export default destination;
+export { SpecNotFoundError };

@@ -1,6 +1,8 @@
 import { cacheLife } from "next/cache";
 import npa, { type AliasResult } from "npm-package-arg";
 import { manifest, resolve } from "pacote";
+import isRegistryNotFoundError from "^/lib/utils/isRegistryNotFoundError";
+import SpecNotFoundError from "./SpecNotFoundError";
 
 const hashFinder = /(?:\#.*)?$/;
 
@@ -58,14 +60,34 @@ async function handleNpaResult(result: npa.Result): Promise<string> {
  * - https://github.com/npm/npm-package-arg#result-object
  * - https://docs.npmjs.com/cli/v7/commands/npm-install
  */
-async function canonicalSpec(spec: string): Promise<string> {
+async function cachedCanonicalSpec(spec: string): Promise<string | null> {
     "use cache";
 
-    cacheLife("hours");
+    try {
+        const canonical = await handleNpaResult(npa(spec));
 
-    const result = npa(spec);
+        cacheLife("hours");
 
-    return handleNpaResult(result);
+        return canonical;
+    } catch (e) {
+        if (isRegistryNotFoundError(e)) {
+            cacheLife("minutes");
+
+            return null;
+        }
+
+        throw e;
+    }
+}
+
+async function canonicalSpec(spec: string): Promise<string> {
+    const canonical = await cachedCanonicalSpec(spec);
+
+    if (canonical == null) {
+        throw new SpecNotFoundError(spec);
+    }
+
+    return canonical;
 }
 
 export default canonicalSpec;

@@ -6,6 +6,7 @@ import { useBoolean } from "react-use";
 import Stack from "^/components/ui/Stack";
 import { type AutocompleteSuggestion } from "^/lib/autocomplete";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
+import { toSearchString } from "^/lib/query/searchParams";
 import ExamplesList from "./_page/ExamplesList";
 import MainForm from "./_page/MainForm/MainForm";
 import OptionsForm from "./_page/OptionsForm";
@@ -47,11 +48,7 @@ const IndexPageClient: FunctionComponent<LandingProps> = ({
     const goToDiff = (a: string | undefined, b: string | undefined): void => {
         setLoading(true);
 
-        router.push(
-            `/${a}...${b}?${Object.entries(query)
-                .map(([k, v]) => `${k}=${v}`)
-                .join("&")}`,
-        );
+        router.push(`/${a}...${b}${toSearchString(query)}`);
     };
 
     return (

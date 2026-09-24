@@ -13,6 +13,15 @@ import { cx } from "^/lib/cva";
 import useViewType from "^/lib/utils/useViewType";
 import { DIFF_TYPE_PARAM_NAME } from "../paramNames";
 
+function withViewType(
+    searchParams: ReadonlyURLSearchParams | null,
+    viewType: ViewType,
+): URLSearchParams {
+    const params = new URLSearchParams(searchParams?.toString());
+    params.set(DIFF_TYPE_PARAM_NAME, viewType);
+    return params;
+}
+
 export interface ViewTypeButtonProps extends ButtonProps {
     currentViewType: ViewType;
     pathname: string | null;
@@ -50,14 +59,7 @@ const ViewTypeButton = forwardRef<
             ref={ref}
         >
             <Link
-                href={{
-                    pathname,
-                    query: {
-                        ...(searchParams &&
-                            Object.fromEntries(searchParams.entries())),
-                        [DIFF_TYPE_PARAM_NAME]: viewType,
-                    },
-                }}
+                href={`${pathname ?? ""}?${withViewType(searchParams, viewType)}`}
                 replace
                 shallow
                 prefetch={false}
