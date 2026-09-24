@@ -1,6 +1,7 @@
 import { manifest, resolve } from "pacote";
 import type pacote from "pacote";
 import canonicalSpec from "./canonicalSpec";
+import SpecNotFoundError from "./SpecNotFoundError";
 
 // Increase the timeout for long running tests
 jest.setTimeout(15_000);
@@ -199,4 +200,12 @@ describe("canonicalSpec", () => {
             expect(() => t("file:example")).rejects.toThrow(expectedError),
         ]);
     });
+
+    it("Throws SpecNotFoundError for a package missing from the registry", () =>
+        expect(() =>
+            t("npm-diff-app-does-not-exist-9f3a2c@latest"),
+        ).rejects.toThrow(SpecNotFoundError));
+
+    it("Throws SpecNotFoundError for a range with no matching version", () =>
+        expect(() => t("chalk@^999.0.0")).rejects.toThrow(SpecNotFoundError));
 });
