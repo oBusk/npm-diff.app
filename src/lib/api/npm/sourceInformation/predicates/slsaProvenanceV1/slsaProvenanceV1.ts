@@ -1,3 +1,4 @@
+import { hrefOnRepositoryHost } from "../../hrefOnRepositoryHost";
 import type { InTotoStatement } from "../../protocols/inToto";
 import { parseBuildDefinition } from "./buildDefinitions";
 
@@ -77,16 +78,13 @@ export type SlsaProvenanceStatement = InTotoStatement<
 export function parseSlsaProvenancePredicate(
     predicate: SlsaProvenancePredicate,
 ) {
-    // Get build summary URL from runDetails
-    const buildSummaryUrl = predicate.runDetails.metadata.invocationId;
-    if (!buildSummaryUrl) {
-        throw new Error(
-            "No build summary URL found in SLSA v1 provenance predicate",
-        );
-    }
+    const buildDefinition = parseBuildDefinition(predicate.buildDefinition);
 
     return {
-        ...parseBuildDefinition(predicate.buildDefinition),
-        buildSummaryUrl,
+        ...buildDefinition,
+        buildSummaryUrl: hrefOnRepositoryHost(
+            predicate.runDetails?.metadata?.invocationId,
+            buildDefinition.repositoryUrl,
+        ),
     };
 }

@@ -2,6 +2,7 @@ import {
     type SlsaProvenanceV0_2Invocation,
     type SlsaProvenanceV0_2Predicate,
 } from "..";
+import { hrefOnRepositoryHost } from "../../../hrefOnRepositoryHost";
 
 interface GitlabBuilderInvocation extends SlsaProvenanceV0_2Invocation {
     parameters: {
@@ -98,6 +99,16 @@ export function isGitlabBuilderSlsaPredicate(
     return predicate.buildType === "https://github.com/npm/cli/gitlab/v0alpha1";
 }
 
+const GITLAB_PROJECT_PATH_SEGMENT = /^[\w-]+(?:\.[\w-]+)*$/;
+
+export function isValidGitLabProjectPath(path: string): boolean {
+    const segments = path.split("/");
+    return (
+        segments.length >= 2 &&
+        segments.every((segment) => GITLAB_PROJECT_PATH_SEGMENT.test(segment))
+    );
+}
+
 export function parseGitlabBuilderSlsaPredicate(
     predicate: GitlabBuilderSlsaPredicate,
 ) {
@@ -110,6 +121,11 @@ export function parseGitlabBuilderSlsaPredicate(
     if (!repositoryPath) {
         throw new Error("No repository name found in GitLab SLSA provenance");
     }
+    if (!isValidGitLabProjectPath(repositoryPath)) {
+        throw new Error(
+            `Invalid GitLab project path in SLSA provenance: ${repositoryPath}`,
+        );
+    }
     const repositoryUrl = `https://gitlab.com/${repositoryPath}`;
 
     const buildFileName = predicate.invocation.environment.pipeline.ref;
@@ -117,12 +133,19 @@ export function parseGitlabBuilderSlsaPredicate(
         throw new Error("No build file found in GitLab SLSA provenance");
     }
 
+    const pipelineId = String(predicate.invocation.environment.pipeline.id);
+
     return {
         buildPlatform: "GitLab CI/CD",
         commitHash,
         repositoryPath,
         repositoryUrl,
         buildFileName,
-        buildFileHref: `https://gitlab.com/${repositoryPath}/-/pipelines/${predicate.invocation.environment.pipeline.id}`,
+        buildFileHref: /^\d+$/.test(pipelineId)
+            ? hrefOnRepositoryHost(
+                  `${repositoryUrl}/-/pipelines/${pipelineId}`,
+                  repositoryUrl,
+              )
+            : undefined,
     };
 }

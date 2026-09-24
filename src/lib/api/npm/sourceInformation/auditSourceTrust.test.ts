@@ -1,21 +1,27 @@
 import { auditSourceTrust, type TrustAuditFinding } from "./auditSourceTrust";
-import type { SourceInformation } from "./sourceInformation";
+import type { SourceInformation, SourceLookup } from "./sourceInformation";
+
+const none: SourceLookup = { status: "none" };
+const undetermined: SourceLookup = { status: "undetermined" };
 
 function makeSourceInformation(
     overrides: Partial<SourceInformation> = {},
-): SourceInformation {
+): SourceLookup {
     return {
-        commitHash: "abc123def456",
-        repositoryPath: "owner/repo",
-        repositoryUrl: "https://github.com/owner/repo",
-        buildPlatform: "Github Actions",
-        buildFileName: ".github/workflows/publish.yml",
-        buildFileHref:
-            "https://github.com/owner/repo/actions/workflows/publish.yml",
-        buildSummaryUrl: "https://github.com/owner/repo/actions/runs/1",
-        publicLedger: "rekor-entry-id",
-        hasTrustedPublisher: false,
-        ...overrides,
+        status: "found",
+        sourceInformation: {
+            commitHash: "abc123def456",
+            repositoryPath: "owner/repo",
+            repositoryUrl: "https://github.com/owner/repo",
+            buildPlatform: "Github Actions",
+            buildFileName: ".github/workflows/publish.yml",
+            buildFileHref:
+                "https://github.com/owner/repo/actions/workflows/publish.yml",
+            buildSummaryUrl: "https://github.com/owner/repo/actions/runs/1",
+            publicLedger: "rekor-entry-id",
+            hasTrustedPublisher: false,
+            ...overrides,
+        },
     };
 }
 
@@ -28,13 +34,12 @@ function findFinding(
 
 describe("auditSourceTrust", () => {
     it("returns empty array when neither version has provenance", () => {
-        expect(auditSourceTrust(null, null)).toEqual([]);
-        expect(auditSourceTrust(undefined, undefined)).toEqual([]);
+        expect(auditSourceTrust(none, none)).toEqual([]);
     });
 
     it("flags a red lost-provenance finding when provenance is lost", () => {
         const sourceA = makeSourceInformation();
-        const findings = auditSourceTrust(sourceA, null);
+        const findings = auditSourceTrust(sourceA, none);
 
         expect(findings).toHaveLength(1);
         const lostProvenance = findFinding(findings, "lost-provenance");
@@ -139,5 +144,31 @@ describe("auditSourceTrust", () => {
         expect(findFinding(findings, "lost-trusted-publisher")).toBeDefined();
         expect(findFinding(findings, "repository-change")).toBeDefined();
         expect(findFinding(findings, "workflow-change")).toBeDefined();
+    });
+
+    it("flags lost trusted publisher alongside lost provenance", () => {
+        const sourceA = makeSourceInformation({ hasTrustedPublisher: true });
+        const findings = auditSourceTrust(sourceA, none);
+
+        expect(findFinding(findings, "lost-provenance")).toBeDefined();
+        expect(findFinding(findings, "lost-trusted-publisher")).toBeDefined();
+    });
+
+    it("does not flag lost provenance when B could not be determined", () => {
+        const sourceA = makeSourceInformation({ hasTrustedPublisher: true });
+
+        expect(auditSourceTrust(sourceA, undetermined)).toEqual([]);
+    });
+
+    it("returns no findings when A could not be determined", () => {
+        expect(auditSourceTrust(undetermined, none)).toEqual([]);
+        expect(auditSourceTrust(undetermined, makeSourceInformation())).toEqual(
+            [],
+        );
+        expect(auditSourceTrust(undetermined, undetermined)).toEqual([]);
+    });
+
+    it("returns no findings when only B has provenance", () => {
+        expect(auditSourceTrust(none, makeSourceInformation())).toEqual([]);
     });
 });

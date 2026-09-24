@@ -10,9 +10,9 @@ export interface SourceInformation {
     /** E.g. ".github/workflows/publish.yml" or ".gitlab-ci.yml" */
     buildFileName: string;
     /** URL to the build file or pipeline */
-    buildFileHref: string;
+    buildFileHref?: string;
     /** URL to the build summary in Github workflows or GitLab pipelines */
-    buildSummaryUrl: string;
+    buildSummaryUrl?: string;
     /** The id of the entry in the public ledger in rekor */
     publicLedger: string;
     /**
@@ -22,3 +22,8 @@ export interface SourceInformation {
      */
     hasTrustedPublisher: boolean;
 }
+
+export type SourceLookup =
+    | { status: "found"; sourceInformation: SourceInformation }
+    | { status: "none" }
+    | { status: "undetermined" };

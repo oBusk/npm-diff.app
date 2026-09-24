@@ -11,6 +11,7 @@ import suspense from "^/lib/suspense";
 import Halfs from "../DiffIntro/Halfs";
 import { NeitherHasProvenance } from "./NeitherHasProvenance";
 import { NoProvenanceCard } from "./NoProvenanceCard";
+import { ProvenanceUnavailableCard } from "./ProvenanceUnavailableCard";
 import SourceCard from "./SourceCard";
 import SourceCompareButton from "./SourceCompareButton";
 import { TrustAuditFindings } from "./TrustAuditFindings";
@@ -23,20 +24,32 @@ export interface SourcesProps {
 async function Sources({ a, b }: SourcesProps) {
     "use cache";
 
-    cacheLife("hours");
-
-    const [sourceA, sourceB] = await Promise.all([
+    const [lookupA, lookupB] = await Promise.all([
         getSourceInformation(a),
         getSourceInformation(b),
     ]);
 
-    if (!sourceA && !sourceB) {
+    if (
+        lookupA.status === "undetermined" ||
+        lookupB.status === "undetermined"
+    ) {
+        cacheLife("minutes");
+    } else {
+        cacheLife("hours");
+    }
+
+    if (lookupA.status === "none" && lookupB.status === "none") {
         return <NeitherHasProvenance className="mb-4" />;
     }
 
+    const sourceA =
+        lookupA.status === "found" ? lookupA.sourceInformation : null;
+    const sourceB =
+        lookupB.status === "found" ? lookupB.sourceInformation : null;
+
     // Analyze trust only if both packages are the same
     const findings =
-        a.name === b.name ? auditSourceTrust(sourceA, sourceB) : [];
+        a.name === b.name ? auditSourceTrust(lookupA, lookupB) : [];
 
     const aLabel = simplePackageSpecToString(a);
 
@@ -51,6 +64,8 @@ async function Sources({ a, b }: SourcesProps) {
                 <div className="flex w-full max-w-md flex-col gap-2">
                     {sourceA ? (
                         <SourceCard sourceInformation={sourceA} />
+                    ) : lookupA.status === "undetermined" ? (
+                        <ProvenanceUnavailableCard />
                     ) : (
                         <NoProvenanceCard />
                     )}
@@ -70,6 +85,8 @@ async function Sources({ a, b }: SourcesProps) {
                 <div className="flex w-full max-w-md flex-col gap-2">
                     {sourceB ? (
                         <SourceCard sourceInformation={sourceB} />
+                    ) : lookupB.status === "undetermined" ? (
+                        <ProvenanceUnavailableCard />
                     ) : null}
                     <TrustAuditFindings
                         findings={findings}
