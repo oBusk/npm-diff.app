@@ -1,36 +1,18 @@
 import { fromUrl } from "hosted-git-info";
+import { cacheLife } from "next/cache";
+import { packument } from "pacote";
 import { toHttpUrl } from "^/lib/utils/toHttpUrl";
+import type { Manifest, Packument } from "./packument";
 
 export const MAX_CATALOG_KEYWORDS = 10;
 
-interface LegacyLicense {
-    type?: string;
-    url?: string;
-}
-
-type PackagePerson = string | { name?: string; email?: string; url?: string };
-
-type PackageRepository = string | { type?: string; url?: string };
-
-export interface CatalogManifest {
-    description?: string;
-    license?: string | LegacyLicense;
-    licenses?: LegacyLicense[];
-    author?: PackagePerson;
-    repository?: PackageRepository;
-    homepage?: string;
-    keywords?: string[];
-    maintainers?: unknown[];
-}
-
-export interface CatalogPackument {
+export interface CatalogSummary {
     name: string;
-    "dist-tags": Record<string, string>;
-    time?: Record<string, string>;
-    versions: Record<string, CatalogManifest>;
+    versions: string[];
+    latest?: CatalogLatestVersion;
 }
 
-export interface CatalogLatestSummary {
+export interface CatalogLatestVersion {
     version: string;
     time?: string;
     description?: string;
@@ -42,16 +24,10 @@ export interface CatalogLatestSummary {
     maintainersCount: number;
 }
 
-export interface CatalogSummary {
-    name: string;
-    versions: string[];
-    latest?: CatalogLatestSummary;
-}
-
 export function licenseText({
     license,
     licenses,
-}: Pick<CatalogManifest, "license" | "licenses">): string | undefined {
+}: Pick<Manifest, "license" | "licenses">): string | undefined {
     if (typeof license === "string") {
         return license;
     }
@@ -62,14 +38,16 @@ export function licenseText({
     return types?.length ? types.join(" OR ") : undefined;
 }
 
-export function authorName(author: PackagePerson | undefined) {
+export function authorName(author: Manifest["author"]): string | undefined {
     if (typeof author === "string") {
         return author.match(/^[^(<]+/)?.[0].trim() || undefined;
     }
     return author?.name;
 }
 
-export function repositoryUrl(repository: PackageRepository | undefined) {
+export function repositoryUrl(
+    repository: Manifest["repository"],
+): string | undefined {
     const url = typeof repository === "string" ? repository : repository?.url;
     if (!url) {
         return undefined;
@@ -80,9 +58,7 @@ export function repositoryUrl(repository: PackageRepository | undefined) {
     );
 }
 
-export function summarizePackument(
-    packument: CatalogPackument,
-): CatalogSummary {
+export function createCatalogSummary(packument: Packument): CatalogSummary {
     const versions = Object.keys(packument.versions);
     const latestVersion = packument["dist-tags"].latest;
     const manifest = packument.versions[latestVersion];
@@ -108,4 +84,18 @@ export function summarizePackument(
             maintainersCount: manifest.maintainers?.length ?? 0,
         },
     };
+}
+
+export default async function getCatalogSummary(
+    packageName: string,
+): Promise<CatalogSummary> {
+    "use cache";
+
+    cacheLife("hours");
+
+    const fullPackument = (await packument(packageName, {
+        fullMetadata: true,
+    })) as Packument;
+
+    return createCatalogSummary(fullPackument);
 }
