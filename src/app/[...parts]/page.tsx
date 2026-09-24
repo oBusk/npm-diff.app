@@ -2,16 +2,23 @@ import { type Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { type JSX, Suspense } from "react";
 import { type ViewType } from "react-diff-view";
+import Code from "^/components/ui/Code";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
-import destination from "^/lib/destination";
-import { parseQuery, type QueryParams } from "^/lib/query";
+import destination, {
+    type Destination,
+    SpecNotFoundError,
+} from "^/lib/destination";
+import {
+    parseDiffOptions,
+    type QueryParams,
+    toSearchString,
+} from "^/lib/query";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
-import decodeParts from "^/lib/utils/decodeParts";
 import { isCatalogPage } from "^/lib/utils/isCatalogPage";
+import parseParts from "^/lib/utils/parseParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
-import splitParts from "^/lib/utils/splitParts";
-import validateSpecs from "^/lib/utils/validateSpecs";
+import ErrorBox from "./_error/ErrorBox";
 import BundlephobiaDiff from "./_page/BundlephobiaDiff";
 import CatalogPage from "./_page/catalog/CatalogPage";
 import { generateCatalogMetadata } from "./_page/catalog/generateCatalogMetadata";
@@ -32,9 +39,9 @@ export async function generateMetadata({
     params,
 }: DiffPageProps): Promise<Metadata> {
     const { parts } = await params;
-    const specs = splitParts(decodeParts(parts));
+    const specs = parseParts(parts, { decode: true });
 
-    if (!validateSpecs(specs)) {
+    if (specs == null) {
         notFound();
     }
 
@@ -55,11 +62,12 @@ const DiffPageInner = async ({
     searchParams,
 }: DiffPageProps): Promise<JSX.Element> => {
     const { parts } = await params;
-    const { diffFiles, ...optionsQuery } = await searchParams;
+    const query = await searchParams;
+    const { diffFiles, ...optionsQuery } = query;
 
-    const specsOrVersions = splitParts(decodeParts(parts));
+    const specsOrVersions = parseParts(parts, { decode: true });
 
-    if (!validateSpecs(specsOrVersions)) {
+    if (specsOrVersions == null) {
         notFound();
     }
 
@@ -67,25 +75,38 @@ const DiffPageInner = async ({
         return <CatalogPage specs={specsOrVersions} />;
     }
 
-    const { redirect: redirectTarget, canonicalSpecs } =
-        await destination(specsOrVersions);
+    const parsedOptions = parseDiffOptions({
+        // If no diffFiles is passed, use the default.
+        // This is done here, since we don't want a fall back in the API
+        diffFiles: diffFiles ?? DEFAULT_DIFF_FILES_GLOB,
+        ...optionsQuery,
+    });
+
+    if (!parsedOptions.ok) {
+        return (
+            <ErrorBox className="flex flex-col items-start gap-2 self-center">
+                <h3>Invalid options</h3>
+                <Code className="max-w-2xl">{parsedOptions.message}</Code>
+            </ErrorBox>
+        );
+    }
+
+    let target: Destination;
+    try {
+        target = await destination(specsOrVersions);
+    } catch (e) {
+        if (e instanceof SpecNotFoundError) {
+            notFound();
+        }
+        throw e;
+    }
+
+    const { redirect: redirectTarget, canonicalSpecs } = target;
 
     if (redirectTarget !== false) {
-        const specsStr = specsToDiff(canonicalSpecs);
-        const searchStr = Object.entries(await searchParams)
-            .map(([key, value]) => `${key}=${value}`)
-            .join("&");
-
-        redirect(
-            `/${specsStr}` + (searchStr?.length > 0 ? `?${searchStr}` : ""),
-        );
+        redirect(`/${specsToDiff(canonicalSpecs)}${toSearchString(query)}`);
     } else {
-        const options = parseQuery({
-            // If no diffFiles is passed, use the default.
-            // This is done here, since we don't want a fall back in the API
-            diffFiles: diffFiles ?? DEFAULT_DIFF_FILES_GLOB,
-            ...optionsQuery,
-        });
+        const { options } = parsedOptions;
 
         const [a, b] = canonicalSpecs.map((spec) =>
             createSimplePackageSpec(spec),

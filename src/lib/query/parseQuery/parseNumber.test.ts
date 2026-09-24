@@ -8,7 +8,10 @@ describe("query/parseNumber", () => {
 
     it(`input is "1"`, () => expect(parseNumber("1")).toBe(1));
     it(`input is "999"`, () => expect(parseNumber("999")).toBe(999));
-    it(`input is "123XXX"`, () => expect(parseNumber("123XXX")).toBe(123));
+    it(`input is "-5"`, () => expect(parseNumber("-5")).toBe(-5));
+    it(`input is "123XXX"`, () => expect(parseNumber("123XXX")).toBeNaN());
+    it(`input is "1.5"`, () => expect(parseNumber("1.5")).toBeNaN());
+    it(`input is "abc"`, () => expect(parseNumber("abc")).toBeNaN());
 
     it(`input is [1 ,2 ,3]`, () =>
         expect(parseNumber(["1", "2", "3"])).toBe(3));
