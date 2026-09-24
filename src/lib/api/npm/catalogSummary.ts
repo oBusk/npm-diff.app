@@ -1,6 +1,34 @@
+import { fromUrl } from "hosted-git-info";
 import { toHttpUrl } from "^/lib/utils/toHttpUrl";
 
 export const MAX_CATALOG_KEYWORDS = 10;
+
+interface LegacyLicense {
+    type?: string;
+    url?: string;
+}
+
+type PackagePerson = string | { name?: string; email?: string; url?: string };
+
+type PackageRepository = string | { type?: string; url?: string };
+
+export interface CatalogManifest {
+    description?: string;
+    license?: string | LegacyLicense;
+    licenses?: LegacyLicense[];
+    author?: PackagePerson;
+    repository?: PackageRepository;
+    homepage?: string;
+    keywords?: string[];
+    maintainers?: unknown[];
+}
+
+export interface CatalogPackument {
+    name: string;
+    "dist-tags": Record<string, string>;
+    time?: Record<string, string>;
+    versions: Record<string, CatalogManifest>;
+}
 
 export interface CatalogLatestSummary {
     version: string;
@@ -20,118 +48,64 @@ export interface CatalogSummary {
     latest?: CatalogLatestSummary;
 }
 
-type UnknownRecord = Record<string, unknown>;
-
-function isRecord(value: unknown): value is UnknownRecord {
-    return typeof value === "object" && value !== null && !Array.isArray(value);
+export function licenseText({
+    license,
+    licenses,
+}: Pick<CatalogManifest, "license" | "licenses">): string | undefined {
+    if (typeof license === "string") {
+        return license;
+    }
+    if (license?.type) {
+        return license.type;
+    }
+    const types = licenses?.map(({ type }) => type).filter(Boolean);
+    return types?.length ? types.join(" OR ") : undefined;
 }
 
-function nonEmptyString(value: unknown): string | undefined {
-    if (typeof value !== "string") {
+export function authorName(author: PackagePerson | undefined) {
+    if (typeof author === "string") {
+        return author.match(/^[^(<]+/)?.[0].trim() || undefined;
+    }
+    return author?.name;
+}
+
+export function repositoryUrl(repository: PackageRepository | undefined) {
+    const url = typeof repository === "string" ? repository : repository?.url;
+    if (!url) {
         return undefined;
     }
-    const trimmed = value.trim();
-    return trimmed.length > 0 ? trimmed : undefined;
-}
-
-export function normalizeLicense(license: unknown): string | undefined {
-    if (Array.isArray(license)) {
-        const types = license
-            .map(normalizeLicense)
-            .filter((type): type is string => type != null);
-        return types.length > 0 ? types.join(" OR ") : undefined;
-    }
-    if (isRecord(license)) {
-        return nonEmptyString(license.type);
-    }
-    return nonEmptyString(license);
-}
-
-export function normalizeAuthor(author: unknown): string | undefined {
-    if (isRecord(author)) {
-        return nonEmptyString(author.name);
-    }
-    return nonEmptyString(author);
-}
-
-export function normalizeKeywords(keywords: unknown): string[] {
-    const list =
-        typeof keywords === "string"
-            ? keywords.split(/[\s,]+/)
-            : Array.isArray(keywords)
-              ? keywords
-              : [];
-
-    const unique = new Set<string>();
-    for (const keyword of list) {
-        const value = nonEmptyString(keyword);
-        if (value) {
-            unique.add(value);
-        }
-        if (unique.size >= MAX_CATALOG_KEYWORDS) {
-            break;
-        }
-    }
-    return [...unique];
-}
-
-export function normalizeRepositoryUrl(
-    repository: unknown,
-): string | undefined {
-    const url = isRecord(repository) ? repository.url : repository;
-    if (typeof url !== "string") {
-        return undefined;
-    }
-    return toHttpUrl(
-        url
-            .trim()
-            .replace(/^git\+/, "")
-            .replace(/\.git$/, ""),
+    return (
+        fromUrl(url)?.browse() ??
+        toHttpUrl(url.replace(/^git\+/, "").replace(/\.git$/, ""))
     );
 }
 
-export function summarizePackument(packument: unknown): CatalogSummary {
-    if (!isRecord(packument) || typeof packument.name !== "string") {
-        throw new Error("Invalid packument");
-    }
+export function summarizePackument(
+    packument: CatalogPackument,
+): CatalogSummary {
+    const versions = Object.keys(packument.versions);
+    const latestVersion = packument["dist-tags"].latest;
+    const manifest = packument.versions[latestVersion];
 
-    const versionsRecord = isRecord(packument.versions)
-        ? packument.versions
-        : {};
-    const versions = Object.keys(versionsRecord);
-
-    const distTags = isRecord(packument["dist-tags"])
-        ? packument["dist-tags"]
-        : {};
-    const latestVersion = distTags.latest;
-    const latestManifest =
-        typeof latestVersion === "string"
-            ? versionsRecord[latestVersion]
-            : undefined;
-
-    if (typeof latestVersion !== "string" || !isRecord(latestManifest)) {
+    if (!manifest) {
         return { name: packument.name, versions };
     }
-
-    const time = isRecord(packument.time)
-        ? nonEmptyString(packument.time[latestVersion])
-        : undefined;
 
     return {
         name: packument.name,
         versions,
         latest: {
             version: latestVersion,
-            time,
-            description: nonEmptyString(latestManifest.description),
-            license: normalizeLicense(latestManifest.license),
-            author: normalizeAuthor(latestManifest.author),
-            repositoryUrl: normalizeRepositoryUrl(latestManifest.repository),
-            homepageUrl: toHttpUrl(latestManifest.homepage),
-            keywords: normalizeKeywords(latestManifest.keywords),
-            maintainersCount: Array.isArray(latestManifest.maintainers)
-                ? latestManifest.maintainers.length
-                : 0,
+            time: packument.time?.[latestVersion],
+            description: manifest.description,
+            license: licenseText(manifest),
+            author: authorName(manifest.author),
+            repositoryUrl: repositoryUrl(manifest.repository),
+            homepageUrl: toHttpUrl(manifest.homepage),
+            keywords: Array.isArray(manifest.keywords)
+                ? manifest.keywords.slice(0, MAX_CATALOG_KEYWORDS)
+                : [],
+            maintainersCount: manifest.maintainers?.length ?? 0,
         },
     };
 }
