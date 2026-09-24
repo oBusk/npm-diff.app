@@ -1,11 +1,11 @@
 import {
     authorName,
-    type CatalogPackument,
+    createCatalogSummary,
     licenseText,
     MAX_CATALOG_KEYWORDS,
     repositoryUrl,
-    summarizePackument,
 } from "./catalogSummary";
+import type { Manifest, Packument } from "./packument";
 
 describe("licenseText", () => {
     it.each([
@@ -89,30 +89,35 @@ describe("repositoryUrl", () => {
     });
 });
 
-describe("summarizePackument", () => {
-    const packument: CatalogPackument = {
-        name: "example",
-        "dist-tags": { latest: "2.0.0" },
-        time: {
-            "1.0.0": "2020-01-01T00:00:00.000Z",
-            "2.0.0": "2021-01-01T00:00:00.000Z",
-        },
-        versions: {
-            "1.0.0": {},
-            "2.0.0": {
-                description: "An example",
-                license: "MIT",
-                author: "Jane Doe <jane@example.com>",
-                repository: "github:owner/example",
-                homepage: "https://example.com/",
-                keywords: Array.from({ length: 20 }, (_, i) => `k${i}`),
-                maintainers: [{ name: "a" }, { name: "b" }],
+describe("createCatalogSummary", () => {
+    const packument = (versions: Record<string, Partial<Manifest>>) =>
+        ({
+            name: "example",
+            "dist-tags": { latest: "2.0.0" },
+            time: {
+                "1.0.0": "2020-01-01T00:00:00.000Z",
+                "2.0.0": "2021-01-01T00:00:00.000Z",
             },
-        },
-    };
+            versions,
+        }) as unknown as Packument;
 
     it("summarizes the latest version", () => {
-        expect(summarizePackument(packument)).toEqual({
+        expect(
+            createCatalogSummary(
+                packument({
+                    "1.0.0": {},
+                    "2.0.0": {
+                        description: "An example",
+                        license: "MIT",
+                        author: "Jane Doe <jane@example.com>",
+                        repository: "github:owner/example",
+                        homepage: "https://example.com/",
+                        keywords: Array.from({ length: 20 }, (_, i) => `k${i}`),
+                        maintainers: [{ name: "a" }, { name: "b" }],
+                    },
+                }),
+            ),
+        ).toEqual({
             name: "example",
             versions: ["1.0.0", "2.0.0"],
             latest: {
@@ -133,20 +138,16 @@ describe("summarizePackument", () => {
     });
 
     it("drops a non-http homepage", () => {
-        const summary = summarizePackument({
-            ...packument,
-            versions: { "2.0.0": { homepage: "javascript:alert(1)" } },
-        });
+        const summary = createCatalogSummary(
+            packument({ "2.0.0": { homepage: "javascript:alert(1)" } }),
+        );
         expect(summary.latest?.homepageUrl).toBeUndefined();
     });
 
     it("omits latest when the latest manifest is missing", () => {
-        expect(
-            summarizePackument({
-                name: "example",
-                "dist-tags": { latest: "3.0.0" },
-                versions: { "1.0.0": {} },
-            }),
-        ).toEqual({ name: "example", versions: ["1.0.0"] });
+        expect(createCatalogSummary(packument({ "1.0.0": {} }))).toEqual({
+            name: "example",
+            versions: ["1.0.0"],
+        });
     });
 });

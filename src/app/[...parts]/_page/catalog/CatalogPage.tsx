@@ -1,7 +1,7 @@
 import { cacheLife } from "next/cache";
 import { Suspense } from "react";
 import Skeleton from "^/components/ui/Skeleton";
-import catalogSummary from "^/lib/api/npm/catalog";
+import getCatalogSummary from "^/lib/api/npm/catalogSummary";
 import { generateComparisons } from "^/lib/utils/generateComparisons";
 import { getCatalogPackageName } from "^/lib/utils/isCatalogPage";
 import ComparisonList from "./ComparisonList";
@@ -23,7 +23,7 @@ async function CatalogPageInner({ specs }: CatalogPageProps) {
     }
 
     // Fetch package data
-    const summary = await catalogSummary(packageName);
+    const summary = await getCatalogSummary(packageName);
 
     // Generate comparisons
     const comparisons = generateComparisons(summary.versions);
