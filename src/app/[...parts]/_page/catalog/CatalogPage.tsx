@@ -1,7 +1,7 @@
 import { cacheLife } from "next/cache";
 import { Suspense } from "react";
 import Skeleton from "^/components/ui/Skeleton";
-import packument from "^/lib/api/npm/packument";
+import catalogSummary from "^/lib/api/npm/catalog";
 import { generateComparisons } from "^/lib/utils/generateComparisons";
 import { getCatalogPackageName } from "^/lib/utils/isCatalogPage";
 import ComparisonList from "./ComparisonList";
@@ -23,18 +23,16 @@ async function CatalogPageInner({ specs }: CatalogPageProps) {
     }
 
     // Fetch package data
-    const pack = await packument(packageName);
-
-    const versions = Object.keys(pack.versions);
+    const summary = await catalogSummary(packageName);
 
     // Generate comparisons
-    const comparisons = generateComparisons(versions);
+    const comparisons = generateComparisons(summary.versions);
 
     return (
         <div className="mx-auto w-full max-w-7xl py-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[2fr_3fr]">
                 <div className="flex flex-col">
-                    <PackageMeta packument={pack} />
+                    <PackageMeta summary={summary} />
                 </div>
                 <div className="flex flex-col">
                     <ComparisonList
