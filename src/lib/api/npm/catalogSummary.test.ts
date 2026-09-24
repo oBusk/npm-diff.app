@@ -1,132 +1,117 @@
 import {
-    normalizeAuthor,
-    normalizeKeywords,
-    normalizeLicense,
-    normalizeRepositoryUrl,
+    authorName,
+    type CatalogPackument,
+    licenseText,
+    MAX_CATALOG_KEYWORDS,
+    repositoryUrl,
     summarizePackument,
 } from "./catalogSummary";
 
-describe("normalizeLicense", () => {
+describe("licenseText", () => {
     it.each([
-        ["MIT", "MIT"],
-        [{ type: "ISC", url: "https://opensource.org/licenses/ISC" }, "ISC"],
-        [[{ type: "MIT" }, { type: "Apache-2.0" }], "MIT OR Apache-2.0"],
-        [["BSD-3-Clause", { type: "GPL-2.0" }], "BSD-3-Clause OR GPL-2.0"],
-    ])("normalizes %p", (input, expected) => {
-        expect(normalizeLicense(input)).toBe(expected);
-    });
-
-    it.each([undefined, null, "", 42, {}, { url: "x" }, []])(
-        "returns undefined for %p",
-        (input) => {
-            expect(normalizeLicense(input)).toBeUndefined();
-        },
-    );
-});
-
-describe("normalizeAuthor", () => {
-    it("keeps string authors", () => {
-        expect(normalizeAuthor("Jane Doe <jane@example.com>")).toBe(
-            "Jane Doe <jane@example.com>",
-        );
-    });
-
-    it("uses the name of object authors", () => {
-        expect(
-            normalizeAuthor({ name: "Jane Doe", email: "jane@example.com" }),
-        ).toBe("Jane Doe");
-    });
-
-    it.each([undefined, null, "", { email: "jane@example.com" }, 42, []])(
-        "returns undefined for %p",
-        (input) => {
-            expect(normalizeAuthor(input)).toBeUndefined();
-        },
-    );
-});
-
-describe("normalizeKeywords", () => {
-    it("keeps array keywords", () => {
-        expect(normalizeKeywords(["a", "b"])).toEqual(["a", "b"]);
-    });
-
-    it("splits string keywords", () => {
-        expect(normalizeKeywords("a, b c,d")).toEqual(["a", "b", "c", "d"]);
-    });
-
-    it("drops non-string, empty and duplicate keywords", () => {
-        expect(normalizeKeywords(["a", 1, null, "", " ", "a", "b"])).toEqual([
-            "a",
-            "b",
-        ]);
-    });
-
-    it("limits to 10 keywords", () => {
-        const keywords = Array.from({ length: 20 }, (_, i) => `k${i}`);
-        expect(normalizeKeywords(keywords)).toEqual(keywords.slice(0, 10));
-    });
-
-    it.each([undefined, null, 42, {}])("returns [] for %p", (input) => {
-        expect(normalizeKeywords(input)).toEqual([]);
+        [{ license: "MIT" }, "MIT"],
+        [{ license: "(ISC OR GPL-3.0)" }, "(ISC OR GPL-3.0)"],
+        [
+            {
+                license: {
+                    type: "ISC",
+                    url: "https://opensource.org/licenses/ISC",
+                },
+            },
+            "ISC",
+        ],
+        [
+            {
+                licenses: [
+                    { type: "MIT", url: "https://opensource.org/licenses/MIT" },
+                    { type: "Apache-2.0" },
+                ],
+            },
+            "MIT OR Apache-2.0",
+        ],
+        [{ license: "MIT", licenses: [{ type: "ISC" }] }, "MIT"],
+        [{}, undefined],
+    ])("%j → %p", (manifest, expected) => {
+        expect(licenseText(manifest)).toBe(expected);
     });
 });
 
-describe("normalizeRepositoryUrl", () => {
+describe("authorName", () => {
+    it.each([
+        [{ name: "Barney Rubble", email: "b@rubble.com" }, "Barney Rubble"],
+        [
+            "Barney Rubble <b@rubble.com> (http://barnyrubble.tumblr.com/)",
+            "Barney Rubble",
+        ],
+        ["Barney Rubble (http://barnyrubble.tumblr.com/)", "Barney Rubble"],
+        ["Barney Rubble", "Barney Rubble"],
+        ["<b@rubble.com>", undefined],
+        [undefined, undefined],
+    ])("%j → %p", (author, expected) => {
+        expect(authorName(author)).toBe(expected);
+    });
+});
+
+describe("repositoryUrl", () => {
     it.each([
         [
-            { type: "git", url: "git+https://github.com/owner/repo.git" },
-            "https://github.com/owner/repo",
+            { type: "git", url: "git+https://github.com/npm/cli.git" },
+            "https://github.com/npm/cli",
         ],
-        ["https://github.com/owner/repo", "https://github.com/owner/repo"],
-        ["https://github.com/owner/repo.git", "https://github.com/owner/repo"],
-    ])("normalizes %p", (input, expected) => {
-        expect(normalizeRepositoryUrl(input)).toBe(expected);
+        [
+            { type: "git", url: "git://github.com/npm/cli.git" },
+            "https://github.com/npm/cli",
+        ],
+        [
+            { type: "git", url: "git+ssh://git@github.com/npm/cli.git" },
+            "https://github.com/npm/cli",
+        ],
+        ["npm/npm", "https://github.com/npm/npm"],
+        ["github:user/repo", "https://github.com/user/repo"],
+        ["gist:11081aaa281", "https://gist.github.com/11081aaa281"],
+        ["bitbucket:user/repo", "https://bitbucket.org/user/repo"],
+        ["gitlab:user/repo", "https://gitlab.com/user/repo"],
+        [
+            { url: "git+https://git.example.com/owner/repo.git" },
+            "https://git.example.com/owner/repo",
+        ],
+    ])("%j → %p", (repository, expected) => {
+        expect(repositoryUrl(repository)).toBe(expected);
     });
 
     it.each([
-        "github:owner/repo",
-        "owner/repo",
-        { url: "git://github.com/owner/repo.git" },
-        { url: "git+ssh://git@github.com/owner/repo.git" },
+        { url: "git://git.example.com/owner/repo.git" },
         { url: "javascript:alert(1)" },
         { type: "git" },
         undefined,
-    ])("returns undefined for %p", (input) => {
-        expect(normalizeRepositoryUrl(input)).toBeUndefined();
+    ])("has no link for %j", (repository) => {
+        expect(repositoryUrl(repository)).toBeUndefined();
     });
 });
 
 describe("summarizePackument", () => {
-    const packument = {
+    const packument: CatalogPackument = {
         name: "example",
         "dist-tags": { latest: "2.0.0" },
         time: {
-            created: "2020-01-01T00:00:00.000Z",
             "1.0.0": "2020-01-01T00:00:00.000Z",
             "2.0.0": "2021-01-01T00:00:00.000Z",
         },
-        readme: "x".repeat(10_000),
         versions: {
-            "1.0.0": { name: "example", version: "1.0.0" },
+            "1.0.0": {},
             "2.0.0": {
-                name: "example",
-                version: "2.0.0",
                 description: "An example",
-                license: { type: "MIT", url: "https://example.com/license" },
-                author: { name: "Jane Doe" },
-                repository: {
-                    type: "git",
-                    url: "git+https://github.com/owner/example.git",
-                },
+                license: "MIT",
+                author: "Jane Doe <jane@example.com>",
+                repository: "github:owner/example",
                 homepage: "https://example.com/",
-                keywords: "one, two",
+                keywords: Array.from({ length: 20 }, (_, i) => `k${i}`),
                 maintainers: [{ name: "a" }, { name: "b" }],
-                dependencies: { foo: "^1.0.0" },
             },
         },
     };
 
-    it("returns only the trimmed summary", () => {
+    it("summarizes the latest version", () => {
         expect(summarizePackument(packument)).toEqual({
             name: "example",
             versions: ["1.0.0", "2.0.0"],
@@ -138,21 +123,19 @@ describe("summarizePackument", () => {
                 author: "Jane Doe",
                 repositoryUrl: "https://github.com/owner/example",
                 homepageUrl: "https://example.com/",
-                keywords: ["one", "two"],
+                keywords: Array.from(
+                    { length: MAX_CATALOG_KEYWORDS },
+                    (_, i) => `k${i}`,
+                ),
                 maintainersCount: 2,
             },
         });
     });
 
-    it("drops non-http homepage", () => {
+    it("drops a non-http homepage", () => {
         const summary = summarizePackument({
             ...packument,
-            versions: {
-                "2.0.0": {
-                    ...packument.versions["2.0.0"],
-                    homepage: "javascript:alert(1)",
-                },
-            },
+            versions: { "2.0.0": { homepage: "javascript:alert(1)" } },
         });
         expect(summary.latest?.homepageUrl).toBeUndefined();
     });
@@ -165,17 +148,5 @@ describe("summarizePackument", () => {
                 versions: { "1.0.0": {} },
             }),
         ).toEqual({ name: "example", versions: ["1.0.0"] });
-    });
-
-    it("handles missing dist-tags, time and versions", () => {
-        expect(summarizePackument({ name: "example" })).toEqual({
-            name: "example",
-            versions: [],
-        });
-    });
-
-    it("throws on invalid input", () => {
-        expect(() => summarizePackument(null)).toThrow();
-        expect(() => summarizePackument({})).toThrow();
     });
 });

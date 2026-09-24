@@ -1,10 +1,10 @@
-export function toHttpUrl(value: unknown): string | undefined {
-    if (typeof value !== "string") {
+export function toHttpUrl(value: string | undefined): string | undefined {
+    if (!value) {
         return undefined;
     }
 
     try {
-        const url = new URL(value.trim());
+        const url = new URL(value);
         return url.protocol === "http:" || url.protocol === "https:"
             ? url.href
             : undefined;
