@@ -2,7 +2,6 @@ import {
     authorName,
     createCatalogSummary,
     licenseText,
-    MAX_CATALOG_KEYWORDS,
     repositoryUrl,
 } from "./catalogSummary";
 import type { Manifest, Packument } from "./packument";
@@ -112,7 +111,7 @@ describe("createCatalogSummary", () => {
                         author: "Jane Doe <jane@example.com>",
                         repository: "github:owner/example",
                         homepage: "https://example.com/",
-                        keywords: Array.from({ length: 20 }, (_, i) => `k${i}`),
+                        keywords: ["one", "two"],
                         maintainers: [{ name: "a" }, { name: "b" }],
                     },
                 }),
@@ -128,10 +127,7 @@ describe("createCatalogSummary", () => {
                 author: "Jane Doe",
                 repositoryUrl: "https://github.com/owner/example",
                 homepageUrl: "https://example.com/",
-                keywords: Array.from(
-                    { length: MAX_CATALOG_KEYWORDS },
-                    (_, i) => `k${i}`,
-                ),
+                keywords: ["one", "two"],
                 maintainersCount: 2,
             },
         });

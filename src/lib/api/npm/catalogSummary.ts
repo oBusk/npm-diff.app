@@ -4,8 +4,6 @@ import { packument } from "pacote";
 import { toHttpUrl } from "^/lib/utils/toHttpUrl";
 import type { Manifest, Packument } from "./packument";
 
-export const MAX_CATALOG_KEYWORDS = 10;
-
 export interface CatalogSummary {
     name: string;
     versions: string[];
@@ -78,9 +76,7 @@ export function createCatalogSummary(packument: Packument): CatalogSummary {
             author: authorName(manifest.author),
             repositoryUrl: repositoryUrl(manifest.repository),
             homepageUrl: toHttpUrl(manifest.homepage),
-            keywords: Array.isArray(manifest.keywords)
-                ? manifest.keywords.slice(0, MAX_CATALOG_KEYWORDS)
-                : [],
+            keywords: Array.isArray(manifest.keywords) ? manifest.keywords : [],
             maintainersCount: manifest.maintainers?.length ?? 0,
         },
     };
