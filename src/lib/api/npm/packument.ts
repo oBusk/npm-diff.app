@@ -32,15 +32,32 @@ export interface Person extends PacotePerson {
     trustedPublisher?: TrustedPublisher;
 }
 
-export interface Manifest extends PacoteManifest {
+export interface LegacyLicense {
+    type?: string;
+    url?: string;
+}
+
+type Without<T, K extends PropertyKey> = {
+    [P in keyof T as P extends K ? never : P]: T[P];
+};
+
+// Also allows the legacy and shorthand forms npm documents: https://docs.npmjs.com/cli/configuring-npm/package-json
+export interface Manifest extends Without<
+    PacoteManifest,
+    "license" | "author" | "repository"
+> {
     dist: PackageDist;
     _npmUser: Person;
+    license?: string | LegacyLicense;
+    licenses?: LegacyLicense[];
+    author?: string | PacotePerson;
+    repository?: string | PacoteManifest["repository"];
 }
 
 /**
  * > Example: https://registry.npmjs.org/@obusk/eslint-config-next
  */
-export interface Packument extends PacotePackument {
+export interface Packument extends Omit<PacotePackument, "versions"> {
     versions: Record<string, Manifest>;
 }
 
