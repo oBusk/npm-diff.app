@@ -41,6 +41,7 @@ type Without<T, K extends PropertyKey> = {
     [P in keyof T as P extends K ? never : P]: T[P];
 };
 
+// Also allows the legacy and shorthand forms npm documents: https://docs.npmjs.com/cli/configuring-npm/package-json
 export interface Manifest extends Without<
     PacoteManifest,
     "license" | "author" | "repository"

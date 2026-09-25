@@ -84,7 +84,7 @@ export default function PackageMeta({ summary }: PackageMetaProps) {
 
             {keywords.length > 0 ? (
                 <div className="flex flex-wrap gap-2">
-                    {keywords.map((keyword) => (
+                    {keywords.slice(0, 10).map((keyword) => (
                         <span
                             key={keyword}
                             className="rounded-md bg-muted px-2 py-1 text-xs text-muted-foreground"
