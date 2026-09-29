@@ -1,8 +1,7 @@
 import { fromUrl } from "hosted-git-info";
 import { cacheLife } from "next/cache";
-import { packument } from "pacote";
 import { toHttpUrl } from "^/lib/utils/toHttpUrl";
-import type { Manifest, Packument } from "./packument";
+import { fetchPackument, type Manifest, type Packument } from "./packument";
 
 export interface CatalogSummary {
     name: string;
@@ -89,9 +88,5 @@ export default async function getCatalogSummary(
 
     cacheLife("hours");
 
-    const fullPackument = (await packument(packageName, {
-        fullMetadata: true,
-    })) as Packument;
-
-    return createCatalogSummary(fullPackument);
+    return createCatalogSummary(await fetchPackument(packageName));
 }
