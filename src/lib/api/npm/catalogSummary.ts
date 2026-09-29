@@ -1,7 +1,8 @@
 import { fromUrl } from "hosted-git-info";
-import { cacheLife } from "next/cache";
+import getPackageVersions from "^/lib/api/packageVersions/packageVersions";
 import { toHttpUrl } from "^/lib/utils/toHttpUrl";
-import { fetchPackument, type Manifest, type Packument } from "./packument";
+import fetchLatestManifest from "./latestManifest";
+import type { Manifest } from "./packument";
 
 export interface CatalogSummary {
     name: string;
@@ -55,21 +56,29 @@ export function repositoryUrl(
     );
 }
 
-export function createCatalogSummary(packument: Packument): CatalogSummary {
-    const versions = Object.keys(packument.versions);
-    const latestVersion = packument["dist-tags"].latest;
-    const manifest = packument.versions[latestVersion];
+export interface CatalogSource {
+    name: string;
+    versions: Record<string, string>;
+    latestManifest: Manifest | null;
+}
+
+export function createCatalogSummary({
+    name,
+    versions,
+    latestManifest: manifest,
+}: CatalogSource): CatalogSummary {
+    const versionList = Object.keys(versions);
 
     if (!manifest) {
-        return { name: packument.name, versions };
+        return { name, versions: versionList };
     }
 
     return {
-        name: packument.name,
-        versions,
+        name,
+        versions: versionList,
         latest: {
-            version: latestVersion,
-            time: packument.time?.[latestVersion],
+            version: manifest.version,
+            time: versions[manifest.version],
             description: manifest.description,
             license: licenseText(manifest),
             author: authorName(manifest.author),
@@ -84,9 +93,19 @@ export function createCatalogSummary(packument: Packument): CatalogSummary {
 export default async function getCatalogSummary(
     packageName: string,
 ): Promise<CatalogSummary> {
-    "use cache";
+    const latestManifest = await fetchLatestManifest(packageName);
+    const packageVersions = await getPackageVersions(
+        packageName,
+        latestManifest?.version,
+    );
 
-    cacheLife("hours");
+    if (!packageVersions) {
+        throw new Error(`Package not found: ${packageName}`);
+    }
 
-    return createCatalogSummary(await fetchPackument(packageName));
+    return createCatalogSummary({
+        name: packageName,
+        versions: packageVersions.versions,
+        latestManifest,
+    });
 }

@@ -1,10 +1,26 @@
-import {
+import getPackageVersions from "^/lib/api/packageVersions/packageVersions";
+import getCatalogSummary, {
     authorName,
+    type CatalogSource,
     createCatalogSummary,
     licenseText,
     repositoryUrl,
 } from "./catalogSummary";
-import type { Manifest, Packument } from "./packument";
+import fetchLatestManifest from "./latestManifest";
+import type { Manifest } from "./packument";
+
+jest.mock("^/lib/api/packageVersions/packageVersions", () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
+
+jest.mock("./latestManifest", () => ({
+    __esModule: true,
+    default: jest.fn(),
+}));
+
+const getPackageVersionsMock = getPackageVersions as jest.Mock;
+const fetchLatestManifestMock = fetchLatestManifest as jest.Mock;
 
 describe("licenseText", () => {
     it.each([
@@ -89,31 +105,30 @@ describe("repositoryUrl", () => {
 });
 
 describe("createCatalogSummary", () => {
-    const packument = (versions: Record<string, Partial<Manifest>>) =>
+    const source = (latestManifest: Partial<Manifest> | null) =>
         ({
             name: "example",
-            "dist-tags": { latest: "2.0.0" },
-            time: {
+            versions: {
                 "1.0.0": "2020-01-01T00:00:00.000Z",
                 "2.0.0": "2021-01-01T00:00:00.000Z",
             },
-            versions,
-        }) as unknown as Packument;
+            latestManifest: latestManifest && {
+                version: "2.0.0",
+                ...latestManifest,
+            },
+        }) as CatalogSource;
 
     it("summarizes the latest version", () => {
         expect(
             createCatalogSummary(
-                packument({
-                    "1.0.0": {},
-                    "2.0.0": {
-                        description: "An example",
-                        license: "MIT",
-                        author: "Jane Doe <jane@example.com>",
-                        repository: "github:owner/example",
-                        homepage: "https://example.com/",
-                        keywords: ["one", "two"],
-                        maintainers: [{ name: "a" }, { name: "b" }],
-                    },
+                source({
+                    description: "An example",
+                    license: "MIT",
+                    author: "Jane Doe <jane@example.com>",
+                    repository: "github:owner/example",
+                    homepage: "https://example.com/",
+                    keywords: ["one", "two"],
+                    maintainers: [{ name: "a" }, { name: "b" }],
                 }),
             ),
         ).toEqual({
@@ -135,15 +150,71 @@ describe("createCatalogSummary", () => {
 
     it("drops a non-http homepage", () => {
         const summary = createCatalogSummary(
-            packument({ "2.0.0": { homepage: "javascript:alert(1)" } }),
+            source({ homepage: "javascript:alert(1)" }),
         );
         expect(summary.latest?.homepageUrl).toBeUndefined();
     });
 
-    it("omits latest when the latest manifest is missing", () => {
-        expect(createCatalogSummary(packument({ "1.0.0": {} }))).toEqual({
+    it("omits latest when there is no latest manifest", () => {
+        expect(createCatalogSummary(source(null))).toEqual({
             name: "example",
-            versions: ["1.0.0"],
+            versions: ["1.0.0", "2.0.0"],
         });
+    });
+});
+
+describe("getCatalogSummary", () => {
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
+    it("combines the latest manifest with versions that include it", async () => {
+        fetchLatestManifestMock.mockResolvedValue({
+            version: "2.0.0",
+            description: "An example",
+        });
+        getPackageVersionsMock.mockResolvedValue({
+            versions: {
+                "1.0.0": "2020-01-01T00:00:00.000Z",
+                "2.0.0": "2021-01-01T00:00:00.000Z",
+            },
+            tags: { latest: "2.0.0" },
+        });
+
+        const summary = await getCatalogSummary("example");
+
+        expect(getPackageVersionsMock).toHaveBeenCalledWith("example", "2.0.0");
+        expect(summary.versions).toEqual(["1.0.0", "2.0.0"]);
+        expect(summary.latest).toMatchObject({
+            version: "2.0.0",
+            time: "2021-01-01T00:00:00.000Z",
+            description: "An example",
+        });
+    });
+
+    it("lists versions without a latest manifest", async () => {
+        fetchLatestManifestMock.mockResolvedValue(null);
+        getPackageVersionsMock.mockResolvedValue({
+            versions: { "1.0.0-beta.0": "2020-01-01T00:00:00.000Z" },
+            tags: { beta: "1.0.0-beta.0" },
+        });
+
+        await expect(getCatalogSummary("example")).resolves.toEqual({
+            name: "example",
+            versions: ["1.0.0-beta.0"],
+        });
+        expect(getPackageVersionsMock).toHaveBeenCalledWith(
+            "example",
+            undefined,
+        );
+    });
+
+    it("throws when the package doesn't exist", async () => {
+        fetchLatestManifestMock.mockResolvedValue(null);
+        getPackageVersionsMock.mockResolvedValue(null);
+
+        await expect(getCatalogSummary("does-not-exist")).rejects.toThrow(
+            "Package not found: does-not-exist",
+        );
     });
 });
