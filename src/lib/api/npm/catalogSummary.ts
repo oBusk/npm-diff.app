@@ -62,10 +62,20 @@ export function repositoryUrl(
     if (!url) {
         return undefined;
     }
-    return (
-        fromUrl(url)?.browse() ??
-        toHttpUrl(url.replace(/^git\+/, "").replace(/\.git$/, ""))
-    );
+    const directory =
+        typeof repository === "string"
+            ? undefined
+            : asString(repository?.directory);
+    const httpUrl = toHttpUrl(url.replace(/^git\+/, "").replace(/\.git$/, ""));
+    const hosted = fromUrl(url);
+    if (!hosted) {
+        return httpUrl;
+    }
+    if (directory) {
+        return hosted.browse(directory);
+    }
+    const repositoryPage = hosted.browse();
+    return httpUrl?.startsWith(`${repositoryPage}/`) ? httpUrl : repositoryPage;
 }
 
 export interface CatalogSource {

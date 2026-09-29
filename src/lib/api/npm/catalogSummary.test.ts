@@ -101,6 +101,30 @@ describe("repositoryUrl", () => {
             { url: "git+https://git.example.com/owner/repo.git" },
             "https://git.example.com/owner/repo",
         ],
+        [
+            {
+                type: "git",
+                url: "https://github.com/babel/babel.git",
+                directory: "packages/babel-core",
+            },
+            "https://github.com/babel/babel/tree/HEAD/packages/babel-core",
+        ],
+        [
+            "https://github.com/babel/babel/tree/main/packages/babel-core",
+            "https://github.com/babel/babel/tree/main/packages/babel-core",
+        ],
+        [
+            "https://bitbucket.org/owner/repo/src/main/packages/core",
+            "https://bitbucket.org/owner/repo/src/main/packages/core",
+        ],
+        [
+            "https://gitlab.com/owner/repo/-/tree/main/packages/core",
+            "https://gitlab.com/owner/repo/-/tree/main/packages/core",
+        ],
+        [
+            "https://github.com/owner/repo#main",
+            "https://github.com/owner/repo/tree/main",
+        ],
     ])("%j → %p", (repository, expected) => {
         expect(repositoryUrl(repository)).toBe(expected);
     });
