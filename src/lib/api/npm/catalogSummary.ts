@@ -22,6 +22,14 @@ export interface CatalogLatestVersion {
     maintainersCount: number;
 }
 
+const asString = (value: unknown): string | undefined =>
+    typeof value === "string" ? value : undefined;
+
+const asStrings = (value: unknown): string[] =>
+    Array.isArray(value)
+        ? [...new Set(value.filter((item) => typeof item === "string"))]
+        : [];
+
 export function licenseText({
     license,
     licenses,
@@ -29,24 +37,28 @@ export function licenseText({
     if (typeof license === "string") {
         return license;
     }
-    if (license?.type) {
-        return license.type;
+    const type = asString(license?.type);
+    if (type) {
+        return type;
     }
-    const types = licenses?.map(({ type }) => type).filter(Boolean);
-    return types?.length ? types.join(" OR ") : undefined;
+    const types = Array.isArray(licenses)
+        ? licenses.map((entry) => asString(entry?.type)).filter(Boolean)
+        : [];
+    return types.length ? types.join(" OR ") : undefined;
 }
 
 export function authorName(author: Manifest["author"]): string | undefined {
     if (typeof author === "string") {
         return author.match(/^[^(<]+/)?.[0].trim() || undefined;
     }
-    return author?.name;
+    return asString(author?.name);
 }
 
 export function repositoryUrl(
     repository: Manifest["repository"],
 ): string | undefined {
-    const url = typeof repository === "string" ? repository : repository?.url;
+    const url =
+        typeof repository === "string" ? repository : asString(repository?.url);
     if (!url) {
         return undefined;
     }
@@ -79,13 +91,15 @@ export function createCatalogSummary({
         latest: {
             version: manifest.version,
             time: versions[manifest.version],
-            description: manifest.description,
+            description: asString(manifest.description),
             license: licenseText(manifest),
             author: authorName(manifest.author),
             repositoryUrl: repositoryUrl(manifest.repository),
-            homepageUrl: toHttpUrl(manifest.homepage),
-            keywords: Array.isArray(manifest.keywords) ? manifest.keywords : [],
-            maintainersCount: manifest.maintainers?.length ?? 0,
+            homepageUrl: toHttpUrl(asString(manifest.homepage)),
+            keywords: asStrings(manifest.keywords),
+            maintainersCount: Array.isArray(manifest.maintainers)
+                ? manifest.maintainers.length
+                : 0,
         },
     };
 }

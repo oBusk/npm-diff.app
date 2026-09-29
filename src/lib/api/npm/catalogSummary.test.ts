@@ -49,6 +49,16 @@ describe("licenseText", () => {
     ])("%j → %p", (manifest, expected) => {
         expect(licenseText(manifest)).toBe(expected);
     });
+
+    it.each([
+        { license: { type: { name: "MIT" } } },
+        { license: [{ type: "MIT" }] },
+        { licenses: { type: "MIT" } },
+        { licenses: "MIT" },
+        { licenses: [null, { type: 1 }] },
+    ])("has no license for %j", (manifest) => {
+        expect(licenseText(manifest as unknown as Manifest)).toBeUndefined();
+    });
 });
 
 describe("authorName", () => {
@@ -61,9 +71,10 @@ describe("authorName", () => {
         ["Barney Rubble (http://barnyrubble.tumblr.com/)", "Barney Rubble"],
         ["Barney Rubble", "Barney Rubble"],
         ["<b@rubble.com>", undefined],
+        [{ name: { first: "Barney" } }, undefined],
         [undefined, undefined],
     ])("%j → %p", (author, expected) => {
-        expect(authorName(author)).toBe(expected);
+        expect(authorName(author as Manifest["author"])).toBe(expected);
     });
 });
 
@@ -98,9 +109,12 @@ describe("repositoryUrl", () => {
         { url: "git://git.example.com/owner/repo.git" },
         { url: "javascript:alert(1)" },
         { type: "git" },
+        { url: { href: "https://github.com/npm/cli" } },
         undefined,
     ])("has no link for %j", (repository) => {
-        expect(repositoryUrl(repository)).toBeUndefined();
+        expect(
+            repositoryUrl(repository as Manifest["repository"]),
+        ).toBeUndefined();
     });
 });
 
@@ -153,6 +167,24 @@ describe("createCatalogSummary", () => {
             source({ homepage: "javascript:alert(1)" }),
         );
         expect(summary.latest?.homepageUrl).toBeUndefined();
+    });
+
+    it("drops fields that aren't strings", () => {
+        expect(
+            createCatalogSummary(
+                source({
+                    description: { text: "An example" },
+                    homepage: ["https://example.com/"],
+                    keywords: ["one", { name: "two" }, 3, "one"],
+                    maintainers: { name: "a" },
+                } as unknown as Partial<Manifest>),
+            ).latest,
+        ).toEqual({
+            version: "2.0.0",
+            time: "2021-01-01T00:00:00.000Z",
+            keywords: ["one"],
+            maintainersCount: 0,
+        });
     });
 
     it("omits latest when there is no latest manifest", () => {
