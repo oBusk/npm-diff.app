@@ -1,8 +1,9 @@
 import { fromUrl } from "hosted-git-info";
-import getPackageVersions from "^/lib/api/packageVersions/packageVersions";
+import getVersionsFromNpmSearch from "^/lib/api/npmSearch/versions";
+import { hasErrorCode } from "^/lib/utils/hasErrorCode";
 import { toHttpUrl } from "^/lib/utils/toHttpUrl";
 import fetchLatestManifest from "./latestManifest";
-import type { Manifest } from "./packument";
+import { fetchPackument, type Manifest } from "./packument";
 
 export interface CatalogSummary {
     name: string;
@@ -164,9 +165,11 @@ export function homepageLink(
     return { text: displayUrl(href), href };
 }
 
+type PublishTimes = Record<string, string | undefined>;
+
 export interface CatalogSource {
     name: string;
-    versions: Record<string, string | undefined>;
+    versions: PublishTimes;
     latestManifest: Manifest | null;
 }
 
@@ -202,34 +205,74 @@ export function createCatalogSummary({
     };
 }
 
+async function versionsFromNpmSearch(
+    packageName: string,
+): Promise<PublishTimes | undefined> {
+    try {
+        return (await getVersionsFromNpmSearch(packageName))?.versions;
+    } catch (e) {
+        console.error(`[${packageName}] npm-search versions error:`, e);
+
+        return undefined;
+    }
+}
+
+async function versionsFromRegistry(
+    packageName: string,
+): Promise<PublishTimes | undefined> {
+    try {
+        const doc = await fetchPackument(packageName);
+        const versions = Object.keys(doc.versions ?? {});
+
+        if (versions.length === 0) {
+            return undefined;
+        }
+
+        return Object.fromEntries(
+            versions.map((version) => [version, doc.time?.[version]]),
+        );
+    } catch (e) {
+        if (hasErrorCode(e, "E404")) {
+            return undefined;
+        }
+
+        throw e;
+    }
+}
+
+// npm-search can lag behind the latest publish, and truncates some packages to only their latest version
+const isComplete = (versions: PublishTimes, latestVersion?: string) =>
+    Object.keys(versions).length > 1 &&
+    (latestVersion == null || Object.hasOwn(versions, latestVersion));
+
 export default async function getCatalogSummary(
     packageName: string,
 ): Promise<CatalogSummary> {
-    const latest = fetchLatestManifest(packageName).then(
-        (manifest) => ({ manifest, unavailable: false }),
-        (e) => {
-            console.error(`[${packageName}] latest manifest error:`, e);
+    const [{ manifest, unavailable }, indexed] = await Promise.all([
+        fetchLatestManifest(packageName).then(
+            (manifest) => ({ manifest, unavailable: false }),
+            (e) => {
+                console.error(`[${packageName}] latest manifest error:`, e);
 
-            return { manifest: null, unavailable: true };
-        },
-    );
-
-    const [{ manifest, unavailable }, packageVersions] = await Promise.all([
-        latest,
-        getPackageVersions(
-            packageName,
-            latest.then(({ manifest }) => asString(manifest?.version)),
+                return { manifest: null, unavailable: true };
+            },
         ),
+        versionsFromNpmSearch(packageName),
     ]);
 
-    if (!packageVersions) {
+    const versions =
+        indexed && isComplete(indexed, asString(manifest?.version))
+            ? indexed
+            : await versionsFromRegistry(packageName);
+
+    if (!versions) {
         throw new Error(`Package not found: ${packageName}`);
     }
 
     return {
         ...createCatalogSummary({
             name: packageName,
-            versions: packageVersions.versions,
+            versions,
             latestManifest: manifest,
         }),
         ...(unavailable && { latestUnavailable: true }),

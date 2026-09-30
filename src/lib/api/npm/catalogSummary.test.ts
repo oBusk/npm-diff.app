@@ -1,4 +1,4 @@
-import getPackageVersions from "^/lib/api/packageVersions/packageVersions";
+import getVersionsFromNpmSearch from "^/lib/api/npmSearch/versions";
 import getCatalogSummary, {
     authorName,
     type CatalogSource,
@@ -8,9 +8,9 @@ import getCatalogSummary, {
     repositoryLink,
 } from "./catalogSummary";
 import fetchLatestManifest from "./latestManifest";
-import type { Manifest } from "./packument";
+import { fetchPackument, type Manifest } from "./packument";
 
-jest.mock("^/lib/api/packageVersions/packageVersions", () => ({
+jest.mock("^/lib/api/npmSearch/versions", () => ({
     __esModule: true,
     default: jest.fn(),
 }));
@@ -20,8 +20,13 @@ jest.mock("./latestManifest", () => ({
     default: jest.fn(),
 }));
 
-const getPackageVersionsMock = getPackageVersions as jest.Mock;
+jest.mock("./packument", () => ({
+    fetchPackument: jest.fn(),
+}));
+
+const getVersionsFromNpmSearchMock = getVersionsFromNpmSearch as jest.Mock;
 const fetchLatestManifestMock = fetchLatestManifest as jest.Mock;
+const fetchPackumentMock = fetchPackument as jest.Mock;
 
 describe("licenseText", () => {
     it.each([
@@ -390,76 +395,145 @@ describe("createCatalogSummary", () => {
 });
 
 describe("getCatalogSummary", () => {
-    const requiredVersion = () => getPackageVersionsMock.mock.calls[0][1];
+    const indexed = {
+        versions: {
+            "1.0.0": "2020-01-01T00:00:00.000Z",
+            "2.0.0": "2021-01-01T00:00:00.000Z",
+        },
+        tags: { latest: "2.0.0" },
+    };
+
+    const registryDoc = {
+        time: {
+            created: "2019-01-01T00:00:00.000Z",
+            "2.0.0": "2021-01-01T00:00:00.000Z",
+            "3.0.0": "2022-01-01T00:00:00.000Z",
+        },
+        versions: { "2.0.0": {}, "3.0.0": {} },
+    };
+
+    const versionsOf = async () =>
+        (await getCatalogSummary("example")).versions;
+
+    beforeEach(() => {
+        jest.spyOn(console, "error").mockImplementation(() => {});
+    });
 
     afterEach(() => {
         jest.resetAllMocks();
         jest.restoreAllMocks();
     });
 
-    it("combines the latest manifest with versions that include it", async () => {
+    it("combines the latest manifest with npm-search versions", async () => {
         fetchLatestManifestMock.mockResolvedValue({
             version: "2.0.0",
             description: "An example",
         });
-        getPackageVersionsMock.mockResolvedValue({
-            versions: {
-                "1.0.0": "2020-01-01T00:00:00.000Z",
-                "2.0.0": "2021-01-01T00:00:00.000Z",
-            },
-            tags: { latest: "2.0.0" },
-        });
+        getVersionsFromNpmSearchMock.mockResolvedValue(indexed);
 
         const summary = await getCatalogSummary("example");
 
-        await expect(requiredVersion()).resolves.toBe("2.0.0");
         expect(summary.versions).toEqual(["1.0.0", "2.0.0"]);
         expect(summary.latest).toMatchObject({
             version: "2.0.0",
             time: "2021-01-01T00:00:00.000Z",
             description: "An example",
         });
+        expect(fetchPackumentMock).not.toHaveBeenCalled();
     });
 
     it("lists versions without a latest manifest", async () => {
         fetchLatestManifestMock.mockResolvedValue(null);
-        getPackageVersionsMock.mockResolvedValue({
-            versions: { "1.0.0-beta.0": "2020-01-01T00:00:00.000Z" },
-            tags: { beta: "1.0.0-beta.0" },
-        });
+        getVersionsFromNpmSearchMock.mockResolvedValue(indexed);
 
         await expect(getCatalogSummary("example")).resolves.toEqual({
             name: "example",
-            versions: ["1.0.0-beta.0"],
+            versions: ["1.0.0", "2.0.0"],
         });
-        await expect(requiredVersion()).resolves.toBeUndefined();
     });
 
     it("lists versions when the latest manifest can't be fetched", async () => {
-        jest.spyOn(console, "error").mockImplementation(() => {});
         fetchLatestManifestMock.mockRejectedValue(new Error("503"));
-        getPackageVersionsMock.mockResolvedValue({
-            versions: {
-                "1.0.0": "2020-01-01T00:00:00.000Z",
-                "2.0.0": "2021-01-01T00:00:00.000Z",
-            },
-            tags: { latest: "2.0.0" },
-        });
+        getVersionsFromNpmSearchMock.mockResolvedValue(indexed);
 
         await expect(getCatalogSummary("example")).resolves.toEqual({
             name: "example",
             versions: ["1.0.0", "2.0.0"],
             latestUnavailable: true,
         });
-        await expect(requiredVersion()).resolves.toBeUndefined();
     });
 
-    it("throws when the package doesn't exist", async () => {
-        fetchLatestManifestMock.mockResolvedValue(null);
-        getPackageVersionsMock.mockResolvedValue(null);
+    it.each([
+        ["the package isn't indexed", null],
+        ["the latest version isn't indexed yet", indexed],
+        [
+            "npm-search only has one version",
+            { versions: { "3.0.0": "2022-01-01T00:00:00.000Z" } },
+        ],
+    ])("falls back to the registry when %s", async (_, searchResult) => {
+        fetchLatestManifestMock.mockResolvedValue({ version: "3.0.0" });
+        getVersionsFromNpmSearchMock.mockResolvedValue(searchResult);
+        fetchPackumentMock.mockResolvedValue(registryDoc);
 
-        await expect(getCatalogSummary("does-not-exist")).rejects.toThrow(
-            "Package not found: does-not-exist",
+        const summary = await getCatalogSummary("example");
+
+        expect(summary.versions).toEqual(["2.0.0", "3.0.0"]);
+        expect(summary.latest?.time).toBe("2022-01-01T00:00:00.000Z");
+        expect(fetchPackumentMock).toHaveBeenCalledWith("example");
+    });
+
+    it("falls back to the registry when npm-search fails", async () => {
+        fetchLatestManifestMock.mockResolvedValue(null);
+        getVersionsFromNpmSearchMock.mockRejectedValue(new Error("down"));
+        fetchPackumentMock.mockResolvedValue(registryDoc);
+
+        await expect(versionsOf()).resolves.toEqual(["2.0.0", "3.0.0"]);
+    });
+
+    it("keeps versions the registry has no publish time for", async () => {
+        fetchLatestManifestMock.mockResolvedValue({ version: "3.0.0" });
+        getVersionsFromNpmSearchMock.mockResolvedValue(null);
+        fetchPackumentMock.mockResolvedValue({
+            ...registryDoc,
+            time: { "2.0.0": "2021-01-01T00:00:00.000Z" },
+        });
+
+        const summary = await getCatalogSummary("example");
+
+        expect(summary.versions).toEqual(["2.0.0", "3.0.0"]);
+        expect(summary.latest?.time).toBeUndefined();
+    });
+
+    it.each([
+        [
+            "the registry doesn't have the package",
+            () =>
+                fetchPackumentMock.mockRejectedValue(
+                    Object.assign(new Error("Not found"), { code: "E404" }),
+                ),
+        ],
+        [
+            "the registry packument has no versions",
+            () =>
+                fetchPackumentMock.mockResolvedValue({
+                    time: { unpublished: { time: "2021-01-01T00:00:00.000Z" } },
+                }),
+        ],
+    ])("throws when %s", async (_, mockRegistry) => {
+        fetchLatestManifestMock.mockResolvedValue(null);
+        getVersionsFromNpmSearchMock.mockResolvedValue(null);
+        mockRegistry();
+
+        await expect(versionsOf()).rejects.toThrow(
+            "Package not found: example",
         );
+    });
+
+    it("rethrows other registry errors", async () => {
+        fetchLatestManifestMock.mockResolvedValue(null);
+        getVersionsFromNpmSearchMock.mockResolvedValue(null);
+        fetchPackumentMock.mockRejectedValue(new Error("boom"));
+
+        await expect(versionsOf()).rejects.toThrow("boom");
     });
 });
