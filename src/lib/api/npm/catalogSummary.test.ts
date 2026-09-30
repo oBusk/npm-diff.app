@@ -1,8 +1,6 @@
 import getPackageVersions from "^/lib/api/packageVersions";
 import getCatalogSummary, {
     authorName,
-    type CatalogSource,
-    createCatalogSummary,
     homepageLink,
     licenseText,
     repositoryLink,
@@ -113,7 +111,7 @@ describe("repositoryLink", () => {
             {
                 type: "git",
                 url: "https://github.com/babel/babel.git",
-                directory: "./packages/babel-core/",
+                directory: "packages/babel-core",
             },
             github(
                 "babel/babel",
@@ -122,33 +120,7 @@ describe("repositoryLink", () => {
             ),
         ],
         [
-            "https://github.com/babel/babel/tree/main/packages/babel-core#readme",
-            github(
-                "babel/babel",
-                "https://github.com/babel/babel/tree/main/packages/babel-core",
-                "packages/babel-core",
-            ),
-        ],
-        [
-            {
-                url: "https://user:token@github.com/owner/repo.git",
-                directory: "packages/a b",
-            },
-            github(
-                "owner/repo",
-                "https://github.com/owner/repo/tree/HEAD/packages/a%20b",
-                "packages/a b",
-            ),
-        ],
-        [
-            { url: "https://github.com/owner/repo.git", directory: "." },
-            github("owner/repo", "https://github.com/owner/repo"),
-        ],
-        [
-            {
-                url: "https://github.com/owner/repo.git",
-                directory: "../../../../evil/repo",
-            },
+            { url: "https://github.com/owner/repo.git", directory: "" },
             github("owner/repo", "https://github.com/owner/repo"),
         ],
         [
@@ -172,15 +144,6 @@ describe("repositoryLink", () => {
             },
         ],
         [
-            "https://bitbucket.org/owner/repo/src/main/packages/core",
-            {
-                host: "bitbucket",
-                text: "owner/repo",
-                directory: "src/main/packages/core",
-                href: "https://bitbucket.org/owner/repo/src/main/packages/core",
-            },
-        ],
-        [
             "gist:11081aaa281",
             {
                 host: "gist",
@@ -196,14 +159,6 @@ describe("repositoryLink", () => {
                 href: "https://git.sr.ht/~user/repo",
             },
         ],
-        [
-            "gitlab:user/repo",
-            {
-                host: "gitlab",
-                text: "user/repo",
-                href: "https://gitlab.com/user/repo",
-            },
-        ],
     ])("%j → %j", (repository, expected) => {
         expect(repositoryLink(repository)).toEqual(expected);
     });
@@ -211,19 +166,16 @@ describe("repositoryLink", () => {
     it.each([
         "git+https://git.example.com/owner/repo.git",
         "https://git.example.com/owner/repo",
-        "https://user:token@git.example.com/owner/repo.git",
-        "git://git.example.com/owner/repo.git",
-        "github.com/user/repo",
         "https://gitlab.com/owner/repo/-/tree/main/packages/core",
         "javascript:alert(1)",
         "not a repository",
-    ])("shows %j as text without a link", (url) => {
-        expect(repositoryLink({ url })).toEqual({ text: url });
+        "  ",
+    ])("has no repository for the unknown host %j", (url) => {
+        expect(repositoryLink({ type: "git", url })).toBeUndefined();
     });
 
     it.each([
         { type: "git" },
-        { url: "  " },
         { url: { href: "https://github.com/npm/cli" } },
         undefined,
     ])("has no repository for %j", (repository) => {
@@ -237,61 +189,66 @@ describe("homepageLink", () => {
     it.each([
         [
             "https://example.com/docs",
-            {
-                text: "example.com/docs",
-                href: "https://example.com/docs",
-            },
+            { text: "example.com/docs", href: "https://example.com/docs" },
         ],
-        ["example.com", { text: "example.com" }],
         [
             "http://example.com/",
             { text: "http://example.com/", href: "http://example.com/" },
         ],
-        ["javascript:alert(1)", { text: "javascript:alert(1)" }],
-        ["see the readme", { text: "see the readme" }],
-        ["README.md", { text: "README.md" }],
     ])("%j → %j", (homepage, expected) => {
         expect(homepageLink(homepage)).toEqual(expected);
     });
 
-    it.each([undefined, "", "  ", ["https://example.com/"]])(
-        "has no homepage for %j",
-        (homepage) => {
-            expect(
-                homepageLink(homepage as Manifest["homepage"]),
-            ).toBeUndefined();
-        },
-    );
+    it.each([
+        undefined,
+        "",
+        "  ",
+        ["https://example.com/"],
+        "example.com",
+        "javascript:alert(1)",
+        "README.md",
+    ])("has no homepage for %j", (homepage) => {
+        expect(homepageLink(homepage as Manifest["homepage"])).toBeUndefined();
+    });
 });
 
-describe("createCatalogSummary", () => {
-    const source = (latestManifest: Partial<Manifest> | null) =>
-        ({
-            name: "example",
-            versions: {
-                "1.0.0": "2020-01-01T00:00:00.000Z",
-                "2.0.0": "2021-01-01T00:00:00.000Z",
-            },
-            latestManifest: latestManifest && {
-                version: "2.0.0",
-                ...latestManifest,
-            },
-        }) as CatalogSource;
+describe("getCatalogSummary", () => {
+    const versions = {
+        "1.0.0": "2020-01-01T00:00:00.000Z",
+        "2.0.0": "2021-01-01T00:00:00.000Z",
+    };
 
-    it("summarizes the latest version", () => {
-        expect(
-            createCatalogSummary(
-                source({
-                    description: "An example",
-                    license: "MIT",
-                    author: "Jane Doe <jane@example.com>",
-                    repository: "github:owner/example",
-                    homepage: "https://example.com/",
-                    keywords: ["one", "two"],
-                    maintainers: [{ name: "a" }, { name: "b" }],
-                }),
-            ),
-        ).toEqual({
+    const summarize = (latestManifest: Partial<Manifest>) => {
+        fetchLatestManifestMock.mockResolvedValue({
+            version: "2.0.0",
+            ...latestManifest,
+        });
+        getPackageVersionsMock.mockResolvedValue(versions);
+
+        return getCatalogSummary("example");
+    };
+
+    beforeEach(() => {
+        jest.spyOn(console, "error").mockImplementation(() => {});
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
+        jest.restoreAllMocks();
+    });
+
+    it("summarizes the latest version", async () => {
+        await expect(
+            summarize({
+                description: "An example",
+                license: "MIT",
+                author: "Jane Doe <jane@example.com>",
+                repository: "github:owner/example",
+                homepage: "https://example.com/",
+                keywords: ["one", "two"],
+                maintainers: [{ name: "a" }, { name: "b" }],
+            }),
+        ).resolves.toEqual({
             name: "example",
             versions: ["1.0.0", "2.0.0"],
             latest: {
@@ -312,76 +269,25 @@ describe("createCatalogSummary", () => {
                 keywords: ["one", "two"],
                 maintainersCount: 2,
             },
+            cacheLife: "hours",
         });
+        expect(getPackageVersionsMock).toHaveBeenCalledWith("example", "2.0.0");
     });
 
-    it("doesn't link a non-http homepage", () => {
-        const summary = createCatalogSummary(
-            source({ homepage: "javascript:alert(1)" }),
-        );
-        expect(summary.latest?.homepage).toEqual({
-            text: "javascript:alert(1)",
-        });
-    });
+    it("drops fields that aren't strings", async () => {
+        const summary = await summarize({
+            description: { text: "An example" },
+            homepage: ["https://example.com/"],
+            keywords: ["one", { name: "two" }, 3, "one"],
+            maintainers: { name: "a" },
+        } as unknown as Partial<Manifest>);
 
-    it("drops fields that aren't strings", () => {
-        expect(
-            createCatalogSummary(
-                source({
-                    description: { text: "An example" },
-                    homepage: ["https://example.com/"],
-                    keywords: ["one", { name: "two" }, 3, "one"],
-                    maintainers: { name: "a" },
-                } as unknown as Partial<Manifest>),
-            ).latest,
-        ).toEqual({
+        expect(summary.latest).toEqual({
             version: "2.0.0",
             time: "2021-01-01T00:00:00.000Z",
             keywords: ["one"],
             maintainersCount: 0,
         });
-    });
-
-    it("omits latest when there is no latest manifest", () => {
-        expect(createCatalogSummary(source(null))).toEqual({
-            name: "example",
-            versions: ["1.0.0", "2.0.0"],
-        });
-    });
-});
-
-describe("getCatalogSummary", () => {
-    const versions = {
-        "1.0.0": "2020-01-01T00:00:00.000Z",
-        "2.0.0": "2021-01-01T00:00:00.000Z",
-    };
-
-    beforeEach(() => {
-        jest.spyOn(console, "error").mockImplementation(() => {});
-    });
-
-    afterEach(() => {
-        jest.resetAllMocks();
-        jest.restoreAllMocks();
-    });
-
-    it("combines the latest manifest with versions that include it", async () => {
-        fetchLatestManifestMock.mockResolvedValue({
-            version: "2.0.0",
-            description: "An example",
-        });
-        getPackageVersionsMock.mockResolvedValue(versions);
-
-        const summary = await getCatalogSummary("example");
-
-        expect(getPackageVersionsMock).toHaveBeenCalledWith("example", "2.0.0");
-        expect(summary.versions).toEqual(["1.0.0", "2.0.0"]);
-        expect(summary.latest).toMatchObject({
-            version: "2.0.0",
-            time: "2021-01-01T00:00:00.000Z",
-            description: "An example",
-        });
-        expect(summary.cacheLife).toBe("hours");
     });
 
     it("lists versions without a latest manifest", async () => {

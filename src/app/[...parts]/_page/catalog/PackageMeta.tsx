@@ -24,17 +24,13 @@ function MetaLink({ label, link, children = link.text }: MetaLinkProps) {
     return (
         <div className="truncate text-sm">
             <span className="text-muted-foreground">{label}: </span>
-            {link.href ? (
-                <ExternalLink
-                    href={link.href}
-                    title={link.href}
-                    className="text-blue-600 hover:underline dark:text-blue-400"
-                >
-                    {children}
-                </ExternalLink>
-            ) : (
-                <span title={link.text}>{children}</span>
-            )}
+            <ExternalLink
+                href={link.href}
+                title={link.href}
+                className="text-blue-600 hover:underline dark:text-blue-400"
+            >
+                {children}
+            </ExternalLink>
         </div>
     );
 }
@@ -55,7 +51,7 @@ export default function PackageMeta({ summary }: PackageMetaProps) {
 
     const npmUrl = `https://www.npmjs.com/package/${summary.name}`;
     const { repository, homepage, keywords } = latest;
-    const repositoryHost = repository?.host && repositoryHosts[repository.host];
+    const repositoryHost = repository && repositoryHosts[repository.host];
 
     // Calculate total versions
     const totalVersions = summary.versions.length;
@@ -123,9 +119,9 @@ export default function PackageMeta({ summary }: PackageMetaProps) {
                                 aria-label={repositoryHost.label}
                                 className="mr-1 inline size-4 align-text-bottom"
                             />
-                        ) : repository.host ? (
+                        ) : (
                             `${repository.host}:`
-                        ) : null}
+                        )}
                         {repository.text}
                         {repository.directory ? (
                             <span className="opacity-70">

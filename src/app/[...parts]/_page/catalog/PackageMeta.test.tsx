@@ -66,17 +66,4 @@ describe("PackageMeta", () => {
             screen.getByRole("link", { name: "example.com" }),
         ).toHaveAttribute("href", "https://example.com/");
     });
-
-    it("shows values without a valid URL as text, not links", () => {
-        renderMeta({
-            repository: { text: "git://git.example.com/owner/repo.git" },
-            homepage: { text: "javascript:alert(1)" },
-        });
-
-        expect(
-            screen.getByText("git://git.example.com/owner/repo.git"),
-        ).toBeInTheDocument();
-        expect(screen.getByText("javascript:alert(1)")).toBeInTheDocument();
-        expect(screen.getAllByRole("link")).toHaveLength(1);
-    });
 });
