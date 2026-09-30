@@ -34,10 +34,12 @@ describe("fetchLatestManifest", () => {
         );
     });
 
-    it("returns null when there is no latest version", async () => {
+    it("throws E404 when there is no latest version", async () => {
         fetchMock.mockResolvedValue(response(404));
 
-        await expect(fetchLatestManifest("example")).resolves.toBeNull();
+        await expect(fetchLatestManifest("example")).rejects.toMatchObject({
+            code: "E404",
+        });
     });
 
     it("throws when the registry fails", async () => {

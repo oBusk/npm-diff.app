@@ -1,5 +1,6 @@
 import { fromUrl } from "hosted-git-info";
 import getPackageVersions from "^/lib/api/packageVersions";
+import { hasErrorCode } from "^/lib/utils/hasErrorCode";
 import fetchLatestManifest from "./latestManifest";
 import type { Manifest } from "./packument";
 
@@ -100,11 +101,13 @@ export function homepageLink(
 export default async function getCatalogSummary(
     packageName: string,
 ): Promise<CatalogSummary & { cacheLife: "minutes" | "hours" }> {
-    let cacheLife: "minutes" | "hours" = "hours";
     const manifest = await fetchLatestManifest(packageName).catch(
         (e: unknown) => {
+            if (hasErrorCode(e, "E404")) {
+                throw new Error(`Package not found: ${packageName}`);
+            }
+
             console.error(`[${packageName}] latest manifest error:`, e);
-            cacheLife = "minutes";
 
             return null;
         },
@@ -133,6 +136,9 @@ export default async function getCatalogSummary(
                       : 0,
               }
             : undefined,
-        cacheLife,
+        cacheLife:
+            manifest && Object.hasOwn(versions, manifest.version)
+                ? "hours"
+                : "minutes",
     };
 }

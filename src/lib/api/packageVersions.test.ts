@@ -121,7 +121,16 @@ describe("getPackageVersions", () => {
         await expect(getPackageVersions("example")).resolves.toBeNull();
     });
 
-    it("rethrows other registry errors", async () => {
+    it("keeps the npm-search versions when the registry fails", async () => {
+        getVersionsFromNpmSearchMock.mockResolvedValue(indexed);
+        packumentMock.mockRejectedValue(new Error("boom"));
+
+        await expect(getPackageVersions("example", "3.0.0")).resolves.toEqual(
+            indexed.versions,
+        );
+    });
+
+    it("rethrows registry errors without npm-search versions", async () => {
         getVersionsFromNpmSearchMock.mockResolvedValue(null);
         packumentMock.mockRejectedValue(new Error("boom"));
 

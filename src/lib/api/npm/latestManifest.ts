@@ -6,7 +6,7 @@ const TIMEOUT_MS = 10_000;
 
 export default async function fetchLatestManifest(
     packageName: string,
-): Promise<Manifest | null> {
+): Promise<Manifest> {
     const { escapedName } = npa(packageName);
 
     const response = await fetch(
@@ -18,13 +18,14 @@ export default async function fetchLatestManifest(
         },
     );
 
-    if (response.status === 404) {
-        return null;
-    }
-
     if (!response.ok) {
-        throw new Error(
-            `[${packageName}] Registry returned ${response.status} for the latest manifest`,
+        await response.body?.cancel();
+
+        throw Object.assign(
+            new Error(
+                `[${packageName}] Registry returned ${response.status} for the latest manifest`,
+            ),
+            { code: `E${response.status}` },
         );
     }
 

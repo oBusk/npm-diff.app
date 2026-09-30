@@ -54,5 +54,13 @@ export default async function getPackageVersions(
         return indexed;
     }
 
-    return versionsFromRegistry(packageName);
+    return versionsFromRegistry(packageName).catch((e: unknown) => {
+        if (!indexed) {
+            throw e;
+        }
+
+        console.error(`[${packageName}] registry versions error:`, e);
+
+        return indexed;
+    });
 }

@@ -290,21 +290,6 @@ describe("getCatalogSummary", () => {
         });
     });
 
-    it("lists versions without a latest manifest", async () => {
-        fetchLatestManifestMock.mockResolvedValue(null);
-        getPackageVersionsMock.mockResolvedValue(versions);
-
-        await expect(getCatalogSummary("example")).resolves.toEqual({
-            name: "example",
-            versions: ["1.0.0", "2.0.0"],
-            cacheLife: "hours",
-        });
-        expect(getPackageVersionsMock).toHaveBeenCalledWith(
-            "example",
-            undefined,
-        );
-    });
-
     it("caches briefly when the latest manifest can't be fetched", async () => {
         fetchLatestManifestMock.mockRejectedValue(new Error("503"));
         getPackageVersionsMock.mockResolvedValue(versions);
@@ -314,10 +299,32 @@ describe("getCatalogSummary", () => {
             versions: ["1.0.0", "2.0.0"],
             cacheLife: "minutes",
         });
+        expect(getPackageVersionsMock).toHaveBeenCalledWith(
+            "example",
+            undefined,
+        );
+    });
+
+    it("caches briefly when the versions don't include the latest version", async () => {
+        const summary = await summarize({ version: "3.0.0" });
+
+        expect(summary.latest?.time).toBeUndefined();
+        expect(summary.cacheLife).toBe("minutes");
+    });
+
+    it("throws when there is no latest version", async () => {
+        fetchLatestManifestMock.mockRejectedValue(
+            Object.assign(new Error("Not found"), { code: "E404" }),
+        );
+
+        await expect(getCatalogSummary("example")).rejects.toThrow(
+            "Package not found: example",
+        );
+        expect(getPackageVersionsMock).not.toHaveBeenCalled();
     });
 
     it("throws when the package has no versions", async () => {
-        fetchLatestManifestMock.mockResolvedValue(null);
+        fetchLatestManifestMock.mockRejectedValue(new Error("503"));
         getPackageVersionsMock.mockResolvedValue(null);
 
         await expect(getCatalogSummary("example")).rejects.toThrow(
