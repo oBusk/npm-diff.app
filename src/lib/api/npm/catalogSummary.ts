@@ -80,7 +80,7 @@ export function repositoryUrl(
 
 export interface CatalogSource {
     name: string;
-    versions: Record<string, string>;
+    versions: Record<string, string | undefined>;
     latestManifest: Manifest | null;
 }
 

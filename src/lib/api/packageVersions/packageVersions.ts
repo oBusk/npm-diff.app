@@ -1,13 +1,11 @@
 import { fetchPackument } from "^/lib/api/npm/packument";
 import getVersionsFromNpmSearch from "^/lib/api/npmSearch/versions";
+import { hasErrorCode } from "^/lib/utils/hasErrorCode";
 
 export interface PackageVersions {
-    versions: Record<string, string>;
+    versions: Record<string, string | undefined>;
     tags: Record<string, string>;
 }
-
-const isE404 = (e: unknown): boolean =>
-    e instanceof Error && "code" in e && e.code === "E404";
 
 async function versionsFromNpmSearch(
     packageName: string,
@@ -26,23 +24,37 @@ async function versionsFromRegistry(
 ): Promise<PackageVersions | null> {
     try {
         const doc = await fetchPackument(packageName);
+        const versions = Object.keys(doc.versions ?? {});
+
+        if (versions.length === 0) {
+            return null;
+        }
 
         return {
             versions: Object.fromEntries(
-                Object.keys(doc.versions).map((version) => [
-                    version,
-                    doc.time?.[version] ?? "",
-                ]),
+                versions.map((version) => [version, doc.time?.[version]]),
             ),
-            tags: doc["dist-tags"],
+            tags: doc["dist-tags"] ?? {},
         };
     } catch (e) {
-        if (isE404(e)) {
+        if (hasErrorCode(e, "E404")) {
             return null;
         }
 
         throw e;
     }
+}
+
+function isComplete(
+    { versions }: PackageVersions,
+    requiredVersion: string | undefined,
+): boolean {
+    const isTruncatedToLatest = Object.keys(versions).length === 1;
+
+    return (
+        !isTruncatedToLatest &&
+        (requiredVersion == null || Object.hasOwn(versions, requiredVersion))
+    );
 }
 
 export default async function getPackageVersions(
@@ -51,11 +63,7 @@ export default async function getPackageVersions(
 ): Promise<PackageVersions | null> {
     const indexed = await versionsFromNpmSearch(packageName);
 
-    if (
-        indexed &&
-        (requiredVersion == null ||
-            Object.hasOwn(indexed.versions, requiredVersion))
-    ) {
+    if (indexed && isComplete(indexed, requiredVersion)) {
         return indexed;
     }
 

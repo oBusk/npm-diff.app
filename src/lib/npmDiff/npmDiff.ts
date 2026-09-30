@@ -1,5 +1,6 @@
 import libnpmdiff, { type Options } from "libnpmdiff";
 import { cacheLife } from "next/cache";
+import { hasErrorCode } from "^/lib/utils/hasErrorCode";
 import type { NpmDiffError } from "./NpmDiffError";
 
 export type NpmDiffResult =
@@ -47,10 +48,9 @@ async function npmDiff(
             duration: Date.now() - startTime,
         });
 
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const isEtarget = (e: any): e is ErrorETARGET => e.code === "ETARGET";
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        const isE404 = (e: any): e is Error404 => e.code === "E404";
+        const isEtarget = (e: unknown): e is ErrorETARGET =>
+            hasErrorCode(e, "ETARGET");
+        const isE404 = (e: unknown): e is Error404 => hasErrorCode(e, "E404");
 
         if (isEtarget(e)) {
             cacheLife("days");
