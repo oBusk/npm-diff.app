@@ -1,7 +1,7 @@
 import { cacheLife } from "next/cache";
 import { Suspense } from "react";
 import Skeleton from "^/components/ui/Skeleton";
-import packument from "^/lib/api/npm/packument";
+import getCatalogSummary from "^/lib/api/npm/catalogSummary";
 import { generateComparisons } from "^/lib/utils/generateComparisons";
 import { getCatalogPackageName } from "^/lib/utils/isCatalogPage";
 import ComparisonList from "./ComparisonList";
@@ -14,8 +14,6 @@ export interface CatalogPageProps {
 async function CatalogPageInner({ specs }: CatalogPageProps) {
     "use cache";
 
-    cacheLife("hours");
-
     const packageName = getCatalogPackageName(specs);
 
     if (!packageName) {
@@ -23,18 +21,22 @@ async function CatalogPageInner({ specs }: CatalogPageProps) {
     }
 
     // Fetch package data
-    const pack = await packument(packageName);
+    const summary = await getCatalogSummary(packageName);
 
-    const versions = Object.keys(pack.versions);
+    if (summary.cacheLife === "minutes") {
+        cacheLife("minutes");
+    } else {
+        cacheLife("hours");
+    }
 
     // Generate comparisons
-    const comparisons = generateComparisons(versions);
+    const comparisons = generateComparisons(summary.versions);
 
     return (
         <div className="mx-auto w-full max-w-7xl py-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[2fr_3fr]">
-                <div className="flex flex-col">
-                    <PackageMeta packument={pack} />
+                <div className="flex min-w-0 flex-col">
+                    <PackageMeta summary={summary} />
                 </div>
                 <div className="flex flex-col">
                     <ComparisonList

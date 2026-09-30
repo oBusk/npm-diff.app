@@ -1,0 +1,52 @@
+import fetchLatestManifest from "./latestManifest";
+
+const response = (status: number, body: unknown = {}) => ({
+    status,
+    ok: status >= 200 && status < 300,
+    json: async () => body,
+});
+
+describe("fetchLatestManifest", () => {
+    const originalFetch = globalThis.fetch;
+    const fetchMock = jest.fn();
+
+    beforeAll(() => {
+        globalThis.fetch = fetchMock;
+    });
+
+    afterAll(() => {
+        globalThis.fetch = originalFetch;
+    });
+
+    afterEach(() => {
+        fetchMock.mockReset();
+    });
+
+    it("fetches the latest manifest of a scoped package", async () => {
+        fetchMock.mockResolvedValue(response(200, { version: "1.0.0" }));
+
+        await expect(fetchLatestManifest("@scope/name")).resolves.toEqual({
+            version: "1.0.0",
+        });
+        expect(fetchMock).toHaveBeenCalledTimes(1);
+        expect(fetchMock.mock.calls[0][0]).toBe(
+            "https://registry.npmjs.org/@scope%2fname/latest",
+        );
+    });
+
+    it("throws E404 when there is no latest version", async () => {
+        fetchMock.mockResolvedValue(response(404));
+
+        await expect(fetchLatestManifest("example")).rejects.toMatchObject({
+            code: "E404",
+        });
+    });
+
+    it("throws when the registry fails", async () => {
+        fetchMock.mockResolvedValue(response(503));
+
+        await expect(fetchLatestManifest("example")).rejects.toThrow(
+            "Registry returned 503",
+        );
+    });
+});
