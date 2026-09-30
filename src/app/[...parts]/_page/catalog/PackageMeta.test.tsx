@@ -43,6 +43,20 @@ describe("PackageMeta", () => {
         );
     });
 
+    it("prefixes owner/repo with a repository host that has no icon", () => {
+        renderMeta({
+            repository: {
+                host: "bitbucket",
+                text: "user/repo",
+                href: "https://bitbucket.org/user/repo",
+            },
+        });
+
+        expect(
+            screen.getByRole("link", { name: "bitbucket:user/repo" }),
+        ).toHaveAttribute("href", "https://bitbucket.org/user/repo");
+    });
+
     it("shows the homepage URL without https://", () => {
         renderMeta({
             homepage: { text: "example.com", href: "https://example.com/" },

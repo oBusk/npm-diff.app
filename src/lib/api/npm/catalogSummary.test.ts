@@ -1,4 +1,4 @@
-import getVersionsFromNpmSearch from "^/lib/api/npmSearch/versions";
+import getPackageVersions from "^/lib/api/packageVersions";
 import getCatalogSummary, {
     authorName,
     type CatalogSource,
@@ -8,9 +8,9 @@ import getCatalogSummary, {
     repositoryLink,
 } from "./catalogSummary";
 import fetchLatestManifest from "./latestManifest";
-import { fetchPackument, type Manifest } from "./packument";
+import type { Manifest } from "./packument";
 
-jest.mock("^/lib/api/npmSearch/versions", () => ({
+jest.mock("^/lib/api/packageVersions", () => ({
     __esModule: true,
     default: jest.fn(),
 }));
@@ -20,13 +20,8 @@ jest.mock("./latestManifest", () => ({
     default: jest.fn(),
 }));
 
-jest.mock("./packument", () => ({
-    fetchPackument: jest.fn(),
-}));
-
-const getVersionsFromNpmSearchMock = getVersionsFromNpmSearch as jest.Mock;
+const getPackageVersionsMock = getPackageVersions as jest.Mock;
 const fetchLatestManifestMock = fetchLatestManifest as jest.Mock;
-const fetchPackumentMock = fetchPackument as jest.Mock;
 
 describe("licenseText", () => {
     it.each([
@@ -171,14 +166,16 @@ describe("repositoryLink", () => {
         [
             "bitbucket:user/repo",
             {
-                text: "bitbucket.org/user/repo",
+                host: "bitbucket",
+                text: "user/repo",
                 href: "https://bitbucket.org/user/repo",
             },
         ],
         [
             "https://bitbucket.org/owner/repo/src/main/packages/core",
             {
-                text: "bitbucket.org/owner/repo",
+                host: "bitbucket",
+                text: "owner/repo",
                 directory: "src/main/packages/core",
                 href: "https://bitbucket.org/owner/repo/src/main/packages/core",
             },
@@ -186,14 +183,16 @@ describe("repositoryLink", () => {
         [
             "gist:11081aaa281",
             {
-                text: "gist.github.com/11081aaa281",
+                host: "gist",
+                text: "11081aaa281",
                 href: "https://gist.github.com/11081aaa281",
             },
         ],
         [
             "https://git.sr.ht/~user/repo",
             {
-                text: "git.sr.ht/~user/repo",
+                host: "sourcehut",
+                text: "~user/repo",
                 href: "https://git.sr.ht/~user/repo",
             },
         ],
@@ -248,14 +247,6 @@ describe("homepageLink", () => {
             "http://example.com/",
             { text: "http://example.com/", href: "http://example.com/" },
         ],
-        [
-            "https://github.com@evil.example/login",
-            { text: "https://github.com@evil.example/login" },
-        ],
-        [
-            "https://user:token@example.com/",
-            { text: "https://user:token@example.com/" },
-        ],
         ["javascript:alert(1)", { text: "javascript:alert(1)" }],
         ["see the readme", { text: "see the readme" }],
         ["README.md", { text: "README.md" }],
@@ -269,41 +260,6 @@ describe("homepageLink", () => {
             expect(
                 homepageLink(homepage as Manifest["homepage"]),
             ).toBeUndefined();
-        },
-    );
-
-    it.each([
-        ["https://github.com/owner/repo", "owner/repo"],
-        ["https://github.com/owner/repo#readme", "owner/repo"],
-        ["http://github.com/Owner/Repo/", "owner/repo"],
-        [
-            "https://github.com/owner/repo/tree/HEAD/packages/x",
-            { url: "github:owner/repo", directory: "packages/x" },
-        ],
-    ])("is hidden when %j is the repository %j", (homepage, repository) => {
-        expect(
-            homepageLink(homepage, repositoryLink(repository)),
-        ).toBeUndefined();
-    });
-
-    it.each([
-        ["https://github.com/owner/other", "owner/repo"],
-        [
-            "https://github.com/owner/repo/tree/main/packages/foo#readme",
-            "owner/repo",
-        ],
-        ["https://github.com/owner/repo/tree/main/docs", "owner/repo"],
-        ["https://gitlab.com/group/repo", "gitlab:group/repo#main"],
-        [
-            "https://github.com/owner/repo#readme",
-            { url: "github:owner/repo", directory: "packages/x" },
-        ],
-    ])(
-        "keeps %j, a page other than the repository %j",
-        (homepage, repository) => {
-            expect(
-                homepageLink(homepage, repositoryLink(repository))?.href,
-            ).toBe(homepage);
         },
     );
 });
@@ -395,25 +351,10 @@ describe("createCatalogSummary", () => {
 });
 
 describe("getCatalogSummary", () => {
-    const indexed = {
-        versions: {
-            "1.0.0": "2020-01-01T00:00:00.000Z",
-            "2.0.0": "2021-01-01T00:00:00.000Z",
-        },
-        tags: { latest: "2.0.0" },
+    const versions = {
+        "1.0.0": "2020-01-01T00:00:00.000Z",
+        "2.0.0": "2021-01-01T00:00:00.000Z",
     };
-
-    const registryDoc = {
-        time: {
-            created: "2019-01-01T00:00:00.000Z",
-            "2.0.0": "2021-01-01T00:00:00.000Z",
-            "3.0.0": "2022-01-01T00:00:00.000Z",
-        },
-        versions: { "2.0.0": {}, "3.0.0": {} },
-    };
-
-    const versionsOf = async () =>
-        (await getCatalogSummary("example")).versions;
 
     beforeEach(() => {
         jest.spyOn(console, "error").mockImplementation(() => {});
@@ -424,116 +365,57 @@ describe("getCatalogSummary", () => {
         jest.restoreAllMocks();
     });
 
-    it("combines the latest manifest with npm-search versions", async () => {
+    it("combines the latest manifest with versions that include it", async () => {
         fetchLatestManifestMock.mockResolvedValue({
             version: "2.0.0",
             description: "An example",
         });
-        getVersionsFromNpmSearchMock.mockResolvedValue(indexed);
+        getPackageVersionsMock.mockResolvedValue(versions);
 
         const summary = await getCatalogSummary("example");
 
+        expect(getPackageVersionsMock).toHaveBeenCalledWith("example", "2.0.0");
         expect(summary.versions).toEqual(["1.0.0", "2.0.0"]);
         expect(summary.latest).toMatchObject({
             version: "2.0.0",
             time: "2021-01-01T00:00:00.000Z",
             description: "An example",
         });
-        expect(fetchPackumentMock).not.toHaveBeenCalled();
+        expect(summary.cacheLife).toBe("hours");
     });
 
     it("lists versions without a latest manifest", async () => {
         fetchLatestManifestMock.mockResolvedValue(null);
-        getVersionsFromNpmSearchMock.mockResolvedValue(indexed);
+        getPackageVersionsMock.mockResolvedValue(versions);
 
         await expect(getCatalogSummary("example")).resolves.toEqual({
             name: "example",
             versions: ["1.0.0", "2.0.0"],
+            cacheLife: "hours",
         });
-    });
-
-    it("lists versions when the latest manifest can't be fetched", async () => {
-        fetchLatestManifestMock.mockRejectedValue(new Error("503"));
-        getVersionsFromNpmSearchMock.mockResolvedValue(indexed);
-
-        await expect(getCatalogSummary("example")).resolves.toEqual({
-            name: "example",
-            versions: ["1.0.0", "2.0.0"],
-            latestUnavailable: true,
-        });
-    });
-
-    it.each([
-        ["the package isn't indexed", null],
-        ["the latest version isn't indexed yet", indexed],
-        [
-            "npm-search only has one version",
-            { versions: { "3.0.0": "2022-01-01T00:00:00.000Z" } },
-        ],
-    ])("falls back to the registry when %s", async (_, searchResult) => {
-        fetchLatestManifestMock.mockResolvedValue({ version: "3.0.0" });
-        getVersionsFromNpmSearchMock.mockResolvedValue(searchResult);
-        fetchPackumentMock.mockResolvedValue(registryDoc);
-
-        const summary = await getCatalogSummary("example");
-
-        expect(summary.versions).toEqual(["2.0.0", "3.0.0"]);
-        expect(summary.latest?.time).toBe("2022-01-01T00:00:00.000Z");
-        expect(fetchPackumentMock).toHaveBeenCalledWith("example");
-    });
-
-    it("falls back to the registry when npm-search fails", async () => {
-        fetchLatestManifestMock.mockResolvedValue(null);
-        getVersionsFromNpmSearchMock.mockRejectedValue(new Error("down"));
-        fetchPackumentMock.mockResolvedValue(registryDoc);
-
-        await expect(versionsOf()).resolves.toEqual(["2.0.0", "3.0.0"]);
-    });
-
-    it("keeps versions the registry has no publish time for", async () => {
-        fetchLatestManifestMock.mockResolvedValue({ version: "3.0.0" });
-        getVersionsFromNpmSearchMock.mockResolvedValue(null);
-        fetchPackumentMock.mockResolvedValue({
-            ...registryDoc,
-            time: { "2.0.0": "2021-01-01T00:00:00.000Z" },
-        });
-
-        const summary = await getCatalogSummary("example");
-
-        expect(summary.versions).toEqual(["2.0.0", "3.0.0"]);
-        expect(summary.latest?.time).toBeUndefined();
-    });
-
-    it.each([
-        [
-            "the registry doesn't have the package",
-            () =>
-                fetchPackumentMock.mockRejectedValue(
-                    Object.assign(new Error("Not found"), { code: "E404" }),
-                ),
-        ],
-        [
-            "the registry packument has no versions",
-            () =>
-                fetchPackumentMock.mockResolvedValue({
-                    time: { unpublished: { time: "2021-01-01T00:00:00.000Z" } },
-                }),
-        ],
-    ])("throws when %s", async (_, mockRegistry) => {
-        fetchLatestManifestMock.mockResolvedValue(null);
-        getVersionsFromNpmSearchMock.mockResolvedValue(null);
-        mockRegistry();
-
-        await expect(versionsOf()).rejects.toThrow(
-            "Package not found: example",
+        expect(getPackageVersionsMock).toHaveBeenCalledWith(
+            "example",
+            undefined,
         );
     });
 
-    it("rethrows other registry errors", async () => {
-        fetchLatestManifestMock.mockResolvedValue(null);
-        getVersionsFromNpmSearchMock.mockResolvedValue(null);
-        fetchPackumentMock.mockRejectedValue(new Error("boom"));
+    it("caches briefly when the latest manifest can't be fetched", async () => {
+        fetchLatestManifestMock.mockRejectedValue(new Error("503"));
+        getPackageVersionsMock.mockResolvedValue(versions);
 
-        await expect(versionsOf()).rejects.toThrow("boom");
+        await expect(getCatalogSummary("example")).resolves.toEqual({
+            name: "example",
+            versions: ["1.0.0", "2.0.0"],
+            cacheLife: "minutes",
+        });
+    });
+
+    it("throws when the package has no versions", async () => {
+        fetchLatestManifestMock.mockResolvedValue(null);
+        getPackageVersionsMock.mockResolvedValue(null);
+
+        await expect(getCatalogSummary("example")).rejects.toThrow(
+            "Package not found: example",
+        );
     });
 });

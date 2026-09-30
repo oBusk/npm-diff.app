@@ -61,30 +61,24 @@ export interface Packument extends Omit<PacotePackument, "versions"> {
     versions: Record<string, Manifest>;
 }
 
-function packageName(spec: string): string {
+async function packumentForPackage(packageName: string): Promise<Packument> {
+    "use cache";
+
+    cacheLife("hours");
+
+    return pacotePackument(packageName, {
+        fullMetadata: true,
+        // Make sure we don't cache on disk
+        cache: undefined,
+    }) as Promise<Packument>;
+}
+
+export default function packument(spec: string): Promise<Packument> {
     const { name } = npa(spec);
 
     if (!name) {
         throw new Error(`Could not extract package name from: ${spec}`);
     }
 
-    return name;
-}
-
-export async function fetchPackument(spec: string): Promise<Packument> {
-    return pacotePackument(packageName(spec), {
-        fullMetadata: true,
-    }) as Promise<Packument>;
-}
-
-async function packumentForPackage(name: string): Promise<Packument> {
-    "use cache";
-
-    cacheLife("hours");
-
-    return fetchPackument(name);
-}
-
-export default function packument(spec: string): Promise<Packument> {
-    return packumentForPackage(packageName(spec));
+    return packumentForPackage(name);
 }

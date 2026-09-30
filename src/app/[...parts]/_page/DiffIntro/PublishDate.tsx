@@ -1,6 +1,6 @@
 import ClientDate from "^/components/ClientDate";
 import Skeleton from "^/components/ui/Skeleton";
-import getPublishTime from "^/lib/api/packageVersions/publishTime";
+import getPackageVersions from "^/lib/api/packageVersions";
 import { cx } from "^/lib/cva";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import suspense from "^/lib/suspense";
@@ -13,7 +13,8 @@ export interface PublishDateProps {
 const shared = cx("my-1 flex h-5 items-center justify-center");
 
 async function PublishDate({ pkg, className }: PublishDateProps) {
-    const time = await getPublishTime(pkg.name, pkg.version);
+    const versions = await getPackageVersions(pkg.name, pkg.version);
+    const time = versions?.[pkg.version];
 
     if (!time) {
         return null;

@@ -1,15 +1,14 @@
 import { fromUrl } from "hosted-git-info";
-import getVersionsFromNpmSearch from "^/lib/api/npmSearch/versions";
-import { hasErrorCode } from "^/lib/utils/hasErrorCode";
-import { toHttpUrl } from "^/lib/utils/toHttpUrl";
+import getPackageVersions, {
+    type PackageVersions,
+} from "^/lib/api/packageVersions";
 import fetchLatestManifest from "./latestManifest";
-import { fetchPackument, type Manifest } from "./packument";
+import type { Manifest } from "./packument";
 
 export interface CatalogSummary {
     name: string;
     versions: string[];
     latest?: CatalogLatestVersion;
-    latestUnavailable?: true;
 }
 
 export interface CatalogLink {
@@ -17,10 +16,8 @@ export interface CatalogLink {
     href?: string;
 }
 
-export type CatalogRepositoryHost = "github" | "gitlab";
-
 export interface CatalogRepository extends CatalogLink {
-    host?: CatalogRepositoryHost;
+    host?: string;
     directory?: string;
 }
 
@@ -68,22 +65,8 @@ export function authorName(author: Manifest["author"]): string | undefined {
     return asString(author?.name);
 }
 
-function webUrl(value: string): string | undefined {
-    const href = toHttpUrl(value);
-    if (!href) {
-        return undefined;
-    }
-    const { username, password } = new URL(href);
-    return username || password ? undefined : href;
-}
-
 const displayUrl = (href: string): string =>
     href.replace(/^https:\/\//, "").replace(/^([^/?#]+)\/$/, "$1");
-
-function comparableUrl(href: string): string {
-    const { host, pathname } = new URL(href);
-    return `${host}${pathname.replace(/\/+$/, "").replace(/\.git$/, "")}`.toLowerCase();
-}
 
 function directoryPath(directory: unknown): string | undefined {
     const segments = (asString(directory) ?? "")
@@ -110,14 +93,9 @@ export function repositoryLink(
     if (!hosted) {
         return { text: url };
     }
-    const host =
-        hosted.type === "github" || hosted.type === "gitlab"
-            ? hosted.type
-            : undefined;
+    const host = hosted.type;
     const repositoryPage = hosted.browse();
-    const text = host
-        ? [hosted.user, hosted.project].join("/")
-        : displayUrl(repositoryPage);
+    const text = [hosted.user, hosted.project].filter(Boolean).join("/");
     const directory =
         typeof repository === "string"
             ? undefined
@@ -130,10 +108,8 @@ export function repositoryLink(
             href: hosted.browse(encodePath(directory)),
         };
     }
-    const page = toHttpUrl(url)
-        ?.replace(/[?#].*$/, "")
-        .replace(/\/+$/, "");
-    if (page?.startsWith(`${repositoryPage}/`)) {
+    const page = url.replace(/[?#].*$/, "").replace(/\/+$/, "");
+    if (page.startsWith(`${repositoryPage}/`)) {
         return {
             host,
             text,
@@ -146,30 +122,19 @@ export function repositoryLink(
 
 export function homepageLink(
     homepage: Manifest["homepage"],
-    repository?: CatalogRepository,
 ): CatalogLink | undefined {
     const value = asString(homepage)?.trim();
     if (!value) {
         return undefined;
     }
-    const href = webUrl(value);
-    if (!href) {
-        return { text: value };
-    }
-    if (
-        repository?.href &&
-        comparableUrl(repository.href) === comparableUrl(href)
-    ) {
-        return undefined;
-    }
-    return { text: displayUrl(href), href };
+    return /^https?:\/\//i.test(value)
+        ? { text: displayUrl(value), href: value }
+        : { text: value };
 }
-
-type PublishTimes = Record<string, string | undefined>;
 
 export interface CatalogSource {
     name: string;
-    versions: PublishTimes;
+    versions: PackageVersions;
     latestManifest: Manifest | null;
 }
 
@@ -184,8 +149,6 @@ export function createCatalogSummary({
         return { name, versions: versionList };
     }
 
-    const repository = repositoryLink(manifest.repository);
-
     return {
         name,
         versions: versionList,
@@ -195,8 +158,8 @@ export function createCatalogSummary({
             description: asString(manifest.description),
             license: licenseText(manifest),
             author: authorName(manifest.author),
-            repository,
-            homepage: homepageLink(manifest.homepage, repository),
+            repository: repositoryLink(manifest.repository),
+            homepage: homepageLink(manifest.homepage),
             keywords: asStrings(manifest.keywords),
             maintainersCount: Array.isArray(manifest.maintainers)
                 ? manifest.maintainers.length
@@ -205,65 +168,22 @@ export function createCatalogSummary({
     };
 }
 
-async function versionsFromNpmSearch(
-    packageName: string,
-): Promise<PublishTimes | undefined> {
-    try {
-        return (await getVersionsFromNpmSearch(packageName))?.versions;
-    } catch (e) {
-        console.error(`[${packageName}] npm-search versions error:`, e);
-
-        return undefined;
-    }
-}
-
-async function versionsFromRegistry(
-    packageName: string,
-): Promise<PublishTimes | undefined> {
-    try {
-        const doc = await fetchPackument(packageName);
-        const versions = Object.keys(doc.versions ?? {});
-
-        if (versions.length === 0) {
-            return undefined;
-        }
-
-        return Object.fromEntries(
-            versions.map((version) => [version, doc.time?.[version]]),
-        );
-    } catch (e) {
-        if (hasErrorCode(e, "E404")) {
-            return undefined;
-        }
-
-        throw e;
-    }
-}
-
-// npm-search can lag behind the latest publish, and truncates some packages to only their latest version
-const isComplete = (versions: PublishTimes, latestVersion?: string) =>
-    Object.keys(versions).length > 1 &&
-    (latestVersion == null || Object.hasOwn(versions, latestVersion));
-
 export default async function getCatalogSummary(
     packageName: string,
-): Promise<CatalogSummary> {
-    const [{ manifest, unavailable }, indexed] = await Promise.all([
-        fetchLatestManifest(packageName).then(
-            (manifest) => ({ manifest, unavailable: false }),
-            (e) => {
-                console.error(`[${packageName}] latest manifest error:`, e);
+): Promise<CatalogSummary & { cacheLife: "minutes" | "hours" }> {
+    let cacheLife: "minutes" | "hours" = "hours";
+    const manifest = await fetchLatestManifest(packageName).catch(
+        (e: unknown) => {
+            console.error(`[${packageName}] latest manifest error:`, e);
+            cacheLife = "minutes";
 
-                return { manifest: null, unavailable: true };
-            },
-        ),
-        versionsFromNpmSearch(packageName),
-    ]);
-
-    const versions =
-        indexed && isComplete(indexed, asString(manifest?.version))
-            ? indexed
-            : await versionsFromRegistry(packageName);
+            return null;
+        },
+    );
+    const versions = await getPackageVersions(
+        packageName,
+        asString(manifest?.version),
+    );
 
     if (!versions) {
         throw new Error(`Package not found: ${packageName}`);
@@ -275,6 +195,6 @@ export default async function getCatalogSummary(
             versions,
             latestManifest: manifest,
         }),
-        ...(unavailable && { latestUnavailable: true }),
+        cacheLife,
     };
 }

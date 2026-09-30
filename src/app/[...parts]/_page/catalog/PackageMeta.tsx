@@ -5,15 +5,10 @@ import ExternalLink from "^/components/ExternalLink";
 import BorderBox from "^/components/ui/BorderBox";
 import Heading from "^/components/ui/Heading";
 import Stack from "^/components/ui/Stack";
-import type {
-    CatalogLink,
-    CatalogRepositoryHost,
-    CatalogSummary,
-} from "^/lib/api/npm/catalogSummary";
+import type { CatalogLink, CatalogSummary } from "^/lib/api/npm/catalogSummary";
 
-const repositoryHosts: Record<
-    CatalogRepositoryHost,
-    { label: string; Icon: LucideIcon }
+const repositoryHosts: Partial<
+    Record<string, { label: string; Icon: LucideIcon }>
 > = {
     github: { label: "GitHub", Icon: Github },
     gitlab: { label: "GitLab", Icon: Gitlab },
@@ -128,6 +123,8 @@ export default function PackageMeta({ summary }: PackageMetaProps) {
                                 aria-label={repositoryHost.label}
                                 className="mr-1 inline size-4 align-text-bottom"
                             />
+                        ) : repository.host ? (
+                            `${repository.host}:`
                         ) : null}
                         {repository.text}
                         {repository.directory ? (

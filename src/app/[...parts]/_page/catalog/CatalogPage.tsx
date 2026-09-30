@@ -23,7 +23,7 @@ async function CatalogPageInner({ specs }: CatalogPageProps) {
     // Fetch package data
     const summary = await getCatalogSummary(packageName);
 
-    if (summary.latestUnavailable) {
+    if (summary.cacheLife === "minutes") {
         cacheLife("minutes");
     } else {
         cacheLife("hours");
