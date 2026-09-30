@@ -59,11 +59,14 @@ function isComplete(
 
 export default async function getPackageVersions(
     packageName: string,
-    requiredVersion?: string,
+    requiredVersion?: string | Promise<string | undefined>,
 ): Promise<PackageVersions | null> {
-    const indexed = await versionsFromNpmSearch(packageName);
+    const [indexed, required] = await Promise.all([
+        versionsFromNpmSearch(packageName),
+        requiredVersion,
+    ]);
 
-    if (indexed && isComplete(indexed, requiredVersion)) {
+    if (indexed && isComplete(indexed, required)) {
         return indexed;
     }
 

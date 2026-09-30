@@ -8,6 +8,7 @@ export interface CatalogSummary {
     name: string;
     versions: string[];
     latest?: CatalogLatestVersion;
+    latestUnavailable?: true;
 }
 
 export interface CatalogLatestVersion {
@@ -117,19 +118,33 @@ export function createCatalogSummary({
 export default async function getCatalogSummary(
     packageName: string,
 ): Promise<CatalogSummary> {
-    const latestManifest = await fetchLatestManifest(packageName);
-    const packageVersions = await getPackageVersions(
-        packageName,
-        latestManifest?.version,
+    const latest = fetchLatestManifest(packageName).then(
+        (manifest) => ({ manifest, unavailable: false }),
+        (e) => {
+            console.error(`[${packageName}] latest manifest error:`, e);
+
+            return { manifest: null, unavailable: true };
+        },
     );
+
+    const [{ manifest, unavailable }, packageVersions] = await Promise.all([
+        latest,
+        getPackageVersions(
+            packageName,
+            latest.then(({ manifest }) => asString(manifest?.version)),
+        ),
+    ]);
 
     if (!packageVersions) {
         throw new Error(`Package not found: ${packageName}`);
     }
 
-    return createCatalogSummary({
-        name: packageName,
-        versions: packageVersions.versions,
-        latestManifest,
-    });
+    return {
+        ...createCatalogSummary({
+            name: packageName,
+            versions: packageVersions.versions,
+            latestManifest: manifest,
+        }),
+        ...(unavailable && { latestUnavailable: true }),
+    };
 }

@@ -14,8 +14,6 @@ export interface CatalogPageProps {
 async function CatalogPageInner({ specs }: CatalogPageProps) {
     "use cache";
 
-    cacheLife("hours");
-
     const packageName = getCatalogPackageName(specs);
 
     if (!packageName) {
@@ -24,6 +22,12 @@ async function CatalogPageInner({ specs }: CatalogPageProps) {
 
     // Fetch package data
     const summary = await getCatalogSummary(packageName);
+
+    if (summary.latestUnavailable) {
+        cacheLife("minutes");
+    } else {
+        cacheLife("hours");
+    }
 
     // Generate comparisons
     const comparisons = generateComparisons(summary.versions);

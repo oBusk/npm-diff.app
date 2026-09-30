@@ -2,7 +2,9 @@ import npa from "npm-package-arg";
 import { USER_AGENT } from "../user-agent";
 import type { Manifest } from "./packument";
 
-export default async function fetchLatestManifest(
+const TIMEOUT_MS = 10_000;
+
+async function requestLatestManifest(
     packageName: string,
 ): Promise<Manifest | null> {
     const { escapedName } = npa(packageName);
@@ -12,6 +14,7 @@ export default async function fetchLatestManifest(
         {
             headers: { "User-Agent": USER_AGENT },
             cache: "no-store",
+            signal: AbortSignal.timeout(TIMEOUT_MS),
         },
     );
 
@@ -26,4 +29,14 @@ export default async function fetchLatestManifest(
     }
 
     return response.json();
+}
+
+export default async function fetchLatestManifest(
+    packageName: string,
+): Promise<Manifest | null> {
+    try {
+        return await requestLatestManifest(packageName);
+    } catch {
+        return requestLatestManifest(packageName);
+    }
 }

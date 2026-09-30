@@ -220,8 +220,11 @@ describe("createCatalogSummary", () => {
 });
 
 describe("getCatalogSummary", () => {
+    const requiredVersion = () => getPackageVersionsMock.mock.calls[0][1];
+
     afterEach(() => {
         jest.resetAllMocks();
+        jest.restoreAllMocks();
     });
 
     it("combines the latest manifest with versions that include it", async () => {
@@ -239,7 +242,7 @@ describe("getCatalogSummary", () => {
 
         const summary = await getCatalogSummary("example");
 
-        expect(getPackageVersionsMock).toHaveBeenCalledWith("example", "2.0.0");
+        await expect(requiredVersion()).resolves.toBe("2.0.0");
         expect(summary.versions).toEqual(["1.0.0", "2.0.0"]);
         expect(summary.latest).toMatchObject({
             version: "2.0.0",
@@ -259,10 +262,26 @@ describe("getCatalogSummary", () => {
             name: "example",
             versions: ["1.0.0-beta.0"],
         });
-        expect(getPackageVersionsMock).toHaveBeenCalledWith(
-            "example",
-            undefined,
-        );
+        await expect(requiredVersion()).resolves.toBeUndefined();
+    });
+
+    it("lists versions when the latest manifest can't be fetched", async () => {
+        jest.spyOn(console, "error").mockImplementation(() => {});
+        fetchLatestManifestMock.mockRejectedValue(new Error("503"));
+        getPackageVersionsMock.mockResolvedValue({
+            versions: {
+                "1.0.0": "2020-01-01T00:00:00.000Z",
+                "2.0.0": "2021-01-01T00:00:00.000Z",
+            },
+            tags: { latest: "2.0.0" },
+        });
+
+        await expect(getCatalogSummary("example")).resolves.toEqual({
+            name: "example",
+            versions: ["1.0.0", "2.0.0"],
+            latestUnavailable: true,
+        });
+        await expect(requiredVersion()).resolves.toBeUndefined();
     });
 
     it("throws when the package doesn't exist", async () => {
