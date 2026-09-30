@@ -3,8 +3,9 @@ import getCatalogSummary, {
     authorName,
     type CatalogSource,
     createCatalogSummary,
+    homepageLink,
     licenseText,
-    repositoryUrl,
+    repositoryLink,
 } from "./catalogSummary";
 import fetchLatestManifest from "./latestManifest";
 import type { Manifest } from "./packument";
@@ -78,68 +79,229 @@ describe("authorName", () => {
     });
 });
 
-describe("repositoryUrl", () => {
+describe("repositoryLink", () => {
+    const github = (text: string, href: string, directory?: string) => ({
+        host: "github",
+        text,
+        href,
+        ...(directory && { directory }),
+    });
+
     it.each([
         [
             { type: "git", url: "git+https://github.com/npm/cli.git" },
-            "https://github.com/npm/cli",
+            github("npm/cli", "https://github.com/npm/cli"),
         ],
         [
             { type: "git", url: "git://github.com/npm/cli.git" },
-            "https://github.com/npm/cli",
+            github("npm/cli", "https://github.com/npm/cli"),
         ],
         [
             { type: "git", url: "git+ssh://git@github.com/npm/cli.git" },
-            "https://github.com/npm/cli",
+            github("npm/cli", "https://github.com/npm/cli"),
         ],
-        ["npm/npm", "https://github.com/npm/npm"],
-        ["github:user/repo", "https://github.com/user/repo"],
-        ["gist:11081aaa281", "https://gist.github.com/11081aaa281"],
-        ["bitbucket:user/repo", "https://bitbucket.org/user/repo"],
-        ["gitlab:user/repo", "https://gitlab.com/user/repo"],
+        ["npm/npm", github("npm/npm", "https://github.com/npm/npm")],
         [
-            { url: "git+https://git.example.com/owner/repo.git" },
-            "https://git.example.com/owner/repo",
+            "github:user/repo",
+            github("user/repo", "https://github.com/user/repo"),
+        ],
+        [
+            "https://github.com/owner/repo#main",
+            github("owner/repo", "https://github.com/owner/repo/tree/main"),
         ],
         [
             {
                 type: "git",
                 url: "https://github.com/babel/babel.git",
-                directory: "packages/babel-core",
+                directory: "./packages/babel-core/",
             },
-            "https://github.com/babel/babel/tree/HEAD/packages/babel-core",
+            github(
+                "babel/babel",
+                "https://github.com/babel/babel/tree/HEAD/packages/babel-core",
+                "packages/babel-core",
+            ),
         ],
         [
-            "https://github.com/babel/babel/tree/main/packages/babel-core",
-            "https://github.com/babel/babel/tree/main/packages/babel-core",
+            "https://github.com/babel/babel/tree/main/packages/babel-core#readme",
+            github(
+                "babel/babel",
+                "https://github.com/babel/babel/tree/main/packages/babel-core",
+                "packages/babel-core",
+            ),
+        ],
+        [
+            {
+                url: "https://user:token@github.com/owner/repo.git",
+                directory: "packages/a b",
+            },
+            github(
+                "owner/repo",
+                "https://github.com/owner/repo/tree/HEAD/packages/a%20b",
+                "packages/a b",
+            ),
+        ],
+        [
+            { url: "https://github.com/owner/repo.git", directory: "." },
+            github("owner/repo", "https://github.com/owner/repo"),
+        ],
+        [
+            {
+                url: "https://github.com/owner/repo.git",
+                directory: "../../../../evil/repo",
+            },
+            github("owner/repo", "https://github.com/owner/repo"),
+        ],
+        [
+            {
+                url: "https://gitlab.com/group/repo.git",
+                directory: "packages/x",
+            },
+            {
+                host: "gitlab",
+                text: "group/repo",
+                directory: "packages/x",
+                href: "https://gitlab.com/group/repo/tree/HEAD/packages/x",
+            },
+        ],
+        [
+            "bitbucket:user/repo",
+            {
+                text: "bitbucket.org/user/repo",
+                href: "https://bitbucket.org/user/repo",
+            },
         ],
         [
             "https://bitbucket.org/owner/repo/src/main/packages/core",
-            "https://bitbucket.org/owner/repo/src/main/packages/core",
+            {
+                text: "bitbucket.org/owner/repo",
+                directory: "src/main/packages/core",
+                href: "https://bitbucket.org/owner/repo/src/main/packages/core",
+            },
         ],
         [
-            "https://gitlab.com/owner/repo/-/tree/main/packages/core",
-            "https://gitlab.com/owner/repo/-/tree/main/packages/core",
+            "gist:11081aaa281",
+            {
+                text: "gist.github.com/11081aaa281",
+                href: "https://gist.github.com/11081aaa281",
+            },
         ],
         [
-            "https://github.com/owner/repo#main",
-            "https://github.com/owner/repo/tree/main",
+            "https://git.sr.ht/~user/repo",
+            {
+                text: "git.sr.ht/~user/repo",
+                href: "https://git.sr.ht/~user/repo",
+            },
         ],
-    ])("%j → %p", (repository, expected) => {
-        expect(repositoryUrl(repository)).toBe(expected);
+        [
+            "gitlab:user/repo",
+            {
+                host: "gitlab",
+                text: "user/repo",
+                href: "https://gitlab.com/user/repo",
+            },
+        ],
+    ])("%j → %j", (repository, expected) => {
+        expect(repositoryLink(repository)).toEqual(expected);
     });
 
     it.each([
-        { url: "git://git.example.com/owner/repo.git" },
-        { url: "javascript:alert(1)" },
+        "git+https://git.example.com/owner/repo.git",
+        "https://git.example.com/owner/repo",
+        "https://user:token@git.example.com/owner/repo.git",
+        "git://git.example.com/owner/repo.git",
+        "github.com/user/repo",
+        "https://gitlab.com/owner/repo/-/tree/main/packages/core",
+        "javascript:alert(1)",
+        "not a repository",
+    ])("shows %j as text without a link", (url) => {
+        expect(repositoryLink({ url })).toEqual({ text: url });
+    });
+
+    it.each([
         { type: "git" },
+        { url: "  " },
         { url: { href: "https://github.com/npm/cli" } },
         undefined,
-    ])("has no link for %j", (repository) => {
+    ])("has no repository for %j", (repository) => {
         expect(
-            repositoryUrl(repository as Manifest["repository"]),
+            repositoryLink(repository as Manifest["repository"]),
         ).toBeUndefined();
     });
+});
+
+describe("homepageLink", () => {
+    it.each([
+        [
+            "https://example.com/docs",
+            {
+                text: "example.com/docs",
+                href: "https://example.com/docs",
+            },
+        ],
+        ["example.com", { text: "example.com", href: "https://example.com/" }],
+        [
+            "http://example.com/",
+            { text: "http://example.com/", href: "http://example.com/" },
+        ],
+        [
+            "https://github.com@evil.example/login",
+            { text: "https://github.com@evil.example/login" },
+        ],
+        [
+            "https://user:token@example.com/",
+            { text: "https://user:token@example.com/" },
+        ],
+        ["javascript:alert(1)", { text: "javascript:alert(1)" }],
+        ["see the readme", { text: "see the readme" }],
+        ["README.md", { text: "README.md" }],
+    ])("%j → %j", (homepage, expected) => {
+        expect(homepageLink(homepage)).toEqual(expected);
+    });
+
+    it.each([undefined, "", "  ", ["https://example.com/"]])(
+        "has no homepage for %j",
+        (homepage) => {
+            expect(
+                homepageLink(homepage as Manifest["homepage"]),
+            ).toBeUndefined();
+        },
+    );
+
+    it.each([
+        ["https://github.com/owner/repo", "owner/repo"],
+        ["https://github.com/owner/repo#readme", "owner/repo"],
+        ["http://github.com/Owner/Repo/", "owner/repo"],
+        ["github.com/owner/repo", "owner/repo"],
+        [
+            "https://github.com/owner/repo/tree/HEAD/packages/x",
+            { url: "github:owner/repo", directory: "packages/x" },
+        ],
+    ])("is hidden when %j is the repository %j", (homepage, repository) => {
+        expect(
+            homepageLink(homepage, repositoryLink(repository)),
+        ).toBeUndefined();
+    });
+
+    it.each([
+        ["https://github.com/owner/other", "owner/repo"],
+        [
+            "https://github.com/owner/repo/tree/main/packages/foo#readme",
+            "owner/repo",
+        ],
+        ["https://github.com/owner/repo/tree/main/docs", "owner/repo"],
+        ["https://gitlab.com/group/repo", "gitlab:group/repo#main"],
+        [
+            "https://github.com/owner/repo#readme",
+            { url: "github:owner/repo", directory: "packages/x" },
+        ],
+    ])(
+        "keeps %j, a page other than the repository %j",
+        (homepage, repository) => {
+            expect(
+                homepageLink(homepage, repositoryLink(repository))?.href,
+            ).toBe(homepage);
+        },
+    );
 });
 
 describe("createCatalogSummary", () => {
@@ -178,19 +340,28 @@ describe("createCatalogSummary", () => {
                 description: "An example",
                 license: "MIT",
                 author: "Jane Doe",
-                repositoryUrl: "https://github.com/owner/example",
-                homepageUrl: "https://example.com/",
+                repository: {
+                    host: "github",
+                    text: "owner/example",
+                    href: "https://github.com/owner/example",
+                },
+                homepage: {
+                    text: "example.com",
+                    href: "https://example.com/",
+                },
                 keywords: ["one", "two"],
                 maintainersCount: 2,
             },
         });
     });
 
-    it("drops a non-http homepage", () => {
+    it("doesn't link a non-http homepage", () => {
         const summary = createCatalogSummary(
             source({ homepage: "javascript:alert(1)" }),
         );
-        expect(summary.latest?.homepageUrl).toBeUndefined();
+        expect(summary.latest?.homepage).toEqual({
+            text: "javascript:alert(1)",
+        });
     });
 
     it("drops fields that aren't strings", () => {

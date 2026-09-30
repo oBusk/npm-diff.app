@@ -1,9 +1,48 @@
+import { Github, Gitlab, type LucideIcon } from "lucide-react";
+import { type ReactNode } from "react";
 import ClientDate from "^/components/ClientDate";
 import ExternalLink from "^/components/ExternalLink";
 import BorderBox from "^/components/ui/BorderBox";
 import Heading from "^/components/ui/Heading";
 import Stack from "^/components/ui/Stack";
-import type { CatalogSummary } from "^/lib/api/npm/catalogSummary";
+import type {
+    CatalogLink,
+    CatalogRepositoryHost,
+    CatalogSummary,
+} from "^/lib/api/npm/catalogSummary";
+
+const repositoryHosts: Record<
+    CatalogRepositoryHost,
+    { label: string; Icon: LucideIcon }
+> = {
+    github: { label: "GitHub", Icon: Github },
+    gitlab: { label: "GitLab", Icon: Gitlab },
+};
+
+interface MetaLinkProps {
+    label: string;
+    link: CatalogLink;
+    children?: ReactNode;
+}
+
+function MetaLink({ label, link, children = link.text }: MetaLinkProps) {
+    return (
+        <div className="truncate text-sm">
+            <span className="text-muted-foreground">{label}: </span>
+            {link.href ? (
+                <ExternalLink
+                    href={link.href}
+                    title={link.href}
+                    className="text-blue-600 hover:underline dark:text-blue-400"
+                >
+                    {children}
+                </ExternalLink>
+            ) : (
+                <span title={link.text}>{children}</span>
+            )}
+        </div>
+    );
+}
 
 export interface PackageMetaProps {
     summary: CatalogSummary;
@@ -20,7 +59,8 @@ export default function PackageMeta({ summary }: PackageMetaProps) {
     }
 
     const npmUrl = `https://www.npmjs.com/package/${summary.name}`;
-    const { repositoryUrl, homepageUrl, keywords } = latest;
+    const { repository, homepage, keywords } = latest;
+    const repositoryHost = repository?.host && repositoryHosts[repository.host];
 
     // Calculate total versions
     const totalVersions = summary.versions.length;
@@ -80,6 +120,27 @@ export default function PackageMeta({ summary }: PackageMetaProps) {
                         <span>{latest.maintainersCount}</span>
                     </div>
                 ) : null}
+
+                {repository ? (
+                    <MetaLink label="Repository" link={repository}>
+                        {repositoryHost ? (
+                            <repositoryHost.Icon
+                                aria-label={repositoryHost.label}
+                                className="mr-1 inline size-4 align-text-bottom"
+                            />
+                        ) : null}
+                        {repository.text}
+                        {repository.directory ? (
+                            <span className="opacity-70">
+                                /{repository.directory}
+                            </span>
+                        ) : null}
+                    </MetaLink>
+                ) : null}
+
+                {homepage ? (
+                    <MetaLink label="Homepage" link={homepage} />
+                ) : null}
             </Stack>
 
             {keywords.length > 0 ? (
@@ -102,24 +163,6 @@ export default function PackageMeta({ summary }: PackageMetaProps) {
                 >
                     View on npm →
                 </ExternalLink>
-
-                {repositoryUrl ? (
-                    <ExternalLink
-                        href={repositoryUrl}
-                        className="text-sm text-blue-600 hover:underline dark:text-blue-400"
-                    >
-                        Repository →
-                    </ExternalLink>
-                ) : null}
-
-                {homepageUrl && homepageUrl !== repositoryUrl ? (
-                    <ExternalLink
-                        href={homepageUrl}
-                        className="text-sm text-blue-600 hover:underline dark:text-blue-400"
-                    >
-                        Homepage →
-                    </ExternalLink>
-                ) : null}
             </Stack>
         </BorderBox>
     );

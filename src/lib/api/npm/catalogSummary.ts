@@ -1,6 +1,6 @@
 import { fromUrl } from "hosted-git-info";
 import getPackageVersions from "^/lib/api/packageVersions/packageVersions";
-import { toHttpUrl } from "^/lib/utils/toHttpUrl";
+import { bareDomainToHttpsUrl, toHttpUrl } from "^/lib/utils/toHttpUrl";
 import fetchLatestManifest from "./latestManifest";
 import type { Manifest } from "./packument";
 
@@ -11,14 +11,26 @@ export interface CatalogSummary {
     latestUnavailable?: true;
 }
 
+export interface CatalogLink {
+    text: string;
+    href?: string;
+}
+
+export type CatalogRepositoryHost = "github" | "gitlab";
+
+export interface CatalogRepository extends CatalogLink {
+    host?: CatalogRepositoryHost;
+    directory?: string;
+}
+
 export interface CatalogLatestVersion {
     version: string;
     time?: string;
     description?: string;
     license?: string;
     author?: string;
-    repositoryUrl?: string;
-    homepageUrl?: string;
+    repository?: CatalogRepository;
+    homepage?: CatalogLink;
     keywords: string[];
     maintainersCount: number;
 }
@@ -55,28 +67,101 @@ export function authorName(author: Manifest["author"]): string | undefined {
     return asString(author?.name);
 }
 
-export function repositoryUrl(
+function webUrl(value: string): string | undefined {
+    const href = toHttpUrl(value) ?? bareDomainToHttpsUrl(value);
+    if (!href) {
+        return undefined;
+    }
+    const { username, password } = new URL(href);
+    return username || password ? undefined : href;
+}
+
+const displayUrl = (href: string): string =>
+    href.replace(/^https:\/\//, "").replace(/^([^/?#]+)\/$/, "$1");
+
+function comparableUrl(href: string): string {
+    const { host, pathname } = new URL(href);
+    return `${host}${pathname.replace(/\/+$/, "").replace(/\.git$/, "")}`.toLowerCase();
+}
+
+function directoryPath(directory: unknown): string | undefined {
+    const segments = (asString(directory) ?? "")
+        .split("/")
+        .filter((segment) => segment && segment !== ".");
+    return segments.length > 0 && !segments.includes("..")
+        ? segments.join("/")
+        : undefined;
+}
+
+const encodePath = (path: string): string =>
+    path.split("/").map(encodeURIComponent).join("/");
+
+export function repositoryLink(
     repository: Manifest["repository"],
-): string | undefined {
-    const url =
-        typeof repository === "string" ? repository : asString(repository?.url);
+): CatalogRepository | undefined {
+    const url = (
+        typeof repository === "string" ? repository : asString(repository?.url)
+    )?.trim();
     if (!url) {
         return undefined;
     }
+    const hosted = fromUrl(url);
+    if (!hosted) {
+        return { text: url };
+    }
+    const host =
+        hosted.type === "github" || hosted.type === "gitlab"
+            ? hosted.type
+            : undefined;
+    const repositoryPage = hosted.browse();
+    const text = host
+        ? [hosted.user, hosted.project].join("/")
+        : displayUrl(repositoryPage);
     const directory =
         typeof repository === "string"
             ? undefined
-            : asString(repository?.directory);
-    const httpUrl = toHttpUrl(url.replace(/^git\+/, "").replace(/\.git$/, ""));
-    const hosted = fromUrl(url);
-    if (!hosted) {
-        return httpUrl;
-    }
+            : directoryPath(repository?.directory);
     if (directory) {
-        return hosted.browse(directory);
+        return {
+            host,
+            text,
+            directory,
+            href: hosted.browse(encodePath(directory)),
+        };
     }
-    const repositoryPage = hosted.browse();
-    return httpUrl?.startsWith(`${repositoryPage}/`) ? httpUrl : repositoryPage;
+    const page = toHttpUrl(url)
+        ?.replace(/[?#].*$/, "")
+        .replace(/\/+$/, "");
+    if (page?.startsWith(`${repositoryPage}/`)) {
+        return {
+            host,
+            text,
+            directory: page.slice(repositoryPage.length + 1),
+            href: page,
+        };
+    }
+    return { host, text, href: repositoryPage };
+}
+
+export function homepageLink(
+    homepage: Manifest["homepage"],
+    repository?: CatalogRepository,
+): CatalogLink | undefined {
+    const value = asString(homepage)?.trim();
+    if (!value) {
+        return undefined;
+    }
+    const href = webUrl(value);
+    if (!href) {
+        return { text: value };
+    }
+    if (
+        repository?.href &&
+        comparableUrl(repository.href) === comparableUrl(href)
+    ) {
+        return undefined;
+    }
+    return { text: displayUrl(href), href };
 }
 
 export interface CatalogSource {
@@ -96,6 +181,8 @@ export function createCatalogSummary({
         return { name, versions: versionList };
     }
 
+    const repository = repositoryLink(manifest.repository);
+
     return {
         name,
         versions: versionList,
@@ -105,8 +192,8 @@ export function createCatalogSummary({
             description: asString(manifest.description),
             license: licenseText(manifest),
             author: authorName(manifest.author),
-            repositoryUrl: repositoryUrl(manifest.repository),
-            homepageUrl: toHttpUrl(asString(manifest.homepage)),
+            repository,
+            homepage: homepageLink(manifest.homepage, repository),
             keywords: asStrings(manifest.keywords),
             maintainersCount: Array.isArray(manifest.maintainers)
                 ? manifest.maintainers.length

@@ -35,7 +35,7 @@ async function CatalogPageInner({ specs }: CatalogPageProps) {
     return (
         <div className="mx-auto w-full max-w-7xl py-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[2fr_3fr]">
-                <div className="flex flex-col">
+                <div className="flex min-w-0 flex-col">
                     <PackageMeta summary={summary} />
                 </div>
                 <div className="flex flex-col">
