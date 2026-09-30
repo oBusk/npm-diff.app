@@ -1,6 +1,6 @@
 import { fromUrl } from "hosted-git-info";
 import getPackageVersions from "^/lib/api/packageVersions/packageVersions";
-import { bareDomainToHttpsUrl, toHttpUrl } from "^/lib/utils/toHttpUrl";
+import { toHttpUrl } from "^/lib/utils/toHttpUrl";
 import fetchLatestManifest from "./latestManifest";
 import type { Manifest } from "./packument";
 
@@ -68,7 +68,7 @@ export function authorName(author: Manifest["author"]): string | undefined {
 }
 
 function webUrl(value: string): string | undefined {
-    const href = toHttpUrl(value) ?? bareDomainToHttpsUrl(value);
+    const href = toHttpUrl(value);
     if (!href) {
         return undefined;
     }

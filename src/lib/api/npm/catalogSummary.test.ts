@@ -238,7 +238,7 @@ describe("homepageLink", () => {
                 href: "https://example.com/docs",
             },
         ],
-        ["example.com", { text: "example.com", href: "https://example.com/" }],
+        ["example.com", { text: "example.com" }],
         [
             "http://example.com/",
             { text: "http://example.com/", href: "http://example.com/" },
@@ -271,7 +271,6 @@ describe("homepageLink", () => {
         ["https://github.com/owner/repo", "owner/repo"],
         ["https://github.com/owner/repo#readme", "owner/repo"],
         ["http://github.com/Owner/Repo/", "owner/repo"],
-        ["github.com/owner/repo", "owner/repo"],
         [
             "https://github.com/owner/repo/tree/HEAD/packages/x",
             { url: "github:owner/repo", directory: "packages/x" },
