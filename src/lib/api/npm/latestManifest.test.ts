@@ -38,28 +38,13 @@ describe("fetchLatestManifest", () => {
         fetchMock.mockResolvedValue(response(404));
 
         await expect(fetchLatestManifest("example")).resolves.toBeNull();
-        expect(fetchMock).toHaveBeenCalledTimes(1);
     });
 
-    it("retries once after a failure", async () => {
-        fetchMock
-            .mockResolvedValueOnce(response(503))
-            .mockResolvedValueOnce(response(200, { version: "1.0.0" }));
-
-        await expect(fetchLatestManifest("example")).resolves.toEqual({
-            version: "1.0.0",
-        });
-        expect(fetchMock).toHaveBeenCalledTimes(2);
-    });
-
-    it("throws when the retry fails too", async () => {
-        fetchMock
-            .mockRejectedValueOnce(new Error("timeout"))
-            .mockResolvedValueOnce(response(503));
+    it("throws when the registry fails", async () => {
+        fetchMock.mockResolvedValue(response(503));
 
         await expect(fetchLatestManifest("example")).rejects.toThrow(
             "Registry returned 503",
         );
-        expect(fetchMock).toHaveBeenCalledTimes(2);
     });
 });

@@ -4,7 +4,7 @@ import type { Manifest } from "./packument";
 
 const TIMEOUT_MS = 10_000;
 
-async function requestLatestManifest(
+export default async function fetchLatestManifest(
     packageName: string,
 ): Promise<Manifest | null> {
     const { escapedName } = npa(packageName);
@@ -29,14 +29,4 @@ async function requestLatestManifest(
     }
 
     return response.json();
-}
-
-export default async function fetchLatestManifest(
-    packageName: string,
-): Promise<Manifest | null> {
-    try {
-        return await requestLatestManifest(packageName);
-    } catch {
-        return requestLatestManifest(packageName);
-    }
 }
