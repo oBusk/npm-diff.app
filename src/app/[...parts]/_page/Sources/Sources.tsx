@@ -10,7 +10,6 @@ import suspense from "^/lib/suspense";
 import Halfs from "../DiffIntro/Halfs";
 import { NeitherHasProvenance } from "./NeitherHasProvenance";
 import { NoProvenanceCard } from "./NoProvenanceCard";
-import { ProvenanceUnavailableCard } from "./ProvenanceUnavailableCard";
 import SourceCard from "./SourceCard";
 import SourceCompareButton from "./SourceCompareButton";
 import { TrustAuditFindings } from "./TrustAuditFindings";
@@ -30,10 +29,8 @@ async function Sources({ a, b }: SourcesProps) {
         return <NeitherHasProvenance className="mb-4" />;
     }
 
-    const sourceA =
-        lookupA.status === "found" ? lookupA.sourceInformation : null;
-    const sourceB =
-        lookupB.status === "found" ? lookupB.sourceInformation : null;
+    const sourceA = lookupA.sourceInformation;
+    const sourceB = lookupB.sourceInformation;
 
     // Analyze trust only if both packages are the same
     const findings =
@@ -52,10 +49,10 @@ async function Sources({ a, b }: SourcesProps) {
                 <div className="flex w-full max-w-md flex-col gap-2">
                     {sourceA ? (
                         <SourceCard sourceInformation={sourceA} />
-                    ) : lookupA.status === "undetermined" ? (
-                        <ProvenanceUnavailableCard />
                     ) : (
-                        <NoProvenanceCard />
+                        <NoProvenanceCard
+                            unavailable={lookupA.status === "undetermined"}
+                        />
                     )}
                 </div>
             }
@@ -74,7 +71,7 @@ async function Sources({ a, b }: SourcesProps) {
                     {sourceB ? (
                         <SourceCard sourceInformation={sourceB} />
                     ) : lookupB.status === "undetermined" ? (
-                        <ProvenanceUnavailableCard />
+                        <NoProvenanceCard unavailable />
                     ) : null}
                     <TrustAuditFindings
                         findings={findings}

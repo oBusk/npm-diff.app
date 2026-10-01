@@ -1,13 +1,24 @@
-import { X } from "lucide-react";
+import { CircleQuestionMark, X } from "lucide-react";
 
-export function NoProvenanceCard() {
+export interface NoProvenanceCardProps {
+    /** Provenance couldn't be loaded, rather than the release having none */
+    unavailable?: boolean;
+}
+
+export function NoProvenanceCard({ unavailable }: NoProvenanceCardProps) {
+    const Icon = unavailable ? CircleQuestionMark : X;
+
     return (
         <div className="flex flex-col items-center justify-center px-8 py-12 text-muted-foreground">
-            <X
+            <Icon
                 className="mx-auto mb-2 size-24 text-muted-foreground"
                 aria-hidden="true"
             />
-            <p>Released without provenance</p>
+            <p>
+                {unavailable
+                    ? "Couldn't load provenance information"
+                    : "Released without provenance"}
+            </p>
         </div>
     );
 }

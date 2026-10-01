@@ -1,4 +1,3 @@
-import { hrefOnRepositoryHost } from "../../hrefOnRepositoryHost";
 import type { DigestSet, InTotoStatement } from "../../protocols/inToto";
 import { parseBuilderSlsaPredicate } from "./builders";
 
@@ -84,13 +83,5 @@ export type SlsaProvenanceV0_2Statement = InTotoStatement<
 export function parseSlsaProvenanceV0_2Predicate(
     predicate: SlsaProvenanceV0_2Predicate,
 ) {
-    const builder = parseBuilderSlsaPredicate(predicate);
-
-    return {
-        ...builder,
-        buildSummaryUrl: hrefOnRepositoryHost(
-            predicate.metadata?.buildInvocationId,
-            builder.repositoryUrl,
-        ),
-    };
+    return parseBuilderSlsaPredicate(predicate);
 }

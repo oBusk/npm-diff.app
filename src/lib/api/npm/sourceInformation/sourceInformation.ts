@@ -25,5 +25,4 @@ export interface SourceInformation {
 
 export type SourceLookup =
     | { status: "found"; sourceInformation: SourceInformation }
-    | { status: "none" }
-    | { status: "undetermined" };
+    | { status: "none" | "undetermined"; sourceInformation?: never };

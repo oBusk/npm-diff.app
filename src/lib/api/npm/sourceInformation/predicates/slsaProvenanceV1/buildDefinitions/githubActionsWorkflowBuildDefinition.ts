@@ -1,5 +1,5 @@
-import { type BuildDefinition } from "..";
-import { hrefOnRepositoryHost } from "../../../hrefOnRepositoryHost";
+import { isGitHubUrl } from "^/lib/utils/isAllowedRepositoryHost";
+import { type BuildDefinition, type SlsaProvenancePredicate } from "..";
 
 export const GithubActionsWorkflowBuildType =
     "https://slsa-framework.github.io/github-actions-buildtypes/workflow/v1";
@@ -50,22 +50,9 @@ export function isGithubActionsWorkflowBuildDefinition(
     return buildDefinition.buildType === GithubActionsWorkflowBuildType;
 }
 
-/**
- * Validate that a URL is a proper GitHub repository URL
- * Security: Only allow github.com as the exact hostname (not as part of path or subdomain)
- */
-export function isValidGitHubUrl(url: string): boolean {
-    try {
-        const parsed = new URL(url);
-        // Only allow github.com as the hostname
-        return parsed.hostname === "github.com" && parsed.protocol === "https:";
-    } catch {
-        return false;
-    }
-}
-
 export function parseGithubActionsWorkflowBuildDefinition(
     buildDefinition: GithubActionsWorkflowBuildDefinition,
+    runDetails: SlsaProvenancePredicate["runDetails"],
 ) {
     // Get repository URL from external parameters
     const repositoryUrl =
@@ -77,7 +64,7 @@ export function parseGithubActionsWorkflowBuildDefinition(
     const repositoryPath = repositoryUrlObj.pathname.slice(1); // remove leading '/'
 
     // Validate it's a GitHub URL (security: only allow github.com as the exact hostname)
-    if (!isValidGitHubUrl(repositoryUrl)) {
+    if (!isGitHubUrl(repositoryUrl)) {
         throw new Error("Invalid GitHub repository URL");
     }
 
@@ -98,15 +85,18 @@ export function parseGithubActionsWorkflowBuildDefinition(
         throw new Error("No workflow path found in provenance");
     }
 
+    const buildSummaryUrl = runDetails?.metadata?.invocationId;
+
     return {
         buildPlatform: "GitHub Actions",
         commitHash,
         repositoryPath,
         repositoryUrl,
         buildFileName: workflowPath,
-        buildFileHref: hrefOnRepositoryHost(
-            `${repositoryUrl}/blob/${commitHash}/${workflowPath}`,
-            repositoryUrl,
-        ),
+        buildFileHref: `${repositoryUrl}/blob/${commitHash}/${workflowPath}`,
+        buildSummaryUrl:
+            typeof buildSummaryUrl === "string" && isGitHubUrl(buildSummaryUrl)
+                ? buildSummaryUrl
+                : undefined,
     };
 }

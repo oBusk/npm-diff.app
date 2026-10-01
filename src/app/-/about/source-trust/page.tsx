@@ -50,13 +50,10 @@ export const metadata: Metadata = {
 
 export default async function SourceTrustPage() {
     // Fetch source information for ini@6.0.0 as an example
-    const iniLookup = await getSourceInformation({
+    const { sourceInformation: iniSourceInfo } = await getSourceInformation({
         name: "ini",
         version: "6.0.0",
     });
-
-    const iniSourceInfo =
-        iniLookup.status === "found" ? iniLookup.sourceInformation : null;
 
     return (
         <Stack gap={8} align="start" className="mx-auto max-w-3xl p-5">

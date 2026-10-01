@@ -1,8 +1,8 @@
+import { isGitLabUrl } from "^/lib/utils/isAllowedRepositoryHost";
 import {
     type SlsaProvenanceV0_2Invocation,
     type SlsaProvenanceV0_2Predicate,
 } from "..";
-import { hrefOnRepositoryHost } from "../../../hrefOnRepositoryHost";
 
 interface GitlabBuilderInvocation extends SlsaProvenanceV0_2Invocation {
     parameters: {
@@ -99,15 +99,7 @@ export function isGitlabBuilderSlsaPredicate(
     return predicate.buildType === "https://github.com/npm/cli/gitlab/v0alpha1";
 }
 
-const GITLAB_PROJECT_PATH_SEGMENT = /^[\w-]+(?:\.[\w-]+)*$/;
-
-export function isValidGitLabProjectPath(path: string): boolean {
-    const segments = path.split("/");
-    return (
-        segments.length >= 2 &&
-        segments.every((segment) => GITLAB_PROJECT_PATH_SEGMENT.test(segment))
-    );
-}
+const GITLAB_PROJECT_PATH = /^[\w-]+(?:\.[\w-]+)*(?:\/[\w-]+(?:\.[\w-]+)*)+$/;
 
 export function parseGitlabBuilderSlsaPredicate(
     predicate: GitlabBuilderSlsaPredicate,
@@ -121,7 +113,7 @@ export function parseGitlabBuilderSlsaPredicate(
     if (!repositoryPath) {
         throw new Error("No repository name found in GitLab SLSA provenance");
     }
-    if (!isValidGitLabProjectPath(repositoryPath)) {
+    if (!GITLAB_PROJECT_PATH.test(repositoryPath)) {
         throw new Error(
             `Invalid GitLab project path in SLSA provenance: ${repositoryPath}`,
         );
@@ -134,6 +126,7 @@ export function parseGitlabBuilderSlsaPredicate(
     }
 
     const pipelineId = String(predicate.invocation.environment.pipeline.id);
+    const buildSummaryUrl = predicate.metadata?.buildInvocationId;
 
     return {
         buildPlatform: "GitLab CI/CD",
@@ -142,10 +135,11 @@ export function parseGitlabBuilderSlsaPredicate(
         repositoryUrl,
         buildFileName,
         buildFileHref: /^\d+$/.test(pipelineId)
-            ? hrefOnRepositoryHost(
-                  `${repositoryUrl}/-/pipelines/${pipelineId}`,
-                  repositoryUrl,
-              )
+            ? `${repositoryUrl}/-/pipelines/${pipelineId}`
             : undefined,
+        buildSummaryUrl:
+            typeof buildSummaryUrl === "string" && isGitLabUrl(buildSummaryUrl)
+                ? buildSummaryUrl
+                : undefined,
     };
 }

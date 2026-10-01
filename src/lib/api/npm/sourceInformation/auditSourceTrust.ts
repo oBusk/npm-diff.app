@@ -29,8 +29,7 @@ export function auditSourceTrust(
     }
 
     const sourceA = lookupA.sourceInformation;
-    const sourceB =
-        lookupB.status === "found" ? lookupB.sourceInformation : null;
+    const sourceB = lookupB.sourceInformation;
 
     // 1. Trust downgrade (red):
     //    - A has provenance but B does not (lost provenance)
