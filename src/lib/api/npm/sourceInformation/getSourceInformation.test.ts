@@ -1,9 +1,13 @@
-import versionManifest from "../versionManifest";
+import fetchManifest from "../manifest";
 import { getSourceFromManifest } from "./getSourceFromManifest";
 import { getSourceInformation } from "./getSourceInformation";
 import type { SourceInformation } from "./sourceInformation";
 
-jest.mock("../versionManifest", () => ({
+jest.mock("next/cache", () => ({
+    cacheLife: jest.fn(),
+}));
+
+jest.mock("../manifest", () => ({
     __esModule: true,
     default: jest.fn(),
 }));
@@ -12,15 +16,15 @@ jest.mock("./getSourceFromManifest", () => ({
     getSourceFromManifest: jest.fn(),
 }));
 
-const mockVersionManifest = versionManifest as jest.MockedFunction<
-    typeof versionManifest
+const mockFetchManifest = fetchManifest as jest.MockedFunction<
+    typeof fetchManifest
 >;
 const mockGetSourceFromManifest = getSourceFromManifest as jest.MockedFunction<
     typeof getSourceFromManifest
 >;
 
 const spec = { name: "pkg", version: "1.0.0" };
-const manifest = {} as NonNullable<Awaited<ReturnType<typeof versionManifest>>>;
+const manifest = {} as Awaited<ReturnType<typeof fetchManifest>>;
 
 describe("getSourceInformation", () => {
     beforeEach(() => {
@@ -32,16 +36,8 @@ describe("getSourceInformation", () => {
         jest.restoreAllMocks();
     });
 
-    it("returns none when the version manifest is missing", async () => {
-        mockVersionManifest.mockResolvedValue(null);
-
-        await expect(getSourceInformation(spec)).resolves.toEqual({
-            status: "none",
-        });
-    });
-
     it("returns none when the manifest has no provenance", async () => {
-        mockVersionManifest.mockResolvedValue(manifest);
+        mockFetchManifest.mockResolvedValue(manifest);
         mockGetSourceFromManifest.mockResolvedValue(undefined);
 
         await expect(getSourceInformation(spec)).resolves.toEqual({
@@ -53,7 +49,7 @@ describe("getSourceInformation", () => {
         const sourceInformation = {
             repositoryUrl: "https://github.com/owner/repo",
         } as SourceInformation;
-        mockVersionManifest.mockResolvedValue(manifest);
+        mockFetchManifest.mockResolvedValue(manifest);
         mockGetSourceFromManifest.mockResolvedValue(sourceInformation);
 
         await expect(getSourceInformation(spec)).resolves.toEqual({
@@ -63,7 +59,7 @@ describe("getSourceInformation", () => {
     });
 
     it("returns undetermined and logs when the manifest fetch fails", async () => {
-        mockVersionManifest.mockRejectedValue(new Error("timeout"));
+        mockFetchManifest.mockRejectedValue(new Error("timeout"));
 
         await expect(getSourceInformation(spec)).resolves.toEqual({
             status: "undetermined",
@@ -72,7 +68,7 @@ describe("getSourceInformation", () => {
     });
 
     it("returns undetermined when provenance parsing fails", async () => {
-        mockVersionManifest.mockResolvedValue(manifest);
+        mockFetchManifest.mockResolvedValue(manifest);
         mockGetSourceFromManifest.mockRejectedValue(
             new Error("Unsupported SLSA Provenance v1 BuildDefinition type"),
         );

@@ -1,4 +1,3 @@
-import { cacheLife } from "next/cache";
 import Skeleton from "^/components/ui/Skeleton";
 import {
     auditSourceTrust,
@@ -22,21 +21,10 @@ export interface SourcesProps {
 }
 
 async function Sources({ a, b }: SourcesProps) {
-    "use cache";
-
     const [lookupA, lookupB] = await Promise.all([
         getSourceInformation(a),
         getSourceInformation(b),
     ]);
-
-    if (
-        lookupA.status === "undetermined" ||
-        lookupB.status === "undetermined"
-    ) {
-        cacheLife("minutes");
-    } else {
-        cacheLife("hours");
-    }
 
     if (lookupA.status === "none" && lookupB.status === "none") {
         return <NeitherHasProvenance className="mb-4" />;

@@ -2,19 +2,19 @@ import npa from "npm-package-arg";
 import { USER_AGENT } from "../user-agent";
 import type { Manifest } from "./packument";
 
-const TIMEOUT_MS = 10_000;
-
-export default async function fetchLatestManifest(
+/** Fetches one version's manifest, by version or dist-tag, instead of the full packument */
+export default async function fetchManifest(
     packageName: string,
+    versionOrTag: string,
 ): Promise<Manifest> {
     const { escapedName } = npa(packageName);
 
     const response = await fetch(
-        `https://registry.npmjs.org/${escapedName}/latest`,
+        `https://registry.npmjs.org/${escapedName}/${encodeURIComponent(versionOrTag)}`,
         {
             headers: { "User-Agent": USER_AGENT },
             cache: "no-store",
-            signal: AbortSignal.timeout(TIMEOUT_MS),
+            signal: AbortSignal.timeout(10_000),
         },
     );
 
@@ -23,7 +23,7 @@ export default async function fetchLatestManifest(
 
         throw Object.assign(
             new Error(
-                `[${packageName}] Registry returned ${response.status} for the latest manifest`,
+                `[${packageName}@${versionOrTag}] Registry returned ${response.status} for the manifest`,
             ),
             { code: `E${response.status}` },
         );

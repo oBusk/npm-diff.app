@@ -1,7 +1,7 @@
 import { fromUrl } from "hosted-git-info";
 import getPackageVersions from "^/lib/api/packageVersions";
 import { hasErrorCode } from "^/lib/utils/hasErrorCode";
-import fetchLatestManifest from "./latestManifest";
+import fetchManifest from "./manifest";
 import type { Manifest } from "./packument";
 
 export interface CatalogSummary {
@@ -101,7 +101,7 @@ export function homepageLink(
 export default async function getCatalogSummary(
     packageName: string,
 ): Promise<CatalogSummary & { cacheLife: "minutes" | "hours" }> {
-    const manifest = await fetchLatestManifest(packageName).catch(
+    const manifest = await fetchManifest(packageName, "latest").catch(
         (e: unknown) => {
             if (hasErrorCode(e, "E404")) {
                 throw new Error(`Package not found: ${packageName}`);
