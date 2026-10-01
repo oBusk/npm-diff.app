@@ -1,7 +1,7 @@
 import { cacheLife } from "next/cache";
 import npa, { type AliasResult } from "npm-package-arg";
 import { manifest, resolve } from "pacote";
-import isRegistryNotFoundError from "^/lib/utils/isRegistryNotFoundError";
+import { hasErrorCode } from "^/lib/utils/hasErrorCode";
 import SpecNotFoundError from "./SpecNotFoundError";
 
 const hashFinder = /(?:\#.*)?$/;
@@ -70,7 +70,7 @@ async function cachedCanonicalSpec(spec: string): Promise<string | null> {
 
         return canonical;
     } catch (e) {
-        if (isRegistryNotFoundError(e)) {
+        if (hasErrorCode(e, "E404") || hasErrorCode(e, "ETARGET")) {
             cacheLife("minutes");
 
             return null;
