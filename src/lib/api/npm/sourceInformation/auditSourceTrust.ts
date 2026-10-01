@@ -1,4 +1,4 @@
-import type { SourceInformation } from "./sourceInformation";
+import type { SourceLookup } from "./sourceInformation";
 
 export type TrustAuditSeverity = "red" | "yellow";
 
@@ -19,41 +19,42 @@ export interface TrustAuditFinding {
  * version).
  */
 export function auditSourceTrust(
-    sourceA: SourceInformation | null | undefined,
-    sourceB: SourceInformation | null | undefined,
+    lookupA: SourceLookup,
+    lookupB: SourceLookup,
 ): TrustAuditFinding[] {
     const findings: TrustAuditFinding[] = [];
 
-    const hasA = Boolean(sourceA);
-    const hasB = Boolean(sourceB);
+    if (lookupA.status !== "found" || lookupB.status === "undetermined") {
+        return findings;
+    }
+
+    const sourceA = lookupA.sourceInformation;
+    const sourceB = lookupB.sourceInformation;
 
     // 1. Trust downgrade (red):
     //    - A has provenance but B does not (lost provenance)
     //    - A was published with trusted publisher but B is not (lost trusted publisher)
-    const provenanceDowngrade = hasA && !hasB;
-    const trustedPublisherDowngrade = Boolean(
-        sourceA?.hasTrustedPublisher && !sourceB?.hasTrustedPublisher,
-    );
+    if (!sourceB) {
+        findings.push({
+            type: "lost-provenance",
+            severity: "red",
+        });
 
-    if (provenanceDowngrade || trustedPublisherDowngrade) {
-        if (provenanceDowngrade) {
-            findings.push({
-                type: "lost-provenance",
-                severity: "red",
-            });
-        }
-
-        if (trustedPublisherDowngrade) {
+        if (sourceA.hasTrustedPublisher) {
             findings.push({
                 type: "lost-trusted-publisher",
                 severity: "red",
             });
         }
+
+        return findings;
     }
 
-    // Remaining checks only apply when both versions have provenance.
-    if (!sourceA || !sourceB) {
-        return findings;
+    if (sourceA.hasTrustedPublisher && !sourceB.hasTrustedPublisher) {
+        findings.push({
+            type: "lost-trusted-publisher",
+            severity: "red",
+        });
     }
 
     // 2. Repository change (red): repository URL differs between A and B.

@@ -5,7 +5,7 @@ import getCatalogSummary, {
     licenseText,
     repositoryLink,
 } from "./catalogSummary";
-import fetchLatestManifest from "./latestManifest";
+import fetchManifest from "./manifest";
 import type { Manifest } from "./packument";
 
 jest.mock("^/lib/api/packageVersions", () => ({
@@ -13,13 +13,13 @@ jest.mock("^/lib/api/packageVersions", () => ({
     default: jest.fn(),
 }));
 
-jest.mock("./latestManifest", () => ({
+jest.mock("./manifest", () => ({
     __esModule: true,
     default: jest.fn(),
 }));
 
 const getPackageVersionsMock = getPackageVersions as jest.Mock;
-const fetchLatestManifestMock = fetchLatestManifest as jest.Mock;
+const fetchManifestMock = fetchManifest as jest.Mock;
 
 describe("licenseText", () => {
     it.each([
@@ -219,7 +219,7 @@ describe("getCatalogSummary", () => {
     };
 
     const summarize = (latestManifest: Partial<Manifest>) => {
-        fetchLatestManifestMock.mockResolvedValue({
+        fetchManifestMock.mockResolvedValue({
             version: "2.0.0",
             ...latestManifest,
         });
@@ -291,7 +291,7 @@ describe("getCatalogSummary", () => {
     });
 
     it("caches briefly when the latest manifest can't be fetched", async () => {
-        fetchLatestManifestMock.mockRejectedValue(new Error("503"));
+        fetchManifestMock.mockRejectedValue(new Error("503"));
         getPackageVersionsMock.mockResolvedValue(versions);
 
         await expect(getCatalogSummary("example")).resolves.toEqual({
@@ -313,7 +313,7 @@ describe("getCatalogSummary", () => {
     });
 
     it("throws when there is no latest version", async () => {
-        fetchLatestManifestMock.mockRejectedValue(
+        fetchManifestMock.mockRejectedValue(
             Object.assign(new Error("Not found"), { code: "E404" }),
         );
 
@@ -324,7 +324,7 @@ describe("getCatalogSummary", () => {
     });
 
     it("throws when the package has no versions", async () => {
-        fetchLatestManifestMock.mockRejectedValue(new Error("503"));
+        fetchManifestMock.mockRejectedValue(new Error("503"));
         getPackageVersionsMock.mockResolvedValue(null);
 
         await expect(getCatalogSummary("example")).rejects.toThrow(

@@ -77,16 +77,5 @@ export type SlsaProvenanceStatement = InTotoStatement<
 export function parseSlsaProvenancePredicate(
     predicate: SlsaProvenancePredicate,
 ) {
-    // Get build summary URL from runDetails
-    const buildSummaryUrl = predicate.runDetails.metadata.invocationId;
-    if (!buildSummaryUrl) {
-        throw new Error(
-            "No build summary URL found in SLSA v1 provenance predicate",
-        );
-    }
-
-    return {
-        ...parseBuildDefinition(predicate.buildDefinition),
-        buildSummaryUrl,
-    };
+    return parseBuildDefinition(predicate);
 }

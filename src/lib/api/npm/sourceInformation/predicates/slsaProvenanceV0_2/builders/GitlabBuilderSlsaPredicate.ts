@@ -1,3 +1,4 @@
+import { isGitLabUrl } from "^/lib/utils/isAllowedRepositoryHost";
 import {
     type SlsaProvenanceV0_2Invocation,
     type SlsaProvenanceV0_2Predicate,
@@ -117,6 +118,8 @@ export function parseGitlabBuilderSlsaPredicate(
         throw new Error("No build file found in GitLab SLSA provenance");
     }
 
+    const buildSummaryUrl = predicate.metadata?.buildInvocationId;
+
     return {
         buildPlatform: "GitLab CI/CD",
         commitHash,
@@ -124,5 +127,9 @@ export function parseGitlabBuilderSlsaPredicate(
         repositoryUrl,
         buildFileName,
         buildFileHref: `https://gitlab.com/${repositoryPath}/-/pipelines/${predicate.invocation.environment.pipeline.id}`,
+        buildSummaryUrl:
+            typeof buildSummaryUrl === "string" && isGitLabUrl(buildSummaryUrl)
+                ? buildSummaryUrl
+                : undefined,
     };
 }

@@ -1,20 +1,32 @@
+import { cacheLife } from "next/cache";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
-import packument from "../packument";
+import fetchManifest from "../manifest";
 import { getSourceFromManifest } from "./getSourceFromManifest";
-import { type SourceInformation } from "./sourceInformation";
+import { type SourceLookup } from "./sourceInformation";
 
 export async function getSourceInformation(
     spec: SimplePackageSpec,
-): Promise<null | SourceInformation> {
-    const pack = await packument(simplePackageSpecToString(spec));
+): Promise<SourceLookup> {
+    "use cache: remote";
 
-    const manifest = pack.versions[spec.version];
-    if (!manifest) {
-        return null;
+    try {
+        const manifest = await fetchManifest(spec.name, spec.version);
+        const sourceInformation = await getSourceFromManifest(manifest);
+
+        cacheLife("max");
+
+        return sourceInformation
+            ? { status: "found", sourceInformation }
+            : { status: "none" };
+    } catch (e) {
+        console.error(
+            `[${simplePackageSpecToString(spec)}] Failed to get source information:`,
+            e,
+        );
+
+        cacheLife("minutes");
+
+        return { status: "undetermined" };
     }
-
-    const sourceInformation = await getSourceFromManifest(manifest);
-
-    return sourceInformation || null;
 }

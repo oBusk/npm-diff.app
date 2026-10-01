@@ -1,4 +1,3 @@
-import { cacheLife } from "next/cache";
 import Skeleton from "^/components/ui/Skeleton";
 import {
     auditSourceTrust,
@@ -21,22 +20,21 @@ export interface SourcesProps {
 }
 
 async function Sources({ a, b }: SourcesProps) {
-    "use cache";
-
-    cacheLife("hours");
-
-    const [sourceA, sourceB] = await Promise.all([
+    const [lookupA, lookupB] = await Promise.all([
         getSourceInformation(a),
         getSourceInformation(b),
     ]);
 
-    if (!sourceA && !sourceB) {
+    if (lookupA.status === "none" && lookupB.status === "none") {
         return <NeitherHasProvenance className="mb-4" />;
     }
 
+    const sourceA = lookupA.sourceInformation;
+    const sourceB = lookupB.sourceInformation;
+
     // Analyze trust only if both packages are the same
     const findings =
-        a.name === b.name ? auditSourceTrust(sourceA, sourceB) : [];
+        a.name === b.name ? auditSourceTrust(lookupA, lookupB) : [];
 
     const aLabel = simplePackageSpecToString(a);
 
@@ -52,7 +50,9 @@ async function Sources({ a, b }: SourcesProps) {
                     {sourceA ? (
                         <SourceCard sourceInformation={sourceA} />
                     ) : (
-                        <NoProvenanceCard />
+                        <NoProvenanceCard
+                            unavailable={lookupA.status === "undetermined"}
+                        />
                     )}
                 </div>
             }
@@ -70,6 +70,10 @@ async function Sources({ a, b }: SourcesProps) {
                 <div className="flex w-full max-w-md flex-col gap-2">
                     {sourceB ? (
                         <SourceCard sourceInformation={sourceB} />
+                    ) : findings.length === 0 ? (
+                        <NoProvenanceCard
+                            unavailable={lookupB.status === "undetermined"}
+                        />
                     ) : null}
                     <TrustAuditFindings
                         findings={findings}

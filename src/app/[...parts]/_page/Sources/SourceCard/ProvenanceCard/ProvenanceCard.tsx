@@ -47,11 +47,13 @@ export default function ProvenanceCard({
                             href={sourceInformation.publicLedger}
                             Icon={ScrollText}
                         />
-                        <ProvenanceCardButton
-                            tooltip="View build summary"
-                            href={sourceInformation.buildSummaryUrl}
-                            Icon={ExternalLinkIcon}
-                        />
+                        {sourceInformation.buildSummaryUrl ? (
+                            <ProvenanceCardButton
+                                tooltip="View build summary"
+                                href={sourceInformation.buildSummaryUrl}
+                                Icon={ExternalLinkIcon}
+                            />
+                        ) : null}
                     </div>
                 </div>
             </div>

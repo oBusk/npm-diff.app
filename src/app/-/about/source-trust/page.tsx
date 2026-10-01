@@ -1,6 +1,5 @@
 import { AlertTriangle, BadgeCheck, ShieldCheck } from "lucide-react";
 import type { Metadata } from "next";
-import { cacheLife } from "next/cache";
 import SourceCard from "^/app/[...parts]/_page/Sources/SourceCard";
 import ExternalLink from "^/components/ExternalLink";
 import BorderBox from "^/components/ui/BorderBox";
@@ -50,12 +49,8 @@ export const metadata: Metadata = {
 };
 
 export default async function SourceTrustPage() {
-    "use cache";
-
-    cacheLife("max");
-
     // Fetch source information for ini@6.0.0 as an example
-    const iniSourceInfo = await getSourceInformation({
+    const { sourceInformation: iniSourceInfo } = await getSourceInformation({
         name: "ini",
         version: "6.0.0",
     });
