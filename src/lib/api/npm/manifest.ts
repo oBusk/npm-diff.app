@@ -2,7 +2,6 @@ import npa from "npm-package-arg";
 import { USER_AGENT } from "../user-agent";
 import type { Manifest } from "./packument";
 
-/** Fetches one version's manifest, by version or dist-tag, instead of the full packument */
 export default async function fetchManifest(
     packageName: string,
     versionOrTag: string,

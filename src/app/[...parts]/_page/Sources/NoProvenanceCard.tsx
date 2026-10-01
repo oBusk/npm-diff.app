@@ -1,7 +1,6 @@
 import { CircleQuestionMark, X } from "lucide-react";
 
 export interface NoProvenanceCardProps {
-    /** Provenance couldn't be loaded, rather than the release having none */
     unavailable?: boolean;
 }
 

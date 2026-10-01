@@ -5,7 +5,6 @@ import fetchManifest from "../manifest";
 import { getSourceFromManifest } from "./getSourceFromManifest";
 import { type SourceLookup } from "./sourceInformation";
 
-/** Cached until the next deploy, so `spec.version` must be an exact version, not a dist-tag */
 export async function getSourceInformation(
     spec: SimplePackageSpec,
 ): Promise<SourceLookup> {
