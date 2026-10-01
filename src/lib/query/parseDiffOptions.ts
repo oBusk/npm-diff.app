@@ -4,15 +4,12 @@ import { type NpmDiffOptions } from "^/lib/npmDiff";
 import parseQuery from "./parseQuery";
 import type QueryParams from "./QueryParams";
 
-export const MAX_DIFF_FILES = 10;
-export const MAX_DIFF_FILES_PATTERN_LENGTH = 256;
-export const MAX_DIFF_FILES_BRACE_EXPANSION = 16;
-export const MAX_DIFF_FILES_STARS = 2;
-export const MAX_DIFF_UNIFIED = 100;
-export const MAX_DIFF_PREFIX_LENGTH = 64;
-
-export type ParseDiffOptionsResult =
-    { ok: true; options: NpmDiffOptions } | { ok: false; message: string };
+const MAX_DIFF_FILES = 10;
+const MAX_DIFF_FILES_PATTERN_LENGTH = 256;
+const MAX_DIFF_FILES_BRACE_EXPANSION = 16;
+const MAX_DIFF_FILES_STARS = 2;
+const MAX_DIFF_UNIFIED = 100;
+const MAX_DIFF_PREFIX_LENGTH = 64;
 
 // Same normalization libnpmdiff applies before matching, so `\{a,b}`
 // can't slip past the checks as a literal brace.
@@ -72,12 +69,14 @@ function validatePrefix(
     name: string,
     prefix: string | undefined,
 ): string | undefined {
-    if (prefix != null && prefix.length > MAX_DIFF_PREFIX_LENGTH) {
+    if (prefix == null) {
+        return undefined;
+    }
+    if (prefix.length > MAX_DIFF_PREFIX_LENGTH) {
         return `${name} can be at most ${MAX_DIFF_PREFIX_LENGTH} characters long.`;
     }
     // Prefixes are written verbatim into the ---/+++ header lines
-
-    if (prefix != null && /[\x00-\x1f\x7f]/.test(prefix)) {
+    if (/[\x00-\x1f\x7f]/.test(prefix)) {
         return `${name} can not contain control characters.`;
     }
     return undefined;
@@ -115,7 +114,7 @@ function validateOptions({
 
 export default function parseDiffOptions(
     query: QueryParams,
-): ParseDiffOptionsResult {
+): { ok: true; options: NpmDiffOptions } | { ok: false; message: string } {
     const options = parseQuery(query);
     const message = validateOptions(options);
 
