@@ -39,18 +39,22 @@ export function auditSourceTrust(
             type: "lost-provenance",
             severity: "red",
         });
+
+        if (sourceA.hasTrustedPublisher) {
+            findings.push({
+                type: "lost-trusted-publisher",
+                severity: "red",
+            });
+        }
+
+        return findings;
     }
 
-    if (sourceA.hasTrustedPublisher && !sourceB?.hasTrustedPublisher) {
+    if (sourceA.hasTrustedPublisher && !sourceB.hasTrustedPublisher) {
         findings.push({
             type: "lost-trusted-publisher",
             severity: "red",
         });
-    }
-
-    // Remaining checks only apply when both versions have provenance.
-    if (!sourceB) {
-        return findings;
     }
 
     // 2. Repository change (red): repository URL differs between A and B.
