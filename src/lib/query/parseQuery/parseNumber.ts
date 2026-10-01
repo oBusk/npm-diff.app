@@ -7,7 +7,7 @@ function parseNumber(str: undefined | string | string[]): undefined | number {
         return undefined;
     }
 
-    return Number(str);
+    return /^-?\d+$/.test(str) ? Number(str) : NaN;
 }
 
 export default parseNumber;
