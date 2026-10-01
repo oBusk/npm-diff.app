@@ -1,4 +1,4 @@
-import { USER_AGENT } from "../../user-agent";
+import { USER_AGENT } from "^/lib/api/user-agent";
 import { type PackageDistAttestations } from "../packument";
 import { type AttestationBundle } from "./protocols/attestationBundle";
 import { SupportedAttestationPredicates } from "./supportedPredicates";
