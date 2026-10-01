@@ -1,23 +1,41 @@
 import { braceExpand } from "minimatch";
+import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import { type NpmDiffOptions } from "^/lib/npmDiff";
 import parseQuery from "./parseQuery";
 import type QueryParams from "./QueryParams";
 
 export const MAX_DIFF_FILES = 10;
 export const MAX_DIFF_FILES_PATTERN_LENGTH = 256;
-export const MAX_DIFF_FILES_BRACE_EXPANSION = 64;
+export const MAX_DIFF_FILES_BRACE_EXPANSION = 16;
+export const MAX_DIFF_FILES_STARS = 2;
 export const MAX_DIFF_UNIFIED = 100;
 export const MAX_DIFF_PREFIX_LENGTH = 64;
 
 export type ParseDiffOptionsResult =
     { ok: true; options: NpmDiffOptions } | { ok: false; message: string };
 
-function braceExpansionExceedsLimit(pattern: string): boolean {
-    return (
-        braceExpand(pattern, {
-            braceExpandMax: MAX_DIFF_FILES_BRACE_EXPANSION + 1,
-        }).length > MAX_DIFF_FILES_BRACE_EXPANSION
-    );
+// Same normalization libnpmdiff applies before matching, so `\{a,b}`
+// can't slip past the checks as a literal brace.
+function normalizeMatch(pattern: string): string {
+    return pattern.replace(/\\+/g, "/").replace(/^\.\/|^\./, "");
+}
+
+/**
+ * minimatch compiles globs to backtracking regexes. Extglobs and more than two
+ * `*` in a pattern can take seconds to match a single long file name, and
+ * libnpmdiff matches every pattern against every file in both tarballs.
+ * `**` path segments are not counted, they match whole segments.
+ */
+function isSlowGlob(pattern: string): boolean {
+    if (/[!@?*+]\(/.test(pattern)) {
+        return true;
+    }
+    const stars = pattern
+        .split("/")
+        .filter((segment) => segment !== "**")
+        .join("/")
+        .match(/\*+/g);
+    return (stars?.length ?? 0) > MAX_DIFF_FILES_STARS;
 }
 
 function validateDiffFiles(diffFiles: string[]): string | undefined {
@@ -25,12 +43,25 @@ function validateDiffFiles(diffFiles: string[]): string | undefined {
         return `Too many diffFiles patterns, at most ${MAX_DIFF_FILES} are allowed.`;
     }
 
+    let alternatives = 0;
     for (const pattern of diffFiles) {
         if (pattern.length > MAX_DIFF_FILES_PATTERN_LENGTH) {
             return `diffFiles patterns can be at most ${MAX_DIFF_FILES_PATTERN_LENGTH} characters long.`;
         }
-        if (braceExpansionExceedsLimit(pattern)) {
-            return `diffFiles patterns can expand to at most ${MAX_DIFF_FILES_BRACE_EXPANSION} alternatives.`;
+        if (pattern === DEFAULT_DIFF_FILES_GLOB) {
+            alternatives++;
+            continue;
+        }
+
+        const expanded = braceExpand(normalizeMatch(pattern), {
+            braceExpandMax: MAX_DIFF_FILES_BRACE_EXPANSION + 1,
+        });
+        alternatives += expanded.length;
+        if (alternatives > MAX_DIFF_FILES_BRACE_EXPANSION) {
+            return `diffFiles patterns can expand to at most ${MAX_DIFF_FILES_BRACE_EXPANSION} alternatives in total.`;
+        }
+        if (expanded.some(isSlowGlob)) {
+            return `diffFiles patterns can not use extglobs like !(...) and can have at most ${MAX_DIFF_FILES_STARS} * outside of ** segments.`;
         }
     }
 

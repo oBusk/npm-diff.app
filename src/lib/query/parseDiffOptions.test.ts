@@ -48,17 +48,62 @@ describe("parseDiffOptions", () => {
             );
         });
 
-        it("accepts a pattern expanding to exactly 64 alternatives", () => {
-            expect(parseDiffOptions({ diffFiles: "{a,b}".repeat(6) }).ok).toBe(
+        it("accepts a pattern expanding to exactly 16 alternatives", () => {
+            expect(parseDiffOptions({ diffFiles: "{a,b}".repeat(4) }).ok).toBe(
                 true,
             );
         });
 
-        it("rejects a pattern expanding to 128 alternatives", () => {
-            expect(parseDiffOptions({ diffFiles: "{a,b}".repeat(7) }).ok).toBe(
+        it("rejects a pattern expanding to 32 alternatives", () => {
+            expect(parseDiffOptions({ diffFiles: "{a,b}".repeat(5) }).ok).toBe(
                 false,
             );
         });
+
+        it("counts alternatives across all patterns", () => {
+            expect(
+                parseDiffOptions({
+                    diffFiles: ["{a,b}".repeat(3), "{a,b}".repeat(3)],
+                }).ok,
+            ).toBe(true);
+            expect(
+                parseDiffOptions({
+                    diffFiles: ["{a,b}".repeat(3), "{a,b}".repeat(3), "c"],
+                }).ok,
+            ).toBe(false);
+        });
+
+        it("expands braces escaped with a backslash, like libnpmdiff", () => {
+            expect(
+                parseDiffOptions({ diffFiles: "\\{a,b}".repeat(17) }).ok,
+            ).toBe(false);
+        });
+
+        it.each([
+            "*(?|?)Z",
+            "+(a|b)",
+            "!(*.map)",
+            "@(a|b)",
+            "?(a)",
+            "\\*(a|b)",
+            "{a,*(?|?)}",
+        ])("rejects extglob %p", (pattern) => {
+            expect(parseDiffOptions({ diffFiles: pattern }).ok).toBe(false);
+        });
+
+        it.each(["*.js", "**/*.d.ts", "*a*", "**/lib/**/*-*", "{*a*,*b*}"])(
+            "accepts %p",
+            (pattern) => {
+                expect(parseDiffOptions({ diffFiles: pattern }).ok).toBe(true);
+            },
+        );
+
+        it.each(["*?*?*?*?Z", "*a*b*c", "a**b*c*"])(
+            "rejects %p with more than two *",
+            (pattern) => {
+                expect(parseDiffOptions({ diffFiles: pattern }).ok).toBe(false);
+            },
+        );
 
         it("accepts 10 patterns and rejects 11", () => {
             expect(
