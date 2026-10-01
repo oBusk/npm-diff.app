@@ -35,37 +35,35 @@ const ViewTypeButton = forwardRef<
             ...props
         },
         ref,
-    ) => (
-        <Button
-            variant="outline"
-            className={cx(
-                "not-last:rounded-r-none",
-                "not-last:border-r-0",
-                "not-first:rounded-l-none",
-                className!,
-            )}
-            isActive={currentViewType === viewType}
-            asChild
-            {...props}
-            ref={ref}
-        >
-            <Link
-                href={{
-                    pathname,
-                    query: {
-                        ...(searchParams &&
-                            Object.fromEntries(searchParams.entries())),
-                        [DIFF_TYPE_PARAM_NAME]: viewType,
-                    },
-                }}
-                replace
-                shallow
-                prefetch={false}
+    ) => {
+        const params = new URLSearchParams(searchParams?.toString());
+        params.set(DIFF_TYPE_PARAM_NAME, viewType);
+
+        return (
+            <Button
+                variant="outline"
+                className={cx(
+                    "not-last:rounded-r-none",
+                    "not-last:border-r-0",
+                    "not-first:rounded-l-none",
+                    className!,
+                )}
+                isActive={currentViewType === viewType}
+                asChild
+                {...props}
+                ref={ref}
             >
-                {children}
-            </Link>
-        </Button>
-    ),
+                <Link
+                    href={`${pathname ?? ""}?${params}`}
+                    replace
+                    shallow
+                    prefetch={false}
+                >
+                    {children}
+                </Link>
+            </Button>
+        );
+    },
 );
 ViewTypeButton.displayName = "ViewTypeButton";
 

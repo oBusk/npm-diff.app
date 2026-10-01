@@ -1,11 +1,13 @@
 import { type NextRequest, NextResponse } from "next/server";
-import destination from "^/lib/destination";
+import destination, {
+    type Destination,
+    SpecNotFoundError,
+} from "^/lib/destination";
 import npmDiff from "^/lib/npmDiff";
-import { parseQuery } from "^/lib/query";
+import { fromSearchParams, parseDiffOptions } from "^/lib/query";
 import { defaultPageCachingHeaders } from "^/lib/utils/headers";
+import parseParts from "^/lib/utils/parseParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
-import splitParts from "^/lib/utils/splitParts";
-import validateSpecs from "^/lib/utils/validateSpecs";
 
 export const maxDuration = 60;
 
@@ -21,19 +23,33 @@ export interface DiffApiContext {
 export async function GET(req: NextRequest, { params }: DiffApiContext) {
     const { parts } = await params;
     const { searchParams } = new URL(req.url);
-    const options = Object.fromEntries(searchParams);
 
-    const specsOrVersions = splitParts(parts);
+    const specsOrVersions = parseParts(parts);
 
-    if (!validateSpecs(specsOrVersions)) {
+    if (specsOrVersions == null) {
         return NextResponse.json("Invalid package spec", { status: 400 });
     }
 
-    const { redirect: red, canonicalSpecs } =
-        await destination(specsOrVersions);
+    const parsedOptions = parseDiffOptions(fromSearchParams(searchParams));
+
+    if (!parsedOptions.ok) {
+        return NextResponse.json(parsedOptions.message, { status: 400 });
+    }
+
+    let target: Destination;
+    try {
+        target = await destination(specsOrVersions);
+    } catch (e) {
+        if (e instanceof SpecNotFoundError) {
+            return NextResponse.json(e.message, { status: 404 });
+        }
+        throw e;
+    }
+
+    const { redirect: red, canonicalSpecs } = target;
 
     if (red === false) {
-        const result = await npmDiff(canonicalSpecs, parseQuery(options));
+        const result = await npmDiff(canonicalSpecs, parsedOptions.options);
 
         if (result.ok) {
             return new NextResponse(result.diff, {
@@ -47,8 +63,8 @@ export async function GET(req: NextRequest, { params }: DiffApiContext) {
     } else {
         const newUrl = new URL(`/api/${specsToDiff(canonicalSpecs)}`, req.url);
 
-        Array.from(searchParams).forEach(([key, value]) => {
-            newUrl.searchParams.set(key, value);
+        searchParams.forEach((value, key) => {
+            newUrl.searchParams.append(key, value);
         });
 
         return NextResponse.redirect(
