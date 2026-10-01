@@ -44,4 +44,15 @@ describe("fromSearchParams", () => {
             input.toString(),
         );
     });
+
+    it("treats __proto__ as a normal key", () => {
+        const query = fromSearchParams(
+            new URLSearchParams("__proto__=a&__proto__=b"),
+        );
+
+        expect(Object.getPrototypeOf(query)).toBe(Object.prototype);
+        expect(
+            Object.getOwnPropertyDescriptor(query, "__proto__")?.value,
+        ).toEqual(["a", "b"]);
+    });
 });

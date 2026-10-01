@@ -29,12 +29,12 @@ export function toSearchString<T extends SearchParamsRecord<T>>(
 export function fromSearchParams(
     searchParams: URLSearchParams,
 ): Record<string, string | string[]> {
-    const query: Record<string, string | string[]> = {};
-
-    for (const key of new Set(searchParams.keys())) {
-        const values = searchParams.getAll(key);
-        query[key] = values.length === 1 ? values[0] : values;
-    }
-
-    return query;
+    // Object.fromEntries defines own properties, so a `__proto__` key can't
+    // replace the prototype.
+    return Object.fromEntries(
+        [...new Set(searchParams.keys())].map((key) => {
+            const values = searchParams.getAll(key);
+            return [key, values.length === 1 ? values[0] : values];
+        }),
+    );
 }
