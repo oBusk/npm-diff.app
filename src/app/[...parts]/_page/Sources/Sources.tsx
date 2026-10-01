@@ -70,8 +70,10 @@ async function Sources({ a, b }: SourcesProps) {
                 <div className="flex w-full max-w-md flex-col gap-2">
                     {sourceB ? (
                         <SourceCard sourceInformation={sourceB} />
-                    ) : lookupB.status === "undetermined" ? (
-                        <NoProvenanceCard unavailable />
+                    ) : findings.length === 0 ? (
+                        <NoProvenanceCard
+                            unavailable={lookupB.status === "undetermined"}
+                        />
                     ) : null}
                     <TrustAuditFindings
                         findings={findings}
