@@ -1,8 +1,4 @@
-import {
-    fromSearchParams,
-    toSearchParams,
-    toSearchString,
-} from "./searchParams";
+import { fromSearchParams, toSearchString } from "./searchParams";
 
 describe("toSearchString", () => {
     it("returns an empty string for no params", () => {
@@ -35,14 +31,12 @@ describe("fromSearchParams", () => {
         ).toStrictEqual({ diffFiles: ["a", "b"], diffUnified: "3" });
     });
 
-    it("round-trips with toSearchParams", () => {
+    it("round-trips with toSearchString", () => {
         const input = new URLSearchParams(
             "diffFiles=a%26b&diffFiles=c&diffText=",
         );
 
-        expect(toSearchParams(fromSearchParams(input)).toString()).toBe(
-            input.toString(),
-        );
+        expect(toSearchString(fromSearchParams(input))).toBe(`?${input}`);
     });
 
     it("treats __proto__ as a normal key", () => {

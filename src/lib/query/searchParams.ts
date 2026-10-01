@@ -1,10 +1,10 @@
 type SearchParamValue = string | string[] | undefined;
 
-export type SearchParamsRecord<T> = { [K in keyof T]: SearchParamValue };
+type SearchParamsRecord<T> = { [K in keyof T]: SearchParamValue };
 
-export function toSearchParams<T extends SearchParamsRecord<T>>(
+export function toSearchString<T extends SearchParamsRecord<T>>(
     query: T,
-): URLSearchParams {
+): string {
     const searchParams = new URLSearchParams();
 
     for (const [key, value] of Object.entries<SearchParamValue>(query)) {
@@ -15,13 +15,7 @@ export function toSearchParams<T extends SearchParamsRecord<T>>(
         }
     }
 
-    return searchParams;
-}
-
-export function toSearchString<T extends SearchParamsRecord<T>>(
-    query: T,
-): string {
-    const search = toSearchParams(query).toString();
+    const search = searchParams.toString();
 
     return search.length > 0 ? `?${search}` : "";
 }
