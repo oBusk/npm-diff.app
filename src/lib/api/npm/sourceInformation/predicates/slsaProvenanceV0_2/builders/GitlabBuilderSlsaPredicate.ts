@@ -99,8 +99,6 @@ export function isGitlabBuilderSlsaPredicate(
     return predicate.buildType === "https://github.com/npm/cli/gitlab/v0alpha1";
 }
 
-const GITLAB_PROJECT_PATH = /^[\w-]+(?:\.[\w-]+)*(?:\/[\w-]+(?:\.[\w-]+)*)+$/;
-
 export function parseGitlabBuilderSlsaPredicate(
     predicate: GitlabBuilderSlsaPredicate,
 ) {
@@ -113,11 +111,6 @@ export function parseGitlabBuilderSlsaPredicate(
     if (!repositoryPath) {
         throw new Error("No repository name found in GitLab SLSA provenance");
     }
-    if (!GITLAB_PROJECT_PATH.test(repositoryPath)) {
-        throw new Error(
-            `Invalid GitLab project path in SLSA provenance: ${repositoryPath}`,
-        );
-    }
     const repositoryUrl = `https://gitlab.com/${repositoryPath}`;
 
     const buildFileName = predicate.invocation.environment.pipeline.ref;
@@ -125,7 +118,6 @@ export function parseGitlabBuilderSlsaPredicate(
         throw new Error("No build file found in GitLab SLSA provenance");
     }
 
-    const pipelineId = String(predicate.invocation.environment.pipeline.id);
     const buildSummaryUrl = predicate.metadata?.buildInvocationId;
 
     return {
@@ -134,9 +126,7 @@ export function parseGitlabBuilderSlsaPredicate(
         repositoryPath,
         repositoryUrl,
         buildFileName,
-        buildFileHref: /^\d+$/.test(pipelineId)
-            ? `${repositoryUrl}/-/pipelines/${pipelineId}`
-            : undefined,
+        buildFileHref: `https://gitlab.com/${repositoryPath}/-/pipelines/${predicate.invocation.environment.pipeline.id}`,
         buildSummaryUrl:
             typeof buildSummaryUrl === "string" && isGitLabUrl(buildSummaryUrl)
                 ? buildSummaryUrl

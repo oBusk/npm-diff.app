@@ -28,22 +28,20 @@ export default function ProvenanceCard({
                         </div>
                     </div>
                     <div className="flex gap-2">
-                        {sourceInformation.buildFileHref ? (
-                            <ProvenanceCardButton
-                                tooltip={
-                                    <div className="space-y-1">
-                                        <div className="text-xs font-medium">
-                                            Build File
-                                        </div>
-                                        <code className="rounded-sm bg-muted px-1.5 py-0.5 text-xs">
-                                            {sourceInformation.buildFileName}
-                                        </code>
+                        <ProvenanceCardButton
+                            tooltip={
+                                <div className="space-y-1">
+                                    <div className="text-xs font-medium">
+                                        Build File
                                     </div>
-                                }
-                                href={sourceInformation.buildFileHref}
-                                Icon={FileCode}
-                            />
-                        ) : null}
+                                    <code className="rounded-sm bg-muted px-1.5 py-0.5 text-xs">
+                                        {sourceInformation.buildFileName}
+                                    </code>
+                                </div>
+                            }
+                            href={sourceInformation.buildFileHref}
+                            Icon={FileCode}
+                        />
                         <ProvenanceCardButton
                             tooltip="View transparency log entry"
                             href={sourceInformation.publicLedger}

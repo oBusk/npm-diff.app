@@ -10,7 +10,7 @@ export interface SourceInformation {
     /** E.g. ".github/workflows/publish.yml" or ".gitlab-ci.yml" */
     buildFileName: string;
     /** URL to the build file or pipeline */
-    buildFileHref?: string;
+    buildFileHref: string;
     /** URL to the build summary in Github workflows or GitLab pipelines */
     buildSummaryUrl?: string;
     /** The id of the entry in the public ledger in rekor */

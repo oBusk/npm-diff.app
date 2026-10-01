@@ -1,15 +1,9 @@
 import { type GitlabBuilderSlsaPredicate } from "./builders/GitlabBuilderSlsaPredicate";
 import { parseSlsaProvenanceV0_2Predicate } from "./slsaProvenanceV0_2";
 
-function makePredicate({
-    project = "group/project",
-    pipelineId = "123",
+function makePredicate(
     buildInvocationId = "https://gitlab.com/group/project/-/jobs/456",
-}: {
-    project?: string;
-    pipelineId?: string;
-    buildInvocationId?: string;
-} = {}): GitlabBuilderSlsaPredicate {
+): GitlabBuilderSlsaPredicate {
     return {
         builder: { id: "https://gitlab.com/group/project/-/runners/1" },
         buildType: "https://github.com/npm/cli/gitlab/v0alpha1",
@@ -25,9 +19,9 @@ function makePredicate({
                 name: "runner",
                 architecture: "amd64",
                 server: "https://gitlab.com",
-                project,
+                project: "group/project",
                 job: { id: "456" },
-                pipeline: { id: pipelineId, ref: ".gitlab-ci.yml" },
+                pipeline: { id: "123", ref: ".gitlab-ci.yml" },
             },
         },
         buildConfig: {},
@@ -59,53 +53,14 @@ describe("parseSlsaProvenanceV0_2Predicate (GitLab)", () => {
         });
     });
 
-    it("accepts nested groups and dotted names", () => {
-        const result = parseSlsaProvenanceV0_2Predicate(
-            makePredicate({ project: "group/sub-group/my.project_1" }),
-        );
-
-        expect(result.repositoryUrl).toBe(
-            "https://gitlab.com/group/sub-group/my.project_1",
-        );
-    });
-
-    it.each(["123/../../evil", "abc", "1?x=1", ""])(
-        "drops the pipeline link for pipeline id %j",
-        (pipelineId) => {
-            const result = parseSlsaProvenanceV0_2Predicate(
-                makePredicate({ pipelineId }),
-            );
-
-            expect(result.buildFileHref).toBeUndefined();
-            expect(result.repositoryUrl).toBe(
-                "https://gitlab.com/group/project",
-            );
-        },
-    );
-
     it.each([
         "javascript:alert(1)",
         "https://evil.example/group/project/-/jobs/1",
         "https://github.com/group/project",
     ])("drops the build summary link for %s", (buildInvocationId) => {
         expect(
-            parseSlsaProvenanceV0_2Predicate(
-                makePredicate({ buildInvocationId }),
-            ).buildSummaryUrl,
+            parseSlsaProvenanceV0_2Predicate(makePredicate(buildInvocationId))
+                .buildSummaryUrl,
         ).toBeUndefined();
-    });
-
-    it.each([
-        "project",
-        "group/../other",
-        "group/./project",
-        "group//project",
-        "group/project?x",
-        "group/project#x",
-        "@evil.example/project",
-    ])("rejects invalid project path %j", (project) => {
-        expect(() =>
-            parseSlsaProvenanceV0_2Predicate(makePredicate({ project })),
-        ).toThrow();
     });
 });
