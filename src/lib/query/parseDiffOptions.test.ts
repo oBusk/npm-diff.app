@@ -104,5 +104,17 @@ describe("parseDiffOptions", () => {
                 false,
             );
         });
+
+        it.each(["a\n+++ b/fake", "a\r", "a\t", "a\x7f"])(
+            "rejects control characters in %p",
+            (value) => {
+                expect(parseDiffOptions({ diffSrcPrefix: value }).ok).toBe(
+                    false,
+                );
+                expect(parseDiffOptions({ diffDstPrefix: value }).ok).toBe(
+                    false,
+                );
+            },
+        );
     });
 });

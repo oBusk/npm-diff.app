@@ -44,6 +44,11 @@ function validatePrefix(
     if (prefix != null && prefix.length > MAX_DIFF_PREFIX_LENGTH) {
         return `${name} can be at most ${MAX_DIFF_PREFIX_LENGTH} characters long.`;
     }
+    // Prefixes are written verbatim into the ---/+++ header lines
+
+    if (prefix != null && /[\x00-\x1f\x7f]/.test(prefix)) {
+        return `${name} can not contain control characters.`;
+    }
     return undefined;
 }
 
