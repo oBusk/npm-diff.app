@@ -25,6 +25,13 @@ describe("parseParts", () => {
         expect(parseParts("semver")).toEqual(["semver"]);
     });
 
+    it.each(["x", "1", "1.0.0"])(
+        "parses package name %p that is also a semver range",
+        (name) => {
+            expect(parseParts(name)).toEqual([name]);
+        },
+    );
+
     it("decodes parts when asked", () => {
         expect(
             parseParts("semver%407.6.0...semver%407.6.3", { decode: true }),
@@ -33,7 +40,7 @@ describe("parseParts", () => {
 
     it.each([
         ["too many separators", "a...b...c"],
-        ["only a version", "1.0.0"],
+        ["only a version range", "^1.0.0"],
         ["only versions", "1.0.0...2.0.0"],
         ["invalid package name", "NOT VALID@1"],
         ["unsupported spec type", "file:../foo...semver@1"],
