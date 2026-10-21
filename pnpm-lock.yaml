@@ -273,8 +273,8 @@ importers:
         version: 8.0.0
     devDependencies:
       '@obusk/eslint-config-next':
-        specifier: ^16.4.0-4
-        version: 16.4.0-4(@types/babel__core@7.20.5)(@types/jest@30.0.0)(@typescript-eslint/utils@8.71.0)(eslint-import-resolver-node@0.3.10)(eslint-plugin-import@2.32.0)(eslint@10.13.0)(jest@30.5.2)(next@16.4.2)(prettier@3.9.10)(supports-color@8.1.1)(tailwindcss@4.3.3)(typescript@6.0.3)
+        specifier: ^16.4.0
+        version: 16.4.0(@types/babel__core@7.20.5)(@types/jest@30.0.0)(@typescript-eslint/utils@8.71.0)(eslint-import-resolver-node@0.3.10)(eslint-plugin-import@2.32.0)(eslint@10.13.0)(jest@30.5.2)(next@16.4.2)(prettier@3.9.10)(supports-color@8.1.1)(tailwindcss@4.3.3)(typescript@6.0.3)
       '@testing-library/jest-dom':
         specifier: ^7.0.1
         version: 7.0.1(@testing-library/dom@10.4.2)
@@ -1281,8 +1281,8 @@ packages:
     resolution: {integrity: sha512-leBRl6F5F0TvWut8m1/aZcMTUHi2vXjKeMJ/Ik1lW7Q7Yy16Dhtkklu+cEqQww1p1NeLnUNzV3+uwpzqRcy9vw==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
 
-  '@obusk/eslint-config-next@16.4.0-4':
-    resolution: {integrity: sha512-sidExF30bglyUndwBnpvzTh8fpIFYYaxMw0c/X/ltJOh4Uu6Hw6qkF4wradQv82Q6q1dsVh11UG4JFTWgEBbqw==}
+  '@obusk/eslint-config-next@16.4.0':
+    resolution: {integrity: sha512-2QVHBIXVIsIFS9BUXJSv4LPZ8vBPcjFhPg4RllJWG8v5IlB2lkYBdZD2rQbIt9hcMmOYrbkyP61F3SRx8ga44w==}
     peerDependencies:
       '@types/eslint': '*'
       '@types/jest': '*'
@@ -6455,7 +6455,7 @@ snapshots:
     transitivePeerDependencies:
       - '@types/picomatch'
 
-  '@obusk/eslint-config-next@16.4.0-4(@types/babel__core@7.20.5)(@types/jest@30.0.0)(@typescript-eslint/utils@8.71.0)(eslint-import-resolver-node@0.3.10)(eslint-plugin-import@2.32.0)(eslint@10.13.0)(jest@30.5.2)(next@16.4.2)(prettier@3.9.10)(supports-color@8.1.1)(tailwindcss@4.3.3)(typescript@6.0.3)':
+  '@obusk/eslint-config-next@16.4.0(@types/babel__core@7.20.5)(@types/jest@30.0.0)(@typescript-eslint/utils@8.71.0)(eslint-import-resolver-node@0.3.10)(eslint-plugin-import@2.32.0)(eslint@10.13.0)(jest@30.5.2)(next@16.4.2)(prettier@3.9.10)(supports-color@8.1.1)(tailwindcss@4.3.3)(typescript@6.0.3)':
     dependencies:
       '@typescript-eslint/eslint-plugin': 8.71.2(@typescript-eslint/parser@8.71.2)(eslint@10.13.0)(supports-color@8.1.1)(typescript@6.0.3)
       '@typescript-eslint/parser': 8.71.2(eslint@10.13.0)(supports-color@8.1.1)(typescript@6.0.3)
