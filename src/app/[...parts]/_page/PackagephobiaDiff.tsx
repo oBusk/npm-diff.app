@@ -66,7 +66,7 @@ const PackagephobiaDiffInner = async ({
     );
 };
 
-const PackagephobiaDiffSkeleton = () => (
+export const PackagephobiaDiffSkeleton = () => (
     <SizeComparisonSkeleton
         serviceName={name}
         sizeRows={[

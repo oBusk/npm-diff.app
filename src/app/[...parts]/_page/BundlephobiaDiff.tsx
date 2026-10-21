@@ -75,7 +75,7 @@ const BundlephobiaDiffInner = async ({
     );
 };
 
-const BundlephobiaDiffSkeleton = () => (
+export const BundlephobiaDiffSkeleton = () => (
     <SizeComparisonSkeleton
         serviceName={name}
         flags={<BundlephobiaFlagsSkeleton />}
