@@ -1,5 +1,5 @@
 import Image, { type ImageProps } from "next/image";
-import { type ElementRef, forwardRef } from "react";
+import { type ComponentRef, forwardRef } from "react";
 import { type Service } from "^/lib/Services";
 
 export interface ServiceIconProps extends Omit<
@@ -9,7 +9,7 @@ export interface ServiceIconProps extends Omit<
     service: Service;
 }
 
-const ServiceIcon = forwardRef<ElementRef<typeof Image>, ServiceIconProps>(
+const ServiceIcon = forwardRef<ComponentRef<typeof Image>, ServiceIconProps>(
     ({ service, ...props }, ref) => (
         <Image
             alt={service.name}

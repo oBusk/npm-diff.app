@@ -1,4 +1,4 @@
-import { type ElementRef, forwardRef } from "react";
+import { type ComponentRef, forwardRef } from "react";
 import CollapsableBorderBox, {
     type CollapsableBorderBoxProps,
 } from "^/components/CollapsableBorderBox";
@@ -10,7 +10,7 @@ import { DiffFileHeaderSkeleton } from "./DiffFileHeader";
 export interface DiffFileSkeletonProps extends CollapsableBorderBoxProps {}
 
 const DiffFileSkeleton = forwardRef<
-    ElementRef<typeof CollapsableBorderBox>,
+    ComponentRef<typeof CollapsableBorderBox>,
     DiffFileSkeletonProps
 >(() => (
     <CollapsableBorderBox

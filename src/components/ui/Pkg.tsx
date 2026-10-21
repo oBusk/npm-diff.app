@@ -1,4 +1,4 @@
-import { type ElementRef, forwardRef } from "react";
+import { type ComponentRef, forwardRef } from "react";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import Code, { type CodeProps } from "./Code";
@@ -7,7 +7,7 @@ export interface PkgProps extends CodeProps {
     pkg: SimplePackageSpec;
 }
 
-const Pkg = forwardRef<ElementRef<typeof Code>, PkgProps>(
+const Pkg = forwardRef<ComponentRef<typeof Code>, PkgProps>(
     ({ pkg, ...props }: PkgProps, ref) => (
         <Code {...props} ref={ref}>
             {simplePackageSpecToString(pkg)}

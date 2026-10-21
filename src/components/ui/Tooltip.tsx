@@ -4,7 +4,7 @@ import * as Primitive from "@radix-ui/react-tooltip";
 import {
     type ComponentProps,
     type ComponentPropsWithoutRef,
-    type ElementRef,
+    type ComponentRef,
     forwardRef,
     type ReactNode,
 } from "react";
@@ -24,7 +24,7 @@ const TooltipRoot = Primitive.Root;
 const TooltipTrigger = Primitive.Trigger;
 
 const TooltipContent = forwardRef<
-    ElementRef<typeof Primitive.Content>,
+    ComponentRef<typeof Primitive.Content>,
     ComponentPropsWithoutRef<typeof Primitive.Content>
 >(({ className, sideOffset = 4, ...props }, ref) => (
     <Primitive.Portal>
@@ -51,7 +51,7 @@ export interface TooltipProps extends ComponentPropsWithoutRef<
     label: ReactNode | null;
 }
 
-const Tooltip = forwardRef<ElementRef<typeof TooltipTrigger>, TooltipProps>(
+const Tooltip = forwardRef<ComponentRef<typeof TooltipTrigger>, TooltipProps>(
     ({ children, label, ...props }, ref) =>
         label ? (
             <TooltipRoot>

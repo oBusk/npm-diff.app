@@ -1,4 +1,4 @@
-import { type ElementRef, forwardRef } from "react";
+import { type ComponentRef, forwardRef } from "react";
 import Heading, { type HeadingProps } from "^/components/ui/Heading";
 import { cx } from "^/lib/cva";
 import emphasized from "./emphasized";
@@ -8,7 +8,7 @@ interface TitleProps extends HeadingProps {
     version?: string;
 }
 
-const Title = forwardRef<ElementRef<typeof Heading>, TitleProps>(
+const Title = forwardRef<ComponentRef<typeof Heading>, TitleProps>(
     ({ name, version, className, ...props }, ref) => (
         <Heading
             h={3}

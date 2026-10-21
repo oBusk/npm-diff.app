@@ -1,4 +1,4 @@
-import { type ElementRef, forwardRef } from "react";
+import { type ComponentRef, forwardRef } from "react";
 import ExternalLink, {
     type ExternalLinkProps,
 } from "^/components/ExternalLink";
@@ -14,7 +14,7 @@ export interface ServiceLinkProps extends Omit<ExternalLinkProps, "href"> {
 }
 
 const ServiceLink = forwardRef<
-    ElementRef<typeof ExternalLink>,
+    ComponentRef<typeof ExternalLink>,
     ServiceLinkProps
 >(({ service, pkg, className, ...props }, ref) => (
     <ServiceTooltip serviceName={service.name} pkg={pkg}>

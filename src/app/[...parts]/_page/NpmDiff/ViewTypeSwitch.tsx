@@ -6,7 +6,7 @@ import {
     usePathname,
     useSearchParams,
 } from "next/navigation";
-import { type ComponentProps, type ElementRef, forwardRef } from "react";
+import { type ComponentProps, type ComponentRef, forwardRef } from "react";
 import type { ViewType } from "react-diff-view";
 import Button, { type ButtonProps } from "^/components/ui/Button";
 import { cx } from "^/lib/cva";
@@ -21,7 +21,7 @@ export interface ViewTypeButtonProps extends ButtonProps {
 }
 
 const ViewTypeButton = forwardRef<
-    ElementRef<typeof Button>,
+    ComponentRef<typeof Button>,
     ViewTypeButtonProps
 >(
     (

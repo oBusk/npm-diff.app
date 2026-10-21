@@ -1,13 +1,13 @@
 import * as LabelPrimitive from "@radix-ui/react-label";
 import {
     type ComponentPropsWithoutRef,
-    type ElementRef,
+    type ComponentRef,
     forwardRef,
 } from "react";
 import { cx } from "^/lib/cva";
 
 const Label = forwardRef<
-    ElementRef<typeof LabelPrimitive.Root>,
+    ComponentRef<typeof LabelPrimitive.Root>,
     ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
 >(({ className, ...props }, ref) => (
     <LabelPrimitive.Root

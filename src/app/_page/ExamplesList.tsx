@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { type ElementRef, forwardRef } from "react";
+import { type ComponentRef, forwardRef } from "react";
 import Stack, { type StackProps } from "^/components/ui/Stack";
 import EXAMPLES from "^/lib/examples";
 import { type QueryParams } from "^/lib/query";
@@ -11,7 +11,7 @@ export interface ExamplesListProps extends StackProps {
     queryParams: QueryParams;
 }
 
-const ExamplesList = forwardRef<ElementRef<typeof Stack>, ExamplesListProps>(
+const ExamplesList = forwardRef<ComponentRef<typeof Stack>, ExamplesListProps>(
     (
         {
             exampleMouseOver,

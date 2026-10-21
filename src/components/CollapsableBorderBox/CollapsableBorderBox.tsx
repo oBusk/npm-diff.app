@@ -1,6 +1,6 @@
 "use client";
 
-import { type ElementRef, forwardRef, type ReactNode } from "react";
+import { type ComponentRef, forwardRef, type ReactNode } from "react";
 import { useBoolean } from "react-use";
 import BorderBox, { type BorderBoxProps } from "^/components/ui/BorderBox";
 import { cx } from "^/lib/cva";
@@ -13,7 +13,7 @@ export interface CollapsableBorderBoxProps extends BorderBoxProps {
 
 /** A borderbox with a header that has `>` button to collapse the box, hiding `children`. */
 const CollapsableBorderBox = forwardRef<
-    ElementRef<typeof BorderBox>,
+    ComponentRef<typeof BorderBox>,
     CollapsableBorderBoxProps
 >(({ header, title, children, className, ...props }, ref) => {
     const [isExpanded, setIsExpanded] = useBoolean(true);

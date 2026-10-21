@@ -1,4 +1,4 @@
-import { type ElementRef, forwardRef } from "react";
+import { type ComponentRef, forwardRef } from "react";
 import Code, { type CodeProps } from "^/components/ui/Code";
 import { type NpmDiffOptions } from "^/lib/npmDiff";
 
@@ -14,7 +14,7 @@ function toKebabCase(input: string): string {
     return input.replace(/([A-Z])/g, "-$1").toLowerCase();
 }
 
-const Command = forwardRef<ElementRef<typeof Code>, CommandProps>(
+const Command = forwardRef<ComponentRef<typeof Code>, CommandProps>(
     (
         {
             aName,

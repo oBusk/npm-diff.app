@@ -1,4 +1,4 @@
-import { type ElementRef, forwardRef } from "react";
+import { type ComponentRef, forwardRef } from "react";
 import Pkg from "^/components/ui/Pkg";
 import Tooltip, { type TooltipProps } from "^/components/ui/Tooltip";
 import { type Service } from "^/lib/Services";
@@ -10,7 +10,7 @@ export interface ServiceTooltipProps extends Omit<TooltipProps, "label"> {
 }
 
 const ServiceTooltip = forwardRef<
-    ElementRef<typeof Tooltip>,
+    ComponentRef<typeof Tooltip>,
     ServiceTooltipProps
 >(({ pkg, serviceName, ...props }, ref) => {
     return (

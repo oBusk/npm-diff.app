@@ -1,4 +1,4 @@
-import { type ElementRef, forwardRef } from "react";
+import { type ComponentRef, forwardRef } from "react";
 import BorderBox, { type BorderBoxProps } from "^/components/ui/BorderBox";
 import Code from "^/components/ui/Code";
 import Heading from "^/components/ui/Heading";
@@ -9,7 +9,7 @@ interface OptionsProps extends BorderBoxProps {
     options: NpmDiffOptions;
 }
 
-const Options = forwardRef<ElementRef<typeof BorderBox>, OptionsProps>(
+const Options = forwardRef<ComponentRef<typeof BorderBox>, OptionsProps>(
     (
         { options: { diffFiles = [], ...options } = {}, className, ...props },
         ref,

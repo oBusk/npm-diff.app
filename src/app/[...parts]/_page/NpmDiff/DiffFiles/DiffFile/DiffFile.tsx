@@ -1,7 +1,7 @@
 "use client";
 
 import {
-    type ElementRef,
+    type ComponentRef,
     forwardRef,
     useCallback,
     useMemo,
@@ -32,7 +32,7 @@ export interface DiffFileProps extends CollapsableBorderBoxProps {
 }
 
 const DiffFile = forwardRef<
-    ElementRef<typeof CollapsableBorderBox>,
+    ComponentRef<typeof CollapsableBorderBox>,
     DiffFileProps
 >(({ a, b, file, viewType, index, className, ...props }, ref) => {
     const { type, hunks, oldPath, newPath } = file;

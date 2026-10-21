@@ -1,4 +1,4 @@
-import { type ElementRef, forwardRef, type ReactNode } from "react";
+import { type ComponentRef, forwardRef, type ReactNode } from "react";
 import Pkg from "^/components/ui/Pkg";
 import Stack, { type StackProps } from "^/components/ui/Stack";
 import {
@@ -15,7 +15,7 @@ export interface BundlephobiaFlagsProps extends StackProps {
 }
 
 const BundlephobiaFlags = forwardRef<
-    ElementRef<typeof Stack>,
+    ComponentRef<typeof Stack>,
     BundlephobiaFlagsProps
 >(({ data: { a, b }, ...props }, ref) => {
     const aTag = <Pkg pkg={a} />;

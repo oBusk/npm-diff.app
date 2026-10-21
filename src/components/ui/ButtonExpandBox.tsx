@@ -1,7 +1,7 @@
 "use client";
 
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { type ElementRef, forwardRef, type ReactNode } from "react";
+import { type ComponentRef, forwardRef, type ReactNode } from "react";
 import { useBoolean } from "react-use";
 import { cx } from "^/lib/cva";
 import BorderBox from "./BorderBox";
@@ -22,7 +22,7 @@ export interface ButtonExpandBoxProps extends StackProps {
  * to set the tooltip of the button
  */
 const ButtonExpandBox = forwardRef<
-    ElementRef<typeof Stack>,
+    ComponentRef<typeof Stack>,
     ButtonExpandBoxProps
 >(({ buttonContent, buttonLabel, children, className, ...props }, ref) => {
     const [isExpanded, toggleExpanded] = useBoolean(false);

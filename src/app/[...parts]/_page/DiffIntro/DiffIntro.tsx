@@ -1,4 +1,4 @@
-import { type ElementRef, forwardRef, type ReactNode } from "react";
+import { type ComponentRef, forwardRef, type ReactNode } from "react";
 import Code from "^/components/ui/Code";
 import Heading from "^/components/ui/Heading";
 import Stack, { type StackProps } from "^/components/ui/Stack";
@@ -17,7 +17,7 @@ export interface DiffIntroProps extends StackProps {
     options: NpmDiffOptions;
 }
 
-const DiffIntro = forwardRef<ElementRef<typeof Stack>, DiffIntroProps>(
+const DiffIntro = forwardRef<ComponentRef<typeof Stack>, DiffIntroProps>(
     ({ a, b, services, options, className, ...props }, ref) => {
         const aWithName = { ...a, name: a.name ?? "ERROR" };
         const bWithName = { ...b, name: b.name ?? "ERROR" };
