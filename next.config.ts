@@ -29,6 +29,7 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
     serverExternalPackages: ["libnpmdiff", "npm-package-arg", "pacote"],
     cacheComponents: true,
+    partialPrefetching: true,
     poweredByHeader: false,
     async headers() {
         return [
