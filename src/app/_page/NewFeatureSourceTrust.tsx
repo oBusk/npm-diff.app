@@ -12,7 +12,7 @@ export function NewFeatureSourceTrust() {
                 "rounded-xl border",
                 "p-2",
                 "bg-linear-to-b from-blue-900/25 to-transparent",
-                "hover:bg-linear-to-b hover:from-blue-900/50 ",
+                "hover:bg-linear-to-b hover:from-blue-900/50",
             )}
         >
             <Heading h={4} className="text-center text-base lg:text-xl">

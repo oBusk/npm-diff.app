@@ -35,7 +35,7 @@ export function CompareButton({
         >
             <Button asChild variant="secondary">
                 <ExternalLink href={compareUrl}>
-                    <GitCompare className=" size-4" />
+                    <GitCompare className="size-4" />
                 </ExternalLink>
             </Button>
         </Tooltip>

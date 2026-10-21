@@ -36,7 +36,7 @@ export default function SourceCard({
                 <div className="space-y-3">
                     <ExternalLink
                         href={sourceInformation.repositoryUrl}
-                        className="flex items-center justify-between gap-2 rounded p-2 hover:bg-muted/50"
+                        className="flex items-center justify-between gap-2 rounded-sm p-2 hover:bg-muted/50"
                     >
                         <span className="text-sm">Repo:</span>
                         <div className="flex items-center gap-1.5">
@@ -52,7 +52,7 @@ export default function SourceCard({
                     </ExternalLink>
                     <ExternalLink
                         href={`${sourceInformation.repositoryUrl}/tree/${sourceInformation.commitHash}`}
-                        className="flex items-center justify-between gap-2 rounded p-2 hover:bg-muted/50"
+                        className="flex items-center justify-between gap-2 rounded-sm p-2 hover:bg-muted/50"
                     >
                         <span className="text-sm">Commit:</span>
                         <div className="flex items-center gap-1.5">

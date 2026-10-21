@@ -17,10 +17,7 @@ const Suggestion: FunctionComponent<SuggestionProps> = ({
         <Title name={name} version={version} />
 
         {body ? <p className="text-xs">{body}</p> : null}
-        <Stack
-            direction="h"
-            className="mt-1 flex flex-wrap items-center gap-1 "
-        >
+        <Stack direction="h" className="mt-1 flex flex-wrap items-center gap-1">
             {time ? (
                 <ClientDate
                     className="mr-2 cursor-help text-xs opacity-30"

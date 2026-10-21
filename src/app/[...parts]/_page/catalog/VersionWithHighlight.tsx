@@ -24,7 +24,7 @@ export default function VersionWithHighlight({
             {parts.map((part, index) => (
                 <span key={index}>
                     {index === highlightIndex ? (
-                        <span className="rounded bg-blue-500/20 px-1 font-bold">
+                        <span className="rounded-sm bg-blue-500/20 px-1 font-bold">
                             {part}
                         </span>
                     ) : (
