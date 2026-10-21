@@ -73,7 +73,7 @@
         "libnpmdiff": "^9.0.4",
         "lucide-react": "^0.577.0",
         "minimatch": "^10.2.6",
-        "next": "~16.3.8",
+        "next": "~16.4.2",
         "npm-package-arg": "^14.0.0",
         "pacote": "^22.0.0",
         "react": "19.3.1",
@@ -87,7 +87,7 @@
         "validate-npm-package-name": "^8.0.0"
     },
     "devDependencies": {
-        "@obusk/eslint-config-next": "^16.3.4",
+        "@obusk/eslint-config-next": "^16.4.0-4",
         "@testing-library/jest-dom": "^7.0.1",
         "@testing-library/react": "^16.3.3",
         "@types/hosted-git-info": "^3.0.5",
