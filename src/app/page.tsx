@@ -4,6 +4,8 @@ import Intro from "./_page/Intro";
 import { NewFeatureSourceTrust } from "./_page/NewFeatureSourceTrust";
 import IndexPageClient from "./page.client";
 
+export const ensureStatic = "navigation";
+
 export interface IndexProps {}
 
 const IndexPage = async ({}: IndexProps) => {

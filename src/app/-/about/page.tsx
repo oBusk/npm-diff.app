@@ -9,6 +9,8 @@ import {
     externalServicesLightmode,
 } from "./_page/assets";
 
+export const ensureStatic = "navigation";
+
 export const metadata: Metadata = {
     title: "About",
 };
