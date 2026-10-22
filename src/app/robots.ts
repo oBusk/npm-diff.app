@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import getCrawlableDiffs from "^/lib/crawlableDiffs";
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
     return {
         rules: [
             {
@@ -9,8 +10,8 @@ export default function robots(): MetadataRoute.Robots {
             },
             {
                 userAgent: "*",
-                allow: "/",
-                disallow: "/api/",
+                allow: ["/", ...(await getCrawlableDiffs())],
+                disallow: ["/api/", "/*..."],
                 crawlDelay: 10,
             },
         ],
