@@ -8,6 +8,7 @@ import npmDiff from "^/lib/npmDiff";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import countChanges from "^/lib/utils/countChanges";
 import DiffFiles from "./DiffFiles";
+import DiffTooLarge from "./DiffTooLarge";
 import NoDiff from "./NoDiff";
 import ViewTypeSwitch from "./ViewTypeSwitch";
 
@@ -26,6 +27,9 @@ const NpmDiff = async ({ a, b, specs, options }: NpmDiffProps) => {
     const result = await npmDiff(specs, options);
 
     if (!result.ok) {
+        if (result.kind === "timeout") {
+            return <DiffTooLarge a={a} b={b} specs={specs} />;
+        }
         throw new Error(result.message);
     }
 

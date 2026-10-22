@@ -1,7 +1,10 @@
-import libnpmdiff, { type Options } from "libnpmdiff";
+import type { Options } from "libnpmdiff";
 import { cacheLife } from "next/cache";
 import { hasErrorCode } from "^/lib/utils/hasErrorCode";
 import type { NpmDiffError } from "./NpmDiffError";
+import { LibnpmdiffTimeoutError, runLibnpmdiff } from "./runLibnpmdiff";
+
+export const NPM_DIFF_TIMEOUT_MS = 40_000;
 
 export type NpmDiffResult =
     { ok: true; diff: string } | ({ ok: false } & NpmDiffError);
@@ -29,7 +32,7 @@ async function npmDiff(
     let startTime = 0;
     try {
         startTime = Date.now();
-        const result = await libnpmdiff(specs, options);
+        const result = await runLibnpmdiff(specs, options, NPM_DIFF_TIMEOUT_MS);
 
         cacheLife("max");
 
@@ -47,6 +50,16 @@ async function npmDiff(
             options,
             duration: Date.now() - startTime,
         });
+
+        if (e instanceof LibnpmdiffTimeoutError) {
+            cacheLife("days");
+
+            return {
+                ok: false,
+                kind: "timeout",
+                message: `The diff took too long to compute. Run "npm diff --diff=${specs[0]} --diff=${specs[1]}" locally instead.`,
+            };
+        }
 
         const isEtarget = (e: unknown): e is ErrorETARGET =>
             hasErrorCode(e, "ETARGET");
