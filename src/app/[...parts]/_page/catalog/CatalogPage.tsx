@@ -49,7 +49,7 @@ async function CatalogPageInner({ specs }: CatalogPageProps) {
     );
 }
 
-function CatalogPageFallback() {
+export function CatalogPageFallback() {
     return (
         <div className="mx-auto w-full max-w-7xl py-8">
             <div className="grid grid-cols-1 gap-8 lg:grid-cols-[2fr_3fr]">

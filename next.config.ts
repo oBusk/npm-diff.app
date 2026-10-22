@@ -31,6 +31,27 @@ const nextConfig: NextConfig = {
     cacheComponents: true,
     partialPrefetching: true,
     poweredByHeader: false,
+    async redirects() {
+        return [
+            {
+                source: "/-/catalog/:parts*",
+                destination: "/:parts*",
+                permanent: false,
+            },
+        ];
+    },
+    async rewrites() {
+        return [
+            {
+                source: "/:name([^@/.](?!.*\\.\\.\\.)(?!.+%40)[^@/]*)",
+                destination: "/-/catalog/:name",
+            },
+            {
+                source: "/:scope((?:@|%40)[^@/.](?!.*\\.\\.\\.)(?!.+%40)[^@/]*)/:name([^@/.][^@/]*)",
+                destination: "/-/catalog/:scope/:name",
+            },
+        ];
+    },
     async headers() {
         return [
             {
