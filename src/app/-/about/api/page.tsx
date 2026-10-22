@@ -10,6 +10,8 @@ import EXAMPLES from "^/lib/examples";
 import npmDiff from "^/lib/npmDiff";
 import splitParts from "^/lib/utils/splitParts";
 
+export const ensureStatic = "navigation";
+
 // TODO: Would be nice if this was dynamic. But doesn't seem possible
 // https://github.com/vercel/next.js/discussions/12848
 const API_PATH = `/api` as const;

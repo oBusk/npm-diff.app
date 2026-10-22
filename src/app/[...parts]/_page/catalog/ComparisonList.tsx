@@ -70,7 +70,6 @@ export default function ComparisonList({
                             key={`${comparison.from}-${comparison.to}`}
                             href={`/${diffPath}`}
                             className="flex items-center justify-between rounded-md border border-input p-3 transition-colors hover:border-blue-500/50 hover:bg-blue-500/5"
-                            prefetch={false}
                             aria-label={`Compare ${fromSpec}...${toSpec} (${comparison.type} version change)`}
                         >
                             <span className="font-mono">
