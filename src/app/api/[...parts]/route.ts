@@ -57,7 +57,12 @@ export async function GET(req: NextRequest, { params }: DiffApiContext) {
                 headers: defaultPageCachingHeaders,
             });
         } else {
-            const status = result.kind === "not-found" ? 404 : 500;
+            const status =
+                result.kind === "not-found"
+                    ? 404
+                    : result.kind === "timeout"
+                      ? 504
+                      : 500;
             return NextResponse.json(result.message, { status });
         }
     } else {
