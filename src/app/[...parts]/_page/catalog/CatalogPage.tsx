@@ -1,5 +1,4 @@
 import { cacheLife } from "next/cache";
-import { Suspense } from "react";
 import Skeleton from "^/components/ui/Skeleton";
 import getCatalogSummary from "^/lib/api/npm/catalogSummary";
 import { generateComparisons } from "^/lib/utils/generateComparisons";
@@ -61,13 +60,5 @@ export function CatalogPageFallback() {
                 </div>
             </div>
         </div>
-    );
-}
-
-export default function CatalogPage(props: CatalogPageProps) {
-    return (
-        <Suspense fallback={<CatalogPageFallback />}>
-            <CatalogPageContent {...props} />
-        </Suspense>
     );
 }

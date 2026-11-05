@@ -20,15 +20,16 @@ import {
 } from "^/lib/query";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import contentVisibility from "^/lib/utils/contentVisibility";
-import { isCatalogPage } from "^/lib/utils/isCatalogPage";
+import {
+    getCatalogPackageName,
+    isCatalogPage,
+} from "^/lib/utils/isCatalogPage";
 import parseParts from "^/lib/utils/parseParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import ErrorBox from "./_error/ErrorBox";
 import BundlephobiaDiff, {
     BundlephobiaDiffSkeleton,
 } from "./_page/BundlephobiaDiff";
-import CatalogPage from "./_page/catalog/CatalogPage";
-import { generateCatalogMetadata } from "./_page/catalog/generateCatalogMetadata";
 import DiffIntro from "./_page/DiffIntro";
 import Halfs from "./_page/DiffIntro/Halfs";
 import { SpecBoxSkeleton } from "./_page/DiffIntro/SpecBox";
@@ -49,6 +50,16 @@ export interface DiffPageProps {
     searchParams: Promise<QueryParams & { [DIFF_TYPE_PARAM_NAME]: ViewType }>;
 }
 
+function redirectToCatalog(specs: string[]): never {
+    const packageName = getCatalogPackageName(specs);
+
+    if (packageName == null || packageName === specs[0]) {
+        notFound();
+    }
+
+    redirect(`/${packageName}`);
+}
+
 export async function generateMetadata({
     params,
 }: DiffPageProps): Promise<Metadata> {
@@ -60,7 +71,7 @@ export async function generateMetadata({
     }
 
     if (isCatalogPage(specs)) {
-        return generateCatalogMetadata(specs);
+        redirectToCatalog(specs);
     }
 
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
@@ -86,7 +97,7 @@ const DiffPageInner = async ({
     }
 
     if (isCatalogPage(specsOrVersions)) {
-        return <CatalogPage specs={specsOrVersions} />;
+        redirectToCatalog(specsOrVersions);
     }
 
     const parsedOptions = parseDiffOptions({
