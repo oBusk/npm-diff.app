@@ -3,11 +3,7 @@ import { notFound, redirect } from "next/navigation";
 import { type JSX, Suspense } from "react";
 import { type ViewType } from "react-diff-view";
 import Code from "^/components/ui/Code";
-import Heading from "^/components/ui/Heading";
-import Skeleton from "^/components/ui/Skeleton";
-import Stack from "^/components/ui/Stack";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
-import { cx } from "^/lib/cva";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
 import destination, {
     type Destination,
@@ -19,7 +15,6 @@ import {
     toSearchString,
 } from "^/lib/query";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
-import contentVisibility from "^/lib/utils/contentVisibility";
 import {
     getCatalogPackageName,
     isCatalogPage,
@@ -27,19 +22,12 @@ import {
 import parseParts from "^/lib/utils/parseParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import ErrorBox from "./_error/ErrorBox";
-import BundlephobiaDiff, {
-    BundlephobiaDiffSkeleton,
-} from "./_page/BundlephobiaDiff";
 import DiffIntro from "./_page/DiffIntro";
-import Halfs from "./_page/DiffIntro/Halfs";
-import { SpecBoxSkeleton } from "./_page/DiffIntro/SpecBox";
+import { DiffIntroSkeleton } from "./_page/DiffIntro/DiffIntro";
+import { DiffServices, DiffServicesSkeleton } from "./_page/DiffServices";
 import NpmDiff from "./_page/NpmDiff";
 import NpmDiffSkeleton from "./_page/NpmDiff/NpmDiff.skeleton";
-import PackagephobiaDiff, {
-    PackagephobiaDiffSkeleton,
-} from "./_page/PackagephobiaDiff";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
-import Sources, { SourcesFallback } from "./_page/Sources/Sources";
 
 export const ensureStatic = "shell";
 
@@ -144,32 +132,7 @@ const DiffPageInner = async ({
                     a={a}
                     b={b}
                     services={
-                        <>
-                            <Sources
-                                a={a}
-                                b={b}
-                                suspenseKey={
-                                    "sources-" + canonicalSpecs.join("...")
-                                }
-                            />
-                            <BundlephobiaDiff
-                                a={a}
-                                b={b}
-                                specs={canonicalSpecs}
-                                suspenseKey={
-                                    "bundlephobia-" + canonicalSpecs.join("...")
-                                }
-                            />
-                            <PackagephobiaDiff
-                                a={a}
-                                b={b}
-                                specs={canonicalSpecs}
-                                suspenseKey={
-                                    "packagephobia-" +
-                                    canonicalSpecs.join("...")
-                                }
-                            />
-                        </>
+                        <DiffServices a={a} b={b} specs={canonicalSpecs} />
                     }
                     options={options}
                 />
@@ -188,32 +151,10 @@ const DiffPageInner = async ({
 function DiffPageFallback() {
     return (
         <>
-            <Stack
-                align="center"
-                className={cx("self-stretch", contentVisibility("700px"))}
-            >
-                <Heading className="mb-6 w-full text-center text-sm">
-                    <span>Comparing</span>
-                    <Halfs
-                        left={<SpecBoxSkeleton pkgClassName="rounded-r-none" />}
-                        center={
-                            <span>
-                                <Code className="rounded-none">...</Code>
-                            </span>
-                        }
-                        right={
-                            <SpecBoxSkeleton pkgClassName="rounded-l-none" />
-                        }
-                    />
-                </Heading>
-                <SourcesFallback />
-                <BundlephobiaDiffSkeleton />
-                <PackagephobiaDiffSkeleton />
-                <Heading h={3} className="mt-4 text-sm">
-                    npm diff
-                </Heading>
-                <Skeleton className="my-2 h-20 w-64" />
-            </Stack>
+            <DiffIntroSkeleton
+                className="self-stretch"
+                services={<DiffServicesSkeleton />}
+            />
             <NpmDiffSkeleton />
         </>
     );
