@@ -11,7 +11,7 @@ export interface CatalogPageProps {
     specs: string[];
 }
 
-async function CatalogPageInner({ specs }: CatalogPageProps) {
+export async function CatalogPageContent({ specs }: CatalogPageProps) {
     "use cache";
 
     const packageName = getCatalogPackageName(specs);
@@ -67,7 +67,7 @@ export function CatalogPageFallback() {
 export default function CatalogPage(props: CatalogPageProps) {
     return (
         <Suspense fallback={<CatalogPageFallback />}>
-            <CatalogPageInner {...props} />
+            <CatalogPageContent {...props} />
         </Suspense>
     );
 }

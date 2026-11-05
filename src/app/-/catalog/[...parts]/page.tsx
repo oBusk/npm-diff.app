@@ -1,7 +1,8 @@
 import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 import { type JSX, Suspense } from "react";
-import CatalogPage, {
+import {
+    CatalogPageContent,
     CatalogPageFallback,
 } from "^/app/[...parts]/_page/catalog/CatalogPage";
 import { generateCatalogMetadata } from "^/app/[...parts]/_page/catalog/generateCatalogMetadata";
@@ -36,7 +37,7 @@ export async function generateMetadata({
 const CatalogRouteInner = async ({
     params,
 }: CatalogRouteProps): Promise<JSX.Element> => (
-    <CatalogPage specs={await parseCatalogSpecs(params)} />
+    <CatalogPageContent specs={await parseCatalogSpecs(params)} />
 );
 
 const CatalogRoute = (props: CatalogRouteProps) => (
