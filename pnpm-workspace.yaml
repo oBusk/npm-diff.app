@@ -21,6 +21,18 @@ overrides:
     "@types/react-dom": 19.3.0
     # https://github.com/oBusk/npm-diff.app/pull/1046
     "@npmcli/agent@^5": ^4.0.2
+    # GHSA-g3hv-75wg-m249, GHSA-3g3m-2fjr-6pw4: glob <14 relies on minimatch <11 internals, so both move together
+    "minimatch@>=7 <11.0.1": ^11.0.4
+    # eslint-plugin-import-x uses makeRe, which minimatch 11 removed
+    "eslint-plugin-import-x>minimatch": 10.2.6
+    "glob@>=9 <14.0.2": ^14.0.3
+
+auditConfig:
+    ignoreGhsas:
+        # minimatch: only left in eslint-plugin-import-x (lint-time, own config), see overrides
+        - GHSA-g3hv-75wg-m249
+        # deepmerge: only used by jest-config on own config files, no patched version
+        - GHSA-gcqx-w48m-w2h4
 
 patchedDependencies:
     gitdiff-parser@0.3.1: patches/gitdiff-parser@0.3.1.patch
