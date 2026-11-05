@@ -1,4 +1,5 @@
 import { type NextConfig } from "next";
+import { catalogRedirects, catalogRewrites } from "./src/lib/catalogRoutes";
 
 const securityHeaders = [
     { key: "X-Frame-Options", value: "DENY" },
@@ -32,25 +33,10 @@ const nextConfig: NextConfig = {
     partialPrefetching: true,
     poweredByHeader: false,
     async redirects() {
-        return [
-            {
-                source: "/-/catalog/:parts*",
-                destination: "/:parts*",
-                permanent: false,
-            },
-        ];
+        return catalogRedirects;
     },
     async rewrites() {
-        return [
-            {
-                source: "/:name([^@/.](?!.*\\.\\.\\.)(?!.*%40)[^@/]*)",
-                destination: "/-/catalog/:name",
-            },
-            {
-                source: "/:scope((?:@|%40)[^@/.](?!.*\\.\\.\\.)(?!.*%40)[^@/]*)/:name([^@/.][^@/]*)",
-                destination: "/-/catalog/:scope/:name",
-            },
-        ];
+        return catalogRewrites;
     },
     async headers() {
         return [
