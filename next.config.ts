@@ -43,11 +43,11 @@ const nextConfig: NextConfig = {
     async rewrites() {
         return [
             {
-                source: "/:name([^@/.](?!.*\\.\\.\\.)(?!.+%40)[^@/]*)",
+                source: "/:name([^@/.](?!.*\\.\\.\\.)(?!.*%40)[^@/]*)",
                 destination: "/-/catalog/:name",
             },
             {
-                source: "/:scope((?:@|%40)[^@/.](?!.*\\.\\.\\.)(?!.+%40)[^@/]*)/:name([^@/.][^@/]*)",
+                source: "/:scope((?:@|%40)[^@/.](?!.*\\.\\.\\.)(?!.*%40)[^@/]*)/:name([^@/.][^@/]*)",
                 destination: "/-/catalog/:scope/:name",
             },
         ];
