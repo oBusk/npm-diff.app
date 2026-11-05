@@ -40,6 +40,8 @@ import PackagephobiaDiff, {
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 import Sources, { SourcesFallback } from "./_page/Sources/Sources";
 
+export const ensureStatic = "shell";
+
 export const maxDuration = 60;
 
 export interface DiffPageProps {

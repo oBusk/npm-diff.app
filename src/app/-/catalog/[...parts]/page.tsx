@@ -8,6 +8,8 @@ import { generateCatalogMetadata } from "^/app/[...parts]/_page/catalog/generate
 import { isCatalogPage } from "^/lib/utils/isCatalogPage";
 import parseParts from "^/lib/utils/parseParts";
 
+export const ensureStatic = "shell";
+
 export interface CatalogRouteProps {
     params: Promise<{ parts: string | string[] }>;
 }
