@@ -10,6 +10,8 @@ import parseParts from "^/lib/utils/parseParts";
 
 export const ensureStatic = "shell";
 
+export const maxDuration = 15;
+
 export interface CatalogRouteProps {
     params: Promise<{ parts: string | string[] }>;
 }
