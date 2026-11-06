@@ -13,16 +13,10 @@ export const ensureStatic = "shell";
 
 export const maxDuration = 15;
 
-type CatalogParts = string | string[];
+type CatalogRouteProps = Pick<PageProps<"/-/catalog/[...parts]">, "params">;
 
-export interface CatalogRouteProps {
-    params: Promise<{ parts: CatalogParts }>;
-}
-
-const parseCatalogParts = cache((partsJson: string) => {
-    const specs = parseParts(JSON.parse(partsJson) as CatalogParts, {
-        decode: true,
-    });
+const parseCatalogPath = cache((path: string) => {
+    const specs = parseParts(path, { decode: true });
 
     if (specs == null || !isCatalogPage(specs)) {
         notFound();
@@ -33,7 +27,7 @@ const parseCatalogParts = cache((partsJson: string) => {
 
 async function parseCatalogSpecs(params: CatalogRouteProps["params"]) {
     const { parts } = await params;
-    return parseCatalogParts(JSON.stringify(parts));
+    return parseCatalogPath(parts.join("/"));
 }
 
 export async function generateMetadata({
