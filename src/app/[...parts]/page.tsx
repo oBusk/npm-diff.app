@@ -19,8 +19,6 @@ import { getCatalogPackageName } from "^/lib/utils/isCatalogPage";
 import parseParts from "^/lib/utils/parseParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import ErrorBox from "./_error/ErrorBox";
-import { CatalogPageContent } from "./_page/catalog/CatalogPage";
-import { generateCatalogMetadata } from "./_page/catalog/generateCatalogMetadata";
 import DiffIntro from "./_page/DiffIntro";
 import { DiffIntroSkeleton } from "./_page/DiffIntro/DiffIntro";
 import { DiffServices, DiffServicesSkeleton } from "./_page/DiffServices";
@@ -50,10 +48,7 @@ export async function generateMetadata({
     const catalogPackageName = getCatalogPackageName(specs);
 
     if (catalogPackageName != null) {
-        if (catalogPackageName !== specs[0]) {
-            redirect(`/${catalogPackageName}`);
-        }
-        return generateCatalogMetadata(specs);
+        redirect(`/${catalogPackageName}`);
     }
 
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
@@ -81,10 +76,7 @@ const DiffPageInner = async ({
     const catalogPackageName = getCatalogPackageName(specsOrVersions);
 
     if (catalogPackageName != null) {
-        if (catalogPackageName !== specsOrVersions[0]) {
-            redirect(`/${catalogPackageName}`);
-        }
-        return <CatalogPageContent specs={specsOrVersions} />;
+        redirect(`/${catalogPackageName}`);
     }
 
     const parsedOptions = parseDiffOptions({

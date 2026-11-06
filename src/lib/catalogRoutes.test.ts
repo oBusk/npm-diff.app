@@ -1,6 +1,6 @@
 import { getPathMatch } from "next/dist/shared/lib/router/utils/path-match";
 import { catalogRewrites } from "./catalogRoutes";
-import { isCatalogPage } from "./utils/isCatalogPage";
+import { getCatalogPackageName, isCatalogPage } from "./utils/isCatalogPage";
 import parseParts from "./utils/parseParts";
 
 const matchers = catalogRewrites.map(({ source }) =>
@@ -61,4 +61,20 @@ describe("catalogRewrites", () => {
             expect(isRewrittenToCatalog(path)).toBe(false);
         },
     );
+
+    it.each([
+        "/react@*",
+        "/@types/node@*",
+        "/@types%2Fnode",
+        "/re%61ct",
+        "/React",
+        "/a~b",
+        "/a!b(c)*'",
+        "/a_b",
+    ])("rewrites the redirect target of catalog path %s", (path) => {
+        const specs = parseParts(path.slice(1).split("/"), { decode: true });
+        const name = specs && getCatalogPackageName(specs);
+        expect(name).not.toBeNull();
+        expect(isRewrittenToCatalog(`/${name}`)).toBe(true);
+    });
 });
