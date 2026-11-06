@@ -23,7 +23,6 @@ describe("catalogRewrites", () => {
         "/left-pad",
         "/1",
         "/@types/node",
-        "/%40types/node",
         "/@a/b",
         "/@angular/core",
     ])("rewrites catalog path %s", (path) => {
@@ -54,18 +53,22 @@ describe("catalogRewrites", () => {
         expect(isRewrittenToCatalog(path)).toBe(false);
     });
 
-    it.each(["/react@*", "/@types/node@*", "/@types%2Fnode", "/re%61ct"])(
-        "leaves catalog path %s to [...parts]",
-        (path) => {
-            expect(isCatalogPath(path)).toBe(true);
-            expect(isRewrittenToCatalog(path)).toBe(false);
-        },
-    );
+    it.each([
+        "/react@*",
+        "/@types/node@*",
+        "/@types%2Fnode",
+        "/%40types/node",
+        "/re%61ct",
+    ])("leaves catalog path %s to [...parts]", (path) => {
+        expect(isCatalogPath(path)).toBe(true);
+        expect(isRewrittenToCatalog(path)).toBe(false);
+    });
 
     it.each([
         "/react@*",
         "/@types/node@*",
         "/@types%2Fnode",
+        "/%40types/node",
         "/re%61ct",
         "/React",
         "/a~b",

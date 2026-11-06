@@ -8,7 +8,7 @@ export const catalogRewrites = [
         destination: `${CATALOG_ROUTE_PREFIX}/:name`,
     },
     {
-        source: `/:scope((?:@|%40)${CATALOG_NAME})/:name([^@/.%][^@/%]*)`,
+        source: `/:scope(@${CATALOG_NAME})/:name(${CATALOG_NAME})`,
         destination: `${CATALOG_ROUTE_PREFIX}/:scope/:name`,
     },
 ];
