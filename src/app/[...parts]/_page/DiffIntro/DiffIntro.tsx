@@ -45,13 +45,6 @@ const DiffIntroLayout = forwardRef<
             npm diff
         </Heading>
         {options}
-        {/* <Command
-            aName={a.name}
-            aVersion={a.version}
-            bName={b.name}
-            bVersion={b.version}
-            options={options}
-        /> */}
     </Stack>
 ));
 DiffIntroLayout.displayName = "DiffIntroLayout";
