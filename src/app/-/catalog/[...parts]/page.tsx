@@ -1,13 +1,10 @@
 import { type Metadata } from "next";
 import { notFound } from "next/navigation";
 import { cache, type JSX, Suspense } from "react";
-import {
-    CatalogPageContent,
-    CatalogPageFallback,
-} from "^/app/[...parts]/_page/catalog/CatalogPage";
-import { generateCatalogMetadata } from "^/app/[...parts]/_page/catalog/generateCatalogMetadata";
 import { isCatalogPage } from "^/lib/utils/isCatalogPage";
 import parseParts from "^/lib/utils/parseParts";
+import { CatalogPageContent, CatalogPageFallback } from "./_page/CatalogPage";
+import { generateCatalogMetadata } from "./_page/generateCatalogMetadata";
 
 export const ensureStatic = "shell";
 
