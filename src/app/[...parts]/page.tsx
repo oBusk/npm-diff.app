@@ -15,13 +15,12 @@ import {
     toSearchString,
 } from "^/lib/query";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
-import {
-    getCatalogPackageName,
-    isCatalogPage,
-} from "^/lib/utils/isCatalogPage";
+import { getCatalogPackageName } from "^/lib/utils/isCatalogPage";
 import parseParts from "^/lib/utils/parseParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
 import ErrorBox from "./_error/ErrorBox";
+import { CatalogPageContent } from "./_page/catalog/CatalogPage";
+import { generateCatalogMetadata } from "./_page/catalog/generateCatalogMetadata";
 import DiffIntro from "./_page/DiffIntro";
 import { DiffIntroSkeleton } from "./_page/DiffIntro/DiffIntro";
 import { DiffServices, DiffServicesSkeleton } from "./_page/DiffServices";
@@ -38,16 +37,6 @@ export interface DiffPageProps {
     searchParams: Promise<QueryParams & { [DIFF_TYPE_PARAM_NAME]: ViewType }>;
 }
 
-function redirectToCatalog(specs: string[]): never {
-    const packageName = getCatalogPackageName(specs);
-
-    if (packageName == null || packageName === specs[0]) {
-        notFound();
-    }
-
-    redirect(`/${packageName}`);
-}
-
 export async function generateMetadata({
     params,
 }: DiffPageProps): Promise<Metadata> {
@@ -58,8 +47,13 @@ export async function generateMetadata({
         notFound();
     }
 
-    if (isCatalogPage(specs)) {
-        redirectToCatalog(specs);
+    const catalogPackageName = getCatalogPackageName(specs);
+
+    if (catalogPackageName != null) {
+        if (catalogPackageName !== specs[0]) {
+            redirect(`/${catalogPackageName}`);
+        }
+        return generateCatalogMetadata(specs);
     }
 
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
@@ -84,8 +78,13 @@ const DiffPageInner = async ({
         notFound();
     }
 
-    if (isCatalogPage(specsOrVersions)) {
-        redirectToCatalog(specsOrVersions);
+    const catalogPackageName = getCatalogPackageName(specsOrVersions);
+
+    if (catalogPackageName != null) {
+        if (catalogPackageName !== specsOrVersions[0]) {
+            redirect(`/${catalogPackageName}`);
+        }
+        return <CatalogPageContent specs={specsOrVersions} />;
     }
 
     const parsedOptions = parseDiffOptions({
