@@ -26,8 +26,6 @@ import NpmDiff from "./_page/NpmDiff";
 import NpmDiffSkeleton from "./_page/NpmDiff/NpmDiff.skeleton";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
 
-export const ensureStatic = "shell";
-
 export const maxDuration = 60;
 
 export interface DiffPageProps {

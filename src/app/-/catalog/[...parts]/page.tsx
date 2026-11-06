@@ -6,8 +6,6 @@ import parseParts from "^/lib/utils/parseParts";
 import { CatalogPageContent, CatalogPageFallback } from "./_page/CatalogPage";
 import { generateCatalogMetadata } from "./_page/generateCatalogMetadata";
 
-export const ensureStatic = "shell";
-
 export const maxDuration = 15;
 
 type CatalogRouteProps = Pick<PageProps<"/-/catalog/[...parts]">, "params">;
