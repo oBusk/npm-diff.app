@@ -1,6 +1,7 @@
 export const CATALOG_ROUTE_PREFIX = "/-/catalog";
 
 const CATALOG_NAME = String.raw`[^@/.%](?!.*\.\.\.)[^@/%]*`;
+const CATALOG_SCOPE = String.raw`@(?!.*\.\.\.)[^@/%]+`;
 
 export const catalogRewrites = [
     {
@@ -8,7 +9,7 @@ export const catalogRewrites = [
         destination: `${CATALOG_ROUTE_PREFIX}/:name`,
     },
     {
-        source: `/:scope(@${CATALOG_NAME})/:name(${CATALOG_NAME})`,
+        source: `/:scope(${CATALOG_SCOPE})/:name(${CATALOG_NAME})`,
         destination: `${CATALOG_ROUTE_PREFIX}/:scope/:name`,
     },
 ];

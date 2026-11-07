@@ -25,6 +25,8 @@ describe("catalogRewrites", () => {
         "/@types/node",
         "/@a/b",
         "/@angular/core",
+        "/@.a/b",
+        "/@_a/b",
     ])("rewrites catalog path %s", (path) => {
         expect(isCatalogPath(path)).toBe(true);
         expect(isRewrittenToCatalog(path)).toBe(true);
@@ -74,6 +76,8 @@ describe("catalogRewrites", () => {
         "/a~b",
         "/a!b(c)*'",
         "/a_b",
+        "/@.a/b@*",
+        "/@_a/b@*",
     ])("rewrites the redirect target of catalog path %s", (path) => {
         const specs = parseParts(path.slice(1).split("/"), { decode: true });
         const name = specs && getCatalogPackageName(specs);
