@@ -45,13 +45,6 @@ const DiffIntroLayout = forwardRef<
             npm diff
         </Heading>
         {options}
-        {/* <Command
-            aName={a.name}
-            aVersion={a.version}
-            bName={b.name}
-            bVersion={b.version}
-            options={options}
-        /> */}
     </Stack>
 ));
 DiffIntroLayout.displayName = "DiffIntroLayout";
@@ -80,7 +73,18 @@ const DiffIntro = forwardRef<ComponentRef<typeof Stack>, DiffIntroProps>(
                     pkgClassName="rounded-l-none"
                 />
             }
-            options={<Options options={options} />}
+            options={
+                <>
+                    <Options options={options} />
+                    {/* <Command
+                        aName={a.name}
+                        aVersion={a.version}
+                        bName={b.name}
+                        bVersion={b.version}
+                        options={options}
+                    /> */}
+                </>
+            }
         />
     ),
 );
