@@ -2,6 +2,7 @@ import { type Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { type JSX, Suspense } from "react";
 import { type ViewType } from "react-diff-view";
+import ErrorBox from "^/components/ErrorBox";
 import Code from "^/components/ui/Code";
 import { createSimplePackageSpec } from "^/lib/createSimplePackageSpec";
 import { DEFAULT_DIFF_FILES_GLOB } from "^/lib/default-diff-files";
@@ -15,18 +16,15 @@ import {
     toSearchString,
 } from "^/lib/query";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
-import { isCatalogPage } from "^/lib/utils/isCatalogPage";
+import { getCatalogPackageName } from "^/lib/utils/isCatalogPage";
 import parseParts from "^/lib/utils/parseParts";
 import specsToDiff from "^/lib/utils/specsToDiff";
-import ErrorBox from "./_error/ErrorBox";
-import BundlephobiaDiff from "./_page/BundlephobiaDiff";
-import CatalogPage from "./_page/catalog/CatalogPage";
-import { generateCatalogMetadata } from "./_page/catalog/generateCatalogMetadata";
 import DiffIntro from "./_page/DiffIntro";
+import { DiffIntroSkeleton } from "./_page/DiffIntro/DiffIntro";
+import { DiffServices, DiffServicesSkeleton } from "./_page/DiffServices";
 import NpmDiff from "./_page/NpmDiff";
-import PackagephobiaDiff from "./_page/PackagephobiaDiff";
+import NpmDiffSkeleton from "./_page/NpmDiff/NpmDiff.skeleton";
 import { type DIFF_TYPE_PARAM_NAME } from "./_page/paramNames";
-import Sources from "./_page/Sources/Sources";
 
 export const maxDuration = 60;
 
@@ -35,9 +33,7 @@ export interface DiffPageProps {
     searchParams: Promise<QueryParams & { [DIFF_TYPE_PARAM_NAME]: ViewType }>;
 }
 
-export async function generateMetadata({
-    params,
-}: DiffPageProps): Promise<Metadata> {
+async function parseDiffSpecs(params: DiffPageProps["params"]) {
     const { parts } = await params;
     const specs = parseParts(parts, { decode: true });
 
@@ -45,9 +41,19 @@ export async function generateMetadata({
         notFound();
     }
 
-    if (isCatalogPage(specs)) {
-        return generateCatalogMetadata(specs);
+    const catalogPackageName = getCatalogPackageName(specs);
+
+    if (catalogPackageName != null) {
+        redirect(`/${catalogPackageName}`);
     }
+
+    return specs;
+}
+
+export async function generateMetadata({
+    params,
+}: DiffPageProps): Promise<Metadata> {
+    const specs = await parseDiffSpecs(params);
 
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
 
@@ -61,19 +67,9 @@ const DiffPageInner = async ({
     params,
     searchParams,
 }: DiffPageProps): Promise<JSX.Element> => {
-    const { parts } = await params;
+    const specsOrVersions = await parseDiffSpecs(params);
     const query = await searchParams;
     const { diffFiles, ...optionsQuery } = query;
-
-    const specsOrVersions = parseParts(parts, { decode: true });
-
-    if (specsOrVersions == null) {
-        notFound();
-    }
-
-    if (isCatalogPage(specsOrVersions)) {
-        return <CatalogPage specs={specsOrVersions} />;
-    }
 
     const parsedOptions = parseDiffOptions({
         // If no diffFiles is passed, use the default.
@@ -119,32 +115,7 @@ const DiffPageInner = async ({
                     a={a}
                     b={b}
                     services={
-                        <>
-                            <Sources
-                                a={a}
-                                b={b}
-                                suspenseKey={
-                                    "sources-" + canonicalSpecs.join("...")
-                                }
-                            />
-                            <BundlephobiaDiff
-                                a={a}
-                                b={b}
-                                specs={canonicalSpecs}
-                                suspenseKey={
-                                    "bundlephobia-" + canonicalSpecs.join("...")
-                                }
-                            />
-                            <PackagephobiaDiff
-                                a={a}
-                                b={b}
-                                specs={canonicalSpecs}
-                                suspenseKey={
-                                    "packagephobia-" +
-                                    canonicalSpecs.join("...")
-                                }
-                            />
-                        </>
+                        <DiffServices a={a} b={b} specs={canonicalSpecs} />
                     }
                     options={options}
                 />
@@ -160,9 +131,21 @@ const DiffPageInner = async ({
     }
 };
 
+function DiffPageFallback() {
+    return (
+        <>
+            <DiffIntroSkeleton
+                className="self-stretch"
+                services={<DiffServicesSkeleton />}
+            />
+            <NpmDiffSkeleton />
+        </>
+    );
+}
+
 const DiffPage = (props: DiffPageProps) => {
     return (
-        <Suspense>
+        <Suspense fallback={<DiffPageFallback />}>
             <DiffPageInner {...props} />
         </Suspense>
     );

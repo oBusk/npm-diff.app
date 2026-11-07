@@ -87,7 +87,7 @@ async function Sources({ a, b }: SourcesProps) {
     );
 }
 
-function SourcesFallback() {
+export function SourcesFallback() {
     return (
         <Halfs
             className="mb-4 w-full items-center"

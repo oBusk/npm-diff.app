@@ -1,4 +1,5 @@
 import { type NextConfig } from "next";
+import { catalogRedirects, catalogRewrites } from "./src/lib/catalogRoutes";
 
 const securityHeaders = [
     { key: "X-Frame-Options", value: "DENY" },
@@ -29,7 +30,14 @@ const nextConfig: NextConfig = {
     reactCompiler: true,
     serverExternalPackages: ["libnpmdiff", "npm-package-arg", "pacote"],
     cacheComponents: true,
+    partialPrefetching: true,
     poweredByHeader: false,
+    async redirects() {
+        return catalogRedirects;
+    },
+    async rewrites() {
+        return catalogRewrites;
+    },
     async headers() {
         return [
             {

@@ -1,6 +1,8 @@
 import { forwardRef, type HTMLAttributes } from "react";
 import Pkg from "^/components/ui/Pkg";
+import Skeleton from "^/components/ui/Skeleton";
 import { cx } from "^/lib/cva";
+import { Services } from "^/lib/Services";
 import type SimplePackageSpec from "^/lib/SimplePackageSpec";
 import { simplePackageSpecToString } from "^/lib/SimplePackageSpec";
 import PublishDate from "./PublishDate";
@@ -25,5 +27,21 @@ const SpecBox = forwardRef<HTMLElement, SpecBoxProps>(
     ),
 );
 SpecBox.displayName = "SpecBox";
+
+export const SpecBoxSkeleton = ({
+    pkgClassName,
+}: Pick<SpecBoxProps, "pkgClassName">) => (
+    <section>
+        <Skeleton className={cx("h-5 w-32", pkgClassName!)} />
+        <div className="my-1 flex h-5 items-center justify-center">
+            <Skeleton className="h-2 w-16" />
+        </div>
+        <div className="flex h-5 items-center justify-center gap-1">
+            {Object.values(Services).map((service) => (
+                <Skeleton key={service.name} className="size-4" />
+            ))}
+        </div>
+    </section>
+);
 
 export default SpecBox;

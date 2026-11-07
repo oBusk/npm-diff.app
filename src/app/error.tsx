@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
+import ErrorBox from "^/components/ErrorBox";
 import Button from "^/components/ui/Button";
 import Code from "^/components/ui/Code";
 import type { ErrorComponent } from "^/next";
-import ErrorBox from "./_error/ErrorBox";
 
-const DiffError: ErrorComponent = ({ error: error, reset }) => {
+const RouteError: ErrorComponent = ({ error: error, reset }) => {
     const message = error?.message ?? error ?? "Unknown error";
 
     useEffect(() => {
@@ -25,4 +25,4 @@ const DiffError: ErrorComponent = ({ error: error, reset }) => {
     );
 };
 
-export default DiffError;
+export default RouteError;

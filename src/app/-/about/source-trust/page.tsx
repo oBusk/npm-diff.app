@@ -7,6 +7,8 @@ import Heading from "^/components/ui/Heading";
 import Stack from "^/components/ui/Stack";
 import { getSourceInformation } from "^/lib/api/npm/sourceInformation";
 
+export const ensureStatic = "navigation";
+
 export const metadata: Metadata = {
     title: "Source & Trust – Auditing npm package provenance and trusted publishing",
     description:

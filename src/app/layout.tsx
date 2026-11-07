@@ -9,6 +9,8 @@ import Footer from "./_layout/Footer";
 import Header from "./_layout/Header";
 import "./globals.css";
 
+export const ensureStatic = "shell";
+
 export const metadata: Metadata = {
     applicationName: "npm-diff.app",
     title: {
