@@ -1,5 +1,4 @@
 import { cacheLife } from "next/cache";
-import Skeleton from "^/components/ui/Skeleton";
 import getCatalogSummary from "^/lib/api/npm/catalogSummary";
 import { generateComparisons } from "^/lib/utils/generateComparisons";
 import { getCatalogPackageName } from "^/lib/utils/isCatalogPage";
@@ -10,7 +9,7 @@ export interface CatalogPageProps {
     specs: string[];
 }
 
-export async function CatalogPageContent({ specs }: CatalogPageProps) {
+export default async function CatalogPage({ specs }: CatalogPageProps) {
     "use cache";
 
     const packageName = getCatalogPackageName(specs);
@@ -42,21 +41,6 @@ export async function CatalogPageContent({ specs }: CatalogPageProps) {
                         packageName={packageName}
                         comparisons={comparisons}
                     />
-                </div>
-            </div>
-        </div>
-    );
-}
-
-export function CatalogPageFallback() {
-    return (
-        <div className="mx-auto w-full max-w-7xl py-8">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[2fr_3fr]">
-                <div className="flex flex-col">
-                    <Skeleton className="h-96 w-full rounded-md" />
-                </div>
-                <div className="flex flex-col">
-                    <Skeleton className="h-96 w-full rounded-md" />
                 </div>
             </div>
         </div>
