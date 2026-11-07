@@ -33,9 +33,7 @@ export interface DiffPageProps {
     searchParams: Promise<QueryParams & { [DIFF_TYPE_PARAM_NAME]: ViewType }>;
 }
 
-export async function generateMetadata({
-    params,
-}: DiffPageProps): Promise<Metadata> {
+async function parseDiffSpecs(params: DiffPageProps["params"]) {
     const { parts } = await params;
     const specs = parseParts(parts, { decode: true });
 
@@ -49,6 +47,14 @@ export async function generateMetadata({
         redirect(`/${catalogPackageName}`);
     }
 
+    return specs;
+}
+
+export async function generateMetadata({
+    params,
+}: DiffPageProps): Promise<Metadata> {
+    const specs = await parseDiffSpecs(params);
+
     const [a, b] = specs.map((spec) => createSimplePackageSpec(spec));
 
     return {
@@ -61,21 +67,9 @@ const DiffPageInner = async ({
     params,
     searchParams,
 }: DiffPageProps): Promise<JSX.Element> => {
-    const { parts } = await params;
+    const specsOrVersions = await parseDiffSpecs(params);
     const query = await searchParams;
     const { diffFiles, ...optionsQuery } = query;
-
-    const specsOrVersions = parseParts(parts, { decode: true });
-
-    if (specsOrVersions == null) {
-        notFound();
-    }
-
-    const catalogPackageName = getCatalogPackageName(specsOrVersions);
-
-    if (catalogPackageName != null) {
-        redirect(`/${catalogPackageName}`);
-    }
 
     const parsedOptions = parseDiffOptions({
         // If no diffFiles is passed, use the default.
